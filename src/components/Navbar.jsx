@@ -8,8 +8,8 @@ const NavLink = ({ to, children }) => {
   return (
     <Link
       to={to}
-      className={`px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline ${
-        location.pathname === to ? "text-[#00664a]" : ""
+      className={`px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline ${
+        location.pathname === to ? "text-[#00664a] fon" : ""
       }`}>
       {children}
     </Link>
@@ -41,7 +41,7 @@ const Dropdown = ({ title, children, openDropdown, setOpenDropdown }) => {
     <div className="relative dropdown">
       <button
         onClick={toggleDropdown}
-        className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+        className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
         {title}
         <svg
           fill="currentColor"
@@ -56,7 +56,7 @@ const Dropdown = ({ title, children, openDropdown, setOpenDropdown }) => {
         </svg>
       </button>
       {isOpen && (
-        <div className="absolute left-0 mt-2 md:-ml-[550px] h-[300px] overflow-auto bg-white rounded-b-xl shadow-lg">
+        <div className="absolute mt-2  h-[300px] overflow-auto bg-white rounded-b-xl shadow-lg">
           {children}
         </div>
       )}
@@ -88,12 +88,12 @@ const Navbar = () => {
 
 
 return (
-  <div className="sticky top-[0px] z-30 shadow-2xl">
-    <div className="antialiased bg-gray-100 dark-mode:bg-gray-900">
-      <div className="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+  <div className="sticky top-0 z-30 shadow-2xl">
+    <div className="antialiased bg-gray-100">
+      <div className="w-full text-gray-700 bg-white">
         <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
           <div className="flex flex-row items-center justify-between p-4">
-            <a className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+            <a className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg focus:outline-none focus:shadow-outline">
               <Link to="/" className="flex items-center gap-0">
                 <img
                   src={image}
@@ -118,55 +118,8 @@ return (
             className={`${
               open ? "flex" : "hidden"
             } flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row`}>
-            <NavLink to="/patient">Patient Portal</NavLink>
-            <NavLink to="/patient">Report Download</NavLink>
-            <NavLink to="/sample">Home Collection</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
             <Dropdown
-              title="Services"
-              openDropdown={openDropdown}
-              setOpenDropdown={setOpenDropdown}>
-              <div className="flex flex-wrap items-center">
-                <DropdownItem to="/doctorsearch">
-                  <div className="flex col-span-1 items-center">
-                    <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg">
-                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                      <path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V280h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V176h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H280V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H176V24zM160 128H352c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160V352H352V160z"></path>
-                    </svg>
-                    <p className="pl-5">Doctors Directory</p>
-                  </div>
-                </DropdownItem>
-                <DropdownItem to="/health">
-                  <div className="flex col-span-1 items-center">
-                    <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg">
-                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                      <path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V280h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V176h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H280V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H176V24zM160 128H352c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160V352H352V160z"></path>
-                    </svg>
-                    <p className="pl-5">Health Pakages</p>
-                  </div>
-                </DropdownItem>
-                <DropdownItem to="/branch">
-                  <div className="flex col-span-1 items-center">
-                    <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg">
-                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                      <path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V280h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V176h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H280V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H176V24zM160 128H352c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160V352H352V160z"></path>
-                    </svg>
-                    <p className="pl-5">Branches</p>
-                  </div>
-                </DropdownItem>
-              </div>
-            </Dropdown>
-            <Dropdown
-              title="Information"
+              title="About"
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}>
               <div className="flex flex-wrap items-center">
@@ -232,7 +185,6 @@ return (
                     <p className="pl-5"> Management Team</p>
                   </div>
                 </DropdownItem>
-
                 <DropdownItem to="/notice">
                   <div className="flex col-span-1 items-center">
                     <svg
@@ -245,7 +197,6 @@ return (
                     <p className="pl-5">Notices</p>
                   </div>
                 </DropdownItem>
-
                 <DropdownItem to="/tech">
                   <div className="flex col-span-1 items-center">
                     <svg
@@ -256,6 +207,54 @@ return (
                       <path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V280h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V176h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H280V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H176V24zM160 128H352c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160V352H352V160z"></path>
                     </svg>
                     <p className="pl-5">Our Technologies</p>
+                  </div>
+                </DropdownItem>
+              </div>
+            </Dropdown>
+            <NavLink to="/health">Pakages</NavLink>
+            <NavLink to="/doctorsearch">Doctors</NavLink>
+            <NavLink to="/branch">Branches</NavLink>
+            <NavLink to="/patient">
+              <div className="flex">
+                {" "}
+                Patient Portal{" "}
+                <svg
+                  className="w-[16px] h-[16px] fill-[#00664a] ml-1"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg">
+                  {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
+                  <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"></path>
+                </svg>{" "}
+              </div>
+            </NavLink>
+            <NavLink to="/sample">Home Collection</NavLink>
+            <Dropdown
+              title="Contact"
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}>
+              <div className="flex flex-wrap items-center">
+                <DropdownItem to="/contact">
+                  <div className="flex col-span-1 items-center">
+                    <svg
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg">
+                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
+                      <path d="M448 256A192 192 0 1 0 64 256a192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"></path>
+                    </svg>
+                    <p className="pl-5">Contact Us</p>
+                  </div>
+                </DropdownItem>
+                <DropdownItem to="/complain">
+                  <div className="flex col-span-1 items-center">
+                    <svg
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      viewBox="0 0 640 512"
+                      xmlns="http://www.w3.org/2000/svg">
+                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
+                      <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H322.8c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1H178.3zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z"></path>
+                    </svg>
+                    <p className="pl-5"> Complain and Advice</p>
                   </div>
                 </DropdownItem>
               </div>

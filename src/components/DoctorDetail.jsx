@@ -313,7 +313,9 @@ const DoctorDetail = () => {
             {/* Advertise grid */}
             <div className="flex flex-col items-center overflow-x-hidden font-bold h-full">
               <Marquee direction="up" className="h-full">
-                <a href="https://www.popular-pharma.com/products/82">
+                <a
+                  href="https://www.popular-pharma.com/products/82"
+                  target="_blank">
                   <div className="p-10 text-gray-600">
                     {" "}
                     <img src={Adecard} alt="Suggested Medicines" />
@@ -322,7 +324,9 @@ const DoctorDetail = () => {
                     </h1>
                   </div>
                 </a>
-                <a href="https://www.popular-pharma.com/products/519">
+                <a
+                  href="https://www.popular-pharma.com/products/519"
+                  target="_blank">
                   <div className="p-10 text-gray-600">
                     {" "}
                     <img src={Vonomax} alt="Suggested Medicines" />
@@ -331,7 +335,9 @@ const DoctorDetail = () => {
                     </h1>
                   </div>
                 </a>
-                <a href="https://www.popular-pharma.com/products/82">
+                <a
+                  href="https://www.popular-pharma.com/products/82"
+                  target="_blank">
                   <div className="p-10 text-gray-600 ">
                     {" "}
                     <img src={Ambrosol} alt="Suggested Medicines" />
@@ -340,7 +346,9 @@ const DoctorDetail = () => {
                     </h1>
                   </div>
                 </a>
-                <a href="https://www.popular-pharma.com/products/68">
+                <a
+                  href="https://www.popular-pharma.com/products/68"
+                  target="_blank">
                   <div className="p-10 text-gray-600 ">
                     {" "}
                     <img src={Amlovas} alt="Suggested Medicines" />
@@ -349,7 +357,9 @@ const DoctorDetail = () => {
                     </h1>
                   </div>
                 </a>
-                <a href="https://www.popular-pharma.com/products/117">
+                <a
+                  href="https://www.popular-pharma.com/products/117"
+                  target="_blank">
                   <div className="p-10 text-gray-600 ">
                     {" "}
                     <img src={Anorel} alt="Suggested Medicines" />
@@ -358,7 +368,9 @@ const DoctorDetail = () => {
                     </h1>
                   </div>
                 </a>
-                <a href="https://www.popular-pharma.com/products/129">
+                <a
+                  href="https://www.popular-pharma.com/products/129"
+                  target="_blank">
                   <div className="p-10 text-gray-600 ">
                     {" "}
                     <img src={Cebergol} alt="Suggested Medicines" />

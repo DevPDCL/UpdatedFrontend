@@ -71,6 +71,7 @@ const Tech = ({ message, children }) => {
                     <li className="mb-4">
                       <a
                         href="https://www.popular-pharma.com/"
+                        target="_blank"
                         className="font-ubuntu hover:underline">
                         Popular Pharmaceuticals
                       </a>
@@ -78,6 +79,7 @@ const Tech = ({ message, children }) => {
                     <li className="mb-4">
                       <a
                         href="https://www.pmch-bd.org/"
+                        target="_blank"
                         className="font-ubuntu hover:underline">
                         Popular Medical College
                       </a>
@@ -85,6 +87,7 @@ const Tech = ({ message, children }) => {
                     <li className="mb-4">
                       <a
                         href="https://www.popular-hospital.com/"
+                        target="_blank"
                         className="font-ubuntu hover:underline">
                         Popular Medical College Hospital
                       </a>
