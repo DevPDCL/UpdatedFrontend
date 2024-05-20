@@ -103,13 +103,13 @@ const ProjectCard = ({
 const Works = () => {
   return (
     <>
-      <div className="relative pt-20 fontFamily-ubuntu">
+      <div className="relative pt-12 fontFamily-ubuntu">
         <div className=" overflow-hidden  mt-[-140px] py-24 sm:py-32">
           <div className="mx-auto">
-            <div className="flex flex-wrap justify-center items-center bg-gradient-to-b from-transparent to-[#f0fff0]/60  py-5">
+            <div className="flex flex-wrap justify-center items-center py-5">
               <div className="flex flex-col lg:flex-row gap-5 mx-auto ">
                 <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
-                  <div className="rounded-full p-3 border-2 border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
+                  <div className="rounded-full p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
                     <svg
                       className="w-[40px] h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500  "
                       viewBox="0 0 640 512"
@@ -129,7 +129,7 @@ const Works = () => {
                 </div>
                 <div className="flex mx-auto group">
                   <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
-                    <div className="rounded-full p-3 border-2 border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
+                    <div className="rounded-full p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
                       <svg
                         className="w-[40px] h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500  "
                         viewBox="0 0 512 512"
@@ -153,7 +153,7 @@ const Works = () => {
                 </div>
                 <div className="flex mx-auto group">
                   <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
-                    <div className="rounded-full p-3 border-2 border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
+                    <div className="rounded-full p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
                       <svg
                         className="w-[40px] h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500  "
                         viewBox="0 0 512 512"
@@ -177,7 +177,7 @@ const Works = () => {
                 </div>
                 <div className="flex mx-auto group">
                   <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
-                    <div className="rounded-full p-3 border-2 border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
+                    <div className="rounded-full p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
                       <svg
                         className="w-[40px] h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500  "
                         viewBox="0 0 448 512"
@@ -224,7 +224,7 @@ const Works = () => {
           loop
           muted
         />
-        <div className="absolute w-full h-[400px]  top-20 left-0 bg-[#00664a]/70"></div>
+        <div className="absolute w-full h-[400px]  top-20 left-0 bg-[#00984a]/70"></div>
 
         <div
           className={`${styles.paddingX} absolute  flex   max-w-7xl mx-auto inset-1 justify-center items-center text-center pt-[120px]  flex-col text-gray-900`}>
@@ -236,7 +236,7 @@ const Works = () => {
             info@populardiagnostic.com
           </p>
           <div className="flex flex-row">
-            <button className="bg-white border rounded mt-10 m-2 p-3 hover:bg-[#00664a] hover:text-white">
+            <button className="bg-white border rounded mt-10 m-2 p-3 hover:bg-[#00984a] hover:text-white">
               Contact Now
             </button>
             <button className="bg-none border text-white rounded mt-10 m-2 p-3 hover:bg-gray-500 hover:text-white">

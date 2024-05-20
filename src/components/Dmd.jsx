@@ -31,7 +31,7 @@ const Dmd = () => {
                         <stop offset="0%" stopColor="#52CC99" stopOpacity="1" />
                         <stop
                           offset="100%"
-                          stopColor="#00664a"
+                          stopColor="#00984a"
                           stopOpacity="1"
                         />
                       </linearGradient>
@@ -54,7 +54,7 @@ const Dmd = () => {
                   <h1 className="text-gray-900 text-center text-[36px] font-bold">
                     Sardin Rahman
                   </h1>
-                  <p className="text-[#006642] text-center text-[20px] font-medium">
+                  <p className="text-[#00984a] text-center text-[20px] font-medium">
                     Deputy Managing Director
                   </p>
                 </div>

@@ -17,16 +17,16 @@ const Error = () => {
               Error {err.status}: {err.statusText}
             </span>
             . Please try again later or contact our support team at{" "}
-            <span className=" font-medium text-[#006642]">10636 </span>
+            <span className=" font-medium text-[#00984a]">10636 </span>
             or via email{" "}
-            <span className=" font-medium text-[#006642]">
+            <span className=" font-medium text-[#00984a]">
               info@populardiagnostic.com{" "}
             </span>{" "}
             at for assistance.
           </p>
           <a
             href="/"
-            class="flex items-center space-x-2 bg-[#006642] hover:bg-gray-500 text-gray-100 px-4 py-2 rounded transition duration-150"
+            class="flex items-center space-x-2 bg-[#00984a] hover:bg-gray-500 text-gray-100 px-4 py-2 rounded transition duration-150"
             title="Return Home">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ const Error = () => {
         </div>
         <div class="w-1/2 lg:h-full flex lg:items-end justify-center p-4">
           <svg
-            class="w-full text-[#006642]"
+            class="w-full text-[#00984a]"
             xmlns="http://www.w3.org/2000/svg"
             data-name="Layer 1"
             viewBox="0 0 1120.59226 777.91584"

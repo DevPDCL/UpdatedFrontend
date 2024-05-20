@@ -5,7 +5,7 @@ import React, { useState } from "react";
 
 const ProjectCard = ({ manImg, manName, manDesignation }) => {
   return (
-    <div className="bg-gradient-to-b from-white to-[#00664218] hover:bg-gray-100 shadow-2xl rounded-2xl sm:w-[299px] w-full">
+    <div className="bg-gradient-to-b from-white to-[#00984a18] hover:bg-gray-100 shadow-2xl rounded-2xl sm:w-[299px] w-full">
       <div className="relative w-full">
         <img
           src={manImg}

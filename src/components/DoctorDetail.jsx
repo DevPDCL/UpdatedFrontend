@@ -51,7 +51,7 @@ const DoctorDetail = () => {
           {/* Left Side */}
           <div className="w-full md:w-3/12 px-2 mb-4">
             {/* Profile Card */}
-            <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#006642]">
+            <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
               <div className="image overflow-hidden rounded-xl shadow-xl">
                 {image ? (
                   <img
@@ -102,7 +102,7 @@ const DoctorDetail = () => {
                 <li className="flex items-center py-3">
                   <span>Status</span>
                   <span className="ml-auto">
-                    <span className="bg-[#006642] py-1 px-2 rounded text-white text-sm">
+                    <span className="bg-[#00984a] py-1 px-2 rounded text-white text-sm">
                       Active
                     </span>
                   </span>
@@ -114,7 +114,7 @@ const DoctorDetail = () => {
             {/* Similar Doctor card  */}
             <div className="bg-white rounded-xl shadow-lg p-3 hover:shadow-xl">
               <div className="flex items-center justify-center space-x-3 font-semibold text-gray-900 text-xl leading-8 font-ubuntu">
-                <span className="text-[#006642]">
+                <span className="text-[#00984a]">
                   {" "}
                   <svg
                     className="h-5 fill-current"
@@ -138,7 +138,7 @@ const DoctorDetail = () => {
               </h2>
               <hr className="p-2"></hr>
               {relatedDoctors.length > 0 ? (
-                <div className="grid grid-cols-2 text-[#006642]">
+                <div className="grid grid-cols-2 text-[#00984a]">
                   {relatedDoctors.map((doctor) => (
                     <div key={doctor.drID} className="text-center my-2">
                       <Link to={`/doctordetail/${doctor.drID}`}>
@@ -166,13 +166,13 @@ const DoctorDetail = () => {
             {/* About Section  */}
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
-                <h1 className="text-[#006642] p-5 text-center font-ubuntu font-bold text-[26px]">
+                <h1 className="text-[#00984a] p-5 text-center font-ubuntu font-bold text-[26px]">
                   {" "}
                   {currPractice}{" "}
                 </h1>
               </div>
               <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
-                <span className="text-[#006642]">
+                <span className="text-[#00984a]">
                   <svg
                     className="h-5"
                     xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +199,7 @@ const DoctorDetail = () => {
                     <div className="px-4 py-2 font-semibold">Experience</div>
                     <div className="px-4 py-2">
                       <a
-                        className="text-[#006642]"
+                        className="text-[#00984a]"
                         href="mailto:jane@example.com">
                         {email}
                       </a>
@@ -212,7 +212,7 @@ const DoctorDetail = () => {
                 target="_blank"
                 rel="noopener noreferrer">
                 <button
-                  className="block w-full text-[#006642] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+                  className="block w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
                   onClick={handleClick1}
                   type="button">
                   Book an Appointment
@@ -225,22 +225,22 @@ const DoctorDetail = () => {
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
                 <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                  <span className="text-[#006642]">
+                  <span className="text-[#00984a]">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5"
                       viewBox="0 0 90 90">
                       <path
                         d="M51.948 73.273H38.052c-1.104 0-2-0.896-2-2v-9.621h-9.621c-1.104 0-2-0.896-2-2V45.757c0-1.104 0.896-2 2-2h9.621v-9.62c0-1.104 0.896-2 2-2h13.896c1.104 0 2 0.896 2 2v9.62h9.62c1.104 0 2 0.896 2 2v13.895c0 1.104-0.896 2-2 2h-9.62v9.621C53.948 72.378 53.053 73.273 51.948 73.273z M40.052 69.273h9.896v-9.621c0-1.104 0.896-2 2-2h9.62v-9.895h-9.62c-1.104 0-2-0.896-2-2v-9.62h-9.896v9.62c0 1.104-0.896 2-2 2h-9.621v9.895h9.621c1.104 0 2 0.896 2 2V69.273z"
-                        fill="#006642"
+                        fill="#00984a"
                       />
                       <path
                         d="M78.113 84.056H11.887c-1.104 0-2-0.896-2-2V30.312c0-1.104 0.896-2 2-2s2 0.896 2 2v49.745h62.226V30.067c0-1.104 0.896-2 2-2s2 0.896 2 2v51.989C80.113 83.161 79.218 84.056 78.113 84.056z"
-                        fill="#006642"
+                        fill="#00984a"
                       />
                       <path
                         d="M2.002 38.835c-0.65 0-1.287-0.316-1.671-0.898c-0.608-0.922-0.354-2.163 0.568-2.771L44.687 6.274c0.679-0.449 1.561-0.439 2.231 0.019L89.13 35.184c0.911 0.624 1.145 1.869 0.521 2.78c-0.624 0.912-1.867 1.146-2.78 0.521L45.768 10.353L3.102 38.504C2.762 38.728 2.38 38.835 2.002 38.835z"
-                        fill="#006642"
+                        fill="#00984a"
                       />
                     </svg>
                   </span>

@@ -35,10 +35,10 @@ const Card = ({
           </div>
 
           <div>
-            <h3 className="text-[#006642] text-[32px] ml-3 font-bold text-start font-[Time-New-Romans] ">
+            <h3 className="text-[#00984a] text-[32px] ml-3 font-bold text-start font-[Time-New-Romans] ">
               {description1}
             </h3>
-            <p className=" text-[#006642] text-[16px] ml-3 font-bold text-start font-[Time-New-Romans] ">
+            <p className=" text-[#00984a] text-[16px] ml-3 font-bold text-start font-[Time-New-Romans] ">
               {name1}
             </p>
           </div>

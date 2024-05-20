@@ -11,7 +11,7 @@ const TechCard = ({ image, name }) => {
           alt=""
         />
         <a
-          className="flex justify-center items-center bg-[#00664a] bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
+          className="flex justify-center items-center bg-[#00984a] bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
           href="#"
           target="_self"
           rel="noopener noreferrer">
@@ -34,8 +34,8 @@ const TechCard = ({ image, name }) => {
       <h3 className="font-medium text-xl leading-8">
         <a
           href="/blog/slug"
-          className="block relative text-gray-600 group-hover:text-[#00664a] transition-colors duration-200">
-          Our <span className=" text-[#00664a] font-medium">{name}</span> Machines
+          className="block relative text-gray-600 group-hover:text-[#00984a] transition-colors duration-200">
+          Our <span className=" text-[#00984a] font-medium">{name}</span> Machines
         </a>
       </h3>
       <div />

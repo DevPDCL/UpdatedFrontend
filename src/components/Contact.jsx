@@ -19,7 +19,7 @@ function Contact() {
           <div className=" p-10  text-start">
             <h1 className="text-slate-900/50 text-center font-ubuntu font-extrabold text-[36px]">
               DISCOVER{" "}
-              <span className="text-[#006642] font-ubuntu">POPULAR</span>
+              <span className="text-[#00984a] font-ubuntu">POPULAR</span>
             </h1>
 
             <p className="mb-2 font-ubuntu text-center text-[24px]  text-gray-900">
@@ -43,7 +43,7 @@ function Contact() {
             shadow={true}>
             <form className="mt-1 mb-2 w-full p-5 max-w-7xl  sm:w-300">
               <div className="mb-1 flex flex-col gap-6">
-                <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#006642]">
+                <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#00984a]">
                   Send us a message
                 </h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -51,13 +51,13 @@ function Contact() {
                     <Typography
                       variant="h6"
                       color="blue-gray"
-                      className="text-[#006642] text-start">
+                      className="text-[#00984a] text-start">
                       Your Email
                     </Typography>
                     <Input
                       size="lg"
                       placeholder="name@mail.com"
-                      className=" !border-t-blue-gray-200 bg-white text-[#006642] p-2 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -67,13 +67,13 @@ function Contact() {
                     <Typography
                       variant="h6"
                       color="blue-gray"
-                      className=" text-[#006642] text-start">
+                      className=" text-[#00984a] text-start">
                       Your FullName
                     </Typography>
                     <Input
                       size="lg"
                       placeholder="Name"
-                      className=" !border-t-blue-gray-200 bg-white text-[#006642] p-2 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -83,13 +83,13 @@ function Contact() {
                     <Typography
                       variant="h6"
                       color="blue-gray"
-                      className="text-[#006642] text-start">
+                      className="text-[#00984a] text-start">
                       Your Mobile
                     </Typography>
                     <Input
                       size="lg"
                       placeholder="01712345678"
-                      className=" !border-t-blue-gray-200 bg-white text-[#006642] p-2 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -99,13 +99,13 @@ function Contact() {
                     <Typography
                       variant="h6"
                       color="blue-gray"
-                      className=" text-[#006642] text-start">
+                      className=" text-[#00984a] text-start">
                       Your Messages
                     </Typography>
                     <Input
                       size="lg"
                       placeholder="Write Support Queries"
-                      className=" !border-t-blue-gray-200 bg-white text-[#006642] p-2 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -115,7 +115,7 @@ function Contact() {
               </div>
 
               <Link to="/report">
-                <Button className="mt-6 bg-[#006642] " fullWidth>
+                <Button className="mt-6 bg-[#00984a] " fullWidth>
                   SEND MESSAGES
                 </Button>
               </Link>

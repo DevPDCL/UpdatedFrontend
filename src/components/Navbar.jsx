@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import image from "../assets/logo.webp";
+import image from "../assets/logo1.webp";
 
 const NavLink = ({ to, children }) => {
   const location = useLocation();
@@ -9,7 +9,7 @@ const NavLink = ({ to, children }) => {
     <Link
       to={to}
       className={`px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline ${
-        location.pathname === to ? "text-[#00664a] fon" : ""
+        location.pathname === to ? "text-[#00984a] fon" : ""
       }`}>
       {children}
     </Link>
@@ -20,7 +20,7 @@ const DropdownItem = ({ to, children }) => {
   return (
     <Link
       to={to}
-      className="block px-4 py-2 text-sm mx-auto my-2 text-gray-900 rounded w-[270px] font-medium group hover:bg-gray-200 hover:text-[#00664a]">
+      className="block px-4 py-2 text-sm mx-auto my-2 text-gray-900 rounded w-[270px] font-medium group hover:bg-gray-200 hover:text-[#00984a]">
       {children}
     </Link>
   );
@@ -126,7 +126,7 @@ return (
                 <DropdownItem to="/goals">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -138,7 +138,7 @@ return (
                 <DropdownItem to="/chairman">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 640 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -150,7 +150,7 @@ return (
                 <DropdownItem to="/director">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[48px] h-[40px] p-1 rounded  group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[48px] h-[40px] p-1 rounded  group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 448 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -162,7 +162,7 @@ return (
                 <DropdownItem to="/dmd">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[48px] h-[40px] p-1 rounded  group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[48px] h-[40px] p-1 rounded  group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 448 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -176,7 +176,7 @@ return (
                 <DropdownItem to="/about">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 640 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -188,7 +188,7 @@ return (
                 <DropdownItem to="/notice">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - htadvtps://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -200,7 +200,7 @@ return (
                 <DropdownItem to="/tech">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -219,7 +219,7 @@ return (
                 {" "}
                 Patient Portal{" "}
                 <svg
-                  className="w-[16px] h-[16px] fill-[#00664a] ml-1"
+                  className="w-[16px] h-[16px] fill-[#00984a] ml-1"
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg">
                   {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -236,7 +236,7 @@ return (
                 <DropdownItem to="/contact">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
@@ -248,7 +248,7 @@ return (
                 <DropdownItem to="/complain">
                   <div className="flex col-span-1 items-center">
                     <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00664a]  fill-[#ffffff] group-hover:fill-[#00664a]"
+                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
                       viewBox="0 0 640 512"
                       xmlns="http://www.w3.org/2000/svg">
                       {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}

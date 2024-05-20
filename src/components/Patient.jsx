@@ -28,7 +28,7 @@ const BranchCard = ({ branch, handleReportDownload }) => {
               viewBox="0 0 242.92 204.7">
               <style>
                 {`.cls-1 { fill: #4C9380; }
-         .cls-2 { fill: #00664a; }
+         .cls-2 { fill: #00984a; }
          .cls-3 { fill: #5E2750; }`}
               </style>
               <path
@@ -119,7 +119,7 @@ const Patient = () => {
           <motion.input
             type="text"
             placeholder="Search branches..."
-            className="px-2 py-1 border text-[#006642] border-PDCL-green bg-gray-100  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+            className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-100  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
             value={searchTerm}
             variants={searchBoxVariants}
             onChange={handleSearchChange}
@@ -133,7 +133,7 @@ const Patient = () => {
             {" "}
             {/* Use flexbox with md:w-1/2 for two sections */}
             <div className="flex flex-col items-center">
-              <h2 className="text-[#006642] text-center text-xl  font-semibold border-b-2 mb-10">
+              <h2 className="text-[#00984a] text-center text-xl  font-semibold border-b-2 mb-10">
                 Branches Inside Dhaka
               </h2>
               {filteredDhakaBranches.length > 0 ? (
@@ -157,7 +157,7 @@ const Patient = () => {
           </div>
           <div className="border-x-2 px-3 flex flex-wrap w-full md:w-1/2">
             <div className="flex flex-col items-center">
-              <h2 className="text-[#006642] text-center text-xl font-semibold border-b-2 mb-10">
+              <h2 className="text-[#00984a] text-center text-xl font-semibold border-b-2 mb-10">
                 Branches Outside Dhaka
               </h2>
               {filteredOtherBranches.length > 0 ? (

@@ -33,7 +33,7 @@ const DoctorCard = ({ doctor }) => {
         : "group-hover:bg-[#d7ffd7]";
 
     const textColor =
-      doctor.drGender === "Female" ? "text-[#5E2750]" : "text-[#006642]";
+      doctor.drGender === "Female" ? "text-[#5E2750]" : "text-[#00984a]";
 
   return (
     <Link
@@ -180,7 +180,7 @@ const DoctorSearch = () => {
 
         <div className="sticky top-[74px] z-10  rounded-xl shadow-2xl bg-white flex flex-col-reverse gap-2 xl:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
           <motion.input
-            className="px-2 py-1 border text-[#006642] border-PDCL-green bg-gray-200  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+            className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
             type="text"
             placeholder="Search by doctor's name..."
             layout
@@ -192,7 +192,7 @@ const DoctorSearch = () => {
           />
 
           <motion.select
-            className="px-2 py-1 border text-[#006642] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+            className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
             onChange={(e) => setSelectedBranch(e.target.value)}
             layout
             transition={spring}
@@ -208,7 +208,7 @@ const DoctorSearch = () => {
           </motion.select>
 
           <motion.select
-            className="px-2 py-1 border text-[#006642] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+            className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
             onChange={(e) => setSelectedSpecialization(e.target.value)}
             layout
             transition={spring}
@@ -224,7 +224,7 @@ const DoctorSearch = () => {
           </motion.select>
 
           <motion.select
-            className="px-2 py-1 border text-[#006642] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+            className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
             onChange={(e) => setSelectedDay(e.target.value)}
             layout
             transition={spring}

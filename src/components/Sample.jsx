@@ -14,7 +14,7 @@ function Sample() {
       <div className=" pt-0">
         <Link to="/">
           <svg
-            className="w-[80px] h-[80px]  mx-auto p-3  fill-[#00664a]"
+            className="w-[80px] h-[80px]  mx-auto p-3  fill-[#00984a]"
             viewBox="0 0 576 512"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -257,14 +257,14 @@ function Sample() {
 
       <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
         
-        <p className=" pt-3 text-[15px] text-center justify-center me-auto text-[#006642] font-bold font-ubuntu">
+        <p className=" pt-3 text-[15px] text-center justify-center me-auto text-[#00984a] font-bold font-ubuntu">
           Clear form
         </p>
-        <Button className="bg-[#006642] ms-auto">Submit</Button>
+        <Button className="bg-[#00984a] ms-auto">Submit</Button>
       </div>
       <Link to="/">
         <svg
-          className="w-[80px] h-[80px]  mx-auto p-3  fill-[#00664a]"
+          className="w-[80px] h-[80px]  mx-auto p-3  fill-[#00984a]"
           viewBox="0 0 576 512"
           xmlns="http://www.w3.org/2000/svg"
         >

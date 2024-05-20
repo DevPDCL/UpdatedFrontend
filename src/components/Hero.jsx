@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import video from "../assets/heroVideo.mp4";
+import video from "../assets/website.mp4";
 import { motion } from "framer-motion";
 
 const contentSets = [
@@ -45,14 +45,14 @@ const Hero = () => {
     <>
       <section className="relative">
         <video
-          className="h-[500px] sm:h-[500px] w-full object-cover object-center top-0 left-0 pb-[1px]"
+          className="h-[400px] md:h-[600px] w-full object-cover object-bottom top-0 left-0 pb-[1px]"
           src={video}
           autoPlay
           loop
           muted
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-white flex justify-center items-center backdrop-blur-sm p-10">
-          <div className="mt-0 sm:mt-[250px]">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent from-50% to-white flex justify-center items-center p-10">
+          {/* <div className="mt-0 sm:mt-[300px] lg:mt-[450px]">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -60,19 +60,11 @@ const Hero = () => {
               transition={{ duration: 1.5 }}
               key={activeIndex}
               className="text-center">
-              <h1 className="text-[35px] md:text-[50px] text-gray-800 font-bold">
+              <h1 className="text-[35px] md:text-[50px] text-gray-800 font-ubuntu font-bold">
                 {contentSets[activeIndex].text}
               </h1>
-              <motion.button
-                initial="hidden"
-                animate="visible"
-                variants={buttonVariants}
-                transition={{ duration: 1, delay: 0.5 }}
-                className="mt-4 bg-[#006642] text-white py-2 px-4 rounded">
-                {contentSets[activeIndex].buttonText}
-              </motion.button>
             </motion.div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>
