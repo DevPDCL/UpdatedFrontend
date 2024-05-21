@@ -205,7 +205,6 @@ const Works = () => {
             </div>
           </div>
         </div>
-
         <div className="flex flex-col mt-[50px] mx-auto  max-w-7xl">
           <h2 className="text-gray-500/50 pb-2 text-center pl-2 text-[28px] font-bold font-ubuntu">
             SERVICES THAT MATTERS

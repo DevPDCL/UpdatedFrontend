@@ -23,6 +23,7 @@ import {
   Tech,
   Dmd,
   Sidemenu,
+  Shantinagar,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -93,6 +94,7 @@ const routes = [
       { path: "/csample", element: <Csample /> },
       { path: "/ccomplain", element: <Ccomplain /> },
       { path: "/management", element: <Management /> },
+      { path: "/shantinagar", element: <Shantinagar /> },
     ],
     errorElement: <Error />,
   },

@@ -25,6 +25,8 @@ import Chairman from "./Chairman";
 import Goals from "./Goals";
 import Error from "./Error";
 import Dmd from "./Dmd";
+import Shantinagar from "./Shantinagar";
+
 export {
   Branch,
   Notice,
@@ -53,4 +55,5 @@ export {
   Error,
   Feedbacks,
   Dmd,
+  Shantinagar,
 };
