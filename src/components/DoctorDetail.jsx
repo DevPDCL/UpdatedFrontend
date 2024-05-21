@@ -1,5 +1,6 @@
 // DoctorDetail.js
 import Marquee from "react-fast-marquee";
+import "@fontsource/ubuntu";
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { doctorData1 } from "../constants"; // Import your doctor data

@@ -1,4 +1,5 @@
 import React from "react";
+import "@fontsource/ubuntu";
 import { service, technologies } from "../constants";
 import Marquee from "react-fast-marquee";
 function Cor() {

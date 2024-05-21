@@ -22,6 +22,7 @@ import {
   Error,
   Tech,
   Dmd,
+  Sidemenu,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -32,20 +33,19 @@ import Ccomplain from "./adminpanel/Ccomplain";
 import Management from "./adminpanel/Management";
 import "./index.css";
 
-
 const App = () => {
   return (
     <div>
       <Nav />
       <Navbar />
       <Outlet />
+      <Sidemenu />
       <Tech />
     </div>
   );
 };
-const DoctorDetail = lazy( ()=> import("./components/DoctorDetail"))
+const DoctorDetail = lazy(() => import("./components/DoctorDetail"));
 const DoctorSearch = lazy(() => import("./components/DoctorSearch"));
-
 
 const routes = [
   {

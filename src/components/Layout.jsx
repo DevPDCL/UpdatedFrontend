@@ -3,7 +3,6 @@ import {
   Feedbacks,
   Hero,
   Cor,
-  Sidemenu,
   Search,
   Works,
 } from "../components";
@@ -11,7 +10,6 @@ import {
 function Layout() {
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <Hero />
       <Search />
       <Works />

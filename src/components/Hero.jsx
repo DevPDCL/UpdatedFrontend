@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import video from "../assets/website.mp4";
+import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
 
 const contentSets = [

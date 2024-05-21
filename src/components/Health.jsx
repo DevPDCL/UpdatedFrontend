@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidemenu } from "../components";
+import "@fontsource/ubuntu";
 import { healthPackages } from "../constants";
 
 const calculateTotalCost = (tests) =>
@@ -67,7 +67,6 @@ const PackageCard = ({ packageData }) => {
 const Health = () => {
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
         <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">
           HEALTH PACKAGES AND DISCOUNTS

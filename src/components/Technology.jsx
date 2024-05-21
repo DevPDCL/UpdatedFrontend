@@ -1,5 +1,6 @@
 import React from "react";
 import { ourTechnologies } from "../constants";
+import "@fontsource/ubuntu";
 
 const TechCard = ({ image, name }) => {
   return (

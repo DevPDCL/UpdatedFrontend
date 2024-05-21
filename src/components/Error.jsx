@@ -1,4 +1,5 @@
 import { useRouteError } from "react-router-dom";
+import "@fontsource/ubuntu";
 
 const Error = () => {
     const err = useRouteError();

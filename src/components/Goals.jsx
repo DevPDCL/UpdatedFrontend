@@ -1,11 +1,10 @@
 import React from 'react'
-import { Sidemenu } from "../components";
+import "@fontsource/ubuntu";
 import { Dhanmondi, objective } from "../assets";
 import { Link } from "react-router-dom";
 const Goals = () => {
   return (
     <div className="bg-[#F5FFFA]">
-      <Sidemenu />
 
       <div>
         <div className="pt-[150px] sm:w-[80%] max-w-7xl mx-auto">

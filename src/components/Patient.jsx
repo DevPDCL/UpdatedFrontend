@@ -1,4 +1,4 @@
-import { Sidemenu } from ".";
+import "@fontsource/ubuntu";
 import React, { useState, useEffect } from "react";
 import { reportDownload } from "../constants";
 import { motion } from "framer-motion";
@@ -107,7 +107,6 @@ const Patient = () => {
 
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <div className="p-10 flex sm:w-[80%] flex-wrap mx-auto max-w-7xl">
         <div className="flex flex-col w-full  pt-[10px] pb-10">
           <h2 className="text-gray-500/50 pb-2 text-center pl-2 text-[36px] font-bold font-ubuntu">

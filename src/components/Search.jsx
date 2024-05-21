@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
+import "@fontsource/ubuntu";
 
 
 const ListHeader = () => (

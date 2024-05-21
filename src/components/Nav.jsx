@@ -1,4 +1,5 @@
 import React from "react";
+import "@fontsource/ubuntu";
 import { styles } from "../styles";
 
 const Nav = () => {

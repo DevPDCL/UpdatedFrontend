@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
-import { Sidemenu } from "../components";
 import { doctorData1 } from "../constants";
 import { Link } from "react-router-dom";
 
@@ -170,7 +170,6 @@ const DoctorSearch = () => {
 
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <div>
         <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
           <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">

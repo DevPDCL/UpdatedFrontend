@@ -1,4 +1,5 @@
 import React from "react";
+import "@fontsource/ubuntu";
 import { SectionWrapper } from "../hoc";
 import { fadeIn } from "../utils/motion";
 import { testimonials } from "../constants";

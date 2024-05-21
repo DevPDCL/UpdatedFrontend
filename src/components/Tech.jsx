@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Sidemenu } from "../components";
 import img from "../assets/link.webp";
 import "./tabs.css";
+import "@fontsource/ubuntu";
 
 const ImageComponent = ({ src, alt, width, height, className }) => {
   return (
@@ -35,7 +35,6 @@ const Tech = ({ message, children }) => {
     <>
       <footer className="flex flex-row flex-wrap justify-center">
         <div className="bg-[#00984a] mx-auto w-full">
-          <Sidemenu />
           <form className="max-w-screen-xl mx-auto sm:w-[80%] items-center justify-center">
             <div className="grid md:grid-cols-3 md:gap-1 ">
               <div className=" p-10  text-start">

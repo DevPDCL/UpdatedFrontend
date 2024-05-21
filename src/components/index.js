@@ -8,7 +8,6 @@ import Search from "./Search";
 import Works from "./Works";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
-import CanvasLoader from "./Loader";
 import Branch from "./Branch";
 import Layout from "./Layout";
 import Sample from "./Sample";
@@ -51,7 +50,6 @@ export {
   Tech,
   Works,
   Contact,
-  CanvasLoader,
   Error,
   Feedbacks,
   Dmd,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sidemenu } from "../components";
+import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
 import { notice } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
@@ -74,7 +74,6 @@ function Notice({ imageSrc, altText, content }) {
   const handleCloseModal = () => setShowModal(false);
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <motion.div variants={textVariant()}>
         <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
           <h2 className="text-gray-900/50 pb-10 text-center pl-2 text-[28px] font-bold font-ubuntu">

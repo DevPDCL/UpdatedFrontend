@@ -1,11 +1,10 @@
 import React from 'react'
-import { Sidemenu } from "../components";
+import "@fontsource/ubuntu";
 
 import { DrMostafizurRahman } from "../assets";
 const Director = () => {
   return (
     <section className="bg-[#F5FFFA]">
-      <Sidemenu />
       <div className="overflow-hidden bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 shadow-2xl bg-gray-100/5 p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">

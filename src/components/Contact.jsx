@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidemenu } from "../components";
+import "@fontsource/ubuntu";
 import { Card, Typography } from "@material-tailwind/react";
 import { Input, Button } from "@material-tailwind/react";
 
@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 function Contact() {
   return (
     <div className="bg-[#ffffff]">
-      <Sidemenu />
       <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
         <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">
           CONNECTING WITH US

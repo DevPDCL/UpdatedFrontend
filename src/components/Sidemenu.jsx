@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./tabs.css";
+import "@fontsource/ubuntu";
 const Sidemenu = () => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -17,7 +18,7 @@ const Sidemenu = () => {
     <>
       <div className="fixed z-20">
         <div>
-          <Link to="/branch" target="_blank" rel="noopener noreferrer">
+          <Link to="/branch"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[300px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center rounded-t-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -37,7 +38,7 @@ const Sidemenu = () => {
             </div>
           </Link>
 
-          <Link to="/" target="_blank" rel="noopener noreferrer">
+          <Link to="/"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[340px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -56,7 +57,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/patient" target="_blank" rel="noopener noreferrer">
+          <Link to="/patient"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[380px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -75,7 +76,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/sample" target="_blank" rel="noopener noreferrer">
+          <Link to="/sample"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -94,7 +95,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/" target="_blank" rel="noopener noreferrer">
+          <Link to="/"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[460px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -113,7 +114,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/complain" target="_blank" rel="noopener noreferrer">
+          <Link to="/complain"  rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[500px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
