@@ -271,7 +271,7 @@ const Search = () => {
                 <div className="grid md:grid-cols-8  md:gap-0">
                   <div className="relative z-0 col-span-2   p-1 w-full mb-0 group">
                     <select
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
                       onChange={(e) => setSelectedBranch1(e.target.value)}
                       layout
                       whileHover="hover">
@@ -285,7 +285,7 @@ const Search = () => {
                   </div>
                   <div className="relative z-0 w-full p-1 col-span-2 mb-0 group">
                     <select
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  text-gray-900 bg-white pl-2   peer"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
                       onChange={(e) =>
                         setSelectedSpecialization(e.target.value)
                       }
@@ -301,7 +301,7 @@ const Search = () => {
                   </div>
                   <div className="relative col-span-2 p-1 mb-0 group">
                     <select
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  text-gray-900 bg-white pl-2   peer"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
                       onChange={(e) => setSelectedDay(e.target.value)}
                       layout
                       whileHover="hover">
@@ -323,7 +323,7 @@ const Search = () => {
                   </div>
                   <div className="relative col-span-2 p-1 mb-0 group">
                     <label
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  text-gray-900 bg-white pl-2   peer"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
                       layout
                       whileHover="hover">
                       Female Doctor
@@ -339,7 +339,7 @@ const Search = () => {
                   </div>
                   <div className="relative col-span-8 mb-1 group ">
                     <input
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
                       required
                       type="text"
                       placeholder="Search by doctor's name..."
@@ -570,7 +570,7 @@ const Search = () => {
                     <select
                       value={selectedBranch}
                       onChange={handleBranchChange}
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  text-gray-900 bg-white pl-2   peer">
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
                       <option value="">Select Branch</option>
                       {ServiceCost.map((branch) => (
                         <option key={branch.braId} value={branch.braId}>
@@ -588,7 +588,7 @@ const Search = () => {
                       name="floating_first_name"
                       placeholder="Test Name"
                       id="floating_first_name"
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg  focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
                       required
                     />
                     <section className="">
