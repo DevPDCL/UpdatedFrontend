@@ -17,10 +17,10 @@ import {
   Chairman,
   Goals,
   Notice,
-  Patient,
+  ReportDownload,
   Director,
   Error,
-  Tech,
+  Footer,
   Dmd,
   Sidemenu,
   Shantinagar,
@@ -41,7 +41,7 @@ const App = () => {
       <Navbar />
       <Outlet />
       <Sidemenu />
-      <Tech />
+      <Footer />
     </div>
   );
 };
@@ -54,7 +54,7 @@ const routes = [
     element: <App />,
     children: [
       { path: "/", element: <Layout /> },
-      { path: "/patient", element: <Patient /> },
+      { path: "/patient_portal", element: <ReportDownload /> },
       { path: "/sample", element: <Sample /> },
       { path: "/search", element: <Search /> },
       {

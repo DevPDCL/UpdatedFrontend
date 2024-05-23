@@ -5,7 +5,7 @@
             "dest": "/"
         },
         {
-            "src": "/patient",
+            "src": "/patient_portal",
             "dest": "/"
         },
         {

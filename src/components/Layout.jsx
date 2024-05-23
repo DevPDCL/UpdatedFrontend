@@ -4,7 +4,7 @@ import {
   Hero,
   Cor,
   Search,
-  Works,
+  HomeContent,
 } from "../components";
 
 function Layout() {
@@ -12,7 +12,7 @@ function Layout() {
     <div className="bg-[#ffffff]">
       <Hero />
       <Search />
-      <Works />
+      <HomeContent />
       <Cor />
       <Feedbacks />
     </div>

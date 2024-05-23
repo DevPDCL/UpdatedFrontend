@@ -215,7 +215,7 @@ return (
             <NavLink to="/health">Pakages</NavLink>
             <NavLink to="/doctorsearch">Doctors</NavLink>
             <NavLink to="/branch">Branches</NavLink>
-            <NavLink to="/patient">
+            <NavLink to="/patient_portal">
               <div className="flex">
                 {" "}
                 Patient Portal{" "}

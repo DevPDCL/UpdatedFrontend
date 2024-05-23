@@ -18,7 +18,7 @@ const ImageComponent = ({ src, alt, width, height, className }) => {
   );
 };
 
-const Tech = ({ message, children }) => {
+const Footer = ({ message, children }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -146,4 +146,4 @@ const Tech = ({ message, children }) => {
   );
 };
 
-export default Tech;
+export default Footer;

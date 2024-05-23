@@ -3,9 +3,9 @@ import Nav from "./Nav";
 import Technology from "./Technology";
 import Navbar from "./Navbar";
 import About from "./About";
-import Tech from "./Tech";
+import Footer from "./Footer";
 import Search from "./Search";
-import Works from "./Works";
+import HomeContent from "./HomeContent";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
 import Branch from "./Branch";
@@ -13,7 +13,7 @@ import Layout from "./Layout";
 import Sample from "./Sample";
 import Complain from "./Complain";
 import Sidemenu from "./Sidemenu";
-import Patient from "./Patient";
+import ReportDownload from "./ReportDownload";
 import Cor from "./Cor";
 import Notice from "./Notice";
 import Health from "./Health";
@@ -25,7 +25,7 @@ import Chairman from "./Chairman";
 import Goals from "./Goals";
 import Error from "./Error";
 import Dmd from "./Dmd";
-import Shantinagar from "./Shantinagar";
+import Shantinagar from "../components/Branch/Shantinagar";
 
 export {
   Branch,
@@ -42,15 +42,15 @@ export {
   Layout,
   Sidemenu,
   Search,
-  Patient,
+  ReportDownload,
   Complain,
   Hero,
   Sample,
   Nav,
   Navbar,
   About,
-  Tech,
-  Works,
+  Footer,
+  HomeContent,
   Contact,
   Error,
   Feedbacks,

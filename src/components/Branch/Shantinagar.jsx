@@ -1,8 +1,8 @@
 import React from "react";
 import "@fontsource/ubuntu";
-import video from "../assets/heroVideo.mp4";
-import { MdShahiMahmud } from "../assets";
-import { Search } from "../components";
+import video from "../../assets/heroVideo.mp4";
+import { MdShahiMahmud } from "../../assets";
+import { Search } from "../../components";
 
 const Shantinagar = () => {
   return (

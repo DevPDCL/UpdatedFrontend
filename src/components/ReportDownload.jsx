@@ -60,7 +60,7 @@ const BranchCard = ({ branch, handleReportDownload }) => {
   );
 };
 
-const Patient = () => {
+const ReportDownload = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [allDhakaBranches, setAllDhakaBranches] = useState([]);
   const [allOtherBranches, setAllOtherBranches] = useState([]);
@@ -184,4 +184,4 @@ const Patient = () => {
   );
 };
 
-export default Patient;
+export default ReportDownload;

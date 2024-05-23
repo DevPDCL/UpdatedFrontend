@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { logo } from "../assets";
-import { projects } from "../constants";
+import { healthPakage } from "../constants";
 import { fadeIn } from "../utils/motion";
 import video from "../assets/contacts.mp4";
 import { styles } from "../styles";
@@ -102,7 +102,7 @@ const ProjectCard = ({
   );
 };
 
-const Works = () => {
+const HomeContent = () => {
   return (
     <>
       <div className="relative pt-12 fontFamily-ubuntu">
@@ -212,7 +212,7 @@ const Works = () => {
         </div>
 
         <div className="flex  mx-auto p-2 justify-center  justify-items-center flex-wrap  gap-0">
-          {projects.map((project) => (
+          {healthPakage.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}
         </div>
@@ -250,4 +250,4 @@ const Works = () => {
   );
 };
 
-export default Works;
+export default HomeContent;

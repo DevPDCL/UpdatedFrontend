@@ -155,7 +155,7 @@ const ourTechnologies = [
 
 
 
-const technologies = [
+const corporatePartners = [
   {
     name: "BAT",
     icon: BAT,
@@ -198,7 +198,7 @@ const technologies = [
     icon: BGB,
   },
 ];
-const service = [
+const servicePartners = [
   {
     id: 1,
     name: "Amarlab",
@@ -241,7 +241,7 @@ const testimonials = [
   },
 ];
 
-const projects = [
+const healthPakage = [
   {
     id: 1,
     name: "HEALTH DIAGNOSIS",
@@ -525,7 +525,7 @@ const reportDownload = [
   },
 ];
 
-const projects1 = [
+const branch = [
   {
     branchID: 1,
     heading: "Dhanmondi",
@@ -43345,12 +43345,12 @@ const doctorData1 = {
 
 export {
   ServiceCost,
-  service,
-  technologies,
+  servicePartners,
+  corporatePartners,
   testimonials,
-  projects,
+  healthPakage,
   topManagement,
-  projects1,
+  branch,
   notice,
   reportDownload,
   doctorData1,

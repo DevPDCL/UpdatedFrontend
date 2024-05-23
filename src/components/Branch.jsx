@@ -4,7 +4,7 @@ import {
   Details
 } from "../components";
 import { motion } from "framer-motion";
-import { projects1 } from "../constants";
+import { branch } from "../constants";
 
 const spring = {
   type: "spring",
@@ -100,8 +100,8 @@ const Branch = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProjects = filterByCity
-    ? projects1.filter((project) => project.branchPage.braCity === "Dhaka")
-    : projects1;
+    ? branch.filter((project) => project.branchPage.braCity === "Dhaka")
+    : branch;
 
   const filteredAndSearchedProjects = filteredProjects.filter((project) => {
     const searchTermLower = searchTerm.toLowerCase();
