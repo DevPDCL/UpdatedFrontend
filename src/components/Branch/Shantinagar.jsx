@@ -4,6 +4,7 @@ import video from "../../assets/heroVideo.mp4";
 import { MdShahiMahmud } from "../../assets";
 import { Search } from "../../components";
 
+
 const Shantinagar = () => {
   return (
     <section class="relative py-32 lg:py-36 bg-white">
@@ -41,38 +42,28 @@ const Shantinagar = () => {
       <div className="relative md:mt-[250px] mb-[100px]">
         <Search />
       </div>
-      <div className="Relative">
-        <div className="custom-shape-divider-top-1716352701 absolute left-0 w-full overflow-hidden line-height-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            className="relative block w-full h-[164px]"
-            style={{ width: "calc(100% + 1.3px)" }}>
-            <path
-              d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-              className="shape-fill"
-              style={{ fill: "#ffffff" }}></path>
-          </svg>
-        </div>
-        <div className="bg-gradient-to-br from-[#00664a] from-20% to-[#00984a] to-60% mt-12 mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col-reverse lg:flex-row-reverse justify-between gap-10 lg:gap-12 rounded-2xl">
+      <div className="relative">
+        <div className="bg-gradient-to-bl from-white from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
           <img
             src={MdShahiMahmud}
             alt="Late Tahera Akhter"
-            className="relative h-full w-auto rounded-3xl"
+            className="relative mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
           />
-          <div className="flex lg:items-start">
-            <h1 className="text-gray-900/20 absolute font-bold text-[96px] -mt-10 -ml-10 overflow-hidden">
-              Branch <span>Manager</span>
+          <div className="flex lg:item-start">
+            <h1 className="text-gray-500/30 text-center absolute font-bold text-[96px] -mt-10 ml-5 lg:-mt-20 lg:-ml-48 overflow-hidden">
+              Branch{" "}
+              <h1 className="text-gray-500/20 ml-10 -mt-16 lg:-mt-14 text-[72px] lg:ml-48">
+                Manager
+              </h1>
             </h1>
             <div className="relative mt-24 p-5">
-              <h1 className="text-gray-200 font-bold text-[36px]">
+              <h1 className="text-gray-600 font-bold text-[36px]">
                 Md. Shahi Mahmud
               </h1>
-              <h1 className="text-gray-300 font-bold text-[18px]">
+              <h1 className="text-gray-500 font-bold text-[18px]">
                 AGM & Head of Branch
               </h1>
-              <p className="text-white">
+              <p className="text-black w-full">
                 {" "}
                 <br />
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -81,7 +72,7 @@ const Shantinagar = () => {
                 nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum."
+                sunt in culpa qui officia d."
               </p>
             </div>
           </div>
