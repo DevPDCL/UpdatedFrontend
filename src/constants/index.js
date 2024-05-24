@@ -122,8 +122,6 @@ import {
   Lithotripsy,
 } from "../assets";
 
-
-
 const ourTechnologies = [
   {
     id: 1,
@@ -151,9 +149,6 @@ const ourTechnologies = [
     image: Lithotripsy,
   },
 ];
-
-
-
 
 const corporatePartners = [
   {
@@ -220,7 +215,6 @@ const servicePartners = [
     icon: PureHealth,
   },
 ];
-
 
 const testimonials = [
   {
@@ -564,39 +558,36 @@ const branch = [
   },
   {
     branchID: 3,
-    heading: "Shantinagar (U-1)",
+    heading: "Shantinagar",
     image: ShantinagarU1,
-    name: "Popular Diagnostic Centre Ltd. (Shantinagar (U-1))",
+    Hotline: "09666 787803",
+    Email: "info@populardiagnostic.com",
+    braCity: "Dhaka",
+    braManImg: MdShahiMahmud,
+    braManName: "Md. Shahi Mahmud",
+    braManDesignation: "AGM & Head of Branch",
+    name: "Popular Diagnostic Centre Ltd. (Shantinagar)",
     address: "House # 11, Shantinagar , Motijheel, Dhaka.",
-    Hotline: "09666 787803",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
-
-      braManImg: MdShahiMahmud,
-      braManName: "Md. Shahi Mahmud",
-      braManDesignation: "AGM & Head of Branch",
-    },
-  },
-  {
-    branchID: 4,
-    heading: "Shantinagar (U-2)",
-    image: ShantinagarU2,
-    name: "Popular Diagnostic Centre Ltd. (Shantinagar (U-2))",
-    address: "Level - 4, Building # 15, Shantinagar, Motijheel, Dhaka.",
-    Hotline: "09666 787803",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.7420844,90.4121534&hl=es;z=14&output=embed",
-
-      braManImg: MdShahiMahmud,
-      braManName: "Md. Shahi Mahmud",
-      braManDesignation: "AGM & Head of Branch",
-    },
+    branchUnits: [
+      {
+        unitID:1,
+        BranchUnit: "U1",
+        image: ShantinagarU1,
+        location:
+          "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
+        name: "Shantinagar (U-1)",
+        address: "House # 11, Shantinagar , Motijheel, Dhaka.",
+      },
+      {
+        unitID:2,
+        BranchUnit: "U2",
+        image: ShantinagarU2,
+        location:
+          "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
+        name: "Shantinagar (U-2)",
+        address: "Level-4, Building#15, Shantinagar, Motijheel, Dhaka.",
+      },
+    ],
   },
   {
     branchID: 5,
@@ -41859,8 +41850,7 @@ const healthPackages = [
       },
 
       {
-        testName:
-          "Liver Function Test (SGPT, Alkaline Phosphar, S.Bilirubin)",
+        testName: "Liver Function Test (SGPT, Alkaline Phosphar, S.Bilirubin)",
         testPrice: 1000,
       },
       {

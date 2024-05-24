@@ -60,13 +60,23 @@ const ProjectCard = ({
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);
 
+  const handleAuthorityMapClick = () => {
+    if (branchPage) {
+      // If branchPage exists, show the modal
+      handleOpenModal();
+    } else {
+      // If branchPage doesn't exist, redirect to "/shantinagar"
+      window.location.href = "/shantinagar";
+    }
+  };
+
   return (
-    <div className="bg-gradient-to-b from--[#F5FFFA]/20 to-[#f0fff0]/90 shadow-2xl rounded-2xl sm:w-[299px] w-full ">
+    <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full ">
       <div className="relative w-full">
         <img
           src={image}
           alt="Branch_image"
-          className="w-full shadow-xl rounded-3xl object-cover opacity-95 p-2 "
+          className="w-full shadow-xl rounded-3xl object-cover p-2 "
         />
       </div>
       <div className="px-4 pt-2 pb-3 flex flex-col justify-between">
@@ -79,7 +89,7 @@ const ProjectCard = ({
         <BranchContact address={address} Hotline={Hotline} Email={Email} />
         <motion.button
           className="hover:bg-[#00984a] bg-gray-100 text-[#00984a] hover:text-white hover:font-black font-ubuntu font-medium py-2 px-4 rounded-md mt-2 mx-1 focus:outline-none shadow-md"
-          onClick={handleOpenModal}
+          onClick={handleAuthorityMapClick}
           layout
           transition={spring}
           whileTap={{ scale: 0.9 }}
@@ -87,7 +97,7 @@ const ProjectCard = ({
           whileHover="hover">
           Authority & Map
         </motion.button>
-        {isOpen && (
+        {isOpen && branchPage && (
           <Details branchPage={branchPage} onClose={handleCloseModal} />
         )}
       </div>
