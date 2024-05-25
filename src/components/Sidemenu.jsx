@@ -18,7 +18,7 @@ const Sidemenu = () => {
     <>
       <div className="fixed z-20">
         <div>
-          <Link to="/branch"  rel="noopener noreferrer">
+          <Link to="/branch" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[300px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center rounded-t-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -32,13 +32,13 @@ const Sidemenu = () => {
                   <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"></path>
                 </svg>
                 <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Hotline
+                  Hotlines
                 </span>
               </span>
             </div>
           </Link>
 
-          <Link to="/"  rel="noopener noreferrer">
+          <Link to="/" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[340px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -57,7 +57,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/patient"  rel="noopener noreferrer">
+          <Link to="/patient_portal" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[380px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -76,7 +76,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/sample"  rel="noopener noreferrer">
+          <Link to="/sample" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -95,7 +95,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/"  rel="noopener noreferrer">
+          <Link to="/" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[460px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -114,7 +114,7 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="/complain"  rel="noopener noreferrer">
+          <Link to="/complain" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[500px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"

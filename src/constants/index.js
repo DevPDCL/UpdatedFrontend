@@ -570,7 +570,7 @@ const branch = [
     address: "House # 11, Shantinagar , Motijheel, Dhaka.",
     branchUnits: [
       {
-        unitID:1,
+        unitID: 1,
         BranchUnit: "U1",
         image: ShantinagarU1,
         location:
@@ -579,7 +579,7 @@ const branch = [
         address: "House # 11, Shantinagar , Motijheel, Dhaka.",
       },
       {
-        unitID:2,
+        unitID: 2,
         BranchUnit: "U2",
         image: ShantinagarU2,
         location:
@@ -590,81 +590,82 @@ const branch = [
     ],
   },
   {
-    branchID: 5,
-    heading: "Shyamoli (U-1)",
+    branchID: 4,
+    heading: "Shyamoli",
     image: ShyamoliU1,
-    name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-1))",
+    Hotline: "09666 787803",
+    Email: "info@populardiagnostic.com",
+    braCity: "Dhaka",
+    braManImg: MrNezamulHaqueRipon,
+    braManName: "Mr. Nezamul Haque Ripon",
+    braManDesignation: "AGM & Head of Branch",
+    name: "Popular Diagnostic Centre Ltd. (Shyamoli)",
     address:
       "22/7 A S M Nuruzzaman Road, Block-B, Babor Road, Mohammadpur, Dhaka-1207.",
-    Hotline: "09666 787806",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.7718253,90.3674465&hl=es;z=14&output=embed",
 
-      braManImg: MrNezamulHaqueRipon,
-      braManName: "Mr. Nezamul Haque Ripon",
-      braManDesignation: "AGM & Head of Branch",
-    },
+    branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: ShyamoliU1,
+        location:
+          "https://maps.google.com/maps?q=23.7718253,90.3674465&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Shyamoli)",
+        address:
+          "22/7 A S M Nuruzzaman Road, Block-B, Babor Road, Mohammadpur, Dhaka-1207.",
+      },
+      {
+        unitID: 2,
+        BranchUnit: "U2",
+        image: ShyamoliU2,
+        location:
+          "https://maps.google.com/maps?q=23.76892267744971,90.36856338476504&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-2))",
+        address:
+          "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
+      },
+    ],
   },
-  {
-    branchID: 6,
-    heading: "Shyamoli (U-2)",
-    image: ShyamoliU2,
-    name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-2))",
-    address:
-      "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
-    Hotline: "09666-787806",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.76892267744971,90.36856338476504&hl=es;z=14&output=embed",
 
-      braManImg: MrNezamulHaqueRipon,
-      braManName: "Mr. Nezamul Haque Ripon",
-      braManDesignation: "AGM & Head of Branch",
-    },
-  },
   {
-    branchID: 7,
-    heading: "Mirpur (U-1)",
+    branchID: 5,
+    heading: "Mirpur",
     image: MirpurU1,
+    Hotline: "09666 787807",
+    Email: "info@populardiagnostic.com",
+    braCity: "Dhaka",
+    braManImg: MrAbdullahAlMahmud,
+    braManName: "Mr. Abdullah Al Mahmud",
+    braManDesignation: "AGM & Head of Branch",
     name: "Popular Diagnostic Centre Ltd. (Mirpur (U-1))",
     address:
       "House # 67, Avenue # 5, Block # C, Section-6 Mirpur, (Original-10),Pallabi, Dhaka.",
-    Hotline: "09666 787807",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.8106471,90.3673446&hl=es;z=14&output=embed",
+    branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: MirpurU1,
+        location:
+          "https://maps.google.com/maps?q=23.8106471,90.3673446&hl=es;z=14&output=embed",
 
-      braManImg: MrAbdullahAlMahmud,
-      braManName: "Mr. Abdullah Al Mahmud",
-      braManDesignation: "AGM & Head of Branch",
-    },
+        name: "Popular Diagnostic Centre Ltd. (Mirpur (U-1))",
+        address:
+          "House # 67, Avenue # 5, Block # C, Section-6 Mirpur, (Original-10),Pallabi, Dhaka.",
+      },
+      {
+        unitID: 2,
+        BranchUnit: "U2",
+        image: MirpurU2,
+        location:
+          "https://maps.google.com/maps?q=24.7433735,90.4059255&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-2))",
+        address:
+          "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
+      },
+    ],
   },
-  {
-    branchID: 8,
-    heading: "Mirpur (U-2)",
-    image: MirpurU2,
-    name: "Popular Diagnostic Centre Ltd. (Mirpur (U-2))",
-    address:
-      "House # 02, Avenue # 01, Block # A, Section-10(Bnaroshi Polli Gate-01), Pallabi, Mirpur, Dhaka.",
-    Hotline: "09666 787807",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=24.7433735,90.4059255&hl=es;z=14&output=embed",
 
-      braManImg: MrAbdullahAlMahmud,
-      braManName: "Mr. Abdullah Al Mahmud",
-      braManDesignation: "AGM & Head of Branch",
-    },
-  },
+  
   {
     branchID: 9,
     heading: "Badda",
