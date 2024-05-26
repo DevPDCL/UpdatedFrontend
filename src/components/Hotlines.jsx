@@ -16,9 +16,9 @@ const Hotlinecards = (props) => {
     };
 
   return (
-    <div class="my-3 p-3 bg-white/50 w-96 rounded-lg flex items-center justify-between ">
+    <div class="my-3 p-3 bg-white/50 w-96 border-2 rounded-lg flex items-center justify-between ">
       <div class="flex-1 flex justify-between items-center">
-        <div class="w-44 p-1 mr-2 text-center bg-gray-300 rounded text-gray-600 font-medium text-[20px]">
+        <div class="w-44 p-1 mr-2 text-center bg-gray-500 rounded text-gray-50 font-medium text-[20px]">
           {props.heading}
         </div>
         <div className="flex">

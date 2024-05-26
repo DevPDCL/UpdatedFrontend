@@ -610,7 +610,7 @@ const branch = [
         image: ShyamoliU1,
         location:
           "https://maps.google.com/maps?q=23.7718253,90.3674465&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Shyamoli)",
+        name: "Shyamoli (U-1)",
         address:
           "22/7 A S M Nuruzzaman Road, Block-B, Babor Road, Mohammadpur, Dhaka-1207.",
       },
@@ -620,7 +620,7 @@ const branch = [
         image: ShyamoliU2,
         location:
           "https://maps.google.com/maps?q=23.76892267744971,90.36856338476504&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-2))",
+        name: "Shyamoli (U-2)",
         address:
           "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
       },
@@ -647,7 +647,7 @@ const branch = [
         image: MirpurU1,
         location:
           "https://maps.google.com/maps?q=23.8106471,90.3673446&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Mirpur (U-1))",
+        name: "Mirpur (U-1)",
         address:
           "House # 67, Avenue # 5, Block # C, Section-6 Mirpur, (Original-10),Pallabi, Dhaka.",
       },
@@ -657,7 +657,7 @@ const branch = [
         image: MirpurU2,
         location:
           "https://maps.google.com/maps?q=24.7433735,90.4059255&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Shyamoli (U-2))",
+        name: "Shyamoli (U-2)",
         address:
           "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
       },
@@ -684,7 +684,7 @@ const branch = [
         location:
           "https://maps.google.com/maps?q=23.8610668,90.40031&hl=es;z=14&output=embed",
 
-        name: "Popular Diagnostic Centre Ltd. (Uttara (U-1))",
+        name: "Uttara (U-1)",
         address:
           "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
       },
@@ -694,7 +694,7 @@ const branch = [
         image: UttaraU2,
         location:
           "https://maps.google.com/maps?q=23.8613902,90.4007901&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Uttara (U-2))",
+        name: "Uttara (U-2)",
         address:
           "House # 25, Road # 7, Sector # 4, Jashim Uddin Moar, Uttara, Dhaka.",
       },
@@ -829,7 +829,7 @@ const branch = [
         image: UttaraU1,
         location:
           "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Bogura (U-1))",
+        name: "Bogura (U-1)",
         address: "H # 12/305, Thanthania Bus-Stand Sherpur Road, Bogura.",
       },
       {
@@ -838,7 +838,7 @@ const branch = [
         image: BoguraU2,
         location:
           "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Bogura (U-2))",
+        name: "Bogura (U-2)",
         address: "H # 12/310, Thanthania Bus-Stand Sherpur Road, Bogura.",
       },
       {
@@ -847,7 +847,7 @@ const branch = [
         image: BoguraU3,
         location:
           "https://maps.google.com/maps?q=24.8280095,89.3527289&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Bogura (U-3))",
+        name: "Bogura (U-3)",
         address: "H # 14/1979, Rahman Market, Silimpur, Bogra.",
       },
     ],
@@ -947,7 +947,7 @@ const branch = [
         image: RangpurU1,
         location:
           "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Rangpur (U-1))",
+        name: "Rangpur (U-1)",
         address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
       },
       {
@@ -956,7 +956,7 @@ const branch = [
         image: RangpurU2,
         location:
           "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
-        name: "Popular Diagnostic Centre Ltd. (Rangpur (U-2))",
+        name: "Rangpur (U-2)",
         address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
       },
     ],
