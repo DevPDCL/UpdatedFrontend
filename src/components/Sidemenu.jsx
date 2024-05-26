@@ -18,7 +18,7 @@ const Sidemenu = () => {
     <>
       <div className="fixed z-20">
         <div>
-          <Link to="/branch" rel="noopener noreferrer">
+          <Link to="/hotlines" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[300px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center rounded-t-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"

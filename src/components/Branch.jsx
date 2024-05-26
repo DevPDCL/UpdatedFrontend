@@ -66,7 +66,7 @@ const ProjectCard = ({
       handleOpenModal();
     } else {
       // If branchPage doesn't exist, redirect to "/shantinagar"
-      window.location.href = "/shantinagar";
+      window.location.href = `/${heading.replace(/\s+/g, "").toLowerCase()}`;
     }
   };
 

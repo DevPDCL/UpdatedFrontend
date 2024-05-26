@@ -526,7 +526,7 @@ const branch = [
     image: Dhanmondi,
     name: "Popular Diagnostic Centre Ltd. (Dhanmondi)",
     address: "House # 16, Road # 2, Dhanmondi, Dhaka1205",
-    Hotline: "10636, 09666 787801 ",
+    Hotline: "09666787801 ",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -544,7 +544,7 @@ const branch = [
     image: EnglishRoad,
     name: "Popular Diagnostic Centre Ltd. (English road)",
     address: "House # 2, English Road, Dhaka.",
-    Hotline: "09666 787802",
+    Hotline: "09666787802",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -560,7 +560,7 @@ const branch = [
     branchID: 3,
     heading: "Shantinagar",
     image: ShantinagarU1,
-    Hotline: "09666 787803",
+    Hotline: "09666787803",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MdShahiMahmud,
@@ -593,7 +593,7 @@ const branch = [
     branchID: 4,
     heading: "Shyamoli",
     image: ShyamoliU1,
-    Hotline: "09666 787806",
+    Hotline: "09666787806",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MrNezamulHaqueRipon,
@@ -631,7 +631,7 @@ const branch = [
     branchID: 5,
     heading: "Mirpur",
     image: MirpurU1,
-    Hotline: "09666 787807",
+    Hotline: "09666787807",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MrAbdullahAlMahmud,
@@ -667,7 +667,7 @@ const branch = [
     branchID: 6,
     heading: "Uttara",
     image: UttaraU1,
-    Hotline: "09666 787805",
+    Hotline: "09666787805",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MrZohurulIslam,
@@ -707,7 +707,7 @@ const branch = [
     image: Badda,
     name: "Popular Diagnostic Centre Ltd. (Badda)",
     address: "Cha-90/2, North Badda (Pragoti Sharoni), Dhaka-1212.",
-    Hotline: "09666 787809",
+    Hotline: "09666787809",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -761,7 +761,7 @@ const branch = [
     image: Savar,
     name: "Popular Diagnostic Centre Ltd. (Savar)",
     address: "E/22, Talbagh, Anandapur, Savar, Dhaka.",
-    Hotline: "09666 787808",
+    Hotline: "09666787808",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -779,7 +779,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Gazipur)",
     address:
       "Gazipur Shibbari More (Near VIP Bus Terminal and Walton Show Room)",
-    Hotline: "09666 787816",
+    Hotline: "09666787816",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -797,7 +797,7 @@ const branch = [
     image: Narayangonj,
     name: "Popular Diagnostic Centre Ltd. (Narayangonj)",
     address: "231/4, Bangabandhu Road, Balur Math, Chashara, Narayangonj.",
-    Hotline: "09666 787804",
+    Hotline: "09666787804",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dhaka",
@@ -814,7 +814,7 @@ const branch = [
     branchID: 13,
     heading: "Bogura",
     image: BoguraU1,
-    Hotline: "09666 787812",
+    Hotline: "09666787812",
     Email: "info@populardiagnostic.com",
     braCity: "Bogura",
     braManImg: MrRezwanAhmed,
@@ -859,7 +859,7 @@ const branch = [
     image: Rajshahi,
     name: "Popular Diagnostic Centre Ltd. (Rajshahi)",
     address: "House # 474, Chowdhury Tower, Laxmipur, Rajshahi.",
-    Hotline: "09666 787811",
+    Hotline: "09666787811",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Rajshahi",
@@ -878,7 +878,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Noakhali)",
     address:
       "House #1222, New Bus stand (Near Shaheed Bhulu Stadium) Maijdee Court, Noakhali.",
-    Hotline: "09666 787818",
+    Hotline: "09666787818",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Noakhali",
@@ -896,7 +896,7 @@ const branch = [
     image: Chattogram,
     name: "Popular Diagnostic Centre Ltd. (Chattogram)",
     address: "20/B. K. B. Fazlul Kader Road, Panchlaish, Chattogram.",
-    Hotline: "09666 787810",
+    Hotline: "09666787810",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Chattogram",
@@ -915,7 +915,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Mymensingh)",
     address:
       "252/1, Charpara Road (Opposite of Mymensingh Medical College & Hospital), Mymensingh.",
-    Hotline: "09666 787814",
+    Hotline: "09666787814",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Mymensingh",
@@ -932,7 +932,7 @@ const branch = [
     branchID: 18,
     heading: "Rangpur",
     image: RangpurU1,
-    Hotline: "09666 787813",
+    Hotline: "09666787813",
     Email: "info@populardiagnostic.com",
     braCity: "Rangpur",
     braManImg: MrMdAbdulAhad,
@@ -967,7 +967,7 @@ const branch = [
     image: Dinajpur,
     name: "Popular Diagnostic Centre Ltd. (Dinajpur)",
     address: "House #44, 1 No. Upashahar, Fulbari Bus stand, Dinajpur.",
-    Hotline: "09666 787815",
+    Hotline: "09666787815",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Dinajpur",
@@ -986,7 +986,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Khulna)",
     address:
       "Popular  Diagnostic  Centre Ltd. Khulna Branch, 37 KDA Avenue, Khulna.",
-    Hotline: "09666 787821",
+    Hotline: "09666787821",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Khulna",
@@ -1005,7 +1005,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Kushtia)",
     address:
       "City Tower - House No.1, Mir Mosharraf Hossain Road, Coart Para, Kushtia",
-    Hotline: "09666 787817",
+    Hotline: "09666787817",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Kushtia",
@@ -1024,7 +1024,7 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Barishal)",
     address:
       "109, 955 Shahid Nazrul Islam Sarak, South Alekanda Banglabazar, Barishal.",
-    Hotline: "09666 787819",
+    Hotline: "09666787819",
     Email: "info@populardiagnostic.com",
     branchPage: {
       braCity: "Barishal",

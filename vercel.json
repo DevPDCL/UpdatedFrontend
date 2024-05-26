@@ -1,104 +1,108 @@
 {
-    "routes": [
-        {
-            "src": "/",
-            "dest": "/"
-        },
-        {
-            "src": "/patient_portal",
-            "dest": "/"
-        },
-        {
-            "src": "/login",
-            "dest": "/"
-        },
-        {
-            "src": "/sample",
-            "dest": "/"
-        },
-        {
-            "src": "/sign",
-            "dest": "/"
-        },
-        {
-            "src": "/complain",
-            "dest": "/"
-        },
-        {
-            "src": "/branch",
-            "dest": "/"
-        },
-        {
-            "src": "/notice",
-            "dest": "/"
-        },
-        {
-            "src": "/contact",
-            "dest": "/"
-        },
-        {
-            "src": "/health",
-            "dest": "/"
-        },
-        {
-            "src": "/details",
-            "dest": "/"
-        },
-        {
-            "src": "/about",
-            "dest": "/"
-        },
-        {
-            "src": "/director",
-            "dest": "/"
-        },
-        {
-            "src": "/doctorsearch",
-            "dest": "/"
-        },
-        {
-            "src": "/doctordetail",
-            "dest": "/"
-        },
-        {
-            "src": "/notification",
-            "dest": "/"
-        },
-        {
-            "src": "/goals",
-            "dest": "/"
-        },
-        {
-            "src": "/tech",
-            "dest": "/"
-        },
-        {
-            "src": "/chairman",
-            "dest": "/"
-        },
-        {
-            "src": "/home",
-            "dest": "/"
-        },
-        {
-            "src": "/appointment",
-            "dest": "/"
-        },
-        {
-            "src": "/ccomplain",
-            "dest": "/"
-        },
-        {
-            "src": "/csample",
-            "dest": "/"
-        },
-        {
-            "src": "/management",
-            "dest": "/"
-        },
-        {
-            "src": "/shantinagar",
-            "dest": "/"
-        }
-    ]
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/"
+    },
+    {
+      "src": "/patient_portal",
+      "dest": "/"
+    },
+    {
+      "src": "/login",
+      "dest": "/"
+    },
+    {
+      "src": "/sample",
+      "dest": "/"
+    },
+    {
+      "src": "/sign",
+      "dest": "/"
+    },
+    {
+      "src": "/complain",
+      "dest": "/"
+    },
+    {
+      "src": "/branch",
+      "dest": "/"
+    },
+    {
+      "src": "/notice",
+      "dest": "/"
+    },
+    {
+      "src": "/contact",
+      "dest": "/"
+    },
+    {
+      "src": "/health",
+      "dest": "/"
+    },
+    {
+      "src": "/details",
+      "dest": "/"
+    },
+    {
+      "src": "/about",
+      "dest": "/"
+    },
+    {
+      "src": "/director",
+      "dest": "/"
+    },
+    {
+      "src": "/doctorsearch",
+      "dest": "/"
+    },
+    {
+      "src": "/doctordetail",
+      "dest": "/"
+    },
+    {
+      "src": "/notification",
+      "dest": "/"
+    },
+    {
+      "src": "/goals",
+      "dest": "/"
+    },
+    {
+      "src": "/tech",
+      "dest": "/"
+    },
+    {
+      "src": "/chairman",
+      "dest": "/"
+    },
+    {
+      "src": "/home",
+      "dest": "/"
+    },
+    {
+      "src": "/appointment",
+      "dest": "/"
+    },
+    {
+      "src": "/ccomplain",
+      "dest": "/"
+    },
+    {
+      "src": "/csample",
+      "dest": "/"
+    },
+    {
+      "src": "/management",
+      "dest": "/"
+    },
+    {
+      "src": "/shantinagar",
+      "dest": "/"
+    },
+    {
+      "src": "/hotlines",
+      "dest": "/"
+    }
+  ]
 }

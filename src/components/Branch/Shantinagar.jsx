@@ -1,7 +1,6 @@
 import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
-import { MdShahiMahmud } from "../../assets";
 import { Search } from "../../components";
 import { branch } from "../../constants";
 
@@ -82,7 +81,7 @@ const Shantinagar = () => {
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
           <img
-            src={MdShahiMahmud}
+            src={branchInfo.braManImg}
             alt="Late Tahera Akhter"
             className="relative mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
           />

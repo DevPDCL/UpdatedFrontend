@@ -26,6 +26,12 @@ import Goals from "./Goals";
 import Error from "./Error";
 import Dmd from "./Dmd";
 import Shantinagar from "../components/Branch/Shantinagar";
+import Shyamoli from "../components/Branch/Shyamoli";
+import Mirpur from "../components/Branch/Mirpur";
+import Uttara from "../components/Branch/Uttara";
+import Bogura from "../components/Branch/Bogura";
+import Rangpur from "../components/Branch/Rangpur";
+import Hotlines from "./Hotlines";
 
 export {
   Branch,
@@ -56,4 +62,10 @@ export {
   Feedbacks,
   Dmd,
   Shantinagar,
+  Shyamoli,
+  Hotlines,
+  Mirpur,
+  Uttara,
+  Bogura,
+  Rangpur,
 };

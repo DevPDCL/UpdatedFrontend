@@ -24,6 +24,12 @@ import {
   Dmd,
   Sidemenu,
   Shantinagar,
+  Hotlines,
+  Shyamoli,
+  Mirpur,
+  Uttara,
+  Bogura,
+  Rangpur,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -81,6 +87,7 @@ const routes = [
       { path: "/branch", element: <Branch /> },
       { path: "/director", element: <Director /> },
       { path: "/chairman", element: <Chairman /> },
+      { path: "/hotlines", element: <Hotlines /> },
       { path: "/Dmd", element: <Dmd /> },
       { path: "/notice", element: <Notice /> },
       { path: "/contact", element: <Contact /> },
@@ -95,6 +102,11 @@ const routes = [
       { path: "/ccomplain", element: <Ccomplain /> },
       { path: "/management", element: <Management /> },
       { path: "/shantinagar", element: <Shantinagar /> },
+      { path: "/shyamoli", element: <Shyamoli /> },
+      { path: "/mirpur", element: <Mirpur /> },
+      { path: "/uttara", element: <Uttara /> },
+      { path: "/bogura", element: <Bogura /> },
+      { path: "/rangpur", element: <Rangpur /> },
     ],
     errorElement: <Error />,
   },

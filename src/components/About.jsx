@@ -25,13 +25,6 @@ const ProjectCard = ({ manImg, manName, manDesignation }) => {
   );
 };
 
-const ListHeader = () => (
-  <div className="flex justify-between px-4 py-2 bg-gray-400 font-bold">
-    <p>Service Name</p>
-    <p>Service Cost</p>
-  </div>
-);
-
 const About = () => {
   // Split the topManagement data into groups
   const topPosition = topManagement.slice(0, 3);
@@ -39,46 +32,7 @@ const About = () => {
   const thirdTopPosition = topManagement.slice(6, 9);
   const fourthTopPosition = topManagement.slice(9, 14);
 
-  const [selectedBranch, setSelectedBranch] = useState(null);
-  const [filteredServices, setFilteredServices] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleBranchChange = (event) => {
-    setSelectedBranch(event.target.value);
-    setFilteredServices([]); // Reset filtered services on branch change
-    setSearchTerm(""); // Reset search term on branch change
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value.toLowerCase());
-    const branchServices = ServiceCost.find(
-      (branch) => branch.braId === parseInt(selectedBranch)
-    )?.services;
-    if (branchServices) {
-      const filtered = branchServices.flatMap((category) =>
-        category.items.filter((service) =>
-          service.serviceName.toLowerCase().includes(searchTerm)
-        )
-      );
-      setFilteredServices(filtered);
-    } else {
-      setFilteredServices([]);
-    }
-  };
-  const renderRow = ({ index, style }) => {
-    const service = filteredServices[index];
-
-    return (
-      <li
-        key={service.serviceId}
-        style={style}
-        className="flex justify-between px-4 py-2 hover:bg-gray-100"
-      >
-        <p className="text-gray-600">{service.serviceName}</p>
-        <p className="font-medium text-gray-700">{service.price}.00</p>
-      </li>
-    );
-  };
 
   return (
     <div className="bg-[#ffffff]">
