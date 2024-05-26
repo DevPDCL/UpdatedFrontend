@@ -110,7 +110,11 @@ const Branch = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProjects = filterByCity
-    ? branch.filter((project) => project.branchPage.braCity === "Dhaka")
+    ? branch.filter(
+        (project) =>
+          project.braCity === "Dhaka" ||
+          (project.branchPage && project.branchPage.braCity === "Dhaka")
+      )
     : branch;
 
   const filteredAndSearchedProjects = filteredProjects.filter((project) => {

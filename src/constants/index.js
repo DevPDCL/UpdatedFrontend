@@ -593,7 +593,7 @@ const branch = [
     branchID: 4,
     heading: "Shyamoli",
     image: ShyamoliU1,
-    Hotline: "09666 787803",
+    Hotline: "09666 787806",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MrNezamulHaqueRipon,
@@ -637,7 +637,7 @@ const branch = [
     braManImg: MrAbdullahAlMahmud,
     braManName: "Mr. Abdullah Al Mahmud",
     braManDesignation: "AGM & Head of Branch",
-    name: "Popular Diagnostic Centre Ltd. (Mirpur (U-1))",
+    name: "Popular Diagnostic Centre Ltd. (Mirpur)",
     address:
       "House # 67, Avenue # 5, Block # C, Section-6 Mirpur, (Original-10),Pallabi, Dhaka.",
     branchUnits: [
@@ -647,7 +647,6 @@ const branch = [
         image: MirpurU1,
         location:
           "https://maps.google.com/maps?q=23.8106471,90.3673446&hl=es;z=14&output=embed",
-
         name: "Popular Diagnostic Centre Ltd. (Mirpur (U-1))",
         address:
           "House # 67, Avenue # 5, Block # C, Section-6 Mirpur, (Original-10),Pallabi, Dhaka.",
@@ -664,10 +663,46 @@ const branch = [
       },
     ],
   },
-
-  
   {
-    branchID: 9,
+    branchID: 6,
+    heading: "Uttara",
+    image: UttaraU1,
+    Hotline: "09666 787805",
+    Email: "info@populardiagnostic.com",
+    braCity: "Dhaka",
+    braManImg: MrZohurulIslam,
+    braManName: "Mr. Zohurul Islam",
+    braManDesignation: "Senior Branch Manager",
+    name: "Popular Diagnostic Centre Ltd. (Uttara)",
+    address:
+      "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
+    branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: UttaraU1,
+        location:
+          "https://maps.google.com/maps?q=23.8610668,90.40031&hl=es;z=14&output=embed",
+
+        name: "Popular Diagnostic Centre Ltd. (Uttara (U-1))",
+        address:
+          "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
+      },
+      {
+        unitID: 2,
+        BranchUnit: "U2",
+        image: UttaraU2,
+        location:
+          "https://maps.google.com/maps?q=23.8613902,90.4007901&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Uttara (U-2))",
+        address:
+          "House # 25, Road # 7, Sector # 4, Jashim Uddin Moar, Uttara, Dhaka.",
+      },
+    ],
+  },
+
+  {
+    branchID: 7,
     heading: "Badda",
     image: Badda,
     name: "Popular Diagnostic Centre Ltd. (Badda)",
@@ -685,45 +720,7 @@ const branch = [
     },
   },
   {
-    branchID: 10,
-    heading: "Uttara (U-1)",
-    image: UttaraU1,
-    name: "Popular Diagnostic Centre Ltd. (Uttara (U-1))",
-    address:
-      "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
-    Hotline: "09666 787805",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.8610668,90.40031&hl=es;z=14&output=embed",
-
-      braManImg: MrZohurulIslam,
-      braManName: "Mr. Zohurul Islam",
-      braManDesignation: "Senior Branch Manager",
-    },
-  },
-  {
-    branchID: 11,
-    heading: "Uttara (U-2)",
-    image: UttaraU2,
-    name: "Popular Diagnostic Centre Ltd. (Uttara (U-2))",
-    address:
-      "House # 25, Road # 7, Sector # 4, Jashim Uddin Moar, Uttara, Dhaka.",
-    Hotline: "09666 787805",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.8613902,90.4007901&hl=es;z=14&output=embed",
-
-      braManImg: MrZohurulIslam,
-      braManName: "Mr. Zohurul Islam",
-      braManDesignation: "Senior Branch Manager",
-    },
-  },
-  {
-    branchID: 12,
+    branchID: 8,
     heading: "Uttara Garib E Newaz",
     image: UttaraGaribENewaz,
     name: "Popular Diagnostic Centre Ltd. (Uttara Garib-E-Newaz)",
@@ -742,7 +739,7 @@ const branch = [
     },
   },
   {
-    branchID: 13,
+    branchID: 9,
     heading: "Jatrabari",
     image: Jatrabari,
     name: "Popular Diagnostic Centre Ltd. (Jatrabari)",
@@ -753,14 +750,13 @@ const branch = [
       braCity: "Dhaka",
       location:
         "https://maps.google.com/maps?q=23.709443131735878,90.43211759426138&hl=es;z=14&output=embed",
-
       braManImg: MdMizanurRahmanBiswas,
       braManName: " Md. Mizanur Rahman Biswas",
       braManDesignation: "Branch Manager",
     },
   },
   {
-    branchID: 14,
+    branchID: 10,
     heading: "Savar",
     image: Savar,
     name: "Popular Diagnostic Centre Ltd. (Savar)",
@@ -771,14 +767,13 @@ const branch = [
       braCity: "Dhaka",
       location:
         "https://maps.google.com/maps?q=23.839972,90.257242&hl=es;z=14&output=embed",
-
       braManImg: MrRajuAhmmedKhalek,
       braManName: " Mr. Raju Ahmmed Khalek",
       braManDesignation: "Branch In-Charge",
     },
   },
   {
-    branchID: 15,
+    branchID: 11,
     heading: "Gazipur",
     image: Gazipur,
     name: "Popular Diagnostic Centre Ltd. (Gazipur)",
@@ -797,7 +792,7 @@ const branch = [
     },
   },
   {
-    branchID: 16,
+    branchID: 12,
     heading: "Narayangonj",
     image: Narayangonj,
     name: "Popular Diagnostic Centre Ltd. (Narayangonj)",
@@ -814,62 +809,52 @@ const branch = [
       braManDesignation: "AGM & Head of Branch",
     },
   },
+
   {
-    branchID: 17,
-    heading: "Bogura (U-1)",
+    branchID: 13,
+    heading: "Bogura",
     image: BoguraU1,
-    name: "Popular Diagnostic Centre Ltd. (Bogura (U-1))",
+    Hotline: "09666 787812",
+    Email: "info@populardiagnostic.com",
+    braCity: "Bogura",
+    braManImg: MrRezwanAhmed,
+    braManName: "Mr. Rezwan Ahmed",
+    braManDesignation: "Senior Branch Manager",
+    name: "Popular Diagnostic Centre Ltd. (Bogura)",
     address: "H # 12/305, Thanthania Bus-Stand Sherpur Road, Bogura.",
-    Hotline: "09666 787812",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Bogura",
-      location:
-        "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
-
-      braManImg: MrRezwanAhmed,
-      braManName: "Mr. Rezwan Ahmed",
-      braManDesignation: "Senior Branch Manager",
-    },
+    branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: UttaraU1,
+        location:
+          "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Bogura (U-1))",
+        address: "H # 12/305, Thanthania Bus-Stand Sherpur Road, Bogura.",
+      },
+      {
+        unitID: 2,
+        BranchUnit: "U2",
+        image: BoguraU2,
+        location:
+          "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Bogura (U-2))",
+        address: "H # 12/310, Thanthania Bus-Stand Sherpur Road, Bogura.",
+      },
+      {
+        unitID: 3,
+        BranchUnit: "U3",
+        image: BoguraU3,
+        location:
+          "https://maps.google.com/maps?q=24.8280095,89.3527289&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Bogura (U-3))",
+        address: "H # 14/1979, Rahman Market, Silimpur, Bogra.",
+      },
+    ],
   },
-  {
-    branchID: 18,
-    heading: "Bogura (U-2)",
-    image: BoguraU2,
-    name: "Popular Diagnostic Centre Ltd. (Bogura (U-2))",
-    address: "H # 12/310, Thanthania Bus-Stand Sherpur Road, Bogura.",
-    Hotline: "09666 787812",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Bogura",
-      location:
-        "https://maps.google.com/maps?q=24.8321186,89.3762719&hl=es;z=14&output=embed",
 
-      braManImg: MrRezwanAhmed,
-      braManName: "Mr. Rezwan Ahmed",
-      braManDesignation: "Senior Branch Manager",
-    },
-  },
   {
-    branchID: 19,
-    heading: "Bogura (U-3)",
-    image: BoguraU3,
-    name: "Popular Diagnostic Centre Ltd. (Bogura (U-3))",
-    address: "H # 14/1979, Rahman Market, Silimpur, Bogra.",
-    Hotline: "09666 787812",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Bogura",
-      location:
-        "https://maps.google.com/maps?q=24.8280095,89.3527289&hl=es;z=14&output=embed",
-
-      braManImg: MrRezwanAhmed,
-      braManName: "Mr. Rezwan Ahmed",
-      braManDesignation: "Senior Branch Manager",
-    },
-  },
-  {
-    branchID: 20,
+    branchID: 14,
     heading: "Rajshahi",
     image: Rajshahi,
     name: "Popular Diagnostic Centre Ltd. (Rajshahi)",
@@ -887,7 +872,7 @@ const branch = [
     },
   },
   {
-    branchID: 21,
+    branchID: 15,
     heading: "Noakhali",
     image: Noakhali,
     name: "Popular Diagnostic Centre Ltd. (Noakhali)",
@@ -906,7 +891,7 @@ const branch = [
     },
   },
   {
-    branchID: 22,
+    branchID: 16,
     heading: "Chattogram",
     image: Chattogram,
     name: "Popular Diagnostic Centre Ltd. (Chattogram)",
@@ -924,7 +909,7 @@ const branch = [
     },
   },
   {
-    branchID: 23,
+    branchID: 17,
     heading: "Mymensingh",
     image: Mymensingh,
     name: "Popular Diagnostic Centre Ltd. (Mymensingh)",
@@ -942,44 +927,42 @@ const branch = [
       braManDesignation: "Senior Branch Manager",
     },
   },
+
   {
-    branchID: 24,
-    heading: "Rangpur (U-1)",
+    branchID: 18,
+    heading: "Rangpur",
     image: RangpurU1,
-    name: "Popular Diagnostic Centre Ltd. (Rangpur (U-1))",
-    address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
     Hotline: "09666 787813",
     Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Rangpur",
-      location:
-        "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
-
-      braManImg: MrMdAbdulAhad,
-      braManName: "Mr. Md. Abdul Ahad",
-      braManDesignation: "Branch Manager",
-    },
-  },
-  {
-    branchID: 25,
-    heading: "Rangpur (U-2)",
-    image: RangpurU2,
-    name: "Popular Diagnostic Centre Ltd. (Rangpur (U-2))",
+    braCity: "Rangpur",
+    braManImg: MrMdAbdulAhad,
+    braManName: "Mr. Md. Abdul Ahad",
+    braManDesignation: "Branch Manager",
+    name: "Popular Diagnostic Centre Ltd. (Rangpur)",
     address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
-    Hotline: "09666 787813",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Rangpur",
-      location:
-        "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
-
-      braManImg: MrMdAbdulAhad,
-      braManName: "Mr. Md. Abdul Ahad",
-      braManDesignation: "Branch Manager",
-    },
+    branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: RangpurU1,
+        location:
+          "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Rangpur (U-1))",
+        address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
+      },
+      {
+        unitID: 2,
+        BranchUnit: "U2",
+        image: RangpurU2,
+        location:
+          "https://maps.google.com/maps?q=25.7610566,89.2348999&hl=es;z=14&output=embed",
+        name: "Popular Diagnostic Centre Ltd. (Rangpur (U-2))",
+        address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
+      },
+    ],
   },
   {
-    branchID: 26,
+    branchID: 19,
     heading: "Dinajpur",
     image: Dinajpur,
     name: "Popular Diagnostic Centre Ltd. (Dinajpur)",
@@ -997,7 +980,7 @@ const branch = [
     },
   },
   {
-    branchID: 27,
+    branchID: 20,
     heading: "Khulna",
     image: Khulna,
     name: "Popular Diagnostic Centre Ltd. (Khulna)",
@@ -1016,7 +999,7 @@ const branch = [
     },
   },
   {
-    branchID: 28,
+    branchID: 21,
     heading: "Kushtia",
     image: Kushtia,
     name: "Popular Diagnostic Centre Ltd. (Kushtia)",
@@ -1035,7 +1018,7 @@ const branch = [
     },
   },
   {
-    branchID: 29,
+    branchID: 22,
     heading: "Barishal",
     image: Barishal,
     name: "Popular Diagnostic Centre Ltd. (Barishal)",
@@ -1047,7 +1030,6 @@ const branch = [
       braCity: "Barishal",
       location:
         "https://maps.google.com/maps?q=22.692741,90.361966&hl=es;z=14&output=embed",
-
       braManImg: MdMosharrofHossain,
       braManName: "Md. Mosharrof Hossain",
       braManDesignation: "Branch Manager",
