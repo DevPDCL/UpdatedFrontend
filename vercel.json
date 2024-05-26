@@ -101,6 +101,26 @@
       "dest": "/"
     },
     {
+      "src": "/shyamoli",
+      "dest": "/"
+    },
+    {
+      "src": "/mirpur",
+      "dest": "/"
+    },
+    {
+      "src": "/uttara",
+      "dest": "/"
+    },
+    {
+      "src": "/bogura",
+      "dest": "/"
+    },
+    {
+      "src": "/rangpur",
+      "dest": "/"
+    },
+    {
       "src": "/hotlines",
       "dest": "/"
     }
