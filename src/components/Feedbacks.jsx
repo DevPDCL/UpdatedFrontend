@@ -27,7 +27,7 @@ const FeedbackCard = ({
             />
           </div>
           <svg
-            class="w-[30px] h-[30px] fill-gray-500"
+            className="w-[30px] h-[30px] fill-gray-500"
             viewBox="0 0 448 512"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -38,7 +38,7 @@ const FeedbackCard = ({
             {testimonial}
           </p>
           <svg
-            class="w-[30px] h-[30px] fill-gray-500"
+            className="w-[30px] h-[30px] fill-gray-500"
             viewBox="0 0 448 512"
             xmlns="http://www.w3.org/2000/svg"
           >

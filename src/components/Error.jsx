@@ -4,15 +4,15 @@ import "@fontsource/ubuntu";
 const Error = () => {
     const err = useRouteError();
     return (
-      <div class=" bg-[#F5FFFA] w-full h-screen flex flex-col lg:flex-row items-center justify-center space-y-16 lg:space-y-0 space-x-8 2xl:space-x-0">
-        <div class="w-full lg:w-1/2 flex flex-col items-center justify-center lg:px-2 xl:px-0 text-center">
-          <p class="text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider text-gray-700">
+      <div className=" bg-[#F5FFFA] w-full h-screen flex flex-col lg:flex-row items-center justify-center space-y-16 lg:space-y-0 space-x-8 2xl:space-x-0">
+        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center lg:px-2 xl:px-0 text-center">
+          <p className="text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider text-gray-700">
             {err.status}
           </p>
-          <p class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider text-gray-700 mt-2">
+          <p className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider text-gray-700 mt-2">
             {err.statusText}
           </p>
-          <p class="font-ubuntu text-lg md:text-xl lg:text-2xl text-gray-500 my-12 px-10">
+          <p className="font-ubuntu text-lg md:text-xl lg:text-2xl text-gray-500 my-12 px-10">
             We apologize for the inconvenience. An error occurred{" "}
             <span className=" font-bold">
               Error {err.status}: {err.statusText}
@@ -27,11 +27,11 @@ const Error = () => {
           </p>
           <a
             href="/"
-            class="flex items-center space-x-2 bg-[#00984a] hover:bg-gray-500 text-gray-100 px-4 py-2 rounded transition duration-150"
+            className="flex items-center space-x-2 bg-[#00984a] hover:bg-gray-500 text-gray-100 px-4 py-2 rounded transition duration-150"
             title="Return Home">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
+              className="h-5 w-5"
               viewBox="0 0 20 20"
               fill="currentColor">
               <path
@@ -42,9 +42,9 @@ const Error = () => {
             <span>Return Home</span>
           </a>
         </div>
-        <div class="w-1/2 lg:h-full flex lg:items-end justify-center p-4">
+        <div className="w-1/2 lg:h-full flex lg:items-end justify-center p-4">
           <svg
-            class="w-full text-[#00984a]"
+            className="w-full text-[#00984a]"
             xmlns="http://www.w3.org/2000/svg"
             data-name="Layer 1"
             viewBox="0 0 1120.59226 777.91584"

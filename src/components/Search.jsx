@@ -205,9 +205,9 @@ const Search = () => {
     <>
       <div
         className={`${styles.paddingX} md:-mt-[250px] -mt-[50px]  bg-gradient-to-t from-transparent to-white/80 to-40% rounded-t-2xl pt-4 flex relative z-10 max-w-7xl mx-auto justify-center items-bottom text-center flex-col text-gray-900`}>
-        <div class="mb-4 ">
-          <ul class=" text-sm font-medium text-center text-gray-900 sm:flex">
-            <li class="w-full p-1 focus-within:z-10">
+        <div className="mb-4 ">
+          <ul className=" text-sm font-medium text-center text-gray-900 sm:flex">
+            <li className="w-full p-1 focus-within:z-10">
               <a
                 href="#"
                 data-tabs-target="styled-profile"
@@ -223,7 +223,7 @@ const Search = () => {
                 Doctors
               </a>
             </li>
-            <li class="w-full p-1 focus-within:z-10">
+            <li className="w-full p-1 focus-within:z-10">
               <a
                 href="#"
                 data-tabs-target="styled-profile1"
@@ -239,7 +239,7 @@ const Search = () => {
                 Appoinment
               </a>
             </li>
-            <li class="w-full p-1 focus-within:z-10">
+            <li className="w-full p-1 focus-within:z-10">
               <a
                 href="#"
                 data-tabs-target="styled-profile2"
@@ -266,7 +266,7 @@ const Search = () => {
             id="styled-profile"
             role="tabpanel"
             aria-labelledby="profile-tab">
-            <p class="text-sm text-gray-900 ">
+            <p className="text-sm text-gray-900 ">
               <form className="max-w-7xl mx-auto ">
                 <div className="grid md:grid-cols-8  md:gap-0">
                   <div className="relative z-0 col-span-2   p-1 w-full mb-0 group">
@@ -385,7 +385,7 @@ const Search = () => {
             id="styled-profile1"
             role="tabpanel"
             aria-labelledby="profile-tab">
-            <p class="text-sm text-gray-900 ">
+            <p className="text-sm text-gray-900 ">
               <form className="max-w-screen-xl mx-auto">
                 <div className="grid md:grid-cols-12 md:gap-1">
                   <div className="relative z-0 col-span-12 w-full group">
@@ -417,7 +417,7 @@ const Search = () => {
                             disabled={showSearchInput}>
                             <p class>
                               Chat{" "}
-                              <span class=" drop-shadow-[0_1.0px_1.0px_rgba(0,0,0,0.5)] text-white gradient-alt-flow">
+                              <span className=" drop-shadow-[0_1.0px_1.0px_rgba(0,0,0,0.5)] text-white gradient-alt-flow">
                                 AI Consultant
                               </span>
                             </p>
@@ -437,15 +437,15 @@ const Search = () => {
                         )}
                         {isSearchVisible && (
                           <div className="relative flex flex-row z-0 col-span-9 w-full  group">
-                            <form class=" w-full col-span-10 mr-2 mb-1">
+                            <form className=" w-full col-span-10 mr-2 mb-1">
                               <label
                                 for="default-search"
-                                class="mb-1 text-sm font-medium text-gray-900 sr-only"></label>
+                                className="mb-1 text-sm font-medium text-gray-900 sr-only"></label>
 
-                              <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                              <div className="relative">
+                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                   <svg
-                                    class="w-4 h-4 text-gray-500"
+                                    className="w-4 h-4 text-gray-500"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -460,13 +460,13 @@ const Search = () => {
                                   </svg>
                                 </div>
 
-                                <div class="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none"></div>
+                                <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none"></div>
                                 {showSearchInput ? (
                                   <div>
                                     <input
                                       type="search"
                                       id="default-search"
-                                      class="block w-full p-2 pr-10 white-space:pre-wrap col-span-9 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
+                                      className="block w-full p-2 pr-10 white-space:pre-wrap col-span-9 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
                                       placeholder="Chat With PDCL HUMAN Consultant"
                                       value={inputMessage}
                                       onChange={(e) =>
@@ -477,7 +477,7 @@ const Search = () => {
                                     />
                                     <button
                                       type="submit"
-                                      class="text-white absolute  end-0 bottom-1 top-1 m-1 bg-[#00984a] font-medium rounded text-sm px-4 py-2 ">
+                                      className="text-white absolute  end-0 bottom-1 top-1 m-1 bg-[#00984a] font-medium rounded text-sm px-4 py-2 ">
                                       Send
                                     </button>
                                   </div>
@@ -486,7 +486,7 @@ const Search = () => {
                                     <input
                                       type="search"
                                       id="default-search"
-                                      class="block w-full p-2 pr-10 white-space:pre-wrap col-span-9 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
+                                      className="block w-full p-2 pr-10 white-space:pre-wrap col-span-9 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
                                       placeholder="Chat With PDCL AI Consultant"
                                       value={inputMessage}
                                       onChange={(e) =>
@@ -497,7 +497,7 @@ const Search = () => {
                                     />
                                     <button
                                       type="submit"
-                                      class="text-white absolute end-0  bottom-0 top-0 m-1 bg-[#00984a]  font-medium rounded text-sm px-4 py-2 ">
+                                      className="text-white absolute end-0  bottom-0 top-0 m-1 bg-[#00984a]  font-medium rounded text-sm px-4 py-2 ">
                                       Send
                                     </button>{" "}
                                   </div>
@@ -563,7 +563,7 @@ const Search = () => {
             id="styled-profile2"
             role="tabpanel"
             aria-labelledby="profile-tab">
-            <p class="text-sm text-gray-900">
+            <p className="text-sm text-gray-900">
               <form className="max-w-7xl mx-auto">
                 <div className="grid md:grid-cols-12 md:gap-1">
                   <div className="relative z-0 w-full col-span-12 mb-1 group">

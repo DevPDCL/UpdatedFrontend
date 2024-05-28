@@ -16,15 +16,15 @@ const Hotlinecards = (props) => {
     };
 
   return (
-    <div class="my-3 p-3 bg-white/50 w-96 border-2 rounded-lg flex items-center justify-between ">
-      <div class="flex-1 flex justify-between items-center">
-        <div class="w-44 p-1 mr-2 text-center bg-gray-500 rounded text-gray-50 font-medium text-[20px]">
+    <div className="my-3 p-3 bg-white/50 w-96 border-2 rounded-lg flex items-center justify-between ">
+      <div className="flex-1 flex justify-between items-center">
+        <div className="w-44 p-1 mr-2 text-center bg-gray-500 rounded text-gray-50 font-medium text-[20px]">
           {props.heading}
         </div>
         <div className="flex">
           <a
             href={`tel:${props.Hotline}`}
-            class="w-34 p-1 rounded-l-lg bg-[#1b7ced] text-center text-gray-100 font-medium text-[18px]">
+            className="w-34 p-1 rounded-l-lg bg-[#1b7ced] text-center text-gray-100 font-medium text-[18px]">
             {" "}
             {props.Hotline}{" "}
           </a>
@@ -34,7 +34,7 @@ const Hotlinecards = (props) => {
             type="button">
             <svg
               id="copy-icon"
-              class="w-4 h-4"
+              className="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -53,10 +53,10 @@ const Hotlines = () => {
     <div className="bg-gray-50">
       <div className="min-h-screen flex justify-center px-12">
         <div className="relative w-full max-w-7xl">
-          <div class="absolute top-0 -left-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob "></div>
-          <div class="absolute top-0 -right-4 w-72 h-72 bg-[#95e7bd] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div class="absolute top-96 left-20 w-72 h-72 bg-[#95e7bd] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-          <div class="absolute bottom-48 -right-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob "></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-[#95e7bd] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-96 left-20 w-72 h-72 bg-[#95e7bd] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute bottom-48 -right-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
           <div className="relative">
             <h2 className="text-gray-900/50 pt-20 text-center text-[28px] font-bold font-ubuntu">
               Hotline Numbers

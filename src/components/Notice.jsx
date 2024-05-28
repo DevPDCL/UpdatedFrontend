@@ -24,11 +24,11 @@ const ProjectCard = (
         <div className="mx-auto mb-10 max-w-[370px] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300">
           <Popover placement="center">
             <PopoverHandler>
-              <div class="mb-8  rounded">
+              <div className="mb-8  rounded">
                 <img
                   src={noticeImage}
                   alt="project_image"
-                  class="w-full max-h-[250px]"
+                  className="w-full max-h-[250px]"
                 />
               </div>
             </PopoverHandler>
