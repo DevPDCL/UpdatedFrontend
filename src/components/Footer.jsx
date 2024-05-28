@@ -38,10 +38,10 @@ const Footer = ({ message, children }) => {
           <form className="max-w-screen-xl mx-auto sm:w-[80%] items-center justify-center">
             <div className="grid md:grid-cols-3 md:gap-1 ">
               <div className=" p-10  text-start">
-                <h2 className="mb-6 text-[18px] font-bold font-ubuntu text-white uppercase dark:text-white">
+                <h2 className="mb-6 text-[18px] font-bold font-ubuntu text-white uppercase">
                   Contact Us
                 </h2>
-                <ul className="text-white dark:text-gray-400 font-medium">
+                <ul className="text-white font-medium">
                   <li className="mb-4">
                     <a href="#" className="font-ubuntu hover:underline">
                       House #16, Road # 2, Dhanmondi R/A, <br></br>Dhaka-1205,
@@ -63,10 +63,10 @@ const Footer = ({ message, children }) => {
 
               <div className="text-white p-10 text-start ">
                 <div className=" ">
-                  <h2 className="mb-6 font-bold font-ubuntu text-white uppercase dark:text-white">
+                  <h2 className="mb-6 font-bold font-ubuntu text-white uppercase ">
                     Important Links
                   </h2>
-                  <ul className="text-white dark:text-gray-400 font-medium">
+                  <ul className="text-white font-medium">
                     <li className="mb-4">
                       <a
                         href="https://www.popular-pharma.com/"
@@ -95,10 +95,10 @@ const Footer = ({ message, children }) => {
                 </div>
               </div>
               <div className="text-white p-10 text-start">
-                <h1 className="mb-6 font-bold font-ubuntu text-white uppercase dark:text-white">
+                <h1 className="mb-6 font-bold font-ubuntu text-white uppercase ">
                   Quick Links
                 </h1>
-                <ul className="text-white dark:text-gray-400 font-medium">
+                <ul className="text-white font-medium">
                   <li className="mb-4">
                     <a href="#" className="font-ubuntu hover:underline">
                       Our Services
@@ -133,11 +133,19 @@ const Footer = ({ message, children }) => {
             width="100%"
             height="auto"
           />
-          <div className="bg-slate-900 shadow  px-4 py-6 mt-5 md:flex md:items-center md:justify-between ">
-            <div className="flex  mt-4 sm:justify-center  md:mt-0 space-x-5 rtl:space-x-reverse max-w-7xl mx-auto">
-              <span className="text-sm text-white font-ubuntu text-center dark:text-white sm:text-center me-auto">
+          <div className="bg-slate-900 py-6 mt-5 md:flex">
+            <div className="flex sm:justify-between items-center mx-auto lg:gap-24">
+              <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
                 © Copyright 2024. <a href="">Popular Diagnostic Centre Ltd.</a>
-              </span>
+              </p>
+              <div className="flex gap-5">
+                <p>Terms and Conditions</p>
+                <p>Privacy Policy</p>
+                <p>Customer Support</p>
+              </div>
+              <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
+                24298000 <span>Total Views</span>
+              </p>
             </div>
           </div>
         </div>

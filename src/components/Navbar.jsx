@@ -92,7 +92,7 @@ return (
   <div className="sticky top-0 z-30 shadow-2xl">
     <div className="antialiased bg-gray-100">
       <div className="w-full text-gray-700 bg-white">
-        <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+        <div className="flex flex-col max-w-screen-xl px-4 mx-auto lg:items-center lg:justify-between lg:flex-row lg:px-6">
           <div className="flex flex-row items-center justify-between p-4">
             <a className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg focus:outline-none focus:shadow-outline">
               <Link to="/" className="flex items-center gap-0">
@@ -104,7 +104,7 @@ return (
               </Link>
             </a>
             <button
-              className="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
+              className="rounded-lg lg:hidden focus:outline-none focus:shadow-outline"
               onClick={() => setOpen(!open)}>
               <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
                 <path
@@ -118,7 +118,7 @@ return (
           <nav
             className={`${
               open ? "flex" : "hidden"
-            } flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row`}>
+            } flex-col flex-grow pb-4 lg:pb-0 lg:flex lg:justify-end lg:flex-row`}>
             <Dropdown
               title="About"
               openDropdown={openDropdown}
@@ -229,37 +229,7 @@ return (
               </div>
             </NavLink>
             <NavLink to="/sample">Home Collection</NavLink>
-            <Dropdown
-              title="Contact"
-              openDropdown={openDropdown}
-              setOpenDropdown={setOpenDropdown}>
-              <div className="flex flex-wrap items-center">
-                <DropdownItem to="/contact">
-                  <div className="flex col-span-1 items-center">
-                    <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg">
-                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                      <path d="M256 48C141.1 48 48 141.1 48 256v40c0 13.3-10.7 24-24 24s-24-10.7-24-24V256C0 114.6 114.6 0 256 0S512 114.6 512 256V400.1c0 48.6-39.4 88-88.1 88L313.6 488c-8.3 14.3-23.8 24-41.6 24H240c-26.5 0-48-21.5-48-48s21.5-48 48-48h32c17.8 0 33.3 9.7 41.6 24l110.4 .1c22.1 0 40-17.9 40-40V256c0-114.9-93.1-208-208-208zM144 208h16c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H144c-35.3 0-64-28.7-64-64V272c0-35.3 28.7-64 64-64zm224 0c35.3 0 64 28.7 64 64v48c0 35.3-28.7 64-64 64H352c-17.7 0-32-14.3-32-32V240c0-17.7 14.3-32 32-32h16z"></path>
-                    </svg>
-                    <p className="pl-5">Contact Us</p>
-                  </div>
-                </DropdownItem>
-                <DropdownItem to="/complain">
-                  <div className="flex col-span-1 items-center">
-                    <svg
-                      className="w-[40px] h-[40px] p-1 rounded group-hover:bg-gray-200 bg-[#00984a]  fill-[#ffffff] group-hover:fill-[#00984a]"
-                      viewBox="0 0 640 512"
-                      xmlns="http://www.w3.org/2000/svg">
-                      {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                      <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H322.8c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1H178.3zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z"></path>
-                    </svg>
-                    <p className="pl-5"> Complain and Advice</p>
-                  </div>
-                </DropdownItem>
-              </div>
-            </Dropdown>
+            <NavLink to="/contact">Contact</NavLink>
           </nav>
         </div>
       </div>
