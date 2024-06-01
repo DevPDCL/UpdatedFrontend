@@ -62,7 +62,7 @@ const Chairman = () => {
             <div className=" m-1 p-10   text-start">
               <div className="flex flex-row  max-w-7xl   ">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5">
+                  <p className="text-gray-500 p-5  text-justify">
                     "After the liberation war, the health sector of Bangladesh
                     was completely deprived due to various political instability
                     and uncertainity. Unfortunately a significant number of
@@ -87,7 +87,8 @@ const Chairman = () => {
                     Popular is committed to render the possible standard service
                     to the people of the country at an affordable cost. This
                     will definitely reduce the burden of the government and will
-                    make the path of "Health for all" more smooth and effective."
+                    make the path of "Health for all" more smooth and
+                    effective."
                   </p>
                 </div>
               </div>
