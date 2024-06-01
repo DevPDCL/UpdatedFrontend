@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import img from "../assets/link.webp";
 import "./tabs.css";
 import "@fontsource/ubuntu";
-
+import { Link } from "react-router-dom";
 const ImageComponent = ({ src, alt, width, height, className }) => {
   return (
     <img
@@ -139,8 +139,8 @@ const Footer = ({ message, children }) => {
                 © Copyright 2024. <a href="">Popular Diagnostic Centre Ltd.</a>
               </p>
               <div className="flex gap-5">
-                <p>Terms and Conditions</p>
-                <p>Privacy Policy</p>
+                <Link to="/terms&conditions"><p>Terms and Conditions</p></Link>
+                <Link to="/privacy&policy"> <p>Privacy Policy</p></Link>
                 <p>Customer Support</p>
               </div>
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">

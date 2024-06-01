@@ -32,10 +32,14 @@ import Uttara from "../components/Branch/Uttara";
 import Bogura from "../components/Branch/Bogura";
 import Rangpur from "../components/Branch/Rangpur";
 import Hotlines from "./Hotlines";
+import Privacy from "./Privacy";
+import Terms from "./Terms";
 
 export {
   Branch,
   Notice,
+  Privacy,
+  Terms,
   Details,
   Goals,
   DoctorSearch,

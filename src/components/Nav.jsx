@@ -42,7 +42,7 @@ const Nav = () => {
               <Link to="/hotlines" className="text-white flex items-center">
                 <h2
                   className={`text-[15px] underline pl-3 text font-ubuntu font-normal`}>
-                  Other Branches <span> >> </span>
+                  Other Branches <span>  </span>
                 </h2>
               </Link>
             </div>
