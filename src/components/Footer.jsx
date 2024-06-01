@@ -138,7 +138,7 @@ const Footer = ({ message, children }) => {
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
                 © Copyright 2024. <a href="">Popular Diagnostic Centre Ltd.</a>
               </p>
-              <div className="flex gap-5">
+              <div className="flex text-white gap-5">
                 <Link to="/terms&conditions"><p>Terms and Conditions</p></Link>
                 <Link to="/privacy&policy"> <p>Privacy Policy</p></Link>
                 <p>Customer Support</p>
