@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { branch } from "../constants";
 
-
-
 const Hotlinecards = (props) => {
-    const copyToClipboard = () => {
-      navigator.clipboard.writeText(props.Hotline).then(
-        () => {
-          alert("Copied to clipboard!");
-        },
-        (err) => {
-          console.error("Could not copy text: ", err);
-        }
-      );
-    };
+
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(props.Hotline).then(
+      () => {
+        alert("Copied to clipboard!");
+      },
+      (err) => {
+        console.error("Could not copy text: ", err);
+      }
+    );
+  };
 
   return (
     <div className="my-3 p-3 bg-white/50 w-96 border-2 rounded-lg flex items-center justify-between ">
@@ -49,9 +49,23 @@ const Hotlinecards = (props) => {
 };
 
 const Hotlines = () => {
+    const [dhakaBranches, setDhakaBranches] = useState([]);
+    const [otherBranches, setOtherBranches] = useState([]);
+
+    useEffect(() => {
+      const dhaka = branch.filter(
+        (b) => b.branchPage?.braCity === "Dhaka" || b.braCity === "Dhaka"
+      );
+      const others = branch.filter(
+        (b) => b.branchPage?.braCity !== "Dhaka" && b.braCity !== "Dhaka"
+      );
+
+      setDhakaBranches(dhaka);
+      setOtherBranches(others);
+    }, []);
   return (
     <div className="bg-gray-50">
-      <div className="min-h-screen flex justify-center px-12">
+      <div className="min-h-screen flex justify-center px-12 pb-10">
         <div className="relative w-full max-w-7xl">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob "></div>
           <div className="absolute top-0 -right-4 w-72 h-72 bg-[#95e7bd] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -59,10 +73,22 @@ const Hotlines = () => {
           <div className="absolute bottom-48 -right-4 w-72 h-72 bg-[#82bcff] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
           <div className="relative">
             <h2 className="text-gray-900/50 pt-20 text-center text-[28px] font-bold font-ubuntu">
-              Hotline Numbers
+              Inside Dhaka
             </h2>
             <div className="rounded-lg flex justify-center items-center flex-wrap">
-              {branch.map((props) => (
+              {dhakaBranches.map((props) => (
+                <div className=" flex justify-center w-full lg:w-1/2 2xl:w-1/3 ">
+                  <Hotlinecards key={props.branchID} {...props} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            <h2 className="text-gray-900/50 pt-20 text-center text-[28px] font-bold font-ubuntu">
+              Outside Dhaka
+            </h2>
+            <div className="rounded-lg flex justify-center items-center flex-wrap">
+              {dhakaBranches.map((props) => (
                 <div className=" flex justify-center w-full lg:w-1/2 2xl:w-1/3 ">
                   <Hotlinecards key={props.branchID} {...props} />
                 </div>
