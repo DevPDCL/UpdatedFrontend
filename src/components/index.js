@@ -34,7 +34,7 @@ import Rangpur from "../components/Branch/Rangpur";
 import Hotlines from "./Hotlines";
 import Privacy from "./Privacy";
 import Terms from "./Terms";
-
+import Refund from "./Refund";
 export {
   Branch,
   Notice,
@@ -43,6 +43,7 @@ export {
   Details,
   Goals,
   DoctorSearch,
+  Refund,
   Chairman,
   DoctorDetail,
   Director,

@@ -141,7 +141,7 @@ const Footer = ({ message, children }) => {
               <div className="flex text-white gap-5">
                 <Link to="/terms&conditions"><p>Terms and Conditions</p></Link>
                 <Link to="/privacy&policy"> <p>Privacy Policy</p></Link>
-                <p>Customer Support</p>
+                <Link to="/refund"><p>Refund & Return Policy</p></Link>
               </div>
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
                 24298000 <span>Total Views</span>
