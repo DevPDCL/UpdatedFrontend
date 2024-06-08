@@ -49,12 +49,20 @@ const Footer = ({ message, children }) => {
                     </a>
                   </li>
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
-                      Phone : 09666 787801, 10636
+                    Phone : {""}
+                    <a
+                      href="tel:09666787801"
+                      className="font-ubuntu hover:underline">
+                      09666 787801,{" "}
+                    </a>
+                    <a href="tel:10636" className="font-ubuntu hover:underline">
+                      10636
                     </a>
                   </li>
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
+                    <a
+                      href="mailto:info@populardiagnostic.com"
+                      className="font-ubuntu hover:underline">
                       E-mail : info@populardiagnostic.com
                     </a>
                   </li>
@@ -136,12 +144,19 @@ const Footer = ({ message, children }) => {
           <div className="bg-slate-900 py-6 mt-5 md:flex">
             <div className="flex sm:justify-between items-center mx-auto lg:gap-24">
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
-                © Copyright 2024. <a href="">Popular Diagnostic Centre Ltd.</a>
+                © Copyright 2024. Popular Diagnostic Centre Ltd.
               </p>
               <div className="flex text-white gap-5">
-                <Link to="/terms&conditions"><p>Terms and Conditions</p></Link>
-                <Link to="/privacy&policy"> <p>Privacy Policy</p></Link>
-                <Link to="/refund"><p>Refund & Return Policy</p></Link>
+                <Link to="/terms&conditions">
+                  <p>Terms and Conditions</p>
+                </Link>
+                <Link to="/privacy&policy">
+                  {" "}
+                  <p>Privacy Policy</p>
+                </Link>
+                <Link to="/refund">
+                  <p>Refund & Return Policy</p>
+                </Link>
               </div>
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
                 24298000 <span>Total Views</span>
