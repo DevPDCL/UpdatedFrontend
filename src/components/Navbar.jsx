@@ -212,7 +212,7 @@ return (
                 </DropdownItem>
               </div>
             </Dropdown>
-            <NavLink to="/health">Pakages</NavLink>
+            <NavLink to="/health">Packages</NavLink>
             <NavLink to="/doctorsearch">Doctors</NavLink>
             <NavLink to="/branch">Branches</NavLink>
             <NavLink to="/patient_portal">
