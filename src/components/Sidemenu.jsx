@@ -38,7 +38,7 @@ const Sidemenu = () => {
             </div>
           </Link>
 
-          <Link to="/" rel="noopener noreferrer">
+          <Link to="/complain" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[340px] right-0 hover:cursor-pointer font-extrabold">
               <span
                 className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
@@ -116,11 +116,8 @@ const Sidemenu = () => {
           </Link>
           <Link to="/complain" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[500px] right-0 hover:cursor-pointer font-extrabold">
-             
-
               <span
                 className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                
                 role="alert"
                 tabIndex="0">
                 <svg
