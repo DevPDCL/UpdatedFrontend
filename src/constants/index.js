@@ -74,6 +74,7 @@ import {
   MostafaNurmohammadPalash,
   MrKabirAhmed,
   SardinRahman,
+  PranobChandraAdhikary,
   RamadanNotice24,
   sliceCTScan,
   BangladeshWorkersWelfareFoundation,
@@ -380,6 +381,13 @@ const topManagement = [
     manName: "Md Sahab Uddin",
     manDesignation: "Manager, (Finance & Accounts)",
   },
+  {
+    manID: 15,
+    manImg: PranobChandraAdhikary,
+    manName: "Pranob Chandra Adhikary",
+    manDesignation: "Quality Manager",
+  },
+  
 ];
 
 const reportDownload = [

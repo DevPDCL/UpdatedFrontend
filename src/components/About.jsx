@@ -30,7 +30,7 @@ const About = () => {
   const topPosition = topManagement.slice(0, 3);
   const secondTopPosition = topManagement.slice(3, 6);
   const thirdTopPosition = topManagement.slice(6, 9);
-  const fourthTopPosition = topManagement.slice(9, 14);
+  const fourthTopPosition = topManagement.slice(9, 15);
 
 
 
@@ -64,7 +64,7 @@ const About = () => {
       </div>
 
       {/* Fourth section for managers */}
-      <div className="flex mx-auto p-3 py-20 justify-center flex-wrap gap-4">
+      <div className="flex mx-auto p-3 px-10 py-20 justify-center flex-wrap gap-4">
         {fourthTopPosition.map((project) => (
           <ProjectCard key={project.manID} {...project} />
         ))}

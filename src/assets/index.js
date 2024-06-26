@@ -87,6 +87,8 @@ import MostafaNurmohammadPalash from "./TopManagement/MostafaNurmohammadPalash.w
 import MrKabirAhmed from "./TopManagement/MrKabirAhmed.webp";
 import SardinRahman from "./TopManagement/SardinRahman.webp";
 import MdAsadurRahman from "./TopManagement/MdAsadurRahman.webp";
+import PranobChandraAdhikary from "./TopManagement/PranobChandraAdhikary.webp";
+
 
 import sliceCTScan from "./Notice/1152sliceCTScan.webp";
 import BangladeshWorkersWelfareFoundation from "./Notice/BangladeshWorkersWelfareFoundation.webp";
@@ -226,6 +228,7 @@ export {
   MrKabirAhmed,
   SardinRahman,
   MdAsadurRahman,
+  PranobChandraAdhikary,
   sliceCTScan,
   BangladeshWorkersWelfareFoundation,
   CardiacMRIMachine,
