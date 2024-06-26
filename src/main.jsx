@@ -32,7 +32,8 @@ import {
   Uttara,
   Bogura,
   Rangpur,
-  Refund
+  Refund,
+  ServiceSearch,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -113,6 +114,8 @@ const routes = [
       { path: "/bogura", element: <Bogura /> },
       { path: "/rangpur", element: <Rangpur /> },
       { path: "/refund", element: <Refund /> },
+      { path: "/servicesearch", element: <ServiceSearch /> },
+      
     ],
     errorElement: <Error />,
   },

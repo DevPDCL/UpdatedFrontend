@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import About from "./About";
 import Footer from "./Footer";
 import Search from "./Search";
+import SearchBoxBranch from "./SearchBoxBranch";
 import HomeContent from "./HomeContent";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
@@ -35,6 +36,7 @@ import Hotlines from "./Hotlines";
 import Privacy from "./Privacy";
 import Terms from "./Terms";
 import Refund from "./Refund";
+import ServiceSearch from "./ServiceSearch";
 export {
   Branch,
   Notice,
@@ -73,4 +75,6 @@ export {
   Uttara,
   Bogura,
   Rangpur,
+  SearchBoxBranch,
+  ServiceSearch,
 };

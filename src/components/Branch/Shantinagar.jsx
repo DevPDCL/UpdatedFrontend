@@ -1,7 +1,7 @@
 import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
-import { Search } from "../../components";
+import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
 
 
@@ -76,7 +76,7 @@ const Shantinagar = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <Search />
+        <SearchBoxBranch />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
