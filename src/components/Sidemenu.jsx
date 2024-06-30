@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./tabs.css";
 import "@fontsource/ubuntu";
+import whatsapp from "../assets/whatsapp.png"
 const Sidemenu = () => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -133,6 +134,13 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
+        </div>
+
+        <div className="flex gap-2 fixed top-[666px] right-1 z-40 hover:cursor-pointer" style={{ zIndex: "6", left: "initial" }}>
+          <a href="https://wa.me/01815409067?text=Hello How can I help you?" target="_blank">
+            <img src={whatsapp} width="75" alt="aaaa" />
+          </a>
+
         </div>
       </div>
     </>

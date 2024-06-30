@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import video from "../assets/website.mp4";
 import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
-import whatsapp from "../assets/whatsapp.png"
+
 
 const contentSets = [
   { text: "A Well equipped Cutting-edge solution provider ", buttonText: "Explore more" },
@@ -70,12 +70,7 @@ const Hero = () => {
         </div>
       </section>
 
-      <div className="flex gap-2 fixed top-[850px] right-10 hover:cursor-pointer" style={{ zIndex: "6", left: "initial"}}>
-        <a href="https://wa.me/01815409067?text=Hello How can I help you?" target="_blank">
-          <img src={whatsapp} width="100" alt="aaaa" />
-        </a>
-
-      </div>
+     
     </>
   );
 };
