@@ -136,9 +136,9 @@ const Sidemenu = () => {
           </Link>
         </div>
 
-        <div className="flex gap-2 fixed top-[666px] right-1 z-40 hover:cursor-pointer" style={{ zIndex: "6", left: "initial" }}>
+        <div className=" fixed top-[150px] right-0  hover:cursor-pointer" >
           <a href="https://wa.me/01815409067?text=Hello How can I help you?" target="_blank">
-            <img src={whatsapp} width="75" alt="aaaa" />
+            <img src={whatsapp} width="70" alt="aaaa" />
           </a>
 
         </div>
