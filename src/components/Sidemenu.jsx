@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./tabs.css";
 import "@fontsource/ubuntu";
 import whatsapp from "../assets/whatsapp.png"
+import FacebookChat from '../components/FacebookChat';
 const Sidemenu = () => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -146,7 +147,7 @@ const Sidemenu = () => {
 
         </div>
 
-       
+        <FacebookChat />
       </div>
     </>
   );
