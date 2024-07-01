@@ -15,6 +15,9 @@ const Sidemenu = () => {
 
     return () => window.removeEventListener("scroll", handleScroll); // Cleanup
   }, []);
+
+
+
   return (
     <>
       <div className="fixed z-20">
@@ -136,12 +139,14 @@ const Sidemenu = () => {
           </Link>
         </div>
 
-        <div className=" fixed top-[150px] right-0  hover:cursor-pointer" >
+        <div className=" fixed top-[150px] -0  hover:cursor-pointer" >
           <a href="https://wa.me/01815409067?text=Hello How can I help you?" target="_blank">
             <img src={whatsapp} width="70" alt="aaaa" />
           </a>
 
         </div>
+
+       
       </div>
     </>
   );
