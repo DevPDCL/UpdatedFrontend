@@ -438,7 +438,8 @@ const reportDownload = [
   {
     braID: 8,
     braName: "Uttara Garib E Newaz",
-    downloadLink: "http://akhil.populardiagnostic.com/",
+    downloadLink:
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",
   },
   {
@@ -468,7 +469,8 @@ const reportDownload = [
   {
     braID: 13,
     braName: "Bogura",
-    downloadLink: "http://akhil.populardiagnostic.com/",
+    downloadLink:
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Bogura",
   },
   {
@@ -498,13 +500,15 @@ const reportDownload = [
   {
     braID: 18,
     braName: "Rangpur",
-    downloadLink: "http://akhil.populardiagnostic.com/",
+    downloadLink:
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Rangpur",
   },
   {
     braID: 19,
     braName: "Dinajpur",
-    downloadLink: "http://akhil.populardiagnostic.com/",
+    downloadLink:
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dinajpur",
   },
   {
