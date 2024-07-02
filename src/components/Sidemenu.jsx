@@ -140,7 +140,7 @@ const Sidemenu = () => {
           </Link>
         </div>
 
-        <div className=" fixed top-[150px] -0  hover:cursor-pointer" >
+        <div className=" fixed bottom-0 right-0   hover:cursor-pointer" >
           <a href="https://wa.me/01815409067?text=Hello How can I help you?" target="_blank">
             <img src={whatsapp} width="70" alt="aaaa" />
           </a>
