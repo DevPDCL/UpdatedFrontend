@@ -110,6 +110,7 @@ import {
   AssotProfDrShaoliSarker,
   DrAyeshaSiddika,
   DrBithiDebnath,
+  RafiqulBari,
   MdAsadurRahman,
   DhakaClub,
   Nestle,
@@ -41953,7 +41954,64 @@ const doctorData1 = {
       report: "Free",
       image: PROF_DR_MD_ASADUL_KABIR,
     },
+    {
+      drID: 7,
+      drName: "Prof. Dr. A. K. M. Rafiqul Bari",
+      drSpecilist: "Chest Medicine",
+      drDegree:
+        "MBBS, MD (Chest Diseases), FCCP (America), Medicine, Asthma, Chest & Allergy Specialist, Professor & Head of Department, Respiratory Medicine, Shaheed Suhrawardy Medical College & Hospital, Dhaka.",
+      currPractice:
+        "Professor and Head of Department, Respiratory Medicine, National Institute of Diseases of the Chest and Hospital",
 
+      chember: [
+        {
+          branch: "Dhanmondi",
+          building: "Bhaban-6",
+          room: "208",
+          weekday: [
+            {
+              day: "Saturday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Sunday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Monday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Tuesday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Wednesday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Thursday",
+              time: "12:30 PM - 02:00 PM",
+            },
+            {
+              day: "Friday",
+              time: "06:00 PM - 08:00 PM",
+            },
+          ],
+          assistantName: "Chan Miah",
+          assistantGender: "Male",
+          ext: "2249",
+          assistantMobile: "01736131369",
+        },
+      ],
+      drNumber: "01711364552",
+      email: "mnislam3512@gmail.com",
+      drGender: "Male",
+      newPatient: "1000",
+      oldPatient: "500",
+      report: "Free",
+      image: RafiqulBari,
+    },
     {
       drID: 7,
       drName: "Prof. Dr. Abu Hena Mostafa Kamal",
