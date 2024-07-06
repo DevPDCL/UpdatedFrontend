@@ -126,6 +126,7 @@ import PROF_DR_MRS_SHAHIN_RAHMAN_CHOW from "./DoctorImage/PROF_DR_MRS_SHAHIN_RAH
 import AssotProfDrShaoliSarker from "./DoctorImage/AssotProfDrShaoliSarker.webp";
 import DrAyeshaSiddika from "./DoctorImage/DrAyeshaSiddika.webp";
 import DrBithiDebnath from "./DoctorImage/DrBithiDebnath.webp";
+import RafiqulBari from "./DoctorImage/DrAKMRafiqulBari.webp";
 
 import drBackground from "./DoctorImage/drBackground.webp";
 
@@ -263,6 +264,7 @@ export {
   AssotProfDrShaoliSarker,
   DrAyeshaSiddika,
   DrBithiDebnath,
+  RafiqulBari,
   drBackground,
   Adecard,
   Ambrosol,

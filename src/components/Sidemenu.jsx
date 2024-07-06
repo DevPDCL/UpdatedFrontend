@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./tabs.css";
 import "@fontsource/ubuntu";
 import whatsapp from "../assets/whatsapp.png"
-import { FacebookProvider, CustomChat } from 'react-facebook';
+// import { FacebookProvider, CustomChat } from 'react-facebook';
 
 const Sidemenu = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -148,9 +148,9 @@ const Sidemenu = () => {
 
         </div>
 
-        <FacebookProvider appId="7940463979308733" chatSupport>
+        {/* <FacebookProvider appId="7940463979308733" chatSupport>
           <CustomChat pageId="196298460417225" minimized={true} />
-        </FacebookProvider>  
+        </FacebookProvider>   */}
       </div>
     </>
   );
