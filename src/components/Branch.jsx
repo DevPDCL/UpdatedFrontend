@@ -65,42 +65,43 @@ const ProjectCard = ({
       // If branchPage exists, show the modal
       handleOpenModal();
     } else {
-      // If branchPage doesn't exist, redirect to "/shantinagar"
+      // If branchPage doesn't exist, redirect to saperate page
       window.location.href = `/${heading.replace(/\s+/g, "").toLowerCase()}`;
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full ">
-      <div className="relative w-full">
-        <img
-          src={image}
-          alt="Branch_image"
-          className="w-full shadow-xl rounded-3xl object-cover p-2 "
-        />
-      </div>
-      <div className="px-4 pt-2 pb-3 flex flex-col justify-between">
-        <h1 className="text-[#00984a] px-2 font-ubuntu font-bold text-center text-[25px]">
-          {heading}
-        </h1>
-        <p className="text-gray-600 px-2 font-ubuntu font-semibold text-[16px]">
-          {name}
-        </p>
-        <BranchContact address={address} Hotline={Hotline} Email={Email} />
-        <motion.button
-          className="hover:bg-[#00984a] bg-gray-100 text-[#00984a] hover:text-white hover:font-black font-ubuntu font-medium py-2 px-4 rounded-md mt-2 mx-1 focus:outline-none shadow-md"
-          onClick={handleAuthorityMapClick}
-          layout
-          transition={spring}
-          whileTap={{ scale: 0.9 }}
-          variants={buttonVariants}
-          whileHover="hover">
-          Authority & Map
-        </motion.button>
-        {isOpen && branchPage && (
-          <Details branchPage={branchPage} onClose={handleCloseModal} />
-        )}
-      </div>
+    <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3">
+      <button onClick={handleAuthorityMapClick} className="">
+        <div className="relative w-full">
+          <img
+            src={image}
+            alt="Branch_image"
+            className="w-full shadow-xl rounded-3xl object-cover p-2 "
+          />
+        </div>
+        <div className="px-4 pt-2 pb-3 flex flex-col justify-between">
+          <h1 className="text-[#00984a] px-2 font-ubuntu font-bold text-center text-[25px]">
+            {heading}
+          </h1>
+          <p className="text-gray-600 px-2 font-ubuntu font-semibold text-[16px]">
+            {name}
+          </p>
+          <BranchContact address={address} Hotline={Hotline} Email={Email} />
+          <motion.button
+            className="hover:bg-[#00984a] bg-gray-100 text-[#00984a] hover:text-white hover:font-black font-ubuntu font-medium py-2 px-4 rounded-md mt-2 mx-1 focus:outline-none shadow-md"
+            layout
+            transition={spring}
+            whileTap={{ scale: 0.9 }}
+            variants={buttonVariants}
+            whileHover="hover">
+            Branch Details
+          </motion.button>
+          {isOpen && branchPage && (
+            <Details branchPage={branchPage} onClose={handleCloseModal} />
+          )}
+        </div>
+      </button>
     </div>
   );
 };
@@ -116,6 +117,7 @@ const Branch = () => {
           (project.branchPage && project.branchPage.braCity === "Dhaka")
       )
     : branch;
+    
 
   const filteredAndSearchedProjects = filteredProjects.filter((project) => {
     const searchTermLower = searchTerm.toLowerCase();
@@ -127,18 +129,21 @@ const Branch = () => {
     setFilterByCity(!filterByCity);
   };
 
+    const handleFilterToggleInverse = () => {
+      setFilterByCity(!filterByCity);
+    };
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   return (
     <div className="bg-[#ffffff] ">
-        
-        <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
-          <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">
-            BRANCHES
-          </h2>
-        </div>
+      <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
+        <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">
+          BRANCHES
+        </h2>
+      </div>
 
       <div className="sticky top-[70px] z-10 rounded-xl  shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
         <motion.label
@@ -151,6 +156,23 @@ const Branch = () => {
           variants={buttonVariants}
           whileHover="hover">
           Inside Dhaka
+          <motion.input
+            type="checkbox"
+            checked={filterByCity}
+            onChange={handleFilterToggle}
+            className="ml-2 form-checkbox text-PDCL-green rounded"
+          />
+        </motion.label>
+        <motion.label
+          className={` ${
+            filterByCity ? "bg-[#00984a]" : "bg-gray-500"
+          } hover: text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md`}
+          layout
+          transition={spring}
+          whileTap={{ scale: 0.9 }}
+          variants={buttonVariants}
+          whileHover="hover">
+          Outside Dhaka
           <motion.input
             type="checkbox"
             checked={filterByCity}
@@ -178,6 +200,5 @@ const Branch = () => {
     </div>
   );
 };
-//4,6,8,11,19,25
 
 export default Branch;

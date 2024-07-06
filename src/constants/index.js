@@ -712,27 +712,8 @@ const branch = [
       },
     ],
   },
-
   {
     branchID: 7,
-    heading: "Badda",
-    image: Badda,
-    name: "Popular Diagnostic Centre Ltd. (Badda)",
-    address: "Cha-90/2, North Badda (Pragoti Sharoni), Dhaka-1212.",
-    Hotline: "09666787809",
-    Email: "info@populardiagnostic.com",
-    branchPage: {
-      braCity: "Dhaka",
-      location:
-        "https://maps.google.com/maps?q=23.7885462,90.4250215&hl=es;z=14&output=embed",
-
-      braManImg: MrFirozMia,
-      braManName: "Mr. Firoz Mia",
-      braManDesignation: "Head of Branch",
-    },
-  },
-  {
-    branchID: 8,
     heading: "Uttara Garib E Newaz",
     image: UttaraGaribENewaz,
     name: "Popular Diagnostic Centre Ltd. (Uttara Garib-E-Newaz)",
@@ -748,6 +729,24 @@ const branch = [
       braManImg: MdJahurulIslamRony,
       braManName: " Md. Jahurul Islam Rony",
       braManDesignation: "Branch In-Charge",
+    },
+  },
+  {
+    branchID: 8,
+    heading: "Badda",
+    image: Badda,
+    name: "Popular Diagnostic Centre Ltd. (Badda)",
+    address: "Cha-90/2, North Badda (Pragoti Sharoni), Dhaka-1212.",
+    Hotline: "09666787809",
+    Email: "info@populardiagnostic.com",
+    branchPage: {
+      braCity: "Dhaka",
+      location:
+        "https://maps.google.com/maps?q=23.7885462,90.4250215&hl=es;z=14&output=embed",
+
+      braManImg: MrFirozMia,
+      braManName: "Mr. Firoz Mia",
+      braManDesignation: "Head of Branch",
     },
   },
   {
