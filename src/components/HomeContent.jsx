@@ -6,6 +6,7 @@ import { fadeIn } from "../utils/motion";
 import video from "../assets/contacts.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";
+import { Link } from "react-router-dom";
 
 function Number({ n }) {
   const countRef = useRef(null);
@@ -56,7 +57,7 @@ const ProjectCard = ({
 }) => {
   return (
     <div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <div className="grid md:grid-row-3 items-center sm:w-[379px] w-full justify-center mx-auto  md:gap-0 ">
+      <div className="grid md:grid-row-3 items-center sm:w-[379px] w-full justify-center mx-auto  md:gap-0 transition-transform duration-700 transform hover:-translate-y-3">
         <div className="text-black m-2 bg-gradient-to-b from-[#F5FFFA]/0 to-[#f0fff0]/60  shadow-md rounded-xl  w-auto text-center">
           <div className="relative w-auto h-auto">
             <video
@@ -237,12 +238,14 @@ const HomeContent = () => {
             info@populardiagnostic.com
           </p>
           <div className="flex flex-row">
-            <button className="bg-white border rounded mt-10 m-2 p-3 hover:bg-[#00984a] hover:text-white">
-              Contact Now
-            </button>
-            <button className="bg-none border text-white rounded mt-10 m-2 p-3 hover:bg-gray-500 hover:text-white">
+            <a
+              href={`tel:10636`}
+              className="bg-white border rounded mt-10 m-2 p-3 hover:bg-[#00984a] hover:text-white">
+              Call Now
+            </a>
+            <Link to={"/hotlines"} className="bg-none border text-white rounded mt-10 m-2 p-3 hover:bg-gray-500 hover:text-white">
               Learn More
-            </button>
+            </Link>
           </div>
         </div>
       </div>

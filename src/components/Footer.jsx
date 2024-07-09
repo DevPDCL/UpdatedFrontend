@@ -113,17 +113,24 @@ const Footer = ({ message, children }) => {
                     </a>
                   </li>
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
-                      Our Branches
-                    </a>
+                    <Link to="/branch" className="font-ubuntu hover:underline"> Our
+                      Branches
+                    </Link>
                   </li>
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
+                    <a
+                      href="http://appointment.populardiagnostic.com/appointment"
+                      target="blank"
+                      className="font-ubuntu hover:underline">
                       Call for Appointments
                     </a>
                   </li>
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
+                    <a
+                      href="/doctorsearch"
+                      target="blank"
+                      className="font-ubuntu hover:underline">
+                      {" "}
                       Find Doctors
                     </a>
                   </li>
