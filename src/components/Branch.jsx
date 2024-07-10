@@ -108,6 +108,8 @@ const ProjectCard = ({
 
 const Branch = () => {
   const [filterByCity, setFilterByCity] = useState(false);
+  const [insideDhaka, setInsideDhaka] = useState([])
+  const [outsideDhaka, setOutsideDhaka] = useState([])
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProjects = filterByCity
@@ -117,7 +119,6 @@ const Branch = () => {
           (project.branchPage && project.branchPage.braCity === "Dhaka")
       )
     : branch;
-    
 
   const filteredAndSearchedProjects = filteredProjects.filter((project) => {
     const searchTermLower = searchTerm.toLowerCase();
@@ -182,7 +183,7 @@ const Branch = () => {
         </motion.label>
 
         <motion.input
-          className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+          className="px-2 py-1 border  text-[#00984a] border-PDCL-green bg-gray-200  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
           type="text"
           placeholder="Search Branches"
           value={searchTerm}

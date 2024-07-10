@@ -1,7 +1,7 @@
 import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
-import { Search } from "../../components";
+import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
 
 const UnitCard = ({ unit }) => {
@@ -39,6 +39,7 @@ const UnitCard = ({ unit }) => {
 
 const Shyamoli = () => {
   const branchInfo = branch.find((b) => b.heading === "Shyamoli");
+    const branchName = branchInfo.heading;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <h1 className="text-gray-700/70 text-center text-4xl -mt-24 font-bold font-ubuntu">
@@ -49,7 +50,7 @@ const Shyamoli = () => {
             font-bold text-[#00664a]">
         Popular Diagnostic Center{" "}
         <span className="text-7xl text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-          {branchInfo.heading}{" "}
+          {branchName}{" "}
         </span>
         Branch.
       </h1>
@@ -71,7 +72,7 @@ const Shyamoli = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <Search />
+        <SearchBoxBranch branchName={branchName} />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">

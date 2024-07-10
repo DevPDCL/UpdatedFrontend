@@ -42,6 +42,7 @@ const UnitCard = ({ unit }) => {
 
 const Shantinagar = () => {
     const branchInfo = branch.find((b) => b.heading === "Shantinagar");
+    const branchName = branchInfo.heading;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
@@ -58,7 +59,7 @@ const Shantinagar = () => {
             font-bold text-[#00664a]">
             Popular Diagnostic Center{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-              {branchInfo.heading}{" "}
+              {branchName}{" "}
             </span>
             Branch.
           </h1>
@@ -76,7 +77,7 @@ const Shantinagar = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <SearchBoxBranch />
+        <SearchBoxBranch branchName={branchName} />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">

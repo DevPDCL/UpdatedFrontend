@@ -21,14 +21,17 @@ const Header = () => (
   </div>
 );
 
-const Search = () => {
+const Search = ({branchName}) => {
+  console.log(typeof(branchName));
     const [activeTab, setActiveTab] = useState("styled-profile");
 
     const handleTabClick = (tabId) => {
       setActiveTab(tabId);
     };
 
-    const branchSearch = ServiceCost.find(branch => branch.braName === 'Shantinagar');
+    const branchSearch = ServiceCost.find(
+      (branch) => branch.braName === branchName
+    );
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredServices, setFilteredServices] = useState([]);
     const handleSearch = (e) => {
@@ -132,54 +135,50 @@ const Search = () => {
       new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
     );
 
-    useEffect(() => {
-      let result = doctorData1.doctors;
-      
-      result = result.filter((doctor) =>
-        doctor.chember.some((ch) => ch.branch === "Shantinagar")
-      );
+    useEffect(
+      () => {
+        let result = doctorData1.doctors;
 
+        result = result.filter((doctor) =>
+          doctor.chember.some((ch) => ch.branch === branchName)
+        );
 
-      if (
-        selectedSpecialization ||
-        selectedDay ||
-        searchTerm1 ||
-        showFemaleDoctors
-      ) {
+        if (
+          selectedSpecialization ||
+          selectedDay ||
+          searchTerm1 ||
+          showFemaleDoctors
+        ) {
+          if (selectedSpecialization) {
+            result = result.filter(
+              (doctor) => doctor.drSpecilist === selectedSpecialization
+            );
+          }
 
-        if (selectedSpecialization) {
-          result = result.filter(
-            (doctor) => doctor.drSpecilist === selectedSpecialization
-          );
+          if (selectedDay) {
+            result = result.filter((doctor) =>
+              doctor.chember.some((ch) =>
+                ch.weekday.some((wd) => wd.day === selectedDay)
+              )
+            );
+          }
+
+          if (searchTerm1) {
+            result = result.filter((doctor) =>
+              doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
+            );
+          }
+          if (showFemaleDoctors) {
+            result = result.filter((doctor) => doctor.drGender === "Female");
+          }
+        } else {
+          result = [];
         }
 
-        if (selectedDay) {
-          result = result.filter((doctor) =>
-            doctor.chember.some((ch) =>
-              ch.weekday.some((wd) => wd.day === selectedDay)
-            )
-          );
-        }
-
-        if (searchTerm1) {
-          result = result.filter((doctor) =>
-            doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
-          );
-        }
-        if (showFemaleDoctors) {
-          result = result.filter((doctor) => doctor.drGender === "Female");
-        }
-      } else {
-        result = [];
-      }
-
-      setDisplayedDoctors(result);
-    }, [
-      selectedSpecialization,
-      selectedDay,
-      searchTerm1,
-      showFemaleDoctors,
-    ]);
+        setDisplayedDoctors(result);
+      },
+      [selectedSpecialization, selectedDay, searchTerm1, showFemaleDoctors]
+    );
   return (
     <>
       <div
