@@ -107,36 +107,51 @@ const ProjectCard = ({
 };
 
 const Branch = () => {
-  const [filterByCity, setFilterByCity] = useState(false);
-  const [insideDhaka, setInsideDhaka] = useState([])
-  const [outsideDhaka, setOutsideDhaka] = useState([])
-  const [searchTerm, setSearchTerm] = useState("");
+const [filterInsideDhaka, setFilterInsideDhaka] = useState(false);
+const [filterOutsideDhaka, setFilterOutsideDhaka] = useState(false);
+const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredProjects = filterByCity
-    ? branch.filter(
-        (project) =>
-          project.braCity === "Dhaka" ||
-          (project.branchPage && project.branchPage.braCity === "Dhaka")
-      )
-    : branch;
+const insideDhakaProjects = branch.filter(
+  (project) => project.braCity === "Dhaka"
+);
+const outsideDhakaProjects = branch.filter(
+  (project) => project.braCity !== "Dhaka"
+);
 
-  const filteredAndSearchedProjects = filteredProjects.filter((project) => {
-    const searchTermLower = searchTerm.toLowerCase();
+const filteredProjects = branch.filter((project) => {
+
+
+  if (filterInsideDhaka && filterOutsideDhaka) {
+    return true; // Show all projects
+  } else if (filterInsideDhaka) {
+    return insideDhakaProjects.includes(project);
+  } else if (filterOutsideDhaka) {
+    return outsideDhakaProjects.includes(project);
+  }
+  else {
+    return true;
+  }
+});
+
+
+const filteredProjectsIncSearch = filteredProjects.filter((project) => {
     const projectNameLower = project.name.toLowerCase();
+    const searchTermLower = searchTerm.toLowerCase();
     return projectNameLower.includes(searchTermLower);
-  });
+})
 
-  const handleFilterToggle = () => {
-    setFilterByCity(!filterByCity);
-  };
 
-    const handleFilterToggleInverse = () => {
-      setFilterByCity(!filterByCity);
-    };
+const handleInsideDhakaToggle = () => {
+  setFilterInsideDhaka(!filterInsideDhaka);
+};
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+const handleOutsideDhakaToggle = () => {
+  setFilterOutsideDhaka(!filterOutsideDhaka);
+};
+
+const handleSearchChange = (event) => {
+  setSearchTerm(event.target.value);
+};
 
   return (
     <div className="bg-[#ffffff] ">
@@ -149,7 +164,7 @@ const Branch = () => {
       <div className="sticky top-[70px] z-10 rounded-xl  shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
         <motion.label
           className={` ${
-            filterByCity ? "bg-[#00984a]" : "bg-gray-500"
+            filterInsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
           } hover: text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md`}
           layout
           transition={spring}
@@ -159,14 +174,14 @@ const Branch = () => {
           Inside Dhaka
           <motion.input
             type="checkbox"
-            checked={filterByCity}
-            onChange={handleFilterToggle}
+            checked={filterInsideDhaka}
+            onChange={handleInsideDhakaToggle}
             className="ml-2 form-checkbox text-PDCL-green rounded"
           />
         </motion.label>
         <motion.label
           className={` ${
-            filterByCity ? "bg-[#00984a]" : "bg-gray-500"
+            filterOutsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
           } hover: text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md`}
           layout
           transition={spring}
@@ -176,8 +191,8 @@ const Branch = () => {
           Outside Dhaka
           <motion.input
             type="checkbox"
-            checked={filterByCity}
-            onChange={handleFilterToggle}
+            checked={filterOutsideDhaka}
+            onChange={handleOutsideDhakaToggle}
             className="ml-2 form-checkbox text-PDCL-green rounded"
           />
         </motion.label>
@@ -194,7 +209,7 @@ const Branch = () => {
       </div>
 
       <div className="flex mx-auto pb-10 pt-[100px] sm:w-[80%] p-3  max-w-7xl justify-center flex-wrap gap-4">
-        {filteredAndSearchedProjects.map((project) => (
+        {filteredProjectsIncSearch.map((project) => (
           <ProjectCard key={project.branchID} {...project} />
         ))}
       </div>
