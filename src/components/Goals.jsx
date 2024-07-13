@@ -2,12 +2,19 @@ import React from 'react'
 import "@fontsource/ubuntu";
 import { Dhanmondi, objective } from "../assets";
 import { Link } from "react-router-dom";
+
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
+import goals1 from "../assets/goals1.jpg"
+import goals2 from "../assets/goals2.jpg"
+import goals3 from "../assets/goals3.jpg"
+
+import 'react-vertical-timeline-component/style.min.css';
 const Goals = () => {
   return (
     <div className="bg-[#F5FFFA]">
 
       <div>
-        <div className="pt-[150px] sm:w-[80%] max-w-7xl mx-auto">
+        <div className="pt-[70px] sm:w-[80%] max-w-7xl mx-auto">
           <div className="flex flex-col  max-w-7xl mx-auto">
             <h1 className="text-[36px] p-5 text-gray-900">
               The New Way to Diagnostic Treatment
@@ -27,9 +34,9 @@ const Goals = () => {
             </Link>
           </div>
         </div>
-        <div className="overflow-hidden bg-white py-24 sm:py-32">
+        <div className="overflow-hidden -mt-[50px]  py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-2xl grid-cols-1 shadow-2xl bg-gray-100/5 p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className="mx-auto grid max-w-7xl grid-cols-1 shadow bg-white p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:pr-8 lg:pt-4">
                 <div className="lg:max-w-lg">
                   <div className="me-auto h-auto w-auto">
@@ -63,9 +70,9 @@ const Goals = () => {
             </div>
           </div>
         </div>
-        <div className="overflow-hidden bg-white py-24 sm:py-32">
+        <div className="overflow-hidden  -mt-[170px] py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-2xl grid-cols-1 shadow-2xl bg-gray-100/5 p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className="mx-auto grid max-w-7xl grid-cols-1 shadow bg-white p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:pr-8 lg:pt-4">
                 <div className="lg:max-w-lg">
                   <div className="me-auto h-auto w-auto">
@@ -75,7 +82,7 @@ const Goals = () => {
               </div>
               <div className=" m-1 p-10   text-start">
                 <div className="flex flex-row  max-w-7xl   ">
-                  <div className="me-auto h-auto w-auto">
+                  <div className="me-auto overflow-scroll h-auto w-auto">
                     <h1 className="text-gray-900 font-bold p-5">Our Goal</h1>
                     <p className="text-gray-500 p-5">
                       To establish a referral Diagnostic and Medical Services
@@ -85,36 +92,67 @@ const Goals = () => {
                     <h1 className="text-gray-900 font-bold p-5">
                       Our Objective
                     </h1>
-                    <p className="text-gray-500 p-5">
+                    <p className="text-gray-500 p-5 overflow-scroll h-[200px]">
                       To render the world standard diagnostic service to the
                       people of the country at an affordable cost and in turn to
                       limit the outflow of the patient abroad at the expense of
                       heard earn foreign currency by providing quality
-                      diagnostic services.
-                    </p>
-                    <p className="text-gray-500 p-5">
-                      Out door basis treatment by renowned General
+                      diagnostic services.<br></br> Out door basis treatment by renowned General
                       Practitioners, Consultants and Professors in different
-                      medical fields.
-                    </p>
-                    <p className="text-gray-500 p-5">
-                      To promote Health Education & Medical Services.
-                    </p>
-                    <p className="text-gray-500 p-5">
+                      medical fields.<br></br>To promote Health Education & Medical Services.<br></br>
                       Day care Centre for follow-up cardiac renal and oncology
-                      patients.
-                    </p>
-                    <p className="text-gray-500 p-5">
-                      To build a full fledged specialized (Tertiary) Hospital.
-                    </p>
-                    <p className="text-gray-500 p-5">
+                      patients.<br></br>To build a full fledged specialized (Tertiary) Hospital.<br></br>
                       Set up Satellite collection Centre.
                     </p>
+                    
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+
+        <div className=" max-w-7xl mx-auto items-center relative justify-center">
+
+         
+          <VerticalTimeline>
+            <VerticalTimelineElement
+              className="vertical-timeline-element "
+              contentStyle={{ background: '#00984a', color: '#fff' }}
+              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+
+              iconStyle={{ background: '#00984a', color: '#fff' }}
+              icon={<p className='flex  justify-center font-extrabold text-center'>1983</p>}
+            >
+              <img src={goals1}/>
+              <p>Started our activities</p>
+            </VerticalTimelineElement>
+            <VerticalTimelineElement
+              className="vertical-timeline-element"
+              contentStyle={{ background: '#00984a', color: '#fff' }}
+              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+
+              iconStyle={{ background: '#00984a', color: '#fff' }}
+              icon={<p className='flex  justify-center font-extrabold text-center'>2016</p>}
+            >
+              <img src={goals2} />
+              <p>New branches opened at Badda, Dinajpur and Mirpur.</p>
+            </VerticalTimelineElement>
+            <VerticalTimelineElement
+              className="vertical-timeline-element"
+              contentStyle={{ background: '#00984a', color: '#fff' }}
+              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+
+              iconStyle={{ background: '#00984a', color: '#fff' }}
+              icon={<p className='flex  justify-center font-extrabold text-center'>2017</p>}
+            >
+              <img src={goals3} />
+              <p>Started six new 'Model Pharmacies' all over Bangladesh</p>
+            </VerticalTimelineElement>
+            
+          </VerticalTimeline>
+
         </div>
       </div>
     </div>

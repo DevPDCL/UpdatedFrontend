@@ -7,10 +7,10 @@ const Chairman = () => {
     <div className="bg-[#F5FFFA]">
       <div className="overflow-hidden  bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 shadow-2xl bg-gray-100/5 p-5 rounded gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 shadow bg-gray-100/5 p-5 rounded gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="lg:pr-8  lg:pt-4">
               <div className="lg:max-w-lg">
-                <div className="pl-10 h-auto w-auto">
+                <div className="pl-10  w-auto">
                   {/* SVG background container */}
                   <div className="relative">
                     {/* SVG positioned absolutely */}
@@ -47,7 +47,7 @@ const Chairman = () => {
                     <img
                       src={LateTaheraAkhter}
                       alt="Late Tahera Akhter"
-                      className="relative z-10 h-full mx-auto w-auto rounded-3xl "
+                      className="relative z-10 h-[400px] p-10 mx-auto w-auto rounded-3xl "
                     />
                   </div>
                   <h1 className="text-gray-800 text-center text-[36px] font-bold">
@@ -62,7 +62,7 @@ const Chairman = () => {
             <div className=" m-1 p-10   text-start">
               <div className="flex flex-row  max-w-7xl   ">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5  text-justify">
+                  <p className="text-gray-500 p-5 h-[400px] overflow-scroll  text-justify">
                     "After the liberation war, the health sector of Bangladesh
                     was completely deprived due to various political instability
                     and uncertainity. Unfortunately a significant number of

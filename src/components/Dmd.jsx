@@ -47,7 +47,7 @@ const Dmd = () => {
                     <img
                       src={SardinRahman}
                       alt="Sardin Rahman"
-                      className="relative z-10 h-full mx-auto w-auto rounded-3xl "
+                      className="relative z-10 h-[400px] mx-auto w-auto rounded-3xl "
                     />
                   </div>
                   <h1 className="text-gray-900 text-center text-[36px] font-bold">
@@ -62,7 +62,7 @@ const Dmd = () => {
             <div className="m-1 p-10 text-start">
               <div className="flex flex-row max-w-7xl">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5  text-justify">
+                  <p className="text-gray-500 p-5 h-[400px] overflow-scroll text-justify">
                     **Message will be updated soon**
                   </p>
                 </div>
