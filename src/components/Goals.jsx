@@ -28,7 +28,7 @@ const Goals = () => {
               path of "Health for all".
             </p>
             <Link to="/about">
-              <button className="bg-[#00984a] p-2 pl-5 pr-5 w-[200px]  rounded-xl ml-5 mx-auto">
+              <button className="bg-[#f0f0f0] p-2 pl-5 pr-5 w-[200px]  rounded-xl ml-5 mx-auto">
                 SEE OUR TEAM
               </button>
             </Link>
@@ -119,33 +119,33 @@ const Goals = () => {
           <VerticalTimeline>
             <VerticalTimelineElement
               className="vertical-timeline-element "
-              contentStyle={{ background: '#00984a', color: '#fff' }}
-              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
+              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
 
-              iconStyle={{ background: '#00984a', color: '#fff' }}
-              icon={<p className='flex  justify-center font-extrabold text-center'>1983</p>}
+              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
+              icon={<p className='flex  justify-center text-black font-extrabold text-center'>1983</p>}
             >
               <img src={goals1}/>
               <p>Started our activities</p>
             </VerticalTimelineElement>
             <VerticalTimelineElement
               className="vertical-timeline-element"
-              contentStyle={{ background: '#00984a', color: '#fff' }}
-              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
+              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
 
-              iconStyle={{ background: '#00984a', color: '#fff' }}
-              icon={<p className='flex  justify-center font-extrabold text-center'>2016</p>}
+              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
+              icon={<p className='flex  justify-center text-black font-extrabold text-center'>2016</p>}
             >
               <img src={goals2} />
               <p>New branches opened at Badda, Dinajpur and Mirpur.</p>
             </VerticalTimelineElement>
             <VerticalTimelineElement
               className="vertical-timeline-element"
-              contentStyle={{ background: '#00984a', color: '#fff' }}
-              contentArrowStyle={{ borderRight: '10px solid  #00984a' }}
+              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
+              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
 
-              iconStyle={{ background: '#00984a', color: '#fff' }}
-              icon={<p className='flex  justify-center font-extrabold text-center'>2017</p>}
+              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
+              icon={<p className='flex  justify-center text-black font-extrabold text-center'>2017</p>}
             >
               <img src={goals3} />
               <p>Started six new 'Model Pharmacies' all over Bangladesh</p>
