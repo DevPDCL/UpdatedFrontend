@@ -32,6 +32,22 @@ import Mirpur from "../components/Branch/Mirpur";
 import Uttara from "../components/Branch/Uttara";
 import Bogura from "../components/Branch/Bogura";
 import Rangpur from "../components/Branch/Rangpur";
+import Badda from "../components/Branch/Badda";
+import Barishal from "../components/Branch/Barishal";
+import Chattogram from "../components/Branch/Chattogram";
+import Dhanmondi from "../components/Branch/Dhanmondi";
+import Dinajpur from "../components/Branch/Dinajpur";
+import EnglishRoad from "../components/Branch/EnglishRoad";
+import Gazipur from "../components/Branch/Gazipur";
+import Jatrabari from "../components/Branch/Jatrabari";
+import Khulna from "../components/Branch/Khulna";
+import Kushtia from "../components/Branch/Kushtia";
+import Mymensingh from "../components/Branch/Mymensingh";
+import Narayangonj from "./Branch/Narayangonj";
+import Noakhali from "../components/Branch/Noakhali";
+import Rajshahi from "../components/Branch/Rajshahi";
+import Savar from "../components/Branch/Savar";
+import UttaraGaribENewaz from "../components/Branch/UttaraGaribENewaz";
 import Hotlines from "./Hotlines";
 import Privacy from "./Privacy";
 import Terms from "./Terms";
@@ -45,6 +61,22 @@ export {
   Details,
   Goals,
   DoctorSearch,
+  Badda,
+  Barishal,
+  Chattogram,
+  Dhanmondi,
+  Dinajpur,
+  EnglishRoad,
+  Gazipur,
+  Jatrabari,
+  Khulna,
+  Kushtia,
+  Mymensingh,
+  Narayangonj,
+  Noakhali,
+  Rajshahi,
+  Savar,
+  UttaraGaribENewaz,
   Refund,
   Chairman,
   DoctorDetail,

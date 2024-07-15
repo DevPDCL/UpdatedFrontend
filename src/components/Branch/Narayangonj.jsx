@@ -1,11 +1,11 @@
 import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
-import { SearchBoxBranch } from "../../components";
+import { SearchBoxBranch } from "..";
 import { branch } from "../../constants";
 
-const Gazipur = () => {
-  const branchInfo = branch.find((b) => b.heading === "Gazipur");
+const Narayangong = () => {
+  const branchInfo = branch.find((b) => b.heading === "Narayangonj");
   const branchName = branchInfo.heading;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
@@ -83,4 +83,4 @@ const Gazipur = () => {
   );
 };
 
-export default Gazipur;
+export default Narayangong;
