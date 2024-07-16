@@ -121,13 +121,74 @@
       "dest": "/"
     },
     {
-      "src": "/hotlines",
+      "src": "/badda",
       "dest": "/"
     },
     {
-      "src": "/(.*)",
-      "dest": "/404.html",
-      "status": 404
+      "src": "/barishal",
+      "dest": "/"
+    },
+    {
+      "src": "/chattogram",
+      "dest": "/"
+    },
+    {
+      "src": "/dhanmondi",
+      "dest": "/"
+    },
+      {
+        "src": "/dinajpur",
+        "dest": "/"
+      },
+      {
+        "src": "/englishRoad",
+        "dest": "/"
+      },
+      {
+        "src": "/gazipur",
+        "dest": "/"
+      },
+      {
+        "src": "/jatrabari",
+        "dest": "/"
+      },
+      {
+        "src": "/khulna",
+        "dest": "/"
+      },
+      {
+        "src": "/kushtia",
+        "dest": "/"
+      },
+      {
+        "src": "/mymensingh",
+        "dest": "/"
+      },
+      {
+        "src": "/narayangonj",
+        "dest": "/"
+      },
+      {
+        "src": "/noakhali",
+        "dest": "/"
+      },
+      {
+        "src": "/rajshahi",
+        "dest": "/"
+      },
+      {
+        "src": "/savar",
+        "dest": "/"
+      },
+      {
+        "src": "/uttaragaribenewaz",
+        "dest": "/"
+      },
+    {
+      "src": "/hotlines",
+      "dest": "/"
     }
+
+    
   ]
 }
