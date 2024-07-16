@@ -189,13 +189,11 @@
       "dest": "/"
     },
     {
-      "rewrites": [
-        {
           "source": "/(.*)",
           "destination": "/"
-        }
-      ]
     }
+     
+  
 
     
   ]
