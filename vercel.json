@@ -187,14 +187,13 @@
     {
       "src": "/hotlines",
       "dest": "/"
-    },
-    {
-          "source": "/(.*)",
-          "destination": "/"
     }
-     
-  
-
     
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
