@@ -62,7 +62,7 @@ const Dmd = () => {
             <div className="m-1 p-10 text-start">
               <div className="flex flex-row max-w-7xl">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5 h-[400px] overflow-scroll text-justify">
+                  <p className="text-gray-500 p-5 h-auto text-justify">
                     **Message will be updated soon**
                   </p>
                 </div>

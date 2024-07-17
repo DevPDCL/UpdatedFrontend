@@ -62,7 +62,7 @@ const Chairman = () => {
             <div className=" m-1 p-10   text-start">
               <div className="flex flex-row  max-w-7xl   ">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5 h-[400px] overflow-scroll  text-justify">
+                  <p className="text-gray-500 p-5 h-auto  text-justify">
                     "After the liberation war, the health sector of Bangladesh
                     was completely deprived due to various political instability
                     and uncertainity. Unfortunately a significant number of

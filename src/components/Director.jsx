@@ -62,7 +62,7 @@ const Director = () => {
             <div className=" m-1 p-10   text-start">
               <div className="flex flex-row  max-w-7xl   ">
                 <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5 h-[400px] overflow-scroll text-justify">
+                  <p className="text-gray-500 p-5 h-auto  text-justify">
                     "Popular started its journey as diagnostic centre in June
                     1983 with a Promise to render the possible standard service
                     to the people of the country at an affordable cost and in

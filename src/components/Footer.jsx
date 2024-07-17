@@ -43,7 +43,7 @@ const Footer = ({ message, children }) => {
                 </h2>
                 <ul className="text-white font-medium">
                   <li className="mb-4">
-                    <a href="#" className="font-ubuntu hover:underline">
+                    <a  className="font-ubuntu">
                       House #16, Road # 2, Dhanmondi R/A, <br></br>Dhaka-1205,
                       Bangladesh
                     </a>
@@ -60,10 +60,11 @@ const Footer = ({ message, children }) => {
                     </a>
                   </li>
                   <li className="mb-4">
+                    E-mail: {""}
                     <a
                       href="mailto:info@populardiagnostic.com"
                       className="font-ubuntu hover:underline">
-                      E-mail : info@populardiagnostic.com
+                      info@populardiagnostic.com
                     </a>
                   </li>
                 </ul>
@@ -75,6 +76,14 @@ const Footer = ({ message, children }) => {
                     Important Links
                   </h2>
                   <ul className="text-white font-medium">
+                    <li className="mb-4">
+                      <a
+                        href="https://www.popular-hospital.com/"
+                        target="_blank"
+                        className="font-ubuntu hover:underline">
+                        Popular Medical College Hospital
+                      </a>
+                    </li>
                     <li className="mb-4">
                       <a
                         href="https://www.popular-pharma.com/"
@@ -91,14 +100,7 @@ const Footer = ({ message, children }) => {
                         Popular Medical College
                       </a>
                     </li>
-                    <li className="mb-4">
-                      <a
-                        href="https://www.popular-hospital.com/"
-                        target="_blank"
-                        className="font-ubuntu hover:underline">
-                        Popular Medical College Hospital
-                      </a>
-                    </li>
+                   
                   </ul>
                 </div>
               </div>
