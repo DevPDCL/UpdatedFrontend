@@ -120,9 +120,9 @@ const Sidemenu = () => {
               </span>
             </div>
           </Link>
-          <Link to="https://wa.me/+8801313032593?text=Hello How can I help you?" rel="noopener noreferrer">
+          <Link to="https://wa.me/8801313032593?text=Hello How can I help you?" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[500px] right-0 hover:cursor-pointer font-extrabold">
-              <a href="https://wa.me/+8801313032593?text=Hello How can I help you?" target="_blank">
+              <a href="https://wa.me/8801313032593?text=Hello How can I help you?" target="_blank">
                <span
                 className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
