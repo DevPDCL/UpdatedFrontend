@@ -82,7 +82,7 @@ const Goals = () => {
               </div>
               <div className=" m-1 p-10   text-start">
                 <div className="flex flex-row  max-w-7xl   ">
-                  <div className="me-auto overflow-scroll h-auto w-auto">
+                  <div className="me-auto  h-auto w-auto">
                     <h1 className="text-gray-900 font-bold p-5">Our Goal</h1>
                     <p className="text-gray-500 p-5">
                       To establish a referral Diagnostic and Medical Services
@@ -92,7 +92,7 @@ const Goals = () => {
                     <h1 className="text-gray-900 font-bold p-5">
                       Our Objective
                     </h1>
-                    <p className="text-gray-500 p-5 overflow-scroll h-[200px]">
+                    <p className="text-gray-500 p-5  h-auto">
                       To render the world standard diagnostic service to the
                       people of the country at an affordable cost and in turn to
                       limit the outflow of the patient abroad at the expense of
