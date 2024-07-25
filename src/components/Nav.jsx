@@ -10,14 +10,14 @@ const Nav = () => {
         className={`${styles.paddingX} shadow-lg w-full h-[35px] top-0 z-20 flex flex-col items-center justify-center bg-[#00984a]`}>
         <div className="w-full h-[30px]  flex flex-wrap items-center   justify-between max-w-7xl text-[#ffffff] ">
           <div className="flex flex-row items-center  justify-start me-auto">
-            <div className="flex flex-row items-center justify-center ">
+            <div className="flex flex-row items-center justify-center">
               <svg
-                className="w-4 h-4 fill-white "
+                className="w-4 h-4 fill-white hidden md:block"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path>
               </svg>
-              <p className="pl-1 text-[15px]  text-white font-extrabold font-ubuntu">
+              <p className="pl-1 text-[15px] hidden md:block text-white font-extrabold font-ubuntu">
                 24/7
               </p>
             </div>
@@ -41,8 +41,14 @@ const Nav = () => {
             <div className="flex flex-row items-center justify-center ">
               <Link to="/hotlines" className="text-white flex items-center">
                 <h2
-                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal`}>
+                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal hidden md:block`}>
                   Other Branches <span> </span>
+                </h2>
+              </Link>
+              <Link to="/hotlines" className="text-white flex items-center">
+                <h2
+                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal md:hidden`}>
+                  Hotlines <span> </span>
                 </h2>
               </Link>
             </div>
@@ -64,7 +70,7 @@ const Nav = () => {
               href="https://www.facebook.com/populardiagnostic"
               target="_blank"
               aria-label="Facebook"
-              className="text-white p-1 pl-2">
+              className="text-white p-1 pl-2 hidden md:block">
               <svg
                 className="w-4 h-4 text-white"
                 aria-hidden="true"
@@ -83,7 +89,7 @@ const Nav = () => {
               href="https://www.linkedin.com/company/populardiagnostic"
               target="_blank"
               aria-label="LinkedIn"
-              className="text-white p-1 pl-2 ">
+              className="text-white p-1 pl-2  hidden md:block">
               <svg
                 className="w-4 h-4 text-white"
                 aria-hidden="true"
@@ -102,7 +108,7 @@ const Nav = () => {
               href="https://www.youtube.com/@populardiagnostic"
               target="_blank"
               aria-label="Visit our Youtube channel"
-              className="text-white p-1 pl-2 mr-2 hover:text-gray-900 dark:hover:text-black">
+              className="text-white p-1 pl-2 mr-2 hover:text-gray-900 dark:hover:text-black  hidden md:block">
               <svg
                 className="w-4 h-4 text-white"
                 viewBox="0 0 576 512"

@@ -42,7 +42,7 @@ const DoctorCard = ({ doctor }) => {
       {/* Wrap the entire DoctorCard with the Link */}
       <div
         className={`relative flex w-72 flex-col rounded-xl ${cardBackgroundColor} bg-clip-border text-gray-700 shadow-md h-full transition-transform duration-700 transform hover:-translate-y-3`}>
-        <div className="relative mx-4 mt-4 h-100 overflow-hidden rounded-xl ${backgroundColor} bg-clip-border text-gray-700 shadow-lg">
+        <div className="relative mx-4 mt-4 h-100 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
           {doctor.image ? (
             <img
               src={doctor.image}
