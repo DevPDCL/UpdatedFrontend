@@ -19,7 +19,7 @@ const Director = () => {
                       x="0px"
                       y="0px"
                       viewBox="0 0 288 288"
-                      className="absolute bottom-5 ml-20 h-full w-auto opacity-50"
+                      className="absolute bottom-5 sm:ml-16 h-full w-auto opacity-50"
                       style={{ transform: "scale(1.5)" }}>
                       <linearGradient
                         id="PSgrad_0"
@@ -46,7 +46,7 @@ const Director = () => {
                     {/* Image with relative positioning */}
                     <img
                       src={DrMostafizurRahman}
-                      alt="Dr Mostafizur Rahman"
+                      alt="Sardin Rahman"
                       className="relative z-10 h-[400px] mx-auto w-auto rounded-3xl "
                     />
                   </div>

@@ -19,7 +19,7 @@ const Dmd = () => {
                       x="0px"
                       y="0px"
                       viewBox="0 0 288 288"
-                      className="absolute bottom-5 ml-20 h-full w-auto opacity-50"
+                      className="absolute bottom-5 sm:ml-16 h-full w-auto opacity-50"
                       style={{ transform: "scale(1.5)" }}>
                       <linearGradient
                         id="PSgrad_0"

@@ -12,7 +12,6 @@ import 'react-vertical-timeline-component/style.min.css';
 const Goals = () => {
   return (
     <div className="bg-[#F5FFFA]">
-
       <div>
         <div className="pt-[70px] sm:w-[80%] max-w-7xl mx-auto">
           <div className="flex flex-col  max-w-7xl mx-auto">
@@ -97,14 +96,15 @@ const Goals = () => {
                       people of the country at an affordable cost and in turn to
                       limit the outflow of the patient abroad at the expense of
                       heard earn foreign currency by providing quality
-                      diagnostic services.<br></br> Out door basis treatment by renowned General
-                      Practitioners, Consultants and Professors in different
-                      medical fields.<br></br>To promote Health Education & Medical Services.<br></br>
+                      diagnostic services.<br></br> Out door basis treatment by
+                      renowned General Practitioners, Consultants and Professors
+                      in different medical fields.<br></br>To promote Health
+                      Education & Medical Services.<br></br>
                       Day care Centre for follow-up cardiac renal and oncology
-                      patients.<br></br>To build a full fledged specialized (Tertiary) Hospital.<br></br>
+                      patients.<br></br>To build a full fledged specialized
+                      (Tertiary) Hospital.<br></br>
                       Set up Satellite collection Centre.
                     </p>
-                    
                   </div>
                 </div>
               </div>
@@ -112,47 +112,48 @@ const Goals = () => {
           </div>
         </div>
 
-
         <div className=" max-w-7xl mx-auto items-center relative justify-center">
-
-         
           <VerticalTimeline>
             <VerticalTimelineElement
               className="vertical-timeline-element "
-              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
-              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
-
-              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
-              icon={<p className='flex  justify-center text-black font-extrabold text-center'>1983</p>}
-            >
-              <img src={goals1}/>
+              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
+              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
+              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
+              icon={
+                <p className="flex  justify-center text-black font-extrabold text-center">
+                  1983
+                </p>
+              }>
+              <img src={goals1} className="object-cover w-full mx-auto" />
               <p>Started our activities</p>
             </VerticalTimelineElement>
             <VerticalTimelineElement
               className="vertical-timeline-element"
-              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
-              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
-
-              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
-              icon={<p className='flex  justify-center text-black font-extrabold text-center'>2016</p>}
-            >
-              <img src={goals2} />
+              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
+              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
+              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
+              icon={
+                <p className="flex  justify-center text-black font-extrabold text-center">
+                  2016
+                </p>
+              }>
+              <img src={goals2} className="object-cover w-full mx-auto" />
               <p>New branches opened at Badda, Dinajpur and Mirpur.</p>
             </VerticalTimelineElement>
             <VerticalTimelineElement
               className="vertical-timeline-element"
-              contentStyle={{ background: '#f0f0f0', color: '#000000' }}
-              contentArrowStyle={{ borderRight: '10px solid  #f0f0f0' }}
-
-              iconStyle={{ background: '#f0f0f0', color: '#000000' }}
-              icon={<p className='flex  justify-center text-black font-extrabold text-center'>2017</p>}
-            >
-              <img src={goals3} />
+              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
+              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
+              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
+              icon={
+                <p className="flex  justify-center text-black font-extrabold text-center">
+                  2017
+                </p>
+              }>
+              <img src={goals3} className=" object-cover w-full mx-auto" />
               <p>Started six new 'Model Pharmacies' all over Bangladesh</p>
             </VerticalTimelineElement>
-            
           </VerticalTimeline>
-
         </div>
       </div>
     </div>
