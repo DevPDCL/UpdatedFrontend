@@ -34,6 +34,7 @@ import {
   RangpurU2,
   Savar,
   ShantinagarU1,
+  ShantinaagarUnit1,
   ShantinagarU2,
   ShyamoliU1,
   ShyamoliU2,
@@ -566,7 +567,7 @@ const branch = [
   {
     branchID: 3,
     heading: "Shantinagar",
-    image: ShantinagarU1,
+    image: ShantinaagarUnit1,
     Hotline: "09666787803",
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
@@ -579,7 +580,7 @@ const branch = [
       {
         unitID: 1,
         BranchUnit: "U1",
-        image: ShantinagarU1,
+        image: ShantinaagarUnit1,
         location:
           "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
         name: "Shantinagar (U-1)",
