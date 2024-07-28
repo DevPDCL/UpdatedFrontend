@@ -85,6 +85,9 @@ const Appointment = () => {
                         Checkup Date
                       </th>
                       <th scope="col" class="px-6 py-3">
+                        Serial
+                      </th>
+                      <th scope="col" class="px-6 py-3">
                         Status
                       </th>
                       <th scope="col" class="px-6 py-3">
@@ -125,6 +128,7 @@ const Appointment = () => {
                       <td class="px-6 py-4">51</td>
                       <td class="px-6 py-4">Female</td>
                       <td class="px-6 py-4">29/04/2024</td>
+                      <td class="px-6 py-4">12</td>
                       <td class="px-6 py-4">Registered</td>
                       <td class="px-6 py-4">Dr. Ruhul Kuddus</td>
                       <td class="px-6 py-4">Neuro Medicine</td>
