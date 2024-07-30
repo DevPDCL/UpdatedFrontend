@@ -58,6 +58,7 @@ import Appointment from "./adminpanel/Appointment";
 import Csample from "./adminpanel/Csample";
 import Ccomplain from "./adminpanel/Ccomplain";
 import Management from "./adminpanel/Management";
+import Doctors from "./adminpanel/Doctors";
 import "./index.css";
 
 const App = () => {
@@ -147,6 +148,7 @@ const routes = [
       { path: "/uttaragaribenewaz", element: <UttaraGaribENewaz /> },
       { path: "/refund", element: <Refund /> },
       { path: "/servicesearch", element: <ServiceSearch /> },
+      { path: "/doctors", element: <Doctors /> },
     ],
     errorElement: <Error />,
   },
