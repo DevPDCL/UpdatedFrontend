@@ -187,6 +187,10 @@
     {
       "src": "/hotlines",
       "dest": "/"
+    },
+        {
+      "src": "/testapi",
+      "dest": "/"
     }
     
   ]
