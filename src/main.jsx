@@ -50,6 +50,7 @@ import {
   Rajshahi,
   Savar,
   UttaraGaribENewaz,
+  TestAPI,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -84,6 +85,7 @@ const routes = [
       { path: "/patient_portal", element: <ReportDownload /> },
       { path: "/sample", element: <Sample /> },
       { path: "/search", element: <Search /> },
+      { path: "/testapi", element: <TestAPI /> },
       {
         path: "/doctordetail/:doctorId",
         element: (

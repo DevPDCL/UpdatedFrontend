@@ -53,6 +53,7 @@ import Privacy from "./Privacy";
 import Terms from "./Terms";
 import Refund from "./Refund";
 import ServiceSearch from "./ServiceSearch";
+import TestAPI from "./TestApi";
 export {
   Branch,
   Notice,
@@ -109,4 +110,5 @@ export {
   Rangpur,
   SearchBoxBranch,
   ServiceSearch,
+  TestAPI,
 };
