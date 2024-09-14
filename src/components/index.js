@@ -54,6 +54,9 @@ import Terms from "./Terms";
 import Refund from "./Refund";
 import ServiceSearch from "./ServiceSearch";
 import TestAPI from "./TestApi";
+import ContactForm from "./ContactForm";
+
+
 export {
   Branch,
   Notice,
@@ -111,4 +114,5 @@ export {
   SearchBoxBranch,
   ServiceSearch,
   TestAPI,
+  ContactForm,
 };

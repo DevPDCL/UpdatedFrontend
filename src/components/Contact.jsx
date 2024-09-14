@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "@fontsource/ubuntu";
 import { Card, Typography } from "@material-tailwind/react";
 import { Input, Button } from "@material-tailwind/react";
 
 import { Link } from "react-router-dom";
 function Contact() {
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    message: "",
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    try {
+      const response = await axios.post(
+        "http://51.20.54.185/api/messages",
+        formData
+      );
+      setSuccess("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        mobile: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("There was an error sending the message!", error);
+      setError("Failed to send message. Please try again.");
+    }
+  };
   return (
     <div className="bg-[#ffffff]">
       <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
@@ -37,89 +78,80 @@ function Contact() {
       <div
         className={`justify-center  items-center p-2 text-center flex flex-col  text-white`}>
         <div className=" flex-col  max-w-7xl container sm:w-[80%] block items-stretch md:flex-row    mx-auto">
-          <Card
-            className="mx-auto w-full bg-gray-100/5 mt-[40px] shadow-2xl  rounded-[10px] max-w-7xl"
-            shadow={true}>
-            <form className="mt-1 mb-2 w-full p-5 max-w-7xl  sm:w-300">
+          <div className="mx-auto w-full bg-gray-100/5 mt-[40px] shadow-2xl rounded-[10px] max-w-7xl">
+            <form
+              className="mt-1 mb-2 w-full p-5 max-w-7xl sm:w-300"
+              onSubmit={handleSubmit}>
               <div className="mb-1 flex flex-col gap-6">
                 <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#00984a]">
                   Send us a message
                 </h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Typography
-                      variant="h6"
-                      color="blue-gray"
-                      className="text-[#00984a] text-start">
+                    <label className="text-[#00984a] text-start">
                       Your Email
-                    </Typography>
-                    <Input
-                      size="lg"
+                    </label>
+                    <input
+                      type="email"
                       placeholder="name@mail.com"
-                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
+                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
-                    <Typography
-                      variant="h6"
-                      color="blue-gray"
-                      className=" text-[#00984a] text-start">
+                    <label className="text-[#00984a] text-start">
                       Your FullName
-                    </Typography>
-                    <Input
-                      size="lg"
+                    </label>
+                    <input
+                      type="text"
                       placeholder="Name"
-                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
+                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
-                    <Typography
-                      variant="h6"
-                      color="blue-gray"
-                      className="text-[#00984a] text-start">
+                    <label className="text-[#00984a] text-start">
                       Your Mobile
-                    </Typography>
-                    <Input
-                      size="lg"
+                    </label>
+                    <input
+                      type="text"
                       placeholder="01712345678"
-                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
+                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
-                    <Typography
-                      variant="h6"
-                      color="blue-gray"
-                      className=" text-[#00984a] text-start">
+                    <label className="text-[#00984a] text-start">
                       Your Messages
-                    </Typography>
-                    <Input
-                      size="lg"
-                      placeholder="Write Support Queries"
-                      className=" !border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
+                    </label>
+                    <textarea
+                      placeholder="Write Your Queries"
+                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
               </div>
-
-              <Link to="/report">
-                <Button className="mt-6 bg-[#00984a] " fullWidth>
-                  SEND MESSAGES
-                </Button>
-              </Link>
+              <button
+                type="submit"
+                className="mt-6 bg-[#00984a] text-white p-2">
+                SEND MESSAGES
+              </button>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+              {success && <p style={{ color: "green" }}>{success}</p>}
             </form>
-          </Card>
+          </div>
         </div>
       </div>
 
