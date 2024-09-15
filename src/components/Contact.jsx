@@ -86,15 +86,15 @@ function Contact() {
                 <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#00984a]">
                   Send us a message
                 </h5>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-[#00984a] text-start">
+                    <label className="text-[#00984a] flex items-center justify-center pr-5 text-start">
                       Your Email
                     </label>
                     <input
                       type="email"
                       placeholder="name@mail.com"
-                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      className=" border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
@@ -102,13 +102,13 @@ function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="text-[#00984a] text-start">
+                    <label className="text-[#00984a] pr-5 flex items-center justify-center text-start">
                       Your FullName
                     </label>
                     <input
                       type="text"
                       placeholder="Name"
-                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      className="border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
@@ -116,26 +116,26 @@ function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="text-[#00984a] text-start">
+                    <label className="text-[#00984a] flex items-center pr-5 justify-center text-start">
                       Your Mobile
                     </label>
                     <input
                       type="text"
                       placeholder="01712345678"
-                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      className="border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="mobile"
                       value={formData.mobile}
                       onChange={handleChange}
                       required
                     />
                   </div>
-                  <div>
-                    <label className="text-[#00984a] text-start">
+                  <div className="col-span-3 pl-9 pr-9">
+                    <label className="text-[#00984a] pr-5  flex items-center justify-center  text-start">
                       Your Messages
                     </label>
                     <textarea
                       placeholder="Write Your Queries"
-                      className="!border-t-blue-gray-200 bg-white text-[#00984a] p-2 focus:!border-t-gray-900"
+                      className="border-[#00984a] rounded-lg border-2  w-full h-[200px]  bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
@@ -145,7 +145,7 @@ function Contact() {
               </div>
               <button
                 type="submit"
-                className="mt-6 bg-[#00984a] text-white p-2">
+                className="mt-6 bg-[#00984a] text-white p-2 rounded">
                 SEND MESSAGES
               </button>
               {error && <p style={{ color: "red" }}>{error}</p>}
