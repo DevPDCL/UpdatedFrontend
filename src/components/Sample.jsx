@@ -1,15 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import "@fontsource/ubuntu";
 import {
   Card,
   CardBody,
-  Button,
 } from "@material-tailwind/react";
 import { Input, Select, Option } from "@material-tailwind/react";
 
 import {  Link } from "react-router-dom";
 
 function Sample() {
+
+  const [formData, setFormData] = useState({
+    patientName: "",
+    location : "",
+    phone: "",
+    pickupTime: "",
+    branchName: "",
+    email: ""
+    
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    try {
+      const response = await axios.post(
+        "http://51.20.54.185/api/sample-collections",
+        formData
+      );
+      setSuccess("Message sent successfully!");
+      setFormData({
+        patientName: "",
+        location: "",
+        phone: "",
+        pickupTime: "",
+        branchName: "",
+        email: ""
+      });
+    } catch (error) {
+      console.error("There was an error sending the message!", error);
+      setError("Failed to send message. Please try again.");
+    }
+  };
+
+
+
+
+
+
   return (
     <div className="bg-[#e2f0e5] p-1">
       <div className=" pt-0">
@@ -54,8 +104,9 @@ function Sample() {
           </CardBody>
         </Card>
       </div>
-
+     
       <div className="bg-[#e2f0e5] pt-3 pb-3">
+        
         <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
           <CardBody
             shadow={false}
@@ -106,6 +157,9 @@ function Sample() {
           </CardBody>
         </Card>
       </div>
+      <form
+
+        onSubmit={handleSubmit}>
       <div className="bg-[#e2f0e5] pt-3 pb-3">
         <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
           <CardBody
@@ -121,8 +175,13 @@ function Sample() {
             </h1>
             <Input
               className="border-b-[1px] bg-white m-1 p-2 text-black"
-              variant="static"
+                name="patientName"
+                variant="static"
+                type="text"
               placeholder="Your Answer"
+                value={formData.patientName}
+                onChange={handleChange}
+                required
             />
             <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
               This is a required question
@@ -146,8 +205,13 @@ function Sample() {
             </h1>
             <Input
               className="border-b-[1px] bg-white m-1 p-2 text-black"
-              variant="static"
-              placeholder="Your Answer"
+                name="location"
+                variant="static"
+                type="text"
+                placeholder="Your Answer"
+                value={formData.location}
+                onChange={handleChange}
+                required
             />
             <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
               This is a required question
@@ -171,8 +235,13 @@ function Sample() {
             </h1>
             <Input
               className="border-b-[1px] bg-white m-1 p-2 text-black"
-              variant="static"
-              placeholder="Your Answer"
+                name="phone"
+                variant="static"
+                type="text"
+                placeholder="Your Answer"
+                value={formData.phone}
+                onChange={handleChange}
+                required
             />
             <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
               This is a required question
@@ -180,27 +249,6 @@ function Sample() {
           </CardBody>
         </Card>
 
-        <div className="bg-[#e2f0e5] pt-3 ">
-          <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-            <CardBody
-              shadow={false}
-              floated={false}
-              className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-            >
-              <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-                Email Address
-              </h1>
-              <Input
-                className="border-b-[1px] bg-white m-1 p-2 text-black"
-                variant="static"
-                placeholder="Your Answer"
-              />
-              <p className=" pt-3 text-[12px] text-[green] font-small font-ubuntu">
-                This is a optional question
-              </p>
-            </CardBody>
-          </Card>
-        </div>
       </div>
       <div className="bg-[#e2f0e5]  ">
         <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
@@ -217,9 +265,13 @@ function Sample() {
             </h1>
             <Input
               className="border-b-[1px] bg-white m-1 p-2 text-black"
-              type="Time"
-              variant="static"
-              placeholder="Your Answer"
+                name="pickupTime"
+                variant="static"
+                type="date"
+                placeholder="Your Answer"
+                value={formData.pickupTime}
+                onChange={handleChange}
+                required
             />
             <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
               This is a required question
@@ -243,8 +295,13 @@ function Sample() {
             </h1>
             <Select
               className="border-b-[1px] m-1 p-2 text-black"
-              variant="static"
-              placeholder="Your Answer"
+                name="branchName"
+                variant="static"
+                
+                placeholder="Your Answer"
+                value={formData.branchName}
+                onChange={handleChange}
+                required
             >
               <Option className=" text-black">DHANMONDI</Option>
               <Option className=" text-black">ENGLISH ROAD</Option>
@@ -254,15 +311,42 @@ function Sample() {
             </p>
           </CardBody>
         </Card>
+        
       </div>
 
+        <div className="bg-[#e2f0e5] pt-3 ">
+          <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+            <CardBody
+              shadow={false}
+              floated={false}
+              className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+            >
+              <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                Email Address
+              </h1>
+              <Input
+                className="border-b-[1px] bg-white m-1 p-2 text-black"
+                name="email"
+                variant="static"
+                type="text"
+                placeholder="Your Answer"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <p className=" pt-3 text-[12px] text-[green] font-small font-ubuntu">
+                This is a optional question
+              </p>
+            </CardBody>
+          </Card>
+        </div>
       <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
         
-        <p className=" pt-3 text-[15px] text-center justify-center me-auto text-[#00984a] font-bold font-ubuntu">
-          Clear form
-        </p>
-        <Button className="bg-[#00984a] ms-auto">Submit</Button>
+          <button type="submit" className="bg-[#00984a] p-2 mt-10 rounded ms-auto">Submit</button>
       </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {success && <p style={{ color: "green" }}>{success}</p>}
+      </form>
       <Link to="/">
         <svg
           className="w-[80px] h-[80px]  mx-auto p-3  fill-[#00984a]"

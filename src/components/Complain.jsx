@@ -106,237 +106,234 @@ function Complain() {
         </Card>
       </div>
       <form
-       
+
         onSubmit={handleSubmit}>
         <div className="mb-1 flex flex-col gap-6">
 
-      <div className="bg-[#e2f0e5] pt-3 pb-3">
-        
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Name{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
+          <div className="bg-[#e2f0e5] pt-3 pb-3">
+
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Name{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Input
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
                   name="name"
                   variant="static"
-              type="text"
-              placeholder="Your Answer"
-                value={formData.name}
-                onChange={handleChange}
-                required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-
-      <div className="bg-[#e2f0e5] pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Phone Number{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-              variant="static"
-              type="text"
-              name="phone"
-              placeholder="Your Answer"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-
-        <div className="bg-[#e2f0e5] pt-3 ">
-          <Card className="w-full max-w-[40rem] p-3  mx-auto flex-col">
-            <CardBody
-              shadow={false}
-              floated={false}
-              className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-            >
-              <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-                Email Address{" "}
-                <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                  *
-                </span>
-              </h1>
-              <Input
-                className="border-b-[1px] bg-white m-1 p-2 text-black"
-                variant="static"
-                name="email"
-                type="email"
-                placeholder="Your Answer"
-                  value={formData.email}
+                  type="text"
+                  placeholder="Your Answer"
+                  value={formData.name}
                   onChange={handleChange}
                   required
-              />
-              <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                This is a required question
-              </p>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-      <div className="bg-[#e2f0e5]  pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Date{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-              type="Date"
+                />
+                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </p>
+              </CardBody>
+            </Card>
+          </div>
+
+          <div className="bg-[#e2f0e5] pb-3">
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Phone Number{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Input
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
+                  variant="static"
+                  type="text"
+                  name="phone"
+                  placeholder="Your Answer"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </p>
+              </CardBody>
+            </Card>
+
+            <div className="bg-[#e2f0e5] pt-3 ">
+              <Card className="w-full max-w-[40rem] p-3  mx-auto flex-col">
+                <CardBody
+                  shadow={false}
+                  floated={false}
+                  className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+                >
+                  <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                    Email Address{" "}
+                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                      *
+                    </span>
+                  </h1>
+                  <Input
+                    className="border-b-[1px] bg-white m-1 p-2 text-black"
+                    variant="static"
+                    name="email"
+                    type="email"
+                    placeholder="Your Answer"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                  <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                    This is a required question
+                  </p>
+                </CardBody>
+              </Card>
+            </div>
+          </div>
+          <div className="bg-[#e2f0e5]  pb-3">
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Date{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Input
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
+                  type="Date"
                   name="date"
-              variant="static"
-              placeholder="Your Answer"
-                value={formData.date}
-                onChange={handleChange}
-                required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
+                  variant="static"
+                  placeholder="Your Answer"
+                  value={formData.date}
+                  onChange={handleChange}
+                  required
+                />
+                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </p>
+              </CardBody>
+            </Card>
+          </div>
 
-      <div className="bg-[#e2f0e5]  ">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Time{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-              type="Time"
+          <div className="bg-[#e2f0e5]  ">
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Time{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Input
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
+                  type="Time"
                   name="time"
-              variant="static"
-              placeholder="Your Answer"
-                value={formData.time}
-                onChange={handleChange}
-                required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
+                  variant="static"
+                  placeholder="Your Answer"
+                  value={formData.time}
+                  onChange={handleChange}
+                  required
+                />
+                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </p>
+              </CardBody>
+            </Card>
+          </div>
 
-      <div className="bg-[#e2f0e5] pt-3 pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Branch Name{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Select
-              className="border-b-[1px] m-1 p-2 text-black"
-              variant="static"
-                  
+          <div className="bg-[#e2f0e5] pt-3 pb-3">
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Branch Name{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Select
+                  className="border-b-[1px] m-1 p-2 text-black"
+                  variant="static"
+
                   name="branch"
-              placeholder="Your Answer"
-                value={formData.branch}
-                onChange={handleChange}
-                required
-            >
-              <Option className=" text-black">DHANMONDI</Option>
-              <Option className=" text-black">ENGLISH ROAD</Option>
-            </Select>
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-      <div className="bg-[#e2f0e5] pb-3 ">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Write Briefly About Your Complain/ আপনার অভিযোগ সম্পর্কে বিস্তারিত
-              লিখুন।{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-              variant="static"
-                 type="text"
-                 name="complain"
+                  placeholder="Your Answer"
+                  value={formData.branch}
+                  onChange={handleChange}
+                  required
+                >
+                  <Option className=" text-black">DHANMONDI</Option>
+                  <Option className=" text-black">ENGLISH ROAD</Option>
+                </Select>
+                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </p>
+              </CardBody>
+            </Card>
+          </div>
+          <div className="bg-[#e2f0e5] pb-3 ">
+            <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
+              <CardBody
+                shadow={false}
+                floated={false}
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
+              >
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Write Briefly About Your Complain/ আপনার অভিযোগ সম্পর্কে বিস্তারিত
+                  লিখুন।{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <Input
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
+                  variant="static"
+                  type="text"
+                  name="complain"
 
-              placeholder="Your Answer"
-                value={formData.complain}
-                onChange={handleChange}
-                required
-            />
-            <pre className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </pre>
-          </CardBody>
-        </Card>
-      </div>
-      
-      <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        <p className=" pt-3 text-[15px] me-auto pr-10 text-[#00984a] font-bold font-ubuntu">
-          Clear form
-        </p>
-        <button type="submit" className="bg-[#00984a] p-2 rounded  ms-auto">Submit</button>
+                  placeholder="Your Answer"
+                  value={formData.complain}
+                  onChange={handleChange}
+                  required
+                />
+                <pre className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                  This is a required question
+                </pre>
+              </CardBody>
+            </Card>
+          </div>
 
-      </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+          <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
+
+            <button type="submit" className="bg-[#00984a] p-2 mt-10 rounded ms-auto">Submit</button>
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {success && <p style={{ color: "green" }}>{success}</p>}
         </div>
       </form>
-      
-      
+
+
       <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
         <p className=" pt-0 text-[11px] mx-auto text-[black] font-small font-ubuntu">
           This form was created inside of Popular Pharmaceuticals Ltd.. Report
