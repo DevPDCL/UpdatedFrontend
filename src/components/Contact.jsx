@@ -94,7 +94,7 @@ function Contact() {
                     <input
                       type="email"
                       placeholder="name@mail.com"
-                      className=" border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
+                      className=" border-[#00984a] rounded-lg border-[1px] bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
@@ -108,7 +108,7 @@ function Contact() {
                     <input
                       type="text"
                       placeholder="Name"
-                      className="border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
+                      className="border-[#00984a] rounded-lg border-[1px] bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
@@ -122,7 +122,7 @@ function Contact() {
                     <input
                       type="text"
                       placeholder="01712345678"
-                      className="border-[#00984a] rounded-lg border-2 bg-white text-[#00984a] p-2 focus:border-gray-900"
+                      className="border-[#00984a] rounded-lg border-[1px] bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="mobile"
                       value={formData.mobile}
                       onChange={handleChange}
@@ -135,7 +135,7 @@ function Contact() {
                     </label>
                     <textarea
                       placeholder="Write Your Queries"
-                      className="border-[#00984a] rounded-lg border-2  w-full h-[200px]  bg-white text-[#00984a] p-2 focus:border-gray-900"
+                      className="border-[#00984a] rounded-lg border-[1px]  w-full h-[200px]  bg-white text-[#00984a] p-2 focus:border-gray-900"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
