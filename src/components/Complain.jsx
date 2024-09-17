@@ -7,7 +7,9 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 import { Input, Select, Option } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+
+
+
 function Complain() {
 
   const [formData, setFormData] = useState({
@@ -19,6 +21,31 @@ function Complain() {
     branch: "",
     complain: ""
   });
+
+   const branches = [
+     "Dhanmondi",
+     "English Road",
+     "Shantinagar",
+     "Shyamoli",
+     "Mirpur",
+     "Uttara",
+     "Uttara Garib-E-Newaz",
+     "Badda",
+     "Jatrabari",
+     "Savar",
+     "Gazipur",
+     "Narayangonj",
+     "Bogura",
+     "Rajshahi",
+     "Noakhali",
+     "Chattogram",
+     "Mymensingh",
+     "Rangpur",
+     "Dinajpur",
+     "Khulna",
+     "Kushtia",
+     "Barishal",
+   ];
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -75,8 +102,7 @@ function Complain() {
           <CardBody
             shadow={false}
             floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
+            className="ml-0 w-full shrink-0 me-auto rounded-r-none">
             <h1 className=" text-[24px] text-black font-medium font-ubuntu">
               Advice & Complain
             </h1>
@@ -105,19 +131,14 @@ function Complain() {
           </CardBody>
         </Card>
       </div>
-      <form
-
-        onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-1 flex flex-col gap-6">
-
           <div className="bg-[#e2f0e5] pt-3 pb-3">
-
             <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                 <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                   Name{" "}
                   <span className=" text-[15px] text-[red] font-medium font-ubuntu">
@@ -146,8 +167,7 @@ function Complain() {
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                 <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                   Phone Number{" "}
                   <span className=" text-[15px] text-[red] font-medium font-ubuntu">
@@ -175,8 +195,7 @@ function Complain() {
                 <CardBody
                   shadow={false}
                   floated={false}
-                  className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-                >
+                  className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Email Address{" "}
                     <span className=" text-[15px] text-[red] font-medium font-ubuntu">
@@ -205,8 +224,7 @@ function Complain() {
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                 <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                   Date{" "}
                   <span className=" text-[15px] text-[red] font-medium font-ubuntu">
@@ -235,9 +253,8 @@ function Complain() {
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
-                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
+                <h1 className="text-[18px] text-black font-medium font-ubuntu">
                   Time{" "}
                   <span className=" text-[15px] text-[red] font-medium font-ubuntu">
                     *
@@ -253,7 +270,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
+                <p className="pt-3 text-[12px] text-[red] font-small font-ubuntu">
                   This is a required question
                 </p>
               </CardBody>
@@ -265,27 +282,22 @@ function Complain() {
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
-                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-                  Branch Name{" "}
-                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                    *
-                  </span>
-                </h1>
-                <Select
-                  className="border-b-[1px] m-1 p-2 text-black"
-                  variant="static"
-
-                  name="branch"
-                  placeholder="Your Answer"
-                  value={formData.branch}
-                  onChange={handleChange}
-                  required
-                >
-                  <Option className=" text-black">DHANMONDI</Option>
-                  <Option className=" text-black">ENGLISH ROAD</Option>
-                </Select>
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
+                <div>
+                  <label className="text-[18px] text-black font-medium font-ubuntu pr-2">
+                    Branch:
+                  </label>
+                  <select
+                    name="branch"
+                    value={formData.branch}
+                    onChange={handleChange}>
+                    {branches.map((branch) => (
+                      <option key={branch} value={branch}>
+                        {branch}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
                   This is a required question
                 </p>
@@ -297,11 +309,10 @@ function Complain() {
               <CardBody
                 shadow={false}
                 floated={false}
-                className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-              >
+                className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                 <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-                  Write Briefly About Your Complain/ আপনার অভিযোগ সম্পর্কে বিস্তারিত
-                  লিখুন।{" "}
+                  Write Briefly About Your Complain/ আপনার অভিযোগ সম্পর্কে
+                  বিস্তারিত লিখুন।{" "}
                   <span className=" text-[15px] text-[red] font-medium font-ubuntu">
                     *
                   </span>
@@ -311,7 +322,6 @@ function Complain() {
                   variant="static"
                   type="text"
                   name="complain"
-
                   placeholder="Your Answer"
                   value={formData.complain}
                   onChange={handleChange}
@@ -325,14 +335,16 @@ function Complain() {
           </div>
 
           <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-
-            <button type="submit" className="bg-[#00984a] p-2 mt-10 rounded ms-auto">Submit</button>
+            <button
+              type="submit"
+              className="bg-[#00984a] p-2 mt-10 rounded ms-auto">
+              Submit
+            </button>
           </div>
           {error && <p style={{ color: "red" }}>{error}</p>}
           {success && <p style={{ color: "green" }}>{success}</p>}
         </div>
       </form>
-
 
       <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
         <p className=" pt-0 text-[11px] mx-auto text-[black] font-small font-ubuntu">
