@@ -51,7 +51,6 @@ import {
   Savar,
   UttaraGaribENewaz,
   TestAPI,
-  ContactForm,
 } from "./components";
 import Home from "./adminpanel/Home";
 import Stats from "./adminpanel/Stats";
@@ -152,7 +151,6 @@ const routes = [
       { path: "/refund", element: <Refund /> },
       { path: "/servicesearch", element: <ServiceSearch /> },
       { path: "/doctors", element: <Doctors /> },
-      { path: "/contactform", element: <ContactForm /> },
     ],
     errorElement: <Error />,
   },

@@ -1,64 +1,44 @@
 import React, { useState } from "react";
 import "@fontsource/ubuntu";
-import {
-  Card,
-  CardBody,
-} from "@material-tailwind/react";
-import { Input, Select, Option } from "@material-tailwind/react";
-
 import axios from "axios";
 
 function Sample() {
-
   const [formData, setFormData] = useState({
-    vendor: "",
+    vendor: [],
     patientName: "",
-    location : "",
+    location: "",
     phone: "",
     pickupTime: "",
-    branchName: "",
-    email: ""
-    
+    branchName: "Dhanmondi",
+    email: "",
   });
+
   const branches = [
-    "Dhanmondi",
-    "English Road",
-    "Shantinagar",
-    "Shyamoli",
-    "Mirpur",
-    "Uttara",
-    "Uttara Garib-E-Newaz",
-    "Badda",
-    "Jatrabari",
-    "Savar",
-    "Gazipur",
-    "Narayangonj",
-    "Bogura",
-    "Rajshahi",
-    "Noakhali",
-    "Chattogram",
-    "Mymensingh",
-    "Rangpur",
-    "Dinajpur",
-    "Khulna",
-    "Kushtia",
-    "Barishal",
+    "Dhanmondi", "English Road", "Shantinagar", "Shyamoli", "Mirpur", "Uttara", 
+    "Uttara Garib-E-Newaz", "Badda", "Jatrabari", "Savar", "Gazipur", "Narayangonj", 
+    "Bogura", "Rajshahi", "Noakhali", "Chattogram", "Mymensingh", "Rangpur", 
+    "Dinajpur", "Khulna", "Kushtia", "Barishal"
   ];
-  const vendors = [
-    "Amar Lab",
-    "Arrogga",
-    
-  ];
+  const vendors = ["Amar Lab", "Arogga"];
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setFormData((prevData) => ({
+        ...prevData,
+        vendor: checked
+          ? [...prevData.vendor, value]
+          : prevData.vendor.filter((v) => v !== value)
+      }));
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -70,286 +50,140 @@ function Sample() {
         "http://51.20.54.185/api/sample-collections",
         formData
       );
-      setSuccess("Message sent successfully!");
+      setSuccess("Sample collection request submitted successfully!");
       setFormData({
-        vendor: "",
+        vendor: [],
         patientName: "",
         location: "",
         phone: "",
         pickupTime: "",
-        branchName: "",
-        email: ""
+        branchName: "Dhanmondi",
+        email: "",
       });
     } catch (error) {
-      console.error("There was an error sending the message!", error);
-      setError("Failed to send message. Please try again.");
+      console.error(
+        "There was an error sending sample collection request!",
+        error
+      );
+      setError("Failed to submit sample collection request. Please try again.");
     }
   };
-
-
-
-
-
 
   return (
     <div className="bg-[#e2f0e5] p-1">
       <div className=" pt-0">
-        
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[24px] text-black font-medium font-ubuntu">
-              Sample Pickup
-            </h1>
-
-            <p className=" pb-3 text-[15px] text-black font-small font-ubuntu">
-              Sample Collection Services (Amar Lab & Arogga are our Service
-              Partner.)
-            </p>
-            <hr />
-            
-            <hr />
-            <p className=" pt-3 text-[15px] text-[red] font-small font-ubuntu">
-              * Indicates required question
-            </p>
-          </CardBody>
-        </Card>
+        <h1>Sample Pickup</h1>
+        <hr />
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-1 flex flex-col gap-6">
-      <div className="bg-[#e2f0e5] pt-3 pb-3">
-        
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] pb-5 text-black font-medium font-ubuntu">
-              Vendor{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-
-            <select
-              name="vendor"
-              value={formData.vendor}
-              onChange={handleChange}>
+          <div className="bg-[#e2f0e5] pt-3 pb-3">
+            <div>
+              <label>Vendor:</label>
               {vendors.map((vendor) => (
-                <option key={vendor} value={vendor}>
-                  {vendor}
-                </option>
+                <div key={vendor}>
+                  <input
+                    type="checkbox"
+                    name="vendor"
+                    value={vendor}
+                    checked={formData.vendor.includes(vendor)}
+                    onChange={handleChange}
+                  />
+                  <label>{vendor}</label>
+                </div>
               ))}
-            </select>
+            </div>
+          </div>
 
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
-      
-      <div className="bg-[#e2f0e5] pt-3 pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Patient Name{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-                name="patientName"
-                variant="static"
+          <div className="bg-[#e2f0e5] pt-3 pb-3">
+            <div>
+              <label>Patient Name:</label>
+              <input
                 type="text"
-              placeholder="Your Answer"
+                name="patientName"
                 value={formData.patientName}
                 onChange={handleChange}
                 required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
+              />
+            </div>
+          </div>
 
-      <div className="bg-[#e2f0e5]  pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Location{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-                name="location"
-                variant="static"
+          <div className="bg-[#e2f0e5]  pb-3">
+            <div>
+              <label>Location:</label>
+              <input
                 type="text"
-                placeholder="Your Answer"
+                name="location"
                 value={formData.location}
                 onChange={handleChange}
                 required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
+              />
+            </div>
+          </div>
 
-      <div className="bg-[#e2f0e5] pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Phone Number{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
-                name="phone"
-                variant="static"
+          <div className="bg-[#e2f0e5] pb-3">
+            <div>
+              <label>Phone:</label>
+              <input
                 type="text"
-                placeholder="Your Answer"
+                name="phone"
                 value={formData.phone}
                 onChange={handleChange}
                 required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
+              />
+            </div>
+          </div>
 
-      </div>
-      <div className="bg-[#e2f0e5]  ">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Sample Pickup Time{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
-            <Input
-              className="border-b-[1px] bg-white m-1 p-2 text-black"
+          <div className="bg-[#e2f0e5] pb-3">
+            <div>
+              <label>Pickup Time:</label>
+              <input
+                type="time"
                 name="pickupTime"
-                variant="static"
-                type="date"
-                placeholder="Your Answer"
                 value={formData.pickupTime}
                 onChange={handleChange}
                 required
-            />
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-      </div>
+              />
+            </div>
+          </div>
 
-      <div className="bg-[#e2f0e5] pt-3 pb-3">
-        <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-          <CardBody
-            shadow={false}
-            floated={false}
-            className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-          >
-            <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-              Preferred Popular Branch For Test{" "}
-              <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                *
-              </span>
-            </h1>
+          <div className="bg-[#e2f0e5] pb-3">
+            <div>
+              <label>Branch Name:</label>
               <select
-                name="branch"
-                value={formData.branch}
-                onChange={handleChange}>
+                name="branchName"
+                value={formData.branchName}
+                onChange={handleChange}
+              >
                 {branches.map((branch) => (
                   <option key={branch} value={branch}>
                     {branch}
                   </option>
                 ))}
               </select>
-            <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-              This is a required question
-            </p>
-          </CardBody>
-        </Card>
-        
-      </div>
+            </div>
+          </div>
 
-        <div className="bg-[#e2f0e5] pt-3 ">
-          <Card className="w-full max-w-[40rem] p-3 mx-auto flex-col">
-            <CardBody
-              shadow={false}
-              floated={false}
-              className="ml-0 w-full shrink-0 me-auto rounded-r-none"
-            >
-              <h1 className=" text-[18px] text-black font-medium font-ubuntu">
-                Email Address
-              </h1>
-              <Input
-                className="border-b-[1px] bg-white m-1 p-2 text-black"
+          <div className="bg-[#e2f0e5] pb-3">
+            <div>
+              <label>Email:</label>
+              <input
+                type="email"
                 name="email"
-                variant="static"
-                type="text"
-                placeholder="Your Answer"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
-              <p className=" pt-3 text-[12px] text-[green] font-small font-ubuntu">
-                This is a optional question
-              </p>
-            </CardBody>
-          </Card>
-        </div>
-      <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        
-          <button type="submit" className="bg-[#00984a] p-2 mt-10 rounded ms-auto">Submit</button>
-      </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+            </div>
+          </div>
+
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {success && <p style={{ color: "green" }}>{success}</p>}
         </div>
       </form>
-     
-      <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        <p className=" pt-0 text-[11px]  mx-auto text-[black] font-small font-ubuntu">
-          This form was created inside of Popular Pharmaceuticals Ltd.. Report
-          Abuse
-        </p>
-      </div>
-      <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        <p className=" pt-0 text-[24px] mx-auto text-gray-900/50 font-bold font-ubuntu">
-          PDCL Forms
-        </p>
-      </div>
     </div>
   );
 }
