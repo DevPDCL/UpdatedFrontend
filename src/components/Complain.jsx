@@ -104,16 +104,7 @@ function Complain() {
               information to inquiries about your complain. Please fill the form
               correctly. Thanks
             </p>
-            <hr />
-            <p className="pt-3 text-[15px] text-black font-bold font-ubuntu">
-              info@populardiagnostic.com{" "}
-              <span className=" pl-10 pb-2 text-[12px] text-[blue] font-small font-ubuntu">
-                Switch account
-              </span>
-            </p>
-            <p className="pb-3 text-[15px] text-black font-small font-ubuntu">
-              Not shared
-            </p>
+            
             <hr />
             <p className=" pt-3 text-[15px] text-[red] font-small font-ubuntu">
               * Indicates required question
@@ -145,9 +136,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </p>
+               
               </CardBody>
             </Card>
           </div>
@@ -174,9 +163,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </p>
+                
               </CardBody>
             </Card>
 
@@ -202,9 +189,7 @@ function Complain() {
                     onChange={handleChange}
                     required
                   />
-                  <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                    This is a required question
-                  </p>
+                 
                 </CardBody>
               </Card>
             </div>
@@ -231,9 +216,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </p>
+               
               </CardBody>
             </Card>
           </div>
@@ -260,9 +243,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <p className="pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </p>
+                
               </CardBody>
             </Card>
           </div>
@@ -273,24 +254,30 @@ function Complain() {
                 shadow={false}
                 floated={false}
                 className="ml-0 w-full shrink-0 me-auto rounded-r-none">
-                <div>
-                  <label className="text-[18px] text-black font-medium font-ubuntu pr-2">
-                    Branch:
-                  </label>
-                  <select
-                    name="branch"
-                    value={formData.branch}
-                    onChange={handleChange}>
-                    {branches.map((branch) => (
-                      <option key={branch} value={branch}>
-                        {branch}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <p className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </p>
+                <h1 className=" text-[18px] text-black font-medium font-ubuntu">
+                  Branch Name{" "}
+                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                    *
+                  </span>
+                </h1>
+                <select
+                  className="border-b-[1px] bg-white m-1 p-2 text-black"
+                  name="branchName"
+                  variant="static"
+                  type="text"
+                  placeholder="Your Answer"
+                  value={formData.branchName}
+                  onChange={handleChange}
+                  required
+                >
+                  {branches.map((branch) => (
+                    <option key={branch} value={branch}>
+                      {branch}
+                    </option>
+                  ))}
+                </select>
+
+
               </CardBody>
             </Card>
           </div>
@@ -317,9 +304,7 @@ function Complain() {
                   onChange={handleChange}
                   required
                 />
-                <pre className=" pt-3 text-[12px] text-[red] font-small font-ubuntu">
-                  This is a required question
-                </pre>
+               
               </CardBody>
             </Card>
           </div>
@@ -331,8 +316,11 @@ function Complain() {
               Submit
             </button>
           </div>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>{success}</p>}
+          <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
+          </div>
+          
         </div>
       </form>
 
