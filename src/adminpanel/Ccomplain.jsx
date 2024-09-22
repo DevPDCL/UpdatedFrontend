@@ -1,13 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Layer from "./Layer";
-import axios from "axios"
 const Ccomplain = () => {
-  const [complains, setComplains] =useState([])
-  useEffect(()=> {
-    axios.get('http://51.20.54.185/api/complaints')
-      .then(complains => setComplains(complains.data))
-      .catch(err => console.log(err))
-  }, [])
   return (
     <>
       <section className="bg-white w-screen h-screen md:h-screen ">
@@ -63,7 +56,18 @@ const Ccomplain = () => {
               <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                   
+                    <th scope="col" class="p-4">
+                      <div class="flex items-center">
+                        <input
+                          id="checkbox-all-search"
+                          type="checkbox"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label for="checkbox-all-search" class="sr-only">
+                          checkbox
+                        </label>
+                      </div>
+                    </th>
                     <th scope="col" class="px-6 py-3">
                       Complainers Name
                     </th>
@@ -73,7 +77,9 @@ const Ccomplain = () => {
                     <th scope="col" class="px-6 py-3">
                       Email
                     </th>
-                    
+                    <th scope="col" class="px-6 py-3">
+                      Complain Date
+                    </th>
                     <th scope="col" class="px-6 py-3">
                       Complain Time
                     </th>
@@ -90,20 +96,34 @@ const Ccomplain = () => {
                   </tr>
                 </thead>
                 <tbody>
-
-                  {
-                    complains.map(complain => {
-                      return (
                   <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                  
-                    <td class="px-6 py-4">{complain.name}</td>
-                    <td class="px-6 py-4">{complain.phone}</td>
-                    <td class="px-6 py-4">{complain.email}</td>
-                    <td class="px-6 py-4">{complain.date}</td>
-                    <td class="px-6 py-4">{complain.branch}</td>
-                    <td class="px-6 py-4">{complain.complain}</td>
-                    
+                    <td class="w-4 p-4">
+                      <div class="flex items-center">
+                        <input
+                          id="checkbox-table-search-1"
+                          type="checkbox"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label for="checkbox-table-search-1" class="sr-only">
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <th
+                      scope="row"
+                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      Jahangir Kamal
+                    </th>
+                    <td class="px-6 py-4">01711111111</td>
+                    <td class="px-6 py-4">jaha008@gmail.com</td>
+                    <td class="px-6 py-4">19/04/2024</td>
+                    <td class="px-6 py-4">10:24:36</td>
+                    <td class="px-6 py-4">Noakhali</td>
+                    <td class="px-6 py-4">
+                      Report Delevery Time making Delay Report Delevery Time
+                      making Delay
+                    </td>
 
                     <td class="px-6 py-4">
                       <a
@@ -113,8 +133,7 @@ const Ccomplain = () => {
                         Edit
                       </a>
                     </td>
-                </tr>
-                      ) }) }
+                  </tr>
                 </tbody>
               </table>
             </div>
