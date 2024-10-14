@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import Layer from "./Layer";
+import axios from "axios";
 const Csample = () => {
+  const [sampleCollections, setSampleCollections] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSampleCollections = async () => {
+      try {
+        const response = await axios.get("http://51.20.54.185/api/sample-collections");
+        setSampleCollections(response.data.payload.allSampleCollections);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchSampleCollections();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  }
   return (
     <>
-      <section className="bg-white w-screen h-screen md:h-screen ">
+      <section className="bg-white w-screen h-screen md:h-screen overflow-auto">
         <div class="grid grid-cols-12">
           <div className="h-screen col-span-2">
             <Layer />
@@ -38,106 +65,38 @@ const Csample = () => {
                     class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search for items"
                   />
-                  <button
-                    type="button"
-                    class="focus:outline-none ms-auto text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                  >
-                    <span className="text-[24px] font-extrabold">-</span>
-                  </button>
 
-                  <button
-                    type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  >
-                    <span className="text-[24px] font-extrabold">+</span>
-                  </button>
                 </div>
               </div>
               <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" class="p-4">
-                      <div class="flex items-center">
-                        <input
-                          id="checkbox-all-search"
-                          type="checkbox"
-                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label for="checkbox-all-search" class="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Patiant Name
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Mobile
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Age
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Gender
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Email
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Location
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Vendor
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Sample Pickup Date
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Prefered Branch
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Action
-                    </th>
+                    <th className="py-2 px-4 border-b">Vendor</th>
+                    <th className="py-2 px-4 border-b">Name</th>
+                    <th className="py-2 px-4 border-b">Location</th>
+                    <th className="py-2 px-4 border-b">Phone</th>
+                    <th className="py-2 px-4 border-b">Picked Time</th>
+                    <th className="py-2 px-4 border-b">Branch</th>
+                    <th className="py-2 px-4 border-b">Email</th>
+                    {/* <th className="py-2 px-4 border-b">Action</th> */}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4">
-                      <div class="flex items-center">
-                        <input
-                          id="checkbox-table-search-1"
-                          type="checkbox"
-                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label for="checkbox-table-search-1" class="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      Mahamuda Kamal
-                    </th>
-                    <td class="px-6 py-4">01911111111</td>
-                    <td class="px-6 py-4">51</td>
-                    <td class="px-6 py-4">Female</td>
-                    <td class="px-6 py-4">maha0028@gmail.com</td>
-                    <td class="px-6 py-4">Zigatola</td>
-                    <td class="px-6 py-4">Amar Lab</td>
-                    <td class="px-6 py-4">19/04/2024</td>
-                    <td class="px-6 py-4">Dhanmondi</td>
-
-                    <td class="px-6 py-4">
-                      <a
-                        href="#"
-                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </a>
-                    </td>
-                  </tr>
+                  {sampleCollections.map((sampleCollection) => (
+                    <tr key={sampleCollection._id}>
+                      <td className="py-2 px-4 border-b">{sampleCollection.vendor}</td>
+                      <td className="py-2 px-4 border-b">{sampleCollection.patientName}</td>
+                      <td className="py-2 px-4 border-b">{sampleCollection.location}</td>
+                      <td className="py-2 px-4 border-b">{sampleCollection.phone}</td>
+                      <td className="py-2 px-4 border-b">
+                        {new Date(sampleCollection.pickupTime).toLocaleDateString()}
+                      </td>
+                      <td className="py-2 px-4 border-b">{sampleCollection.branchName}</td>
+                      
+                      <td className="py-2 px-4 border-b">{sampleCollection.email}</td>
+                      {/*<td className="py-2 px-4  border-b"><button className="mr-5 p-1 text-white rounded bg-red-600">Delete</button><button className="mr-5 p-1 text-white rounded bg-green-600">Edit</button></td>*/}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

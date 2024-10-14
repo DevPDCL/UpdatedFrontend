@@ -72,6 +72,7 @@ const Ccomplain = () => {
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th className="py-2 px-4 border-b">Name</th>
+              
               <th className="py-2 px-4 border-b">Phone</th>
               <th className="py-2 px-4 border-b">Email</th>
               <th className="py-2 px-4 border-b">Branch</th>
