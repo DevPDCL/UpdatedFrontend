@@ -60,6 +60,7 @@ import Csample from "./adminpanel/Csample";
 import Ccomplain from "./adminpanel/Ccomplain";
 import Management from "./adminpanel/Management";
 import Doctors from "./adminpanel/Doctors";
+import Cmessages from "./adminpanel/Cmessages";
 import "./index.css";
 
 const App = () => {
@@ -125,6 +126,8 @@ const routes = [
       { path: "/appointment", element: <Appointment /> },
       { path: "/csample", element: <Csample /> },
       { path: "/ccomplain", element: <Ccomplain /> },
+
+      { path: "/messages", element: <Cmessages /> },
       { path: "/management", element: <Management /> },
       { path: "/shantinagar", element: <Shantinagar /> },
       { path: "/shyamoli", element: <Shyamoli /> },
