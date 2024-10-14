@@ -262,11 +262,11 @@ function Complain() {
                 </h1>
                 <select
                   className="border-b-[1px] bg-white m-1 p-2 text-black"
-                  name="branchName"
+                  name="branch"
                   variant="static"
                   type="text"
                   placeholder="Your Answer"
-                  value={formData.branchName}
+                  value={formData.branch}
                   onChange={handleChange}
                   required
                 >

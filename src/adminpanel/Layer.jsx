@@ -17,14 +17,14 @@ const Layer = () => {
         >
           <img
             src={control}
-            className={`absolute cursor-pointer -right-5 top-9 w-10 h-10 border-dark-purple
+            className={`absolute cursor-pointer -right-5 top-9 w-10 h-10  border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
             onClick={() => setOpen(!open)}
           />
           <div className="flex gap-x-4 items-center">
             <img
               src={logo1}
-              className={`cursor-pointer h-10 w-10 duration-500 ${
+              className={`cursor-pointer  h-10 w-10 duration-500 ${
                 open && "rotate-[360deg]"
               }`}
             />
