@@ -271,7 +271,7 @@ function Complain() {
                   required
                 >
                   {branches.map((branch) => (
-                    <option key={branch} value={branch}>
+                    <option key={branch}>
                       {branch}
                     </option>
                   ))}
