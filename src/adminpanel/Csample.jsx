@@ -21,6 +21,25 @@ const Csample = () => {
     fetchSampleCollections();
   }, []);
 
+    const handleStatusChange = async (id, newStatus) => {
+      try {
+        await axios.patch(
+          `http://51.20.54.185/api/sample-collections/${id}/status`,
+          {
+            status: newStatus,
+          }
+        );
+        setSampleCollections((prev) =>
+          prev.map((sample) =>
+            sample._id === id ? { ...sample, status: newStatus } : sample
+          )
+        );
+      } catch (err) {
+        console.error(err); // Log the full error
+        setError(err.response ? err.response.data.message : err.message);
+      }
+    };
+
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
@@ -48,8 +67,7 @@ const Csample = () => {
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
-                      viewBox="0 0 20 20"
-                    >
+                      viewBox="0 0 20 20">
                       <path
                         stroke="currentColor"
                         stroke-linecap="round"
@@ -65,7 +83,6 @@ const Csample = () => {
                     class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search for items"
                   />
-
                 </div>
               </div>
               <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
@@ -78,23 +95,53 @@ const Csample = () => {
                     <th className="py-2 px-4 border-b">Picked Time</th>
                     <th className="py-2 px-4 border-b">Branch</th>
                     <th className="py-2 px-4 border-b">Email</th>
+                    <th className="py-2 px-4 border-b">Status</th>
                     {/* <th className="py-2 px-4 border-b">Action</th> */}
                   </tr>
                 </thead>
                 <tbody>
                   {sampleCollections.map((sampleCollection) => (
                     <tr key={sampleCollection._id}>
-                      <td className="py-2 px-4 border-b">{sampleCollection.vendor}</td>
-                      <td className="py-2 px-4 border-b">{sampleCollection.patientName}</td>
-                      <td className="py-2 px-4 border-b">{sampleCollection.location}</td>
-                      <td className="py-2 px-4 border-b">{sampleCollection.phone}</td>
                       <td className="py-2 px-4 border-b">
-                        {new Date(sampleCollection.pickupTime).toLocaleDateString()}
+                        {sampleCollection.vendor}
                       </td>
-                      <td className="py-2 px-4 border-b">{sampleCollection.branchName}</td>
-                      
-                      <td className="py-2 px-4 border-b">{sampleCollection.email}</td>
-                      {/*<td className="py-2 px-4  border-b"><button className="mr-5 p-1 text-white rounded bg-red-600">Delete</button><button className="mr-5 p-1 text-white rounded bg-green-600">Edit</button></td>*/}
+                      <td className="py-2 px-4 border-b">
+                        {sampleCollection.patientName}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {sampleCollection.location}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {sampleCollection.phone}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {new Date(
+                          sampleCollection.pickupTime
+                        ).toLocaleDateString()}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {sampleCollection.branchName}
+                      </td>
+
+                      <td className="py-2 px-4 border-b">
+                        {sampleCollection.email}
+                      </td>
+
+                      <td className="py-2 px-4 border-b">
+                        <select
+                          value={sampleCollection.status}
+                          onChange={(e) =>
+                            handleStatusChange(
+                              sampleCollection._id,
+                              e.target.value
+                            )
+                          }>
+                          <option value="Submitted">Submitted</option>
+                          <option value="Processing">Processing</option>
+                          <option value="On the way">On the way</option>
+                          <option value="Completed">Completed</option>
+                        </select>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
