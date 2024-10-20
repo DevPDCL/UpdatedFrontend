@@ -21,6 +21,22 @@ const Ccomplain = () => {
     fetchComplaints();
   }, []);
 
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await axios.patch(`http://51.20.54.185/api/complaints/${id}/status`, {
+        status: newStatus,
+      });
+      setComplaints((prev) =>
+        prev.map((complaint) =>
+          complaint._id === id ? { ...complaint, status: newStatus } : complaint
+        )
+      );
+    } catch (err) {
+      console.error(err); // Log the full error
+      setError(err.response ? err.response.data.message : err.message);
+    }
+  };
+
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
@@ -48,8 +64,7 @@ const Ccomplain = () => {
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
-                    viewBox="0 0 20 20"
-                  >
+                    viewBox="0 0 20 20">
                     <path
                       stroke="currentColor"
                       stroke-linecap="round"
@@ -65,41 +80,50 @@ const Ccomplain = () => {
                   class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search for items"
                 />
-               
               </div>
             </div>
             <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th className="py-2 px-4 border-b">Name</th>
-              
-              <th className="py-2 px-4 border-b">Phone</th>
-              <th className="py-2 px-4 border-b">Email</th>
-              <th className="py-2 px-4 border-b">Branch</th>
-              <th className="py-2 px-4 border-b">Date</th>
-              <th className="py-2 px-4 border-b">Complain</th>
-                 {/* <th className="py-2 px-4 border-b">Action</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {complaints.map((complaint) => (
-              <tr key={complaint._id}>
-                <td className="py-2 px-4 border-b">{complaint.name}</td>
-                <td className="py-2 px-4 border-b">{complaint.phone}</td>
-                <td className="py-2 px-4 border-b">{complaint.email}</td>
-                <td className="py-2 px-4 border-b">{complaint.branch}</td>
-                <td className="py-2 px-4 border-b">
-                  {new Date(complaint.date).toLocaleDateString()}
-                </td>
-                <td className="py-2 px-4 border-b">{complaint.complain}</td>
-                {/*<td className="py-2 px-4  border-b"><button className="mr-5 p-1 text-white rounded bg-red-600">Delete</button><button className="mr-5 p-1 text-white rounded bg-green-600">Edit</button></td>*/}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <tr>
+                  <th className="py-2 px-4 border-b">Name</th>
+                  <th className="py-2 px-4 border-b">Phone</th>
+                  <th className="py-2 px-4 border-b">Email</th>
+                  <th className="py-2 px-4 border-b">Branch</th>
+                  <th className="py-2 px-4 border-b">Date</th>
+                  <th className="py-2 px-4 border-b">Complain</th>
+                  <th className="py-2 px-4 border-b">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {complaints.map((complaint) => (
+                  <tr key={complaint._id}>
+                    <td className="py-2 px-4 border-b">{complaint.name}</td>
+                    <td className="py-2 px-4 border-b">{complaint.phone}</td>
+                    <td className="py-2 px-4 border-b">{complaint.email}</td>
+                    <td className="py-2 px-4 border-b">{complaint.branch}</td>
+                    <td className="py-2 px-4 border-b">
+                      {new Date(complaint.date).toLocaleDateString()}
+                    </td>
+                    <td className="py-2 px-4 border-b">{complaint.complain}</td>
+                    <td className="py-2 px-4 border-b">
+                      <select
+                        value={complaint.status}
+                        onChange={(e) =>
+                          handleStatusChange(complaint._id, e.target.value)
+                        }>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Customer Reply">Customer Reply</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
     </section>
   );
 };
