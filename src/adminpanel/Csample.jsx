@@ -32,6 +32,16 @@ const Csample = () => {
     };
 
     const handleStatusChange = async (id, newStatus) => {
+      
+      // Show confirmation alert
+      const confirmed = window.confirm(
+        `Are you sure you want to change the status to "${newStatus}"?`
+      );
+
+      if (!confirmed) {
+        return; // Exit the function if the user clicked "No"
+      }
+
       try {
         await axios.patch(
           `http://51.20.54.185/api/sample-collections/${id}/status`,
@@ -51,7 +61,7 @@ const Csample = () => {
           )
         );
       } catch (err) {
-        console.error(err); 
+        console.error(err);
         setError(err.response ? err.response.data.message : err.message);
       }
     };
