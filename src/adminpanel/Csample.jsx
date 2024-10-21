@@ -21,6 +21,16 @@ const Csample = () => {
     fetchSampleCollections();
   }, []);
 
+    const getColorCode = (status) => {
+      const colorCodes = {
+        Submitted: "#ffffff",
+        Processing: "#fef9c3",
+        "On the way": "#dbeafe",
+        Completed: "#dcfce7",
+      };
+      return colorCodes[status] || "#ffffff"; // Default to white if status is invalid
+    };
+
     const handleStatusChange = async (id, newStatus) => {
       try {
         await axios.patch(
@@ -31,14 +41,21 @@ const Csample = () => {
         );
         setSampleCollections((prev) =>
           prev.map((sample) =>
-            sample._id === id ? { ...sample, status: newStatus } : sample
+            sample._id === id
+              ? {
+                  ...sample,
+                  status: newStatus,
+                  colorCode: getColorCode(newStatus),
+                }
+              : sample
           )
         );
       } catch (err) {
-        console.error(err); // Log the full error
+        console.error(err); 
         setError(err.response ? err.response.data.message : err.message);
       }
     };
+
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -101,7 +118,9 @@ const Csample = () => {
                 </thead>
                 <tbody>
                   {sampleCollections.map((sampleCollection) => (
-                    <tr key={sampleCollection._id}>
+                    <tr
+                      key={sampleCollection._id}
+                      style={{ backgroundColor: sampleCollection.colorCode }}>
                       <td className="py-2 px-4 border-b">
                         {sampleCollection.vendor}
                       </td>

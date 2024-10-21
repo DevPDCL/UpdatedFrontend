@@ -6,20 +6,30 @@ const Ccomplain = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchComplaints = async () => {
-      try {
-        const response = await axios.get("http://51.20.54.185/api/complaints");
-        setComplaints(response.data.payload.allComplaints);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchComplaints = async () => {
+    try {
+      const response = await axios.get("http://51.20.54.185/api/complaints");
+      setComplaints(response.data.payload.allComplaints);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
-    fetchComplaints();
-  }, []);
+  fetchComplaints();
+}, []);
+
+  const getColorCode = (status) => {
+    const colorCodes = {
+      Submitted: "#ffffff",
+      Processing: "#fef9c3",
+      "Customer Reply": "#dbeafe",
+      Completed: "#dcfce7",
+    };
+    return colorCodes[status] || "#ffffff"; // Default to white if status is invalid
+  };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -28,14 +38,21 @@ const Ccomplain = () => {
       });
       setComplaints((prev) =>
         prev.map((complaint) =>
-          complaint._id === id ? { ...complaint, status: newStatus } : complaint
+          complaint._id === id
+            ? {
+                ...complaint,
+                status: newStatus,
+                colorCode: getColorCode(newStatus),
+              }
+            : complaint
         )
       );
     } catch (err) {
-      console.error(err); // Log the full error
+      console.error(err); 
       setError(err.response ? err.response.data.message : err.message);
     }
   };
+
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -96,7 +113,9 @@ const Ccomplain = () => {
               </thead>
               <tbody>
                 {complaints.map((complaint) => (
-                  <tr key={complaint._id}>
+                  <tr
+                    key={complaint._id}
+                    style={{ backgroundColor: complaint.colorCode }}>
                     <td className="py-2 px-4 border-b">{complaint.name}</td>
                     <td className="py-2 px-4 border-b">{complaint.phone}</td>
                     <td className="py-2 px-4 border-b">{complaint.email}</td>
