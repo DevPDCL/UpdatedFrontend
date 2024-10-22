@@ -36,13 +36,13 @@ const Ccomplain = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     // Show confirmation alert
-    const confirmed = window.confirm(
-      `Are you sure you want to change the status to "${newStatus}"?`
-    );
+    // const confirmed = window.confirm(
+    //   `Are you sure you want to change the status to "${newStatus}"?`
+    // );
 
-    if (!confirmed) {
-      return; // Exit the function if the user clicked "No"
-    }
+    // if (!confirmed) {
+    //   return; // Exit the function if the user clicked "No"
+    // }
 
     try {
       await axios.patch(`http://51.20.54.185/api/complaints/${id}/status`, {
@@ -161,11 +161,11 @@ const Ccomplain = () => {
                   placeholder="Search for items"
                 />
               </div>
-              <button
+              {/* <button
                 onClick={downloadPDF}
                 className="mb-4 p-2 bg-blue-500 text-white rounded">
                 Export
-              </button>
+              </button> */}
             </div>
             <table className="min-w-full text-sm text-gray-500 border-collapse">
               <thead className="bg-gray-50">
