@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Layer from "./Layer";
 import axios from "axios";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 const Csample = () => {
   const [sampleCollections, setSampleCollections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +12,9 @@ const Csample = () => {
   useEffect(() => {
     const fetchSampleCollections = async () => {
       try {
-        const response = await axios.get("http://51.20.54.185/api/sample-collections");
+        const response = await axios.get(
+          "http://51.20.54.185/api/sample-collections"
+        );
         setSampleCollections(response.data.payload.allSampleCollections);
         setLoading(false);
       } catch (err) {
@@ -21,51 +26,117 @@ const Csample = () => {
     fetchSampleCollections();
   }, []);
 
-    const getColorCode = (status) => {
-      const colorCodes = {
-        Submitted: "#ffffff",
-        Processing: "#fef9c3",
-        "On the way": "#dbeafe",
-        Completed: "#dcfce7",
-      };
-      return colorCodes[status] || "#ffffff"; // Default to white if status is invalid
+  const getColorCode = (status) => {
+    const colorCodes = {
+      Submitted: "#ffffff",
+      Processing: "#fef9c3",
+      "On the way": "#dbeafe",
+      Completed: "#dcfce7",
     };
+    return colorCodes[status] || "#ffffff"; // Default to white if status is invalid
+  };
 
-    const handleStatusChange = async (id, newStatus) => {
-      
-      // Show confirmation alert
-      const confirmed = window.confirm(
-        `Are you sure you want to change the status to "${newStatus}"?`
+  const handleStatusChange = async (id, newStatus) => {
+    // Show confirmation alert
+    const confirmed = window.confirm(
+      `Are you sure you want to change the status to "${newStatus}"?`
+    );
+
+    if (!confirmed) {
+      return; // Exit the function if the user clicked "No"
+    }
+
+    try {
+      await axios.patch(
+        `http://51.20.54.185/api/sample-collections/${id}/status`,
+        {
+          status: newStatus,
+        }
       );
+      setSampleCollections((prev) =>
+        prev.map((sample) =>
+          sample._id === id
+            ? {
+                ...sample,
+                status: newStatus,
+                colorCode: getColorCode(newStatus),
+              }
+            : sample
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      setError(err.response ? err.response.data.message : err.message);
+    }
+  };
 
-      if (!confirmed) {
-        return; // Exit the function if the user clicked "No"
-      }
+  // Function to generate PDF
+  const downloadPDF = async () => {
+    // Wait for the component to render before trying to capture the table
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-      try {
-        await axios.patch(
-          `http://51.20.54.185/api/sample-collections/${id}/status`,
-          {
-            status: newStatus,
-          }
-        );
-        setSampleCollections((prev) =>
-          prev.map((sample) =>
-            sample._id === id
-              ? {
-                  ...sample,
-                  status: newStatus,
-                  colorCode: getColorCode(newStatus),
-                }
-              : sample
-          )
-        );
-      } catch (err) {
-        console.error(err);
-        setError(err.response ? err.response.data.message : err.message);
-      }
-    };
+    const pdf = new jsPDF("l", "mm", "a4");
 
+    // Set margins
+    const margin = 10; // margin in mm
+
+    // Add header
+    pdf.setFontSize(20);
+    pdf.text(
+      "Sample Collection Status Report",
+      pdf.internal.pageSize.getWidth() / 2,
+      margin + 10,
+      null,
+      null,
+      "center"
+    );
+
+    // Set the autoTable properties
+    pdf.autoTable({
+      head: [
+        [
+          "Vendor",
+          "Name",
+          "Email",
+          "Phone",
+          "Location",
+          "Branch",
+          "Picked Time",
+          "Status",
+        ],
+      ],
+      body: sampleCollections.map((sampleCollection) => [
+        sampleCollection.vendor,
+        sampleCollection.patientName,
+        sampleCollection.email,
+        sampleCollection.phone,
+        sampleCollection.location,
+        sampleCollection.branchName,
+        new Date(sampleCollection.pickupTime).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        sampleCollection.status,
+      ]),
+      startY: margin + 30,
+      margin: { horizontal: margin },
+      styles: {
+        cellPadding: 5,
+        fontSize: 12,
+        valign: "middle",
+        halign: "center",
+      },
+      headStyles: {
+        fillColor: [22, 160, 133], // header color
+        textColor: [255, 255, 255], // White text
+        fontSize: 14,
+      },
+      theme: "grid",
+    });
+
+    // Save the PDF
+    pdf.save("Sample Collection Report.pdf");
+  };
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -83,11 +154,8 @@ const Csample = () => {
           </div>
           <div class="col-span-10 flex flex-wrap  z-10 p-5 w-full bg-white">
             <div class="relative overflow-x-auto w-full p-5  sm:rounded-lg">
-              <div class="pb-4 bg-white p-5  dark:bg-gray-900">
-                <label for="table-search" class="sr-only">
-                  Search
-                </label>
-                <div class="relative flex flex-row mt-1">
+              <div class="pb-4 bg-white p-5 flex justify-between dark:bg-gray-900">
+                <div class="relative flex flex-row">
                   <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg
                       class="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -111,6 +179,11 @@ const Csample = () => {
                     placeholder="Search for items"
                   />
                 </div>
+                <button
+                  onClick={downloadPDF}
+                  className="mb-4 p-2 bg-blue-500 text-white rounded">
+                  Export
+                </button>
               </div>
               <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -146,7 +219,10 @@ const Csample = () => {
                       <td className="py-2 px-4 border-b">
                         {new Date(
                           sampleCollection.pickupTime
-                        ).toLocaleDateString()}
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </td>
                       <td className="py-2 px-4 border-b">
                         {sampleCollection.branchName}
@@ -181,6 +257,6 @@ const Csample = () => {
       </section>
     </>
   );
-}
+};
 
-export default Csample
+export default Csample;

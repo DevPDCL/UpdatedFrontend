@@ -106,9 +106,9 @@ function Sample() {
                 className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                 <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                   Vendor{" "}
-                  <span className=" text-[15px] text-[red] font-medium font-ubuntu">
+                  {/* <span className=" text-[15px] text-[red] font-medium font-ubuntu">
                     *
-                  </span>
+                  </span> */}
                 </h1>
                 {vendors.map((vendor) => (
                   <div key={vendor}>
@@ -118,14 +118,13 @@ function Sample() {
                       value={vendor}
                       checked={formData.vendor.includes(vendor)}
                       onChange={handleChange}
+                      required
                     />
                     <label>{vendor}</label>
                   </div>
                 ))}
-                
               </CardBody>
             </Card>
-            
           </div>
 
           <div className="bg-[#e2f0e5] pt-3 pb-3">
@@ -137,9 +136,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Name{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <Input
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -151,7 +147,6 @@ function Sample() {
                     onChange={handleChange}
                     required
                   />
-                  
                 </CardBody>
               </Card>
             </div>
@@ -166,9 +161,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Location{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <Input
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -180,10 +172,8 @@ function Sample() {
                     onChange={handleChange}
                     required
                   />
-                 
                 </CardBody>
               </Card>
-              
             </div>
           </div>
 
@@ -196,9 +186,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Phone{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <Input
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -210,10 +197,8 @@ function Sample() {
                     onChange={handleChange}
                     required
                   />
-                  
                 </CardBody>
               </Card>
-              
             </div>
           </div>
 
@@ -226,9 +211,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Pickup Time{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <Input
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -240,7 +222,6 @@ function Sample() {
                     onChange={handleChange}
                     required
                   />
-                 
                 </CardBody>
               </Card>
             </div>
@@ -255,9 +236,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Branch Name{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <select
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -267,19 +245,15 @@ function Sample() {
                     placeholder="Your Answer"
                     value={formData.branchName}
                     onChange={handleChange}
-                    required
-                  >
+                    required>
                     {branches.map((branch) => (
                       <option key={branch} value={branch}>
                         {branch}
                       </option>
                     ))}
                   </select>
-
-                  
                 </CardBody>
               </Card>
-             
             </div>
           </div>
 
@@ -292,9 +266,6 @@ function Sample() {
                   className="ml-0 w-full shrink-0 me-auto rounded-r-none">
                   <h1 className=" text-[18px] text-black font-medium font-ubuntu">
                     Email{" "}
-                    <span className=" text-[15px] text-[red] font-medium font-ubuntu">
-                      *
-                    </span>
                   </h1>
                   <Input
                     className="border-b-[1px] bg-white m-1 p-2 text-black"
@@ -306,10 +277,8 @@ function Sample() {
                     onChange={handleChange}
                     required
                   />
-                 
                 </CardBody>
               </Card>
-              
             </div>
           </div>
           <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
@@ -323,7 +292,6 @@ function Sample() {
             {error && <p style={{ color: "red" }}>{error}</p>}
             {success && <p style={{ color: "green" }}>{success}</p>}
           </div>
-          
         </div>
       </form>
     </div>
