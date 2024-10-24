@@ -37,14 +37,14 @@ const Cmessages = () => {
                 </div>
                 <div class="col-span-10 flex flex-wrap  z-10 p-5 w-full bg-white">
                     <div class="relative overflow-x-auto w-full p-5  sm:rounded-lg">
-                        <div class="pb-4 bg-white p-5  dark:bg-gray-900">
+                        <div class="pb-4 bg-white p-5 ">
                             <label for="table-search" class="sr-only">
                                 Search
                             </label>
                             <div class="relative flex flex-row mt-1">
                                 <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg
-                                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                        class="w-4 h-4 text-gray-500 "
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -62,14 +62,14 @@ const Cmessages = () => {
                                 <input
                                     type="text"
                                     id="table-search"
-                                    class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for items"
                                 />
 
                             </div>
                         </div>
-                        <table class="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table class="w-full text-sm text-left  rtl:text-right text-gray-500 d">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 d">
                                 <tr>
                                     <th className="py-2 px-4 border-b">Name</th>
                                     <th className="py-2 px-4 border-b">Email</th>
