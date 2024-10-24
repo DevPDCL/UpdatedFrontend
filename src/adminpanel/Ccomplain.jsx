@@ -12,7 +12,9 @@ const Ccomplain = () => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get("http://51.20.54.185/api/complaints");
+        const response = await axios.get(
+          "https://test.populardiagnostic.org/api/complaints"
+        );
         setComplaints(response.data.payload.allComplaints);
         setLoading(false);
       } catch (err) {
@@ -45,9 +47,12 @@ const Ccomplain = () => {
     // }
 
     try {
-      await axios.patch(`http://51.20.54.185/api/complaints/${id}/status`, {
-        status: newStatus,
-      });
+      await axios.patch(
+        `https://test.populardiagnostic.org/api/complaints/${id}/status`,
+        {
+          status: newStatus,
+        }
+      );
       setComplaints((prev) =>
         prev.map((complaint) =>
           complaint._id === id

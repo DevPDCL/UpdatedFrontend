@@ -31,7 +31,7 @@ function Contact() {
     setSuccess("");
     try {
       const response = await axios.post(
-        "http://51.20.54.185/api/messages",
+        "https://test.populardiagnostic.org/api/messages",
         formData
       );
       setSuccess("Message sent successfully!");

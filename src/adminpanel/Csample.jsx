@@ -13,7 +13,7 @@ const Csample = () => {
     const fetchSampleCollections = async () => {
       try {
         const response = await axios.get(
-          "http://51.20.54.185/api/sample-collections"
+          "https://test.populardiagnostic.org/api/sample-collections"
         );
         setSampleCollections(response.data.payload.allSampleCollections);
         setLoading(false);
@@ -48,7 +48,7 @@ const Csample = () => {
 
     try {
       await axios.patch(
-        `http://51.20.54.185/api/sample-collections/${id}/status`,
+        `https://test.populardiagnostic.org/api/sample-collections/${id}/status`,
         {
           status: newStatus,
         }

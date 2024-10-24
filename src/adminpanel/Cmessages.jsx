@@ -9,7 +9,9 @@ const Cmessages = () => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await axios.get("http://51.20.54.185/api/messages");
+                const response = await axios.get(
+                  "https://test.populardiagnostic.org/api/messages"
+                );
                 setMessages(response.data.payload.allMessages);
                 setLoading(false);
             } catch (err) {

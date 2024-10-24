@@ -52,7 +52,7 @@ function Sample() {
     setSuccess("");
     try {
       const response = await axios.post(
-        "http://51.20.54.185/api/sample-collections",
+        "https://test.populardiagnostic.org/api/sample-collections",
         formData
       );
       setSuccess("Sample collection request submitted successfully!");

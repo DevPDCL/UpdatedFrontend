@@ -62,7 +62,7 @@ function Complain() {
     setSuccess("");
     try {
       const response = await axios.post(
-        "http://51.20.54.185/api/complaints",
+        "https://test.populardiagnostic.org/api/complaints",
         formData
       );
       setSuccess("Message sent successfully!");
