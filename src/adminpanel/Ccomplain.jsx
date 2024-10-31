@@ -108,8 +108,8 @@ const Ccomplain = () => {
       startY: margin + 30,
       margin: { horizontal: margin },
       styles: {
-        cellPadding: 5,
-        fontSize: 12,
+        cellPadding: 3,
+        fontSize: 11,
         valign: "middle",
         halign: "center",
       },
