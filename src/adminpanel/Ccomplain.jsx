@@ -6,9 +6,27 @@ import "jspdf-autotable";
 
 const Ccomplain = () => {
   const [complaints, setComplaints] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(false);
+
+    try {
+      const response = await axios.get(`https://test.populardiagnostic.org/api/complaints/search?name=${searchTerm}`);
+      setResults(response.data); 
+    } catch (error) {
+      console.error("Error fetching data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
@@ -26,6 +44,26 @@ const Ccomplain = () => {
     fetchComplaints();
   }, []);
 
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchTerm) {
+        setLoading(false);
+        try {
+          const response = await axios.get(`https://test.populardiagnostic.org/api/complaints/search?name=${searchTerm}`);
+          setComplaints(response.data);
+        } catch (err) {
+          setError('Error fetching data');
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        
+        fetchComplaints();
+      }
+    };
+    fetchSearchResults();
+  }, [searchTerm])
+
   const getColorCode = (status) => {
     const colorCodes = {
       Submitted: "#ffffff",
@@ -35,7 +73,7 @@ const Ccomplain = () => {
     };
     return colorCodes[status] || "#ffffff"; // Default to white if status is invalid
   };
-
+ 
   const handleStatusChange = async (id, newStatus) => {
     // Show confirmation alert
     const confirmed = window.confirm(
@@ -159,12 +197,22 @@ const Ccomplain = () => {
                     />
                   </svg>
                 </div>
-                <input
-                  type="text"
-                  id="table-search"
-                  class="block p-2 w-[75%] mr-1 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Search for items"
-                />
+                <div>
+                  
+                  <form  onSubmit={handleSearchSubmit}>
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      placeholder="Enter name to search"
+                    />
+                    <button type="submit">Search</button>
+                  </form>
+
+                 
+
+                 
+                </div>
               </div>
               <button
                 onClick={downloadPDF}
