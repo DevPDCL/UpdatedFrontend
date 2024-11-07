@@ -28,6 +28,25 @@ const Ccomplain = () => {
     }
   };
   useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchTerm) {
+        setLoading(false);
+        try {
+          const response = await axios.get(`https://test.populardiagnostic.org/api/complaints/search?name=${searchTerm}`);
+          setComplaints(response.data);
+        } catch (err) {
+          setError('Error fetching data');
+        } finally {
+          setLoading(false);
+        }
+      } else {
+
+        fetchComplaints();
+      }
+    };
+    fetchSearchResults();
+  }, [searchTerm])
+  useEffect(() => {
     const fetchComplaints = async () => {
       try {
         const response = await axios.get(
@@ -44,25 +63,7 @@ const Ccomplain = () => {
     fetchComplaints();
   }, []);
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (searchTerm) {
-        setLoading(false);
-        try {
-          const response = await axios.get(`https://test.populardiagnostic.org/api/complaints/search?name=${searchTerm}`);
-          setComplaints(response.data);
-        } catch (err) {
-          setError('Error fetching data');
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        
-        fetchComplaints();
-      }
-    };
-    fetchSearchResults();
-  }, [searchTerm])
+ 
 
   const getColorCode = (status) => {
     const colorCodes = {
