@@ -52,15 +52,6 @@ import {
   UttaraGaribENewaz,
   TestAPI,
 } from "./components";
-import Home from "./adminpanel/Home";
-import Stats from "./adminpanel/Stats";
-import Layer from "./adminpanel/Layer";
-import Appointment from "./adminpanel/Appointment";
-import Csample from "./adminpanel/Csample";
-import Ccomplain from "./adminpanel/Ccomplain";
-import Management from "./adminpanel/Management";
-import Doctors from "./adminpanel/Doctors";
-import Cmessages from "./adminpanel/Cmessages";
 import "./index.css";
 
 const App = () => {
@@ -118,17 +109,8 @@ const routes = [
       { path: "/health", element: <Health /> },
       { path: "/details", element: <Details /> },
       { path: "/about", element: <About /> },
-      { path: "/layer", element: <Layer /> },
       { path: "/terms&conditions", element: <Terms /> },
       { path: "/privacy&policy", element: <Privacy /> },
-      { path: "/home", element: <Home /> },
-      { path: "/stats", element: <Stats /> },
-      { path: "/appointment", element: <Appointment /> },
-      { path: "/csample", element: <Csample /> },
-      { path: "/ccomplain", element: <Ccomplain /> },
-
-      { path: "/messages", element: <Cmessages /> },
-      { path: "/management", element: <Management /> },
       { path: "/shantinagar", element: <Shantinagar /> },
       { path: "/shyamoli", element: <Shyamoli /> },
       { path: "/mirpur", element: <Mirpur /> },
@@ -153,7 +135,6 @@ const routes = [
       { path: "/uttaragaribenewaz", element: <UttaraGaribENewaz /> },
       { path: "/refund", element: <Refund /> },
       { path: "/servicesearch", element: <ServiceSearch /> },
-      { path: "/doctors", element: <Doctors /> },
     ],
     errorElement: <Error />,
   },
