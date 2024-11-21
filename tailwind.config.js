@@ -10,6 +10,11 @@ module.exports = {
         blob: "blob 5s infinite",
       },
       keyframes: {
+        upDown: {
+          "0%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-20px)" },
+          "100%": { transform: "translateY(0)" },
+        },
         ping: {
           "0%, 70%, 100%": { opacity: 1 },
           "35%": { opacity: 0 },
@@ -28,6 +33,9 @@ module.exports = {
             transform: "translate(0px,0px) scale(1)",
           },
         },
+      },
+      animation: {
+        upDown: "upDown 3s ease-in-out infinite",
       },
       fontFamily: {
         ubuntu: ["ubuntu"],

@@ -51,6 +51,7 @@ import {
   Savar,
   UttaraGaribENewaz,
   TestAPI,
+  ChatWidget
 } from "./components";
 import "./index.css";
 
@@ -59,6 +60,7 @@ const App = () => {
     <div>
       <Nav />
       <Navbar />
+      <ChatWidget />
       <Outlet />
       <Sidemenu />
       <Footer />
