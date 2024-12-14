@@ -1,5 +1,5 @@
 import { styles } from "../styles";
-import { ServiceCost, doctorData1 } from "../constants";
+import { ServiceCost, doctorData1, reportDownload } from "../constants";
 import React, { useState, useEffect } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
@@ -556,6 +556,70 @@ const Search = () => {
               </form>
             </p>
           </div>
+          <div
+            className={` p-2 rounded   ${
+              activeTab === "styled-profile2" ? "" : "hidden"
+            }`}
+            id="styled-profile2"
+            role="tabpanel"
+            aria-labelledby="profile-tab">
+            <p className="text-sm text-gray-900">
+              <form className="max-w-7xl mx-auto">
+                <div className="grid md:grid-cols-12 md:gap-1">
+                  <div className="relative z-0 w-full col-span-12 mb-1 group">
+                    <select
+                      value={selectedBranch}
+                      onChange={handleBranchChange}
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
+                      <option value="">Select Branch</option>
+                      {ServiceCost.map((branch) => (
+                        <option key={branch.braId} value={branch.braId}>
+                          {branch.braName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative col-span-12 mb-1 group">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      name="floating_first_name"
+                      placeholder="Test Name"
+                      id="floating_first_name"
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      required
+                    />
+                    <section className="">
+                      <ul className="">
+                        {filteredServices.length > 0 && (
+                          <div className="flex flex-col min-h-[220px]">
+                            {/* Render the header */}
+                            <ListHeader />
+
+                            {/* List */}
+                            <AutoSizer>
+                              {({ width }) => (
+                                <List
+                                  height={250}
+                                  rowCount={filteredServices.length}
+                                  rowHeight={50}
+                                  rowRenderer={renderRow}
+                                  overscanRowCount={5}
+                                  width={width}
+                                />
+                              )}
+                            </AutoSizer>
+                          </div>
+                        )}
+                      </ul>
+                    </section>
+                  </div>
+                </div>
+              </form>
+            </p>
+          </div>{" "}
           <div
             className={` p-2 rounded   ${
               activeTab === "styled-profile2" ? "" : "hidden"

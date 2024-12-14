@@ -411,20 +411,20 @@ const reportDownload = [
     braCity: "Dhaka",
   },
   {
-    braID: 4,
+    braID: 9,
     braName: "Shyamoli",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",
   },
   {
-    braID: 5,
+    braID: 10,
     braName: "Mirpur",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
-    braID: 6,
+    braID: 18,
     braName: "Badda",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
@@ -437,51 +437,51 @@ const reportDownload = [
     braCity: "Dhaka",
   },
   {
-    braID: 8,
+    braID: 39,
     braName: "Uttara Garib E Newaz",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",
   },
   {
-    braID: 9,
+    braID: 37,
     braName: "Jatrabari",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
-    braID: 10,
+    braID: 6,
     braName: "Savar",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
-    braID: 11,
+    braID: 27,
     braName: "Gazipur",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
-    braID: 12,
+    braID: 5,
     braName: "Narayangonj",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
-    braID: 13,
+    braID: 12,
     braName: "Bogura",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Bogura",
   },
   {
-    braID: 14,
+    braID: 28,
     braName: "Rajshahi",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Rajshahi",
   },
   {
-    braID: 15,
+    braID: 29,
     braName: "Noakhali",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Noakhali",
@@ -499,7 +499,7 @@ const reportDownload = [
     braCity: "Mymensingh",
   },
   {
-    braID: 18,
+    braID: 26,
     braName: "Rangpur",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
@@ -513,19 +513,19 @@ const reportDownload = [
     braCity: "Dinajpur",
   },
   {
-    braID: 20,
+    braID: 36,
     braName: "Khulna",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Khulna",
   },
   {
-    braID: 21,
+    braID: 30,
     braName: "Kushtia",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Kushtia",
   },
   {
-    braID: 22,
+    braID: 31,
     braName: "Barishal",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Barishal",

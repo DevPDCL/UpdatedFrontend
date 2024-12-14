@@ -144,8 +144,6 @@ import BMD from "./OurTechnologies/BMD.webp";
 import ECG from "./OurTechnologies/ECG.webp";
 import Lithotripsy from "./OurTechnologies/Lithotripsy.webp";
 
-import PDCLchat from "./PDCLchat.png";
-
 export {
   logo,
   RamadanNotice24,
@@ -281,5 +279,4 @@ export {
   BMD,
   ECG,
   Lithotripsy,
-  PDCLchat
 };
