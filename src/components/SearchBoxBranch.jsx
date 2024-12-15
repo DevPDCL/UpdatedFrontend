@@ -21,164 +21,158 @@ const Header = () => (
   </div>
 );
 
-const Search = ({branchName}) => {
-  console.log(typeof(branchName));
-    const [activeTab, setActiveTab] = useState("styled-profile");
+const SearchBoxBranch = ({ branchName }) => {
+  console.log(typeof branchName);
+  const [activeTab, setActiveTab] = useState("styled-profile");
 
-    const handleTabClick = (tabId) => {
-      setActiveTab(tabId);
-    };
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+  };
 
-    const branchSearch = ServiceCost.find(
-      (branch) => branch.braName === branchName
+  const branchSearch = ServiceCost.find(
+    (branch) => branch.braName === branchName
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredServices, setFilteredServices] = useState([]);
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    const filtered = branchSearch?.services?.flatMap((category) =>
+      category.items.filter((service) =>
+        service.serviceName.toLowerCase().includes(query)
+      )
     );
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredServices, setFilteredServices] = useState([]);
-    const handleSearch = (e) => {
-      const query = e.target.value.toLowerCase();
-      const filtered = branchSearch?.services?.flatMap(category =>
-        category.items.filter(service =>
-          service.serviceName.toLowerCase().includes(query)
-        )
-      );
-    
-      // If the query is empty, set filteredServices to an empty array
-      setFilteredServices(query ? filtered || [] : []);
-      setSearchQuery(query);
-    };
 
-    const renderRow = ({ index, style }) => {
-      const service = filteredServices[index];
+    // If the query is empty, set filteredServices to an empty array
+    setFilteredServices(query ? filtered || [] : []);
+    setSearchQuery(query);
+  };
 
-      return (
+  const renderRow = ({ index, style }) => {
+    const service = filteredServices[index];
+
+    return (
+      <li
+        key={service.serviceId}
+        style={style}
+        className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
+        <p className="text-gray-600 font-ubuntu">{service.serviceName}</p>
+        <p className="font-medium text-gray-700 font-ubuntu">
+          {service.price.toLocaleString("en-BD", {
+            style: "currency",
+            currency: "BDT",
+          })}{" "}
+        </p>
+      </li>
+    );
+  };
+  const renderRow1 = ({ index, style }) => {
+    const doctor = displayedDoctors[index];
+
+    const backgroundColor =
+      doctor.drGender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
+
+    return (
+      <Link to={`/doctordetail/${doctor.drID}`}>
         <li
-          key={service.serviceId}
+          key={doctor.drId}
           style={style}
-          className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100"
-        >
-          <p className="text-gray-600 font-ubuntu">{service.serviceName}</p>
-          <p className="font-medium text-gray-700 font-ubuntu">
-            {service.price.toLocaleString("en-BD", {
-              style: "currency",
-              currency: "BDT",
-            })}{" "}
-          </p>
+          className={`flex justify-between ${backgroundColor} px-4 py-2`}>
+          <p className={`text-gray-600  font-ubuntu`}>{doctor.drName}</p>
+          <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
         </li>
-      );
-    };
-    const renderRow1 = ({ index, style }) => {
-      const doctor = displayedDoctors[index];
+      </Link>
+    );
+  };
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
-      const backgroundColor =
-        doctor.drGender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
+  const handleSearchClick = () => {
+    setIsSearchVisible(!isSearchVisible, true);
+  };
 
-      return (
-        <Link to={`/doctordetail/${doctor.drID}`}>
-          <li
-            key={doctor.drId}
-            style={style}
-            className={`flex justify-between ${backgroundColor} px-4 py-2`}
-          >
-            <p className={`text-gray-600  font-ubuntu`}>{doctor.drName}</p>
-            <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
-          </li>
-        </Link>
-      );
-    };
-    const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(true);
 
-    const handleSearchClick = () => {
-      setIsSearchVisible(!isSearchVisible, true);
-    };
+  const handleShowClick = () => {
+    setShowSearchInput(false);
+  };
 
-    const [showSearchInput, setShowSearchInput] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
-    const handleShowClick = () => {
-      setShowSearchInput(false);
-    };
+  const handleClick = () => {
+    setIsVisible(false);
+  };
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const handleUserInput = () => {
+    setMessages([...messages, "Your message has been sent!"]);
+  };
 
-    const [isVisible, setIsVisible] = useState(true);
+  const [userInput, setUserInput] = useState("");
 
-    const handleClick = () => {
-      setIsVisible(false);
-    };
-    const [messages, setMessages] = useState([]);
-    const [inputMessage, setInputMessage] = useState("");
-    const handleUserInput = () => {
-      setMessages([...messages, "Your message has been sent!"]);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (userInput.trim()) {
+      // Avoid sending empty messages
+      setMessages([...messages, userInput]);
+      setUserInput("");
+    }
+  };
 
-    const [userInput, setUserInput] = useState("");
+  const handleClick1 = () => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+  // Array to store messages
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (userInput.trim()) {
-        // Avoid sending empty messages
-        setMessages([...messages, userInput]);
-        setUserInput("");
-      }
-    };
+  const [displayedDoctors, setDisplayedDoctors] = useState([]);
+  const [searchTerm1, setSearchTerm1] = useState("");
+  const [selectedSpecialization, setSelectedSpecialization] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
+  const [showFemaleDoctors, setShowFemaleDoctors] = useState(false);
 
-    const handleClick1 = () => {
-      window.open(url, "_blank", "noopener,noreferrer");
-    };
-    // Array to store messages
+  const specializations = Array.from(
+    new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
+  );
 
-    const [displayedDoctors, setDisplayedDoctors] = useState([]);
-    const [searchTerm1, setSearchTerm1] = useState("");
-    const [selectedSpecialization, setSelectedSpecialization] = useState("");
-    const [selectedDay, setSelectedDay] = useState("");
-    const [showFemaleDoctors, setShowFemaleDoctors] = useState(false);
+  useEffect(() => {
+    let result = doctorData1.doctors;
 
-
-    const specializations = Array.from(
-      new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
+    result = result.filter((doctor) =>
+      doctor.chember.some((ch) => ch.branch === branchName)
     );
 
-    useEffect(
-      () => {
-        let result = doctorData1.doctors;
-
-        result = result.filter((doctor) =>
-          doctor.chember.some((ch) => ch.branch === branchName)
+    if (
+      selectedSpecialization ||
+      selectedDay ||
+      searchTerm1 ||
+      showFemaleDoctors
+    ) {
+      if (selectedSpecialization) {
+        result = result.filter(
+          (doctor) => doctor.drSpecilist === selectedSpecialization
         );
+      }
 
-        if (
-          selectedSpecialization ||
-          selectedDay ||
-          searchTerm1 ||
-          showFemaleDoctors
-        ) {
-          if (selectedSpecialization) {
-            result = result.filter(
-              (doctor) => doctor.drSpecilist === selectedSpecialization
-            );
-          }
+      if (selectedDay) {
+        result = result.filter((doctor) =>
+          doctor.chember.some((ch) =>
+            ch.weekday.some((wd) => wd.day === selectedDay)
+          )
+        );
+      }
 
-          if (selectedDay) {
-            result = result.filter((doctor) =>
-              doctor.chember.some((ch) =>
-                ch.weekday.some((wd) => wd.day === selectedDay)
-              )
-            );
-          }
+      if (searchTerm1) {
+        result = result.filter((doctor) =>
+          doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
+        );
+      }
+      if (showFemaleDoctors) {
+        result = result.filter((doctor) => doctor.drGender === "Female");
+      }
+    } else {
+      result = [];
+    }
 
-          if (searchTerm1) {
-            result = result.filter((doctor) =>
-              doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
-            );
-          }
-          if (showFemaleDoctors) {
-            result = result.filter((doctor) => doctor.drGender === "Female");
-          }
-        } else {
-          result = [];
-        }
-
-        setDisplayedDoctors(result);
-      },
-      [selectedSpecialization, selectedDay, searchTerm1, showFemaleDoctors]
-    );
+    setDisplayedDoctors(result);
+  }, [selectedSpecialization, selectedDay, searchTerm1, showFemaleDoctors]);
   return (
     <>
       <div
@@ -576,4 +570,4 @@ const Search = ({branchName}) => {
   );
 };
 
-export default Search;
+export default SearchBoxBranch;
