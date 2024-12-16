@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "@fontsource/ubuntu";
-
 
 const ListHeader = () => (
   <div className="flex justify-between  px-8 py-2 bg-gray-400 font-bold">
@@ -22,185 +22,257 @@ const Header = () => (
 );
 
 const Search = () => {
-    const [activeTab, setActiveTab] = useState("styled-profile");
+  const [activeTab, setActiveTab] = useState("styled-profile");
 
-    const handleTabClick = (tabId) => {
-      setActiveTab(tabId);
-    };
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+  };
 
-    const [selectedBranch, setSelectedBranch] = useState(null);
-    const [filteredServices, setFilteredServices] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const handleBranchChange = (event) => {
-      setSelectedBranch(event.target.value);
-      setFilteredServices([]); // Reset filtered services on branch change
-      setSearchTerm(""); // Reset search term on branch change
-    };
+  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [services, setServices] = useState([]); // Displayed data
+  const [allServices, setAllServices] = useState([]); // Full dataset
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isFetchingAll, setIsFetchingAll] = useState(false);
 
-    const handleSearchChange = (event) => {
-      setSearchTerm(event.target.value.toLowerCase());
-      const branchServices = ServiceCost.find(
-        (branch) => branch.braId === parseInt(selectedBranch)
-      )?.services;
-      if (branchServices) {
-        const filtered = branchServices.flatMap((category) =>
-          category.items.filter((service) =>
-            service.serviceName.toLowerCase().includes(searchTerm)
+  const handleBranchChange = async (event) => {
+    const branchId = event.target.value;
+    setSelectedBranch(branchId);
+    setServices([]);
+    setAllServices([]);
+    setSearchTerm("");
+
+    if (branchId) {
+      setLoading(true);
+
+      try {
+        // Fetch the first page
+        const firstPageResponse = await axios.get(
+          `https://api.populardiagnostic.com/api/test-service-charges`,
+          {
+            params: {
+              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+              branch_id: branchId,
+              test_service_category_id: 0,
+              page: 1,
+            },
+          }
+        );
+
+        const firstPageData = firstPageResponse.data.data.data;
+        setServices(firstPageData); // Display first page data
+        setAllServices(firstPageData); // Temporarily set as full dataset
+
+        // Fetch all data in the background
+        setIsFetchingAll(true);
+        fetchAllPages(branchId, firstPageData);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const fetchAllPages = async (branchId, initialData) => {
+    try {
+      let currentPage = 2;
+      let fetchedData = [...initialData];
+      const response = await axios.get(
+        `https://api.populardiagnostic.com/api/test-service-charges`,
+        {
+          params: {
+            token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+            branch_id: branchId,
+            test_service_category_id: 0,
+            page: 1,
+          },
+        }
+      );
+      const totalPages = response.data.data.last_page;
+
+      while (currentPage <= totalPages) {
+        const pageResponse = await axios.get(
+          `https://api.populardiagnostic.com/api/test-service-charges`,
+          {
+            params: {
+              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+              branch_id: branchId,
+              test_service_category_id: 0,
+              page: currentPage,
+            },
+          }
+        );
+
+        fetchedData = [...fetchedData, ...pageResponse.data.data.data];
+        currentPage++;
+      }
+
+      setAllServices(fetchedData);
+      setServices(fetchedData); // Replace first page data with full dataset
+    } catch (err) {
+      console.error("Error fetching all pages:", err);
+    } finally {
+      setIsFetchingAll(false);
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    const filtered = allServices.filter((service) =>
+      service.name.toLowerCase().includes(searchValue)
+    );
+    setServices(filtered);
+  };
+
+  const renderRow = ({ index, style }) => {
+    const service = services[index];
+    return (
+      <li
+        key={index}
+        style={style}
+        className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
+        <p className="text-gray-600 font-ubuntu">{service.name}</p>
+        <p className="font-medium text-gray-700 font-ubuntu">
+          {service.price.toLocaleString("en-BD", {
+            style: "currency",
+            currency: "BDT",
+          })}
+        </p>
+      </li>
+    );
+  };
+
+  const renderRow1 = ({ index, style }) => {
+    const doctor = displayedDoctors[index];
+    const cardBackgroundColor =
+      doctor.drGender === "Female"
+        ? "bg-gradient-to-b from-[#F5FFFA]/20 to-[#fce8f3]/90"
+        : "bg-gradient-to-b from--[#F5FFFA]/20 to-[#f0fff0]/90";
+
+    const backgroundColor =
+      doctor.drGender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
+
+    const textColor =
+      doctor.drGender === "Female" ? "text-[#5E2750]" : "text-[#00984a]";
+    return (
+      <Link to={`/doctordetail/${doctor.drID}`}>
+        <li
+          key={doctor.drId}
+          style={style}
+          className={`flex justify-between ${backgroundColor} px-4 py-2`}>
+          <p className={`text-gray-600  font-ubuntu`}>{doctor.drName}</p>
+          <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
+        </li>
+      </Link>
+    );
+  };
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+
+  const handleSearchClick = () => {
+    setIsSearchVisible(!isSearchVisible, true);
+  };
+
+  const [showSearchInput, setShowSearchInput] = useState(true);
+
+  const handleShowClick = () => {
+    setShowSearchInput(false);
+  };
+
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleClick = () => {
+    setIsVisible(false);
+  };
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const handleUserInput = () => {
+    setMessages([...messages, "Your message has been sent!"]);
+  };
+
+  const [userInput, setUserInput] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (userInput.trim()) {
+      // Avoid sending empty messages
+      setMessages([...messages, userInput]);
+      setUserInput("");
+    }
+  };
+
+  const handleClick1 = () => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+  // Array to store messages
+
+  const [displayedDoctors, setDisplayedDoctors] = useState([]);
+  const [searchTerm1, setSearchTerm1] = useState("");
+  const [selectedBranch1, setSelectedBranch1] = useState("");
+  const [selectedSpecialization, setSelectedSpecialization] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
+  const [showFemaleDoctors, setShowFemaleDoctors] = useState(false);
+
+  const branches = Array.from(
+    new Set(
+      doctorData1.doctors.flatMap((doc) => doc.chember.map((ch) => ch.branch))
+    )
+  );
+  const specializations = Array.from(
+    new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
+  );
+
+  useEffect(() => {
+    let result = doctorData1.doctors;
+    if (
+      selectedBranch1 ||
+      selectedSpecialization ||
+      selectedDay ||
+      searchTerm1 ||
+      showFemaleDoctors
+    ) {
+      if (selectedBranch1) {
+        result = result.filter((doctor) =>
+          doctor.chember.some((ch) => ch.branch === selectedBranch1)
+        );
+      }
+
+      if (selectedSpecialization) {
+        result = result.filter(
+          (doctor) => doctor.drSpecilist === selectedSpecialization
+        );
+      }
+
+      if (selectedDay) {
+        result = result.filter((doctor) =>
+          doctor.chember.some((ch) =>
+            ch.weekday.some((wd) => wd.day === selectedDay)
           )
         );
-        setFilteredServices(filtered);
-      } else {
-        setFilteredServices([]);
-      }
-    };
-    const renderRow = ({ index, style }) => {
-      const service = filteredServices[index];
-
-      return (
-        <li
-          key={service.serviceId}
-          style={style}
-          className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100"
-        >
-          <p className="text-gray-600 font-ubuntu">{service.serviceName}</p>
-          <p className="font-medium text-gray-700 font-ubuntu">
-            {service.price.toLocaleString("en-BD", {
-              style: "currency",
-              currency: "BDT",
-            })}{" "}
-          </p>
-        </li>
-      );
-    };
-    const renderRow1 = ({ index, style }) => {
-      const doctor = displayedDoctors[index];
-      const cardBackgroundColor =
-        doctor.drGender === "Female"
-          ? "bg-gradient-to-b from-[#F5FFFA]/20 to-[#fce8f3]/90"
-          : "bg-gradient-to-b from--[#F5FFFA]/20 to-[#f0fff0]/90";
-
-      const backgroundColor =
-        doctor.drGender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
-
-      const textColor =
-        doctor.drGender === "Female" ? "text-[#5E2750]" : "text-[#00984a]";
-      return (
-        <Link to={`/doctordetail/${doctor.drID}`}>
-          <li
-            key={doctor.drId}
-            style={style}
-            className={`flex justify-between ${backgroundColor} px-4 py-2`}
-          >
-            <p className={`text-gray-600  font-ubuntu`}>{doctor.drName}</p>
-            <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
-          </li>
-        </Link>
-      );
-    };
-    const [isSearchVisible, setIsSearchVisible] = useState(false);
-
-    const handleSearchClick = () => {
-      setIsSearchVisible(!isSearchVisible, true);
-    };
-
-    const [showSearchInput, setShowSearchInput] = useState(true);
-
-    const handleShowClick = () => {
-      setShowSearchInput(false);
-    };
-
-    const [isVisible, setIsVisible] = useState(true);
-
-    const handleClick = () => {
-      setIsVisible(false);
-    };
-    const [messages, setMessages] = useState([]);
-    const [inputMessage, setInputMessage] = useState("");
-    const handleUserInput = () => {
-      setMessages([...messages, "Your message has been sent!"]);
-    };
-
-    const [userInput, setUserInput] = useState("");
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (userInput.trim()) {
-        // Avoid sending empty messages
-        setMessages([...messages, userInput]);
-        setUserInput("");
-      }
-    };
-
-    const handleClick1 = () => {
-      window.open(url, "_blank", "noopener,noreferrer");
-    };
-    // Array to store messages
-
-    const [displayedDoctors, setDisplayedDoctors] = useState([]);
-    const [searchTerm1, setSearchTerm1] = useState("");
-    const [selectedBranch1, setSelectedBranch1] = useState("");
-    const [selectedSpecialization, setSelectedSpecialization] = useState("");
-    const [selectedDay, setSelectedDay] = useState("");
-    const [showFemaleDoctors, setShowFemaleDoctors] = useState(false);
-
-    const branches = Array.from(
-      new Set(
-        doctorData1.doctors.flatMap((doc) => doc.chember.map((ch) => ch.branch))
-      )
-    );
-    const specializations = Array.from(
-      new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
-    );
-
-    useEffect(() => {
-      let result = doctorData1.doctors;
-      if (
-        selectedBranch1 ||
-        selectedSpecialization ||
-        selectedDay ||
-        searchTerm1 ||
-        showFemaleDoctors
-      ) {
-        if (selectedBranch1) {
-          result = result.filter((doctor) =>
-            doctor.chember.some((ch) => ch.branch === selectedBranch1)
-          );
-        }
-
-        if (selectedSpecialization) {
-          result = result.filter(
-            (doctor) => doctor.drSpecilist === selectedSpecialization
-          );
-        }
-
-        if (selectedDay) {
-          result = result.filter((doctor) =>
-            doctor.chember.some((ch) =>
-              ch.weekday.some((wd) => wd.day === selectedDay)
-            )
-          );
-        }
-
-        if (searchTerm1) {
-          result = result.filter((doctor) =>
-            doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
-          );
-        }
-        if (showFemaleDoctors) {
-          result = result.filter((doctor) => doctor.drGender === "Female");
-        }
-      } else {
-        result = [];
       }
 
-      setDisplayedDoctors(result);
-    }, [
-      selectedBranch1,
-      selectedSpecialization,
-      selectedDay,
-      searchTerm1,
-      showFemaleDoctors,
-    ]);
+      if (searchTerm1) {
+        result = result.filter((doctor) =>
+          doctor.drName.toLowerCase().includes(searchTerm1.toLowerCase())
+        );
+      }
+      if (showFemaleDoctors) {
+        result = result.filter((doctor) => doctor.drGender === "Female");
+      }
+    } else {
+      result = [];
+    }
+
+    setDisplayedDoctors(result);
+  }, [
+    selectedBranch1,
+    selectedSpecialization,
+    selectedDay,
+    searchTerm1,
+    showFemaleDoctors,
+  ]);
   return (
     <>
       <div
@@ -572,8 +644,8 @@ const Search = () => {
                       onChange={handleBranchChange}
                       className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
                       <option value="">Select Branch</option>
-                      {ServiceCost.map((branch) => (
-                        <option key={branch.braId} value={branch.braId}>
+                      {reportDownload.map((branch) => (
+                        <option key={branch.braID} value={branch.braID}>
                           {branch.braName}
                         </option>
                       ))}
@@ -593,7 +665,7 @@ const Search = () => {
                     />
                     <section className="">
                       <ul className="">
-                        {filteredServices.length > 0 && (
+                        {services.length > 0 && (
                           <div className="flex flex-col min-h-[220px]">
                             {/* Render the header */}
                             <ListHeader />
@@ -603,7 +675,7 @@ const Search = () => {
                               {({ width }) => (
                                 <List
                                   height={250}
-                                  rowCount={filteredServices.length}
+                                  rowCount={services.length}
                                   rowHeight={50}
                                   rowRenderer={renderRow}
                                   overscanRowCount={5}
@@ -613,70 +685,7 @@ const Search = () => {
                             </AutoSizer>
                           </div>
                         )}
-                      </ul>
-                    </section>
-                  </div>
-                </div>
-              </form>
-            </p>
-          </div>{" "}
-          <div
-            className={` p-2 rounded   ${
-              activeTab === "styled-profile2" ? "" : "hidden"
-            }`}
-            id="styled-profile2"
-            role="tabpanel"
-            aria-labelledby="profile-tab">
-            <p className="text-sm text-gray-900">
-              <form className="max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-12 md:gap-1">
-                  <div className="relative z-0 w-full col-span-12 mb-1 group">
-                    <select
-                      value={selectedBranch}
-                      onChange={handleBranchChange}
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
-                      <option value="">Select Branch</option>
-                      {ServiceCost.map((branch) => (
-                        <option key={branch.braId} value={branch.braId}>
-                          {branch.braName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="relative col-span-12 mb-1 group">
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      name="floating_first_name"
-                      placeholder="Test Name"
-                      id="floating_first_name"
-                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
-                      required
-                    />
-                    <section className="">
-                      <ul className="">
-                        {filteredServices.length > 0 && (
-                          <div className="flex flex-col min-h-[220px]">
-                            {/* Render the header */}
-                            <ListHeader />
-
-                            {/* List */}
-                            <AutoSizer>
-                              {({ width }) => (
-                                <List
-                                  height={250}
-                                  rowCount={filteredServices.length}
-                                  rowHeight={50}
-                                  rowRenderer={renderRow}
-                                  overscanRowCount={5}
-                                  width={width}
-                                />
-                              )}
-                            </AutoSizer>
-                          </div>
-                        )}
+                        {loading && <p>Loading...</p>}
                       </ul>
                     </section>
                   </div>
