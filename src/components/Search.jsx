@@ -669,7 +669,6 @@ const Search = () => {
                           <div className="flex flex-col min-h-[220px]">
                             {/* Render the header */}
                             <ListHeader />
-
                             {/* List */}
                             <AutoSizer>
                               {({ width }) => (

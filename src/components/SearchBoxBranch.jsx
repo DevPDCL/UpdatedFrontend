@@ -1,10 +1,11 @@
 import { styles } from "../styles";
-import { ServiceCost, doctorData1 } from "../constants";
+import { ServiceCost, doctorData1, reportDownload } from "../constants";
 import React, { useState, useEffect } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
+import axios from "axios";
 
 
 const ListHeader = () => (
@@ -22,49 +23,136 @@ const Header = () => (
 );
 
 const SearchBoxBranch = ({ branchName }) => {
-  console.log(typeof branchName);
   const [activeTab, setActiveTab] = useState("styled-profile");
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
-  const branchSearch = ServiceCost.find(
-    (branch) => branch.braName === branchName
-  );
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredServices, setFilteredServices] = useState([]);
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    const filtered = branchSearch?.services?.flatMap((category) =>
-      category.items.filter((service) =>
-        service.serviceName.toLowerCase().includes(query)
-      )
-    );
+     const [searchQuery, setSearchQuery] = useState("");
+     const [filteredServices, setFilteredServices] = useState([]);
+     const [services, setServices] = useState([]);
+     const [loading, setLoading] = useState(false);
+     const [error, setError] = useState(null);
+     const [isFetchingAll, setIsFetchingAll] = useState(false);
 
-    // If the query is empty, set filteredServices to an empty array
-    setFilteredServices(query ? filtered || [] : []);
-    setSearchQuery(query);
-  };
+     useEffect(() => {
+       const branch = reportDownload.find(
+         (b) => b.braName.toLowerCase() === branchName.toLowerCase()
+       );
+       if (branch) {
+         fetchServices(branch.braID);
+       } else {
+         setError("Branch not found.");
+       }
+     }, [branchName]);
 
-  const renderRow = ({ index, style }) => {
-    const service = filteredServices[index];
+     const fetchServices = async (branchId) => {
+       setLoading(true);
+       setError(null);
 
-    return (
-      <li
-        key={service.serviceId}
-        style={style}
-        className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
-        <p className="text-gray-600 font-ubuntu">{service.serviceName}</p>
-        <p className="font-medium text-gray-700 font-ubuntu">
-          {service.price.toLocaleString("en-BD", {
-            style: "currency",
-            currency: "BDT",
-          })}{" "}
-        </p>
-      </li>
-    );
-  };
+       try {
+         // Fetch the first page
+         const firstPageResponse = await axios.get(
+           "https://api.populardiagnostic.com/api/test-service-charges",
+           {
+             params: {
+               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+               branch_id: branchId,
+               test_service_category_id: 0,
+               page: 1,
+             },
+           }
+         );
+
+         const firstPageData = firstPageResponse.data.data.data;
+         setServices(firstPageData);
+         setFilteredServices(firstPageData);
+
+         // Fetch all pages in the background
+         setIsFetchingAll(true);
+         fetchAllPages(branchId, firstPageData);
+       } catch (err) {
+         setError("Failed to fetch services.");
+         console.error(err);
+       } finally {
+         setLoading(false);
+       }
+     };
+
+     const fetchAllPages = async (branchId, initialData) => {
+       try {
+         let currentPage = 2;
+         let fetchedData = [...initialData];
+         const response = await axios.get(
+           "https://api.populardiagnostic.com/api/test-service-charges",
+           {
+             params: {
+               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+               branch_id: branchId,
+               test_service_category_id: 0,
+               page: 1,
+             },
+           }
+         );
+         const totalPages = response.data.data.last_page;
+
+         while (currentPage <= totalPages) {
+           const pageResponse = await axios.get(
+             "https://api.populardiagnostic.com/api/test-service-charges",
+             {
+               params: {
+                 token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+                 branch_id: branchId,
+                 test_service_category_id: 0,
+                 page: currentPage,
+               },
+             }
+           );
+
+           fetchedData = [...fetchedData, ...pageResponse.data.data.data];
+           currentPage++;
+         }
+
+         setServices(fetchedData);
+         setFilteredServices(fetchedData);
+       } catch (err) {
+         console.error("Error fetching all pages:", err);
+       } finally {
+         setIsFetchingAll(false);
+       }
+     };
+
+     const handleSearch = (e) => {
+       const query = e.target.value.toLowerCase();
+       setSearchQuery(query);
+
+       const filtered = services.filter((service) =>
+         service.name.toLowerCase().includes(query)
+       );
+       setFilteredServices(filtered);
+     };
+
+     const renderRow = ({ index, style }) => {
+       const service = filteredServices[index];
+
+       return (
+         <li
+           key={service.id}
+           style={style}
+           className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
+           <p className="text-gray-600 font-ubuntu">{service.name}</p>
+           <p className="font-medium text-gray-700 font-ubuntu">
+             {service.price.toLocaleString("en-BD", {
+               style: "currency",
+               currency: "BDT",
+             })}
+           </p>
+         </li>
+       );
+     };
+
+
   const renderRow1 = ({ index, style }) => {
     const doctor = displayedDoctors[index];
 
@@ -539,22 +627,23 @@ const SearchBoxBranch = ({ branchName }) => {
                       <ul className="">
                         {filteredServices.length > 0 && (
                           <div className="flex flex-col min-h-[220px]">
-                            {/* Render the header */}
                             <ListHeader />
-
-                            {/* List */}
-                            <AutoSizer>
-                              {({ width }) => (
-                                <List
-                                  height={250}
-                                  rowCount={filteredServices.length}
-                                  rowHeight={50}
-                                  rowRenderer={renderRow}
-                                  overscanRowCount={5}
-                                  width={width}
-                                />
-                              )}
-                            </AutoSizer>
+                            {loading && <p>Loading...</p>}
+                            {error && <p>{error}</p>}
+                            {!loading && !error && (
+                              <AutoSizer>
+                                {({ width }) => (
+                                  <List
+                                    height={250}
+                                    rowCount={filteredServices.length}
+                                    rowHeight={50}
+                                    rowRenderer={renderRow}
+                                    overscanRowCount={5}
+                                    width={width}
+                                  />
+                                )}
+                              </AutoSizer>
+                            )}
                           </div>
                         )}
                       </ul>
