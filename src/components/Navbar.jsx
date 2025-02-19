@@ -57,7 +57,7 @@ const Dropdown = ({ title, children, openDropdown, setOpenDropdown }) => {
         </svg>
       </button>
       {isOpen && (
-        <div className="w-[600px] -ml-[400px] absolute mt-2  h-[300px] overflow-auto bg-white rounded-b-xl shadow-lg">
+        <div className="w-[600px] -ml-[40px] absolute mt-2 p-5  h-[300px] overflow-scroll  bg-white rounded-b-xl shadow-lg">
           {children}
         </div>
       )}
@@ -123,7 +123,7 @@ return (
               title="About"
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}>
-              <div className="flex flex-wrap items-center">
+              <div className="flex flex-col items-center">
                 <DropdownItem to="/goals">
                   <div className="flex col-span-1 items-center">
                     <svg
