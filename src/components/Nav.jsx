@@ -73,14 +73,14 @@ const Nav = () => {
                 <h2
                   className={`text-[15px] underline pl-3 text font-ubuntu font-normal hidden md:block`}
                 >
-                  Other Branches <span> </span>
+                  Other Branches Hotlines<span> </span>
                 </h2>
               </Link>
               <Link to="/hotlines" className="text-white flex items-center">
                 <h2
                   className={`text-[15px] underline pl-3 text font-ubuntu font-normal md:hidden`}
                 >
-                  Hotlines <span> </span>
+                  Other Branches Hotlines <span> </span>
                 </h2>
               </Link>
             </div>
