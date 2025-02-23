@@ -77,19 +77,19 @@ function Contact() {
         </div>
       </div>
       <div
-        className={`justify-center  items-center p-2 text-center flex flex-col  text-white`}
+        className={`justify-center  items-center p-2 text-center   text-white`}
       >
         <div className=" flex-col  max-w-7xl container sm:w-[80%] block items-stretch md:flex-row    mx-auto">
           <div className="mx-auto w-full bg-gray-100/5 mt-[40px] shadow-2xl rounded-[10px] max-w-7xl">
             <form
-              className="mt-1 mb-2 w-full p-5 max-w-7xl "
+              className="mt-1 mb-2  w-full p-5 max-w-7xl "
               onSubmit={handleSubmit}
             >
-              <div className="mb-1 flex flex-col gap-6">
-                <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#00984a]">
-                  Send us a message
-                </h5>
-                <div className="grid  md:grid-cols-3 gap-4">
+              <h5 className="text-[44px] p-5 font-ubuntu font-bold text-[#00984a]">
+                Send us a message
+              </h5>
+              <div className=" grid  md:grid-cols-3  gap">
+                <div className=" gap">
                   <div className="col-span-1">
                     <label className="text-[#00984a] flex items-center justify-center pr-5 text-start">
                       Your Email
@@ -118,7 +118,7 @@ function Contact() {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="col-span-1">
                     <label className="text-[#00984a] flex items-center pr-5 justify-center text-start">
                       Your Mobile
                     </label>
@@ -132,7 +132,7 @@ function Contact() {
                       required
                     />
                   </div>
-                  <div className="col-span-3 pl-9 pr-9">
+                  <div className="col-span-3 ">
                     <label className="text-[#00984a] pr-5  flex items-center justify-center  text-start">
                       Your Messages
                     </label>

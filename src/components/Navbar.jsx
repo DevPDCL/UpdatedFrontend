@@ -21,7 +21,7 @@ const DropdownItem = ({ to, children }) => {
   return (
     <Link
       to={to}
-      className="block px-4 py-2 text-sm mx-auto my-2 text-gray-900 rounded w-[270px] font-medium group hover:bg-gray-200 hover:text-[#00984a]">
+      className="block px-4 py-2 text-sm me-auto my-2 text-gray-900 rounded w-[250px]  font-medium group hover:bg-gray-200 hover:text-[#00984a]">
       {children}
     </Link>
   );
@@ -57,7 +57,7 @@ const Dropdown = ({ title, children, openDropdown, setOpenDropdown }) => {
         </svg>
       </button>
       {isOpen && (
-        <div className="w-[600px] -ml-[40px] absolute mt-2 p-5  h-[300px] overflow-scroll  bg-white rounded-b-xl shadow-lg">
+        <div className="w-[600px]  absolute mt-2 p-5  h-[300px] overflow-scroll  bg-white rounded-b-xl shadow-lg">
           {children}
         </div>
       )}
