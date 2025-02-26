@@ -1,13 +1,39 @@
+import "@fontsource/ubuntu";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const ProjectCard = ({ image, name, designation }) => {
+  return (
+    <div className="bg-gradient-to-b from-white to-[#00984a18] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3">
+      <div className="relative w-full">
+        <img
+          src={image}
+          alt="Top_Management_Image"
+          className="w-full shadow-xl rounded-3xl object-cover opacity-95 p-2"
+        />
+      </div>
+      <div className="py-7 flex flex-col text-center">
+        <p className="text-gray-600 px-2 font-bold font-ubuntu text-[24px]">
+          {name}
+        </p>
+        <p className="text-[#808080] px-2 font-medium font-ubuntu text-[16px]">
+          {designation}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const About = () => {
-  const [about, setAbout] = useState([]);
-  const [about1, setAbout1] = useState([]);
-  const [about2, setAbout2] = useState([]);
-  const [about3, setAbout3] = useState([]);
+  const [topManagement, setTopManagement] = useState([]);
+  const [topManagement1, setTopManagement1] = useState([]);
+  const [topManagement2, setTopManagement2] = useState([]);
+  const [topManagement3, setTopManagement3] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    axios;
     axios
       .get(`https://api.populardiagnostic.com/api/management-team`, {
         params: {
@@ -15,101 +41,60 @@ const About = () => {
         },
       })
       .then((response) => {
-        const row1 = response.data.data["Row - 1"];
-        const row2 = response.data.data["Row - 2"];
-        const row3 = response.data.data["Row - 3"];
-        const row4 = response.data.data["Row - 4"];
-        setAbout(row1);
-        setAbout1(row2);
-        setAbout2(row3);
-        setAbout3(row4);
+        setTopManagement(response.data.data["Row - 1"]);
+        setTopManagement1(response.data.data["Row - 2"]);
+        setTopManagement2(response.data.data["Row - 3"]);
+        setTopManagement3(response.data.data["Row - 4"]);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching about:", error);
+        setError("Failed to fetch data");
+        setLoading(false);
       });
   }, []);
 
+  const topPosition = topManagement.slice(0, 2);
+  const secondTopPosition = topManagement1.slice(0, 3);
+  const thirdTopPosition = topManagement2.slice(0, 3);
+  const fourthTopPosition = topManagement3.slice(0, 5);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="mt-20 ">
-        {about.length > 0 ? (
-          <div className="max-w-7xl me-auto grid md:grid-cols-4 ">
-            {about.map((about) => (
-              <div
-                className="mx-auto col-span-2 shadow rounded p-5"
-                key={about.id}
-              >
-                <img
-                  className="mx-auto w-[250px] h-[300px]"
-                  src={about.image}
-                  alt={about.name}
-                />
-                <p className="text-center">{about.name}</p>
-                <p className="text-center">{about.designation}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p></p>
-        )}
+    <div className="bg-[#ffffff]">
+      <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
+        <h2 className="text-gray-900/50 pb-5 text-center text-[35px] font-bold font-ubuntu">
+          Top Management
+        </h2>
       </div>
 
-      <div className="mt-20">
-        {about1.length > 0 ? (
-          <div className="max-w-7xl mx-auto grid md:grid-cols-3 p-5 mt-20 gap-20">
-            {about1.map((about) => (
-              <div className="mx-auto shadow rounded p-5" key={about.id}>
-                <img
-                  className="mx-auto w-[250px] h-[300px]"
-                  src={about.image}
-                  alt={about.name}
-                />
-                <p className="text-center">{about.name}</p>
-                <p className="text-center">{about.designation}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p></p>
-        )}
+      <div className="flex mx-auto p-3 pb-10 pt-2 max-w-7xl justify-center flex-wrap gap-7">
+        {topPosition.map((project) => (
+          <ProjectCard key={project._id} {...project} />
+        ))}
       </div>
-      <div className="mt-20">
-        {about2.length > 0 ? (
-          <div className="max-w-7xl mx-auto grid md:grid-cols-3 p-5 mt-20 gap-20">
-            {about2.map((about) => (
-              <div className="mx-auto shadow rounded  p-5" key={about.id}>
-                <img
-                  className="mx-auto w-[250px] h-[300px]"
-                  src={about.image}
-                  alt={about.name}
-                />
-                <p className="text-center">{about.name}</p>
-                <p className="text-center">{about.designation}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p></p>
-        )}
+
+      <div className="flex mx-auto p-3 py-10 max-w-7xl justify-center flex-wrap gap-7">
+        {secondTopPosition.map((project) => (
+          <ProjectCard key={project._id} {...project} />
+        ))}
       </div>
-      <div className="mt-20">
-        {about3.length > 0 ? (
-          <div className="max-w-7xl mx-auto grid md:grid-cols-5 mb-20  mt-20 gap-5">
-            {about3.map((about) => (
-              <div className="mx-auto shadow rounded p-5" key={about.id}>
-                <img
-                  className="mx-auto h-[200px]"
-                  src={about.image}
-                  alt={about.name}
-                />
-                <p className="text-center">{about.name}</p>
-                <p className="text-center">{about.designation}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p></p>
-        )}
+
+      <div className="flex mx-auto p-3 py-10 max-w-7xl justify-center flex-wrap gap-7">
+        {thirdTopPosition.map((project) => (
+          <ProjectCard key={project._id} {...project} />
+        ))}
+      </div>
+      <div className="flex mx-auto p-3 px-10 py-20 justify-center flex-wrap gap-4">
+        {fourthTopPosition.map((project) => (
+          <ProjectCard key={project._id} {...project} />
+        ))}
       </div>
     </div>
   );
