@@ -59,7 +59,7 @@ const About = () => {
   const fourthTopPosition = topManagement3.slice(0, 5);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
