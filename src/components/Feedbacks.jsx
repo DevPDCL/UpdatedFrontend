@@ -56,7 +56,7 @@ const Feedbacks = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios;
+   
     axios
       .get(`https://api.populardiagnostic.com/api/testimonials`, {
         params: {
