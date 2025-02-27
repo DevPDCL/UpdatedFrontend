@@ -33,7 +33,7 @@ function Cor() {
       <h3 className="text-gray-900/50 text-center text-[28px] font-ubuntu">
         Corporate Partners
       </h3>
-      <div className="flex flex-row p-3 flex-wrap mt-10 sm:w-[80%] max-w-screen-xl mx-auto justify-center gap-10">
+      <div className="flex flex-row p-3 flex-wrap  sm:w-[80%] max-w-screen-xl mx-auto justify-center gap-10">
         <Marquee>
           <div className="flex flex-wrap">
             {images.map((image) => (

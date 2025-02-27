@@ -206,13 +206,13 @@ const HomeContent = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-[50px] mx-auto  max-w-7xl">
+        <div className="flex flex-col mt-[10px] mx-auto  max-w-7xl">
           <h2 className="text-gray-500/50 pb-2 text-center pl-2 text-[28px] font-bold font-ubuntu">
             SERVICES THAT MATTERS
           </h2>
         </div>
 
-        <div className="flex  mx-auto p-2 justify-center  justify-items-center flex-wrap  gap-0">
+        <div className="flex  mx-auto p-2 justify-center -mt-40  justify-items-center flex-wrap  gap-0">
           {healthPakage.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}

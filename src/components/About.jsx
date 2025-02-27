@@ -9,7 +9,7 @@ const ProjectCard = ({ image, name, designation }) => {
         <img
           src={image}
           alt="Top_Management_Image"
-          className="w-full shadow-xl rounded-3xl object-cover opacity-95 p-2"
+          className="w-full shadow-xl rounded-3xl h-[350px] object-cover opacity-95 p-2"
         />
       </div>
       <div className="py-7 flex flex-col text-center">
