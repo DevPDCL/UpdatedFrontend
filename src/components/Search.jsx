@@ -133,7 +133,8 @@ const Search = () => {
       <li
         key={index}
         style={style}
-        className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
+        className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100"
+      >
         <p className="text-gray-600 font-ubuntu">{service.name}</p>
         <p className="font-medium text-gray-700 font-ubuntu">
           {service.price.toLocaleString("en-BD", {
@@ -162,7 +163,8 @@ const Search = () => {
         <li
           key={doctor.drId}
           style={style}
-          className={`flex justify-between ${backgroundColor} px-4 py-2`}>
+          className={`flex justify-between ${backgroundColor} px-4 py-2`}
+        >
           <p className={`text-gray-600  font-ubuntu`}>{doctor.drName}</p>
           <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
         </li>
@@ -478,7 +480,7 @@ const Search = () => {
                     >
                       <button
                         type="button"
-                        className="  gradient-alt-flow w-full rounded block col-span-12 mb-2 h-[43px] hover:text-gray-900 border bg-white shadow-2xl  border-none focus:ring-4 focus:outline-none focus:ring-[#00984a] font-ubuntu font-extrabold text-[14px]  px-5 py-2.5 text-center "
+                        className="text-gray-600 w-full rounded block col-span-12 mb-2 h-[43px] hover:text-gray-900 border bg-white shadow-2xl  border-none focus:ring-4 focus:outline-none focus:ring-[#00984a] font-ubuntu text-[16px] font-bold px-5 py-2.5 text-center "
                         onClick={handleClick1}
                       >
                         Make An Appointment{" "}
@@ -659,7 +661,7 @@ const Search = () => {
             <p className="text-sm text-gray-900">
               <form className="max-w-7xl mx-auto">
                 <div className="grid md:grid-cols-12 md:gap-1">
-                  <div className="relative z-0 w-full col-span-4 mb-1 group">
+                  <div className="relative z-0 w-full col-span-12 mb-1 group">
                     <select
                       value={selectedBranch}
                       onChange={handleBranchChange}
@@ -674,7 +676,7 @@ const Search = () => {
                     </select>
                   </div>
 
-                  <div className="relative col-span-8 mb-1 group">
+                  <div className="relative col-span-12 mb-1 group">
                     <input
                       type="text"
                       value={searchTerm}

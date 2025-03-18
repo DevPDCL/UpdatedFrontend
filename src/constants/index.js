@@ -41921,7 +41921,7 @@ const doctorData1 = {
       image: PROF_DR_MD_ASADUL_KABIR,
     },
     {
-      drID: 27,
+      drID: 30,
       drName: "Prof. Dr. A. K. M. Rafiqul Bari",
       drSpecilist: "Chest Medicine",
       drDegree:

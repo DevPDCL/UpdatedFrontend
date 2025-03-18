@@ -26,6 +26,8 @@ import Chairman from "./Chairman";
 import Goals from "./Goals";
 import Error from "./Error";
 import Dmd from "./Dmd";
+import Gallery from "./Gallery";
+import Videos from "./Videos";
 import Shantinagar from "../components/Branch/Shantinagar";
 import Shyamoli from "../components/Branch/Shyamoli";
 import Mirpur from "../components/Branch/Mirpur";
@@ -64,6 +66,7 @@ export {
   Terms,
   Details,
   Goals,
+  Gallery,
   DoctorSearch,
   Badda,
   Barishal,
@@ -71,6 +74,7 @@ export {
   Dhanmondi,
   Dinajpur,
   EnglishRoad,
+  Videos,
   Gazipur,
   Jatrabari,
   Khulna,
