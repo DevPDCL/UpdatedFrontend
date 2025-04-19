@@ -69,6 +69,7 @@ const Goals = () => {
             </div>
           </div>
         </div>
+
         <div className="overflow-hidden  -mt-[170px] py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-7xl grid-cols-1 shadow bg-white p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
@@ -91,27 +92,40 @@ const Goals = () => {
                     <h1 className="text-gray-900 font-bold p-5">
                       Our Objective
                     </h1>
-                    <p className="text-gray-500 p-5  h-auto">
-                      To render the world standard diagnostic service to the
-                      people of the country at an affordable cost and in turn to
-                      limit the outflow of the patient abroad at the expense of
-                      heard earn foreign currency by providing quality
-                      diagnostic services.<br></br> Out door basis treatment by
-                      renowned General Practitioners, Consultants and Professors
-                      in different medical fields.<br></br>To promote Health
-                      Education & Medical Services.<br></br>
-                      Day care Centre for follow-up cardiac renal and oncology
-                      patients.<br></br>To build a full fledged specialized
-                      (Tertiary) Hospital.<br></br>
-                      Set up Satellite collection Centre.
-                    </p>
+
+                    <ul className="list-disc list-inside space-y-2 p-5 text-gray-500">
+                      <li>
+                        To render the world standard diagnostic service to the
+                        people of the country at an affordable cost and in turn
+                        to limit the outflow of the patient abroad at the
+                        expense of heard earn foreign currency by providing
+                        quality diagnostic services.
+                      </li>
+                      <li>
+                        Out door basis treatment by renowned General
+                        Practitioners, Consultants and Professors in different
+                        medical fields.
+                      </li>
+                      <li>To promote Health Education & Medical Services.</li>
+                      <li>
+                        Day care Centre for follow-up cardiac renal and oncology
+                        patients.
+                      </li>
+                      <li>
+                        To build a full fledged specialized (Tertiary) Hospital.{" "}
+                      </li>
+                      <li>Set up Satellite collection Centre.</li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
+        <h1 className="text-center text-[28px]">Our History</h1>
+        <p className="text-center text-[16px]">
+          How we started, to serve the nation.
+        </p>
         <div className=" max-w-7xl mx-auto items-center relative justify-center">
           <VerticalTimeline>
             <VerticalTimelineElement
@@ -123,7 +137,8 @@ const Goals = () => {
                 <p className="flex  justify-center text-black font-extrabold text-center">
                   1983
                 </p>
-              }>
+              }
+            >
               <img src={goals1} className="object-cover w-full mx-auto" />
               <p>Started our activities</p>
             </VerticalTimelineElement>
@@ -136,7 +151,8 @@ const Goals = () => {
                 <p className="flex  justify-center text-black font-extrabold text-center">
                   2016
                 </p>
-              }>
+              }
+            >
               <img src={goals2} className="object-cover w-full mx-auto" />
               <p>New branches opened at Badda, Dinajpur and Mirpur.</p>
             </VerticalTimelineElement>
@@ -149,7 +165,8 @@ const Goals = () => {
                 <p className="flex  justify-center text-black font-extrabold text-center">
                   2017
                 </p>
-              }>
+              }
+            >
               <img src={goals3} className=" object-cover w-full mx-auto" />
               <p>Started six new 'Model Pharmacies' all over Bangladesh</p>
             </VerticalTimelineElement>

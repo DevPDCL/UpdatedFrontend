@@ -1,6 +1,6 @@
 import { styles } from "../styles";
 import { ServiceCost, doctorData1, reportDownload } from "../constants";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
@@ -346,7 +346,7 @@ const Search = () => {
             aria-labelledby="profile-tab"
           >
             <p className="text-sm text-gray-900 ">
-              <form className="max-w-7xl mx-auto ">
+              <form className="max-w-7xl mx-auto hidden sm:block">
                 <div className="grid md:grid-cols-8  md:gap-0">
                   <div className="relative z-0 col-span-2   p-1 w-full mb-0 group">
                     <select
@@ -406,6 +406,119 @@ const Search = () => {
                   <div className="relative col-span-2 p-1 mb-0 group">
                     <label
                       className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
+                      layout
+                      whileHover="hover"
+                    >
+                      Female Doctor
+                      <input
+                        type="checkbox"
+                        checked={showFemaleDoctors}
+                        onChange={() =>
+                          setShowFemaleDoctors(!showFemaleDoctors)
+                        }
+                        className="form-checkbox text-PDCL-green rounded"
+                      />
+                    </label>
+                  </div>
+                  <div className="relative col-span-8 mb-1 group ">
+                    <input
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      required
+                      type="text"
+                      placeholder="Search by doctor's name..."
+                      layout
+                      whileHover="hover"
+                      onChange={(e) => setSearchTerm1(e.target.value)}
+                    />
+                    <section>
+                      <ul>
+                        {displayedDoctors.length > 0 && (
+                          <li>
+                            {/* Render the header */}
+                            <Header />
+
+                            {/* List */}
+                            <div className="flex flex-col min-h-[200px]">
+                              <AutoSizer>
+                                {({ width }) => (
+                                  <List
+                                    height={250}
+                                    rowCount={displayedDoctors.length}
+                                    rowHeight={50}
+                                    rowRenderer={renderRow1}
+                                    overscanRowCount={5}
+                                    width={width}
+                                  />
+                                )}
+                              </AutoSizer>
+                            </div>
+                          </li>
+                        )}
+                      </ul>
+                    </section>
+                  </div>
+                </div>
+              </form>
+              <form className="max-w-7xl mx-auto  sm:hidden">
+                <div className="grid md:grid-cols-8  md:gap-0">
+                  <div className="relative z-0 col-span-8   p-1 w-full mb-0 group">
+                    <select
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green  text-gray-900 bg-white placeholder-gray-900  peer pl-2"
+                      onChange={(e) => setSelectedBranch1(e.target.value)}
+                      layout
+                      whileHover="hover"
+                    >
+                      <option value="">Select Branch</option>
+                      {branches.map((branch) => (
+                        <option key={branch} value={branch}>
+                          {branch}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="relative z-0 w-full p-1 col-span-8 mb-0 group">
+                    <select
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
+                      onChange={(e) =>
+                        setSelectedSpecialization(e.target.value)
+                      }
+                      layout
+                      whileHover="hover"
+                    >
+                      <option value="">Select Specialization</option>
+                      {specializations.map((spec) => (
+                        <option key={spec} value={spec}>
+                          {spec}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="relative col-span-8 p-1 mb-0 group">
+                    <select
+                      className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
+                      onChange={(e) => setSelectedDay(e.target.value)}
+                      layout
+                      whileHover="hover"
+                    >
+                      <option value="">Select Day</option>
+                      {[
+                        "Saturday",
+                        "Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                      ].map((day) => (
+                        <option key={day} value={day}>
+                          {day}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="relative col-span-8 p-1 mb-0 group">
+                    <label
+                      className="block py-2.5 px-0 w-full text-start text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2   peer"
                       layout
                       whileHover="hover"
                     >
@@ -629,10 +742,10 @@ const Search = () => {
                               )}
                             </form>
                             <Link to="/#">
-                              <div className="relative z-0 col-span-2 w-full  group">
+                              <div className="relative z-0 col-span-8 w-full  group">
                                 <button
                                   type="button"
-                                  className={`text-gray-600 w-full rounded block col-span-2 mb-0 h-[35px] hover:text-gray-900 border bg-white shadow-2xl  border-none focus:ring-4 focus:outline-none focus:ring-[#00984a] font-ubuntu text-[16px] font-bold px-4  text-center   ${
+                                  className={`text-gray-600 w-full rounded block col-span-8 mb-0 h-[35px] hover:text-gray-900 border bg-white shadow-2xl  border-none focus:ring-4 focus:outline-none focus:ring-[#00984a] font-ubuntu text-[16px] font-bold px-4  text-center   ${
                                     isVisible ? "" : "hidden"
                                   }`}
                                   onClick={(handleClick, handleSearchClick)}
