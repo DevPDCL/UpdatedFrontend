@@ -4,41 +4,9 @@ import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
 
-const UnitCard = ({ unit }) => {
-  return (
-    <div className="sm:w-[399px] w-full p-4 shadow-2xl rounded-2xl">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-        <img
-          src={unit.image}
-          alt={`Branch ${unit.BranchUnit}`}
-          className="w-full shadow-xl rounded-3xl object-cover p-2 object-center"
-        />
-        <div className="p-4">
-          <h2 className="title-font text-2xl font-medium text-center text-gray-900 mb-3">
-            {unit.name}
-          </h2>
-          <p className="leading-relaxed text-gray-800 mb-3">
-            <span className=" font-medium">Address:</span> {unit.address}
-          </p>
-          <div className=" bg-slate-100 justify-center border-dashed border-2  rounded-lg">
-            <iframe
-              src={unit.location}
-              className="p-2 w-full h-5/6 object-cover rounded-3xl"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <h1 className="text-center font-medium rounded-md p-2 font-ubuntu text-[18px] text-black shadow-xl">
-              Location On Map 🗺️📌
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const Bogura = () => {
   const branchInfo = branch.find((b) => b.heading === "Bogura");
+  const branchName = branchInfo.heading;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
@@ -55,7 +23,7 @@ const Bogura = () => {
             font-bold text-[#00664a]">
             Popular Diagnostic Center{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-              {branchInfo.heading}{" "}
+              {branchName}{" "}
             </span>
             Branch.
           </h1>
@@ -73,7 +41,7 @@ const Bogura = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <SearchBoxBranch />
+        <SearchBoxBranch branchName={branchName} />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
@@ -109,16 +77,6 @@ const Bogura = () => {
               </p>
             </div>
           </div>
-        </div>
-      </div>
-      <h2 className="text-gray-900/50 pt-20 text-center text-[28px] font-bold font-ubuntu">
-        Units in {branchInfo.heading}
-      </h2>
-      <div className="px-5 py-6">
-        <div className="flex mx-auto flex-wrap max-w-7xl justify-center gap-4">
-          {branchInfo.branchUnits.map((unit) => (
-            <UnitCard key={unit.unitID} unit={unit} />
-          ))}
         </div>
       </div>
     </section>

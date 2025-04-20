@@ -116,10 +116,15 @@ const routes = [
       { path: "/about", element: <About /> },
       { path: "/terms&conditions", element: <Terms /> },
       { path: "/privacy&policy", element: <Privacy /> },
+      { path: "/gallery", element: <Gallery /> },
+      { path: "/refund", element: <Refund /> },
+      { path: "/servicesearch", element: <ServiceSearch /> },
+
+      // branch pages
       { path: "/shantinagar", element: <Shantinagar /> },
       { path: "/shyamoli", element: <Shyamoli /> },
       { path: "/mirpur", element: <Mirpur /> },
-      { path: "/uttara", element: <Uttara /> },
+      { path: "/uttarajasimuddin", element: <Uttara /> },
       { path: "/bogura", element: <Bogura /> },
       { path: "/rangpur", element: <Rangpur /> },
       { path: "/badda", element: <Badda /> },
@@ -137,11 +142,8 @@ const routes = [
       { path: "/noakhali", element: <Noakhali /> },
       { path: "/rajshahi", element: <Rajshahi /> },
       { path: "/savar", element: <Savar /> },
-      { path: "/uttaragaribenewaz", element: <UttaraGaribENewaz /> },
-
-      { path: "/gallery", element: <Gallery /> },
-      { path: "/refund", element: <Refund /> },
-      { path: "/servicesearch", element: <ServiceSearch /> },
+      { path: "/uttaragarib-e-newaz", element: <UttaraGaribENewaz /> },
+      //end of branch pages
     ],
     errorElement: <Error />,
   },
