@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "@fontsource/ubuntu";
-import {
-  Details
-} from "../components";
+import { Details } from "../components";
 import { motion } from "framer-motion";
-import { branch } from "../constants";
 
 const spring = {
   type: "spring",
@@ -62,10 +60,8 @@ const ProjectCard = ({
 
   const handleAuthorityMapClick = () => {
     if (branchPage) {
-      // If branchPage exists, show the modal
       handleOpenModal();
     } else {
-      // If branchPage doesn't exist, redirect to saperate page
       window.location.href = `/${heading.replace(/\s+/g, "").toLowerCase()}`;
     }
   };
@@ -107,51 +103,86 @@ const ProjectCard = ({
 };
 
 const Branch = () => {
-const [filterInsideDhaka, setFilterInsideDhaka] = useState(false);
-const [filterOutsideDhaka, setFilterOutsideDhaka] = useState(false);
-const [searchTerm, setSearchTerm] = useState("");
+  const [filterInsideDhaka, setFilterInsideDhaka] = useState(false);
+  const [filterOutsideDhaka, setFilterOutsideDhaka] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const insideDhakaProjects = branch.filter(
-  (project) => project.braCity === "Dhaka"
-);
-const outsideDhakaProjects = branch.filter(
-  (project) => project.braCity !== "Dhaka"
-);
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4"
+        );
+        if (response.data.success) {
+          setBranches(response.data.data.data);
+        } else {
+          throw new Error("Failed to fetch branches");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-const filteredProjects = branch.filter((project) => {
+    fetchBranches();
+  }, []);
 
+  const insideDhakaProjects = branches.filter(
+    (project) => project.city.toLowerCase() === "dhaka"
+  );
+  const outsideDhakaProjects = branches.filter(
+    (project) => project.city.toLowerCase() !== "dhaka"
+  );
 
-  if (filterInsideDhaka && filterOutsideDhaka) {
-    return true; // Show all projects
-  } else if (filterInsideDhaka) {
-    return insideDhakaProjects.includes(project);
-  } else if (filterOutsideDhaka) {
-    return outsideDhakaProjects.includes(project);
-  }
-  else {
-    return true;
-  }
-});
+  const filteredProjects = branches.filter((project) => {
+    if (filterInsideDhaka && filterOutsideDhaka) {
+      return true;
+    } else if (filterInsideDhaka) {
+      return insideDhakaProjects.includes(project);
+    } else if (filterOutsideDhaka) {
+      return outsideDhakaProjects.includes(project);
+    } else {
+      return true;
+    }
+  });
 
-
-const filteredProjectsIncSearch = filteredProjects.filter((project) => {
+  const filteredProjectsIncSearch = filteredProjects.filter((project) => {
     const projectNameLower = project.name.toLowerCase();
     const searchTermLower = searchTerm.toLowerCase();
     return projectNameLower.includes(searchTermLower);
-})
+  });
 
+  const handleInsideDhakaToggle = () => {
+    setFilterInsideDhaka(!filterInsideDhaka);
+  };
 
-const handleInsideDhakaToggle = () => {
-  setFilterInsideDhaka(!filterInsideDhaka);
-};
+  const handleOutsideDhakaToggle = () => {
+    setFilterOutsideDhaka(!filterOutsideDhaka);
+  };
 
-const handleOutsideDhakaToggle = () => {
-  setFilterOutsideDhaka(!filterOutsideDhaka);
-};
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-const handleSearchChange = (event) => {
-  setSearchTerm(event.target.value);
-};
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#00984a]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-500 text-xl">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#ffffff] ">
@@ -161,7 +192,7 @@ const handleSearchChange = (event) => {
         </h2>
       </div>
 
-      <div className="sticky top-[70px] z-10 rounded-xl  shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
+      <div className="sticky top-[70px] z-10 rounded-xl shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
         <motion.label
           className={` ${
             filterInsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
@@ -198,7 +229,7 @@ const handleSearchChange = (event) => {
         </motion.label>
 
         <motion.input
-          className="px-2 py-1 border  text-[#00984a] border-PDCL-green bg-gray-200  rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
+          className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green"
           type="text"
           placeholder="Search Branches"
           value={searchTerm}
@@ -208,9 +239,18 @@ const handleSearchChange = (event) => {
         />
       </div>
 
-      <div className="flex mx-auto pb-10 pt-[100px] sm:w-[80%] p-3  max-w-7xl justify-center flex-wrap gap-4">
+      <div className="flex mx-auto pb-10 pt-[100px] sm:w-[80%] p-3 max-w-7xl justify-center flex-wrap gap-4">
         {filteredProjectsIncSearch.map((project) => (
-          <ProjectCard key={project.branchID} {...project} />
+          <ProjectCard
+            key={project.id}
+            image={project.image}
+            name={project.name}
+            address={project.address.replace(/<[^>]*>/g, "")} // Remove HTML tags from address
+            Hotline={project.telephone_2 || project.telephone_1 || "N/A"}
+            Email={project.email}
+            heading={project.name}
+            branchPage={project}
+          />
         ))}
       </div>
     </div>
