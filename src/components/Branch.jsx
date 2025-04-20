@@ -45,7 +45,7 @@ const BranchContact = ({ address, Hotline, Email }) => {
   );
 };
 
-const ProjectCard = ({ image, name, address, Hotline, Email, heading }) => {
+const ProjectCard = ({ image, city, address, Hotline, Email, heading }) => {
   const navigate = useNavigate();
 
   const handleBranchClick = () => {
@@ -56,20 +56,23 @@ const ProjectCard = ({ image, name, address, Hotline, Email, heading }) => {
   return (
     <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3">
       <button onClick={handleBranchClick} className="w-full">
-        <div className="relative w-full">
-          <img
-            src={image}
-            alt="Branch_image"
-            className="w-full shadow-xl rounded-3xl object-cover p-2 "
-          />
+        <div className="relative w-full ">
+          <div className="aspect-square w-full overflow-hidden shadow-xl rounded-3xl">
+            <img
+              src={image}
+              alt="Branch_image"
+              className="w-full h-full rounded-3xl object-cover p-2 "
+            />
+          </div>
         </div>
         <div className="px-4 pt-2 pb-3 flex flex-col justify-between">
           <h1 className="text-[#00984a] px-2 font-ubuntu font-bold text-center text-[25px]">
             {heading}
           </h1>
           <p className="text-gray-600 px-2 font-ubuntu font-semibold text-[16px]">
-            {name}
+            {city.charAt(0).toUpperCase() + city.slice(1).toLowerCase()}
           </p>
+
           <BranchContact address={address} Hotline={Hotline} Email={Email} />
           <motion.button
             className="hover:bg-[#00984a] bg-gray-100 text-[#00984a] hover:text-white hover:font-black font-ubuntu font-medium py-2 px-4 rounded-md mt-2 mx-1 focus:outline-none shadow-md"
@@ -233,7 +236,7 @@ const Branch = () => {
           <ProjectCard
             key={project.id}
             image={project.image}
-            name={project.cleanedName}
+            city={project.city}
             address={project.address.replace(/<[^>]*>/g, "")}
             Hotline={project.telephone_2 || project.telephone_1 || "N/A"}
             Email={project.email}
