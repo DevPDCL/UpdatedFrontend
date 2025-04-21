@@ -57,7 +57,6 @@ const DoctorRow = ({ doctor, style }) => {
   );
 };
 
-// Main Component
 const Search = () => {
   const [activeTab, setActiveTab] = useState("styled-profile");
 
@@ -79,6 +78,8 @@ const Search = () => {
     searchTerm: "",
     loading: false,
     isFetchingAll: false,
+    allPagesFetched: false,
+    error: null,
   });
 
   // Derived data
@@ -104,12 +105,16 @@ const Search = () => {
       allServices: [],
       searchTerm: "",
       loading: !!branchId,
+      isFetchingAll: false,
+      allPagesFetched: false,
+      error: null,
     }));
 
     if (!branchId) return;
 
     try {
-      const response = await axios.get(
+      // Fetch the first page
+      const firstPageResponse = await axios.get(
         `https://api.populardiagnostic.com/api/test-service-charges`,
         {
           params: {
@@ -121,37 +126,38 @@ const Search = () => {
         }
       );
 
-      const firstPageData = response.data.data.data;
+      const firstPageData = firstPageResponse.data?.data?.data || [];
+      const totalPages = firstPageResponse.data?.data?.last_page || 1;
+      const hasMorePages = totalPages > 1;
+
       setServiceSearchState((prev) => ({
         ...prev,
         services: firstPageData,
         allServices: firstPageData,
         loading: false,
+        isFetchingAll: hasMorePages,
+        allPagesFetched: !hasMorePages,
       }));
 
-      fetchAllPages(branchId, firstPageData);
+      // Fetch all pages in the background if there are more pages
+      if (hasMorePages) {
+        fetchAllPages(branchId, firstPageData, totalPages);
+      }
     } catch (err) {
       console.error("Error fetching data:", err);
-      setServiceSearchState((prev) => ({ ...prev, loading: false }));
+      setServiceSearchState((prev) => ({
+        ...prev,
+        loading: false,
+        isFetchingAll: false,
+        error: "Failed to fetch services. Please try again later.",
+      }));
     }
   };
 
-  const fetchAllPages = async (branchId, initialData) => {
+  const fetchAllPages = async (branchId, initialData, totalPages) => {
     try {
       let currentPage = 2;
       let fetchedData = [...initialData];
-      const response = await axios.get(
-        `https://api.populardiagnostic.com/api/test-service-charges`,
-        {
-          params: {
-            token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            branch_id: branchId,
-            test_service_category_id: 0,
-            page: 1,
-          },
-        }
-      );
-      const totalPages = response.data.data.last_page;
 
       while (currentPage <= totalPages) {
         const pageResponse = await axios.get(
@@ -166,23 +172,38 @@ const Search = () => {
           }
         );
 
-        fetchedData = [...fetchedData, ...pageResponse.data.data.data];
+        const pageData = pageResponse.data?.data?.data || [];
+        fetchedData = [...fetchedData, ...pageData];
         currentPage++;
+
+        // Update the state with the latest data
+        setServiceSearchState((prev) => ({
+          ...prev,
+          services: fetchedData,
+          allServices: fetchedData,
+        }));
       }
 
+      // Mark all pages as fetched
       setServiceSearchState((prev) => ({
         ...prev,
-        allServices: fetchedData,
-        services: fetchedData,
         isFetchingAll: false,
+        allPagesFetched: true,
       }));
     } catch (err) {
       console.error("Error fetching all pages:", err);
-      setServiceSearchState((prev) => ({ ...prev, isFetchingAll: false }));
+      setServiceSearchState((prev) => ({
+        ...prev,
+        isFetchingAll: false,
+        error: "Failed to load all services. Showing partial results.",
+      }));
     }
   };
 
   const handleServiceSearchChange = (event) => {
+    // Only allow search if all pages are fetched
+    if (!serviceSearchState.allPagesFetched) return;
+
     const searchValue = event.target.value.toLowerCase();
     setServiceSearchState((prev) => ({
       ...prev,
@@ -401,18 +422,51 @@ const Search = () => {
         </div>
 
         <div className="relative col-span-12 mb-1 group">
-          <input
-            type="text"
-            value={serviceSearchState.searchTerm}
-            onChange={handleServiceSearchChange}
-            placeholder="Test Name"
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
-            required
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={serviceSearchState.searchTerm}
+              onChange={handleServiceSearchChange}
+              placeholder={
+                serviceSearchState.isFetchingAll
+                  ? "Loading all test prices..."
+                  : "Search test prices..."
+              }
+              className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
+                serviceSearchState.isFetchingAll
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={serviceSearchState.isFetchingAll}
+              required
+            />
+            {serviceSearchState.isFetchingAll && (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#00984a]"></div>
+              </div>
+            )}
+          </div>
 
-          {serviceSearchState.services.length > 0 && (
+          {serviceSearchState.loading ? (
+            <div className="text-center py-4">
+              <div className="flex justify-center items-center space-x-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00984a]"></div>
+                <span>Loading services...</span>
+              </div>
+            </div>
+          ) : serviceSearchState.error ? (
+            <div className="text-center py-4 text-red-500">
+              {serviceSearchState.error}
+            </div>
+          ) : serviceSearchState.services.length > 0 ? (
             <div className="flex flex-col min-h-[220px]">
               <ListHeader columns={["Service Name", "Service Cost"]} />
+              {serviceSearchState.isFetchingAll && (
+                <div className="text-center py-2 text-sm text-gray-500">
+                  Loading more services... ({serviceSearchState.services.length}{" "}
+                  loaded)
+                </div>
+              )}
               <AutoSizer>
                 {({ width }) => (
                   <List
@@ -431,8 +485,13 @@ const Search = () => {
                 )}
               </AutoSizer>
             </div>
+          ) : (
+            <div className="text-center py-4">
+              {serviceSearchState.searchTerm
+                ? "No matching services found"
+                : "No services available for this branch"}
+            </div>
           )}
-          {serviceSearchState.loading && <p>Loading...</p>}
         </div>
       </div>
     </form>

@@ -74,9 +74,10 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     services: [],
     allServices: [],
     searchTerm: "",
-    loading: false,
+    loading: true, // Start with loading true
     error: null,
-    isFetchingAll: false,
+    isFetchingAll: true,
+    allPagesFetched: false, // New state to track if all pages are loaded
   });
 
   // Derived data
@@ -93,6 +94,7 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
         ...prev,
         error: "Branch ID not provided",
         loading: false,
+        isFetchingAll: false,
       }));
       return;
     }
@@ -100,6 +102,8 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     setServiceSearchState((prev) => ({
       ...prev,
       loading: true,
+      isFetchingAll: true,
+      allPagesFetched: false,
       error: null,
     }));
 
@@ -119,26 +123,30 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
 
       // Extract the nested data array from the response
       const firstPageData = firstPageResponse.data?.data?.data || [];
+
+      // Check if there are more pages to fetch
+      const totalPages = firstPageResponse.data?.data?.last_page || 1;
+      const hasMorePages = totalPages > 1;
+
       setServiceSearchState((prev) => ({
         ...prev,
         services: firstPageData,
         allServices: firstPageData,
         loading: false,
+        isFetchingAll: hasMorePages,
+        allPagesFetched: !hasMorePages,
       }));
 
       // Fetch all pages in the background if there are more pages
-      if (firstPageResponse.data?.data?.last_page > 1) {
-        fetchAllPages(
-          branchId,
-          firstPageData,
-          firstPageResponse.data.data.last_page
-        );
+      if (hasMorePages) {
+        fetchAllPages(branchId, firstPageData, totalPages);
       }
     } catch (err) {
       setServiceSearchState((prev) => ({
         ...prev,
         error: "Failed to fetch services. Please try again later.",
         loading: false,
+        isFetchingAll: false,
       }));
       console.error("Error fetching services:", err);
     }
@@ -174,9 +182,11 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
         }));
       }
 
+      // Mark all pages as fetched
       setServiceSearchState((prev) => ({
         ...prev,
         isFetchingAll: false,
+        allPagesFetched: true,
       }));
     } catch (err) {
       console.error("Error fetching all pages:", err);
@@ -189,6 +199,9 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
   };
 
   const handleServiceSearch = (e) => {
+    // Only allow search if all pages are fetched
+    if (!serviceSearchState.allPagesFetched) return;
+
     const searchValue = e.target.value.toLowerCase();
     setServiceSearchState((prev) => ({
       ...prev,
@@ -376,17 +389,38 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     <form className="max-w-7xl mx-auto">
       <div className="grid md:grid-cols-12 md:gap-1">
         <div className="relative col-span-12 mb-1 group">
-          <input
-            type="text"
-            value={serviceSearchState.searchTerm}
-            onChange={handleServiceSearch}
-            placeholder="Test Name"
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
-            required
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={serviceSearchState.searchTerm}
+              onChange={handleServiceSearch}
+              placeholder={
+                serviceSearchState.isFetchingAll
+                  ? "Loading all test prices..."
+                  : "Search test prices..."
+              }
+              className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
+                serviceSearchState.isFetchingAll
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={serviceSearchState.isFetchingAll}
+              required
+            />
+            {serviceSearchState.isFetchingAll && (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#00984a]"></div>
+              </div>
+            )}
+          </div>
 
           {serviceSearchState.loading ? (
-            <div className="text-center py-4">Loading services...</div>
+            <div className="text-center py-4">
+              <div className="flex justify-center items-center space-x-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00984a]"></div>
+                <span>Loading services...</span>
+              </div>
+            </div>
           ) : serviceSearchState.error ? (
             <div className="text-center py-4 text-red-500">
               {serviceSearchState.error}
@@ -394,6 +428,12 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
           ) : serviceSearchState.services.length > 0 ? (
             <div className="flex flex-col min-h-[220px]">
               <ListHeader columns={["Service Name", "Service Cost"]} />
+              {serviceSearchState.isFetchingAll && (
+                <div className="text-center py-2 text-sm text-gray-500">
+                  Loading more services... ({serviceSearchState.services.length}{" "}
+                  loaded)
+                </div>
+              )}
               <AutoSizer>
                 {({ width }) => (
                   <List
