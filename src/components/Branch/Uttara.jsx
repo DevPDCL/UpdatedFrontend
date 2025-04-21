@@ -40,6 +40,7 @@ const UnitCard = ({ unit }) => {
 const Uttara = () => {
   const branchInfo = branch.find((b) => b.heading === "Uttara");
   const branchName = branchInfo.heading;
+  const branchId = branchInfo.branchID;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
@@ -74,7 +75,7 @@ const Uttara = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-      <SearchBoxBranch branchName={branchName} />
+        <SearchBoxBranch branchName={branchName} branchId={branchId} />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
