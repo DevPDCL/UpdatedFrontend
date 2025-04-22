@@ -153,7 +153,7 @@ const Footer = ({ message, children }) => {
           <div className="bg-slate-900 py-6 mt-5 md:flex">
             <div className="flex sm:justify-between items-center mx-auto lg:gap-24">
               <p className="text-sm text-white font-ubuntu text-center sm:text-center me-auto">
-                © Copyright 2024. Popular Diagnostic Centre Ltd.
+                © Copyright 2025. Popular CodeCure - Popular Diagnostic Centre Ltd.
               </p>
               <div className="flex text-white gap-5">
                 <Link to="/terms&conditions">

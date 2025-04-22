@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./tabs.css";
 import "@fontsource/ubuntu";
-import whatsapp from "../assets/whatsapp.png"
-// import { FacebookProvider, CustomChat } from 'react-facebook';
 
 const Sidemenu = () => {
   const [isVisible, setIsVisible] = useState(true);

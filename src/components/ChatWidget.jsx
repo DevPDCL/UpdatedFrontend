@@ -46,7 +46,7 @@ const ChatWidget = () => {
       {!isOpen && ( // Show the button only when the chat is closed
         <button
           onClick={toggleChat}
-          className="fixed bottom-5 right-5 bg-transparent p-4 z-50 animate-upDown"
+          className="fixed bottom-5 right-5 bg-transparent p-4 z-50"
           aria-label="Open chat">
           <svg
             className="w-12 h-12 fill-[#00984a]"

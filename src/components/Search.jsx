@@ -404,98 +404,106 @@ const Search = () => {
     </div>
   );
 
-  const renderTestPricesTab = () => (
-    <form className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-12 md:gap-1">
-        <div className="relative z-0 w-full col-span-12 mb-1 group">
-          <select
-            value={serviceSearchState.selectedBranch}
-            onChange={handleBranchChange}
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
-            <option value="">Select Branch</option>
-            {reportDownload.map((branch) => (
-              <option key={branch.braID} value={branch.braID}>
-                {branch.braName}
-              </option>
-            ))}
-          </select>
-        </div>
+   const renderTestPricesTab = () => (
+     <form className="max-w-7xl mx-auto">
+       <div className="grid md:grid-cols-12 md:gap-1">
+         <div className="relative z-0 w-full col-span-12 mb-1 group">
+           <select
+             value={serviceSearchState.selectedBranch}
+             onChange={handleBranchChange}
+             className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
+             <option value="">Select Branch</option>
+             {reportDownload.map((branch) => (
+               <option key={branch.braID} value={branch.braID}>
+                 {branch.braName}
+               </option>
+             ))}
+           </select>
+         </div>
 
-        <div className="relative col-span-12 mb-1 group">
-          <div className="relative">
-            <input
-              type="text"
-              value={serviceSearchState.searchTerm}
-              onChange={handleServiceSearchChange}
-              placeholder={
-                serviceSearchState.isFetchingAll
-                  ? "Loading all test prices..."
-                  : "Search test prices..."
-              }
-              className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
-                serviceSearchState.isFetchingAll
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={serviceSearchState.isFetchingAll}
-              required
-            />
-            {serviceSearchState.isFetchingAll && (
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#00984a]"></div>
-              </div>
-            )}
-          </div>
+         <div className="relative col-span-12 mb-1 group">
+           <div className="relative">
+             <input
+               type="text"
+               value={serviceSearchState.searchTerm}
+               onChange={handleServiceSearchChange}
+               placeholder={
+                 !serviceSearchState.selectedBranch
+                   ? "Select a branch first to start searching..."
+                   : serviceSearchState.isFetchingAll
+                   ? "Loading all test prices, please wait..."
+                   : "Search test prices..."
+               }
+               className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
+                 !serviceSearchState.selectedBranch ||
+                 serviceSearchState.isFetchingAll
+                   ? "opacity-50 cursor-not-allowed"
+                   : ""
+               }`}
+               disabled={
+                 !serviceSearchState.selectedBranch ||
+                 serviceSearchState.isFetchingAll
+               }
+               required
+             />
+             {serviceSearchState.isFetchingAll && (
+               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#00984a]"></div>
+               </div>
+             )}
+           </div>
 
-          {serviceSearchState.loading ? (
-            <div className="text-center py-4">
-              <div className="flex justify-center items-center space-x-2">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00984a]"></div>
-                <span>Loading services...</span>
-              </div>
-            </div>
-          ) : serviceSearchState.error ? (
-            <div className="text-center py-4 text-red-500">
-              {serviceSearchState.error}
-            </div>
-          ) : serviceSearchState.services.length > 0 ? (
-            <div className="flex flex-col min-h-[220px]">
-              <ListHeader columns={["Service Name", "Service Cost"]} />
-              {serviceSearchState.isFetchingAll && (
-                <div className="text-center py-2 text-sm text-gray-500">
-                  Loading more services... ({serviceSearchState.services.length}{" "}
-                  loaded)
-                </div>
-              )}
-              <AutoSizer>
-                {({ width }) => (
-                  <List
-                    height={250}
-                    rowCount={serviceSearchState.services.length}
-                    rowHeight={50}
-                    rowRenderer={({ index, style }) => (
-                      <ServiceRow
-                        service={serviceSearchState.services[index]}
-                        style={style}
-                      />
-                    )}
-                    overscanRowCount={5}
-                    width={width}
-                  />
-                )}
-              </AutoSizer>
-            </div>
-          ) : (
-            <div className="text-center py-4">
-              {serviceSearchState.searchTerm
-                ? "No matching services found"
-                : "No services available for this branch"}
-            </div>
-          )}
-        </div>
-      </div>
-    </form>
-  );
+           {serviceSearchState.loading ? (
+             <div className="text-center py-4">
+               <div className="flex justify-center items-center space-x-2">
+                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00984a]"></div>
+                 <span>Loading services...</span>
+               </div>
+             </div>
+           ) : serviceSearchState.error ? (
+             <div className="text-center py-4 text-red-500">
+               {serviceSearchState.error}
+             </div>
+           ) : serviceSearchState.selectedBranch &&
+             serviceSearchState.services.length > 0 ? (
+             <div className="flex flex-col min-h-[220px]">
+               <ListHeader columns={["Service Name", "Service Cost"]} />
+               {serviceSearchState.isFetchingAll && (
+                 <div className="text-center py-2 text-sm text-gray-500">
+                   Loading more services... (
+                   {serviceSearchState.services.length} loaded)
+                 </div>
+               )}
+               <AutoSizer>
+                 {({ width }) => (
+                   <List
+                     height={250}
+                     rowCount={serviceSearchState.services.length}
+                     rowHeight={50}
+                     rowRenderer={({ index, style }) => (
+                       <ServiceRow
+                         service={serviceSearchState.services[index]}
+                         style={style}
+                       />
+                     )}
+                     overscanRowCount={5}
+                     width={width}
+                   />
+                 )}
+               </AutoSizer>
+             </div>
+           ) : serviceSearchState.selectedBranch &&
+             serviceSearchState.services.length === 0 ? (
+             <div className="text-center py-4">
+               {serviceSearchState.searchTerm
+                 ? "No matching services found"
+                 : "No services available for this branch"}
+             </div>
+           ) : null}
+         </div>
+       </div>
+     </form>
+   );
 
   return (
     <div
