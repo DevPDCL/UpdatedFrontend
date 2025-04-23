@@ -373,7 +373,7 @@ const DoctorSearch = () => {
   );
 };
 
-// DoctorCard component remains unchanged
+
 
 const DoctorCard = ({ doctor }) => {
   const cardBackgroundColor =
@@ -416,7 +416,6 @@ const DoctorCard = ({ doctor }) => {
     <Link
       to={`/doctordetail/${doctor.id}`}
       className="doctor-card-link group relative">
-      {/* Status Badge - Only shown when absent */}
       {isAbsent && (
         <div className="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full z-10 bg-red-100 text-red-800">
           <FaUserSlash className="text-red-500" />
@@ -429,7 +428,7 @@ const DoctorCard = ({ doctor }) => {
           isAbsent ? "opacity-80" : ""
         }`}>
         <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
-          {/* Image with error handling */}
+   
           {doctor.imag ? (                  //to stop loading the images, made imag from image. which can be fixed just by adding e after the imag. 
             <>
               <img
