@@ -2,63 +2,68 @@ import React, { useEffect, useState } from "react";
 import { SectionWrapper } from "../hoc";
 import axios from "axios";
 import "@fontsource/ubuntu";
+import { motion } from "framer-motion";
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { Tilt } from "react-tilt";
 
 // Sub-component for individual feedback card
 const FeedbackCard = ({ comment, person, designation, company, image }) => {
-  // Function to safely render HTML from the comment
   const createMarkup = (html) => {
     return { __html: html };
   };
 
   return (
-    <div className="grid md:grid-row-2 items-center justify-center sm:w-[550px] w-full mx-auto md:gap-0">
-      <div className="m-1 p-10 bg-gray-100/5 shadow text-start">
-        <div className="flex flex-wrap max-w-7xl">
-          <div>
-            <div className="flex justify-between items-end gap-0">
+    <Tilt
+      options={{
+        max: 5,
+        scale: 1.05,
+        speed: 50,
+      }}
+      className="sm:w-[550px] w-full shadow-lg">
+      <motion.div whileHover={{ scale: 1.02 }} className="h-full">
+        <div className="h-full bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:border-[#00984a]/30 transition-all duration-300">
+          {/* Header with image */}
+          <div className="p-6 pb-0 flex items-center gap-4">
+            <div className="relative">
               <img
                 src={image}
                 alt={`feedback_by_${person}`}
-                className="w-20 h-10 mx-auto rounded object-cover"
+                className="w-20 h-16 p-1 rounded-full object-contain border-4 border-[#00984a]/20"
               />
-            </div>
-            <svg
-              className="w-[30px] h-[30px] fill-gray-500"
-              viewBox="0 0 448 512"
-              xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V320 288 216zm256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H320c-35.3 0-64-28.7-64-64V320 288 216z"></path>
-            </svg>
-
-            <div
-              className="text-gray-500 font-ubuntu font-medium text-[16px]"
-              dangerouslySetInnerHTML={createMarkup(comment)}
-            />
-
-            <svg
-              className="w-[30px] h-[30px] fill-gray-500"
-              viewBox="0 0 448 512"
-              xmlns="http://www.w3.org/2000/svg">
-              <path d="M448 296c0 66.3-53.7 120-120 120h-8c-17.7 0-32-14.3-32-32s14.3-32 32-32h8c30.9 0 56-25.1 56-56v-8H320c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64h64c35.3 0 64 28.7 64 64v32 32 72zm-256 0c0 66.3-53.7 120-120 120H64c-17.7 0-32-14.3-32-32s14.3-32 32-32h8c30.9 0 56-25.1 56-56v-8H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64h64c35.3 0 64 28.7 64 64v32 32 72z"></path>
-            </svg>
-
-            <div className="mt-0 flex justify-center items-center gap-0">
-              <div className="flex flex-col">
-                <p className="text-gray-500 text-center font-bold text-[16px]">
-                  {person}
-                </p>
-                <p className="mt-0 blue-text-gradient text-center font-ubuntu font-bold text-[14px]">
-                  {designation === "N/A" || designation === "NA"
-                    ? company
-                    : `${designation} of ${company}`}
-                </p>
+              <div className="absolute -bottom-1 -right-1 bg-[#00984a] text-white rounded-full p-1">
+                <FaQuoteLeft className="text-xs" />
               </div>
             </div>
+            <div>
+              <h3 className="text-gray-800 font-bold text-lg">{person}</h3>
+              <p className="text-[#00984a] text-sm font-medium">
+                {designation === "N/A" || designation === "NA"
+                  ? company
+                  : `${designation}, ${company}`}
+              </p>
+            </div>
           </div>
+
+          {/* Quote body */}
+          <div className="p-6 pt-4">
+            <div className="relative">
+              <FaQuoteLeft className="absolute -top-2 -left-2 text-gray-200 text-xl" />
+              <div
+                className="text-gray-600 font-ubuntu text-[16px] leading-relaxed italic pl-4"
+                dangerouslySetInnerHTML={createMarkup(comment)}
+              />
+              <FaQuoteRight className="absolute -bottom-2 -right-2 text-gray-200 text-xl" />
+            </div>
+          </div>
+
+          {/* Decorative element */}
+          <div className="h-2 bg-gradient-to-r from-[#00984a] to-[#4ade80]"></div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </Tilt>
   );
 };
+
 
 // Main component
 const Feedbacks = () => {
@@ -113,12 +118,17 @@ const Feedbacks = () => {
 
   return (
     <div className="bg-none">
-      <h2 className="text-center text-gray-900/50 font-bold mb-[20px] pt-10 font-ubuntu text-[28px]">
-        TESTIMONIALS
-      </h2>
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
+        What Our Clients Say
+      </motion.h2>
 
       {testimonials.length > 0 ? (
-        <div className="flex mx-auto p-0 justify-center justify-items-center flex-wrap gap-0">
+        <div className="flex mx-auto p-0 justify-center justify-items-center flex-wrap gap-10">
           {testimonials.map((testimonial) => (
             <FeedbackCard
               key={`${testimonial.person}-${testimonial.company}`}

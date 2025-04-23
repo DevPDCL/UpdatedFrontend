@@ -3,6 +3,8 @@ import "@fontsource/ubuntu";
 import axios from "axios";
 import { servicePartners } from "../constants";
 import Marquee from "react-fast-marquee";
+import { motion } from "framer-motion";
+
 function Cor() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,9 +32,14 @@ function Cor() {
   }, []);
   return (
     <div className="mt-[150px] -mb-[10px]">
-      <h3 className="text-gray-900/50 text-center text-[28px] font-ubuntu">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
         Corporate Partners
-      </h3>
+      </motion.h2>
       <div className="flex flex-row p-3 flex-wrap  sm:w-[80%] max-w-screen-xl mx-auto justify-center gap-10">
         <Marquee>
           <div className="flex flex-wrap">
@@ -48,9 +55,14 @@ function Cor() {
           </div>
         </Marquee>
       </div>
-      <h3 className="text-gray-900/50 text-center text-[28px] font-ubuntu">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
         Service Partners
-      </h3>
+      </motion.h2>
 
       <div className="flex flex-wrap p-5 max-w-screen-xl mx-auto justify-center">
         {servicePartners.map((technology) => (

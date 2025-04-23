@@ -243,7 +243,7 @@ const healthPakage = [
     id: 1,
     name: "HEALTH DIAGNOSIS",
     description:
-      "Popular Diagnostic Centre Ltd. is an advanced Centre providing the diagnostic imaging services in an elevated ambience, completed by service and report efficiency.",
+      "At Popular Diagnostic Centre Ltd., we offer precise and prompt diagnostic services using state-of-the-art technology and expert medical insight. Our commitment is to provide accurate health evaluations that form the foundation of effective treatment.",
     tags: [
       {
         name: "Indhaka",
@@ -262,7 +262,7 @@ const healthPakage = [
     id: 2,
     name: "HEALTH CONSULTATION",
     description:
-      "Popular Diagnostic Centre Ltd. is an advanced Centre providing the diagnostic imaging services in an elevated ambience, completed by service and report efficiency.",
+      "Popular Diagnostic Centre Ltd. offers expert health consultations tailored to your individual needs. Our experienced physicians provide clear, compassionate guidance, helping you make informed decisions about your health.",
     tags: [
       {
         name: "Indhaka",
@@ -281,7 +281,7 @@ const healthPakage = [
     id: 3,
     name: "HEALTH PAKAGES",
     description:
-      "Popular Diagnostic Centre Ltd. is an advanced Centre providing the diagnostic imaging services in an elevated ambience, completed by service and report efficiency.",
+      "Discover a proactive approach to wellness with our specially designed health packages at Popular Diagnostic Centre Ltd. Each package is curated to offer comprehensive screenings for early detection and peace of mind.",
     tags: [
       {
         name: "Indhaka",

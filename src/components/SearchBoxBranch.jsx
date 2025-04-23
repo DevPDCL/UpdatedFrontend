@@ -1,22 +1,12 @@
 import { styles } from "../styles";
-import { doctorData1 } from "../constants";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "@fontsource/ubuntu";
-
-// Constants
-const DAYS_OF_WEEK = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-];
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Sub-components
 const ListHeader = ({ columns }) => (
@@ -43,30 +33,49 @@ const ServiceRow = ({ service, style }) => (
 
 const DoctorRow = ({ doctor, style }) => {
   const backgroundColor =
-    doctor.drGender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
+    doctor.gender === "Female" ? "bg-[#fce8f3]" : "bg-[#f0fff0]";
 
   return (
-    <Link to={`/doctordetail/${doctor.drID}`}>
+    <Link to={`/doctordetail/${doctor.id}`}>
       <li
         style={style}
         className={`flex justify-between ${backgroundColor} px-4 py-2`}>
-        <p className="text-gray-600 font-ubuntu">{doctor.drName}</p>
-        <p className="text-gray-600 font-ubuntu">{doctor.drSpecilist}</p>
+        <p className="text-gray-600 font-ubuntu">{doctor.name}</p>
+        <p className="text-gray-600 font-ubuntu">
+          {doctor.specialists?.map((s) => s.specialist?.name).join(", ") ||
+            "Not specified"}
+        </p>
       </li>
     </Link>
   );
 };
 
-const SearchBoxBranch = ({ branchName, branchId }) => {
+const SearchBoxBranch = ({ branchId }) => {
   const [activeTab, setActiveTab] = useState("styled-profile");
+  const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 
-  // Doctor search state
-  const [doctorSearchState, setDoctorSearchState] = useState({
+  // Refs for debouncing search and preserving input focus
+  const searchTimeout = useRef(null);
+  const doctorSearchInputRef = useRef(null);
+  const serviceSearchInputRef = useRef(null);
+
+  // Doctor search state - separate UI state from data fetching state
+  const [doctorSearchUI, setDoctorSearchUI] = useState({
     searchTerm: "",
     selectedSpecialization: "",
     selectedDay: "",
     showFemaleDoctors: false,
+  });
+
+  const [doctorSearchData, setDoctorSearchData] = useState({
     displayedDoctors: [],
+    specializations: [],
+    days: [],
+    loading: false,
+    currentPage: 1,
+    totalPages: 1,
+    hasMore: false,
+    isFetchingMore: false,
   });
 
   // Service search state
@@ -74,83 +83,260 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     services: [],
     allServices: [],
     searchTerm: "",
-    loading: true, // Start with loading true
-    error: null,
+    loading: true,
     isFetchingAll: true,
-    allPagesFetched: false, // New state to track if all pages are loaded
+    allPagesFetched: false,
+    error: null,
   });
 
-  // Derived data
-  const specializations = Array.from(
-    new Set(doctorData1.doctors.map((doc) => doc.drSpecilist))
-  );
+  // Fetch initial data for doctors
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        setDoctorSearchData((prev) => ({ ...prev, loading: true }));
 
-  // Handlers
-  const handleTabClick = (tabId) => setActiveTab(tabId);
+        // Fetch specializations
+        const specializationsRes = await axios.get(
+          `https://api.populardiagnostic.com/api/doctor-speciality?token=${API_TOKEN}`
+        );
 
-  const fetchServices = async (branchId) => {
-    if (!branchId) {
-      setServiceSearchState((prev) => ({
-        ...prev,
-        error: "Branch ID not provided",
-        loading: false,
-        isFetchingAll: false,
-      }));
+        // Fetch days
+        const daysRes = await axios.get(
+          `https://api.populardiagnostic.com/api/practice-days?token=${API_TOKEN}`
+        );
+
+        setDoctorSearchData((prev) => ({
+          ...prev,
+          specializations: specializationsRes.data.data.data,
+          days: daysRes.data.data,
+          loading: false,
+        }));
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+        toast.error("Failed to load doctor data. Please try again.");
+        setDoctorSearchData((prev) => ({ ...prev, loading: false }));
+      }
+    };
+
+    if (activeTab === "styled-profile") {
+      fetchInitialData();
+    }
+  }, [activeTab]);
+
+  // Fetch doctors when filters change
+  const fetchDoctors = async (page = 1, append = false, filters = null) => {
+    // Use provided filters or current state
+    const {
+      selectedSpecialization,
+      selectedDay,
+      searchTerm,
+      showFemaleDoctors,
+    } = filters || doctorSearchUI;
+
+    // Always use the branchId from props
+    // Don't fetch if no filters are selected and it's not an append operation
+    if (
+      !selectedSpecialization &&
+      !selectedDay &&
+      !searchTerm &&
+      !showFemaleDoctors &&
+      !append
+    ) {
+      setDoctorSearchData((prev) => ({ ...prev, displayedDoctors: [] }));
       return;
     }
 
-    setServiceSearchState((prev) => ({
-      ...prev,
-      loading: true,
-      isFetchingAll: true,
-      allPagesFetched: false,
-      error: null,
-    }));
-
     try {
-      // Fetch the first page
-      const firstPageResponse = await axios.get(
-        "https://api.populardiagnostic.com/api/test-service-charges",
-        {
-          params: {
-            token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            branch_id: branchId,
-            test_service_category_id: 0,
-            page: 1,
-          },
-        }
+      if (!append) {
+        setDoctorSearchData((prev) => ({ ...prev, loading: true }));
+      } else {
+        setDoctorSearchData((prev) => ({ ...prev, isFetchingMore: true }));
+      }
+
+      const params = {
+        token: API_TOKEN,
+        page: page,
+        branches: branchId, // Always include the branch ID from props
+      };
+
+      if (searchTerm) {
+        params.name = searchTerm;
+        params.fast_search = "yes";
+      }
+
+      if (selectedSpecialization) {
+        params.specialities = selectedSpecialization;
+      }
+
+      if (selectedDay) {
+        params.days = selectedDay;
+      }
+
+      if (showFemaleDoctors) {
+        params.gender = "Female";
+      }
+
+      const queryString = new URLSearchParams(params).toString();
+      const response = await axios.get(
+        `https://api.populardiagnostic.com/api/doctors?${queryString}`
       );
 
-      // Extract the nested data array from the response
-      const firstPageData = firstPageResponse.data?.data?.data || [];
+      const newDoctors = response.data.data.data;
+      const totalPages = response.data.data.last_page;
 
-      // Check if there are more pages to fetch
-      const totalPages = firstPageResponse.data?.data?.last_page || 1;
-      const hasMorePages = totalPages > 1;
-
-      setServiceSearchState((prev) => ({
+      setDoctorSearchData((prev) => ({
         ...prev,
-        services: firstPageData,
-        allServices: firstPageData,
+        displayedDoctors: append
+          ? [...prev.displayedDoctors, ...newDoctors]
+          : newDoctors,
+        currentPage: page,
+        totalPages: totalPages,
+        hasMore: page < totalPages,
         loading: false,
-        isFetchingAll: hasMorePages,
-        allPagesFetched: !hasMorePages,
+        isFetchingMore: false,
       }));
 
-      // Fetch all pages in the background if there are more pages
-      if (hasMorePages) {
-        fetchAllPages(branchId, firstPageData, totalPages);
+      // Restore focus after data loading completes
+      if (doctorSearchInputRef.current && !append) {
+        doctorSearchInputRef.current.focus();
       }
-    } catch (err) {
-      setServiceSearchState((prev) => ({
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      toast.error("Failed to load doctors. Please try again.");
+      setDoctorSearchData((prev) => ({
         ...prev,
-        error: "Failed to fetch services. Please try again later.",
         loading: false,
-        isFetchingAll: false,
+        isFetchingMore: false,
       }));
-      console.error("Error fetching services:", err);
     }
   };
+
+  // Improved debounced search for doctor search
+  const debounceSearch = (searchValue) => {
+    // Clear any existing timeout
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    // Store the updated search term immediately so the UI reflects the typing
+    setDoctorSearchUI((prev) => ({
+      ...prev,
+      searchTerm: searchValue,
+    }));
+
+    // Set a new timeout to fetch data after debounce delay
+    searchTimeout.current = setTimeout(() => {
+      const filters = {
+        ...doctorSearchUI,
+        searchTerm: searchValue,
+      };
+      fetchDoctors(1, false, filters);
+    }, 500);
+  };
+
+  // Handle filter changes without immediate search (non-search filters)
+  const handleFilterChange = (field, value) => {
+    setDoctorSearchUI((prev) => {
+      const newState = { ...prev, [field]: value };
+
+      // Clear any existing timeout
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+
+      // Schedule a new search with all current filters
+      searchTimeout.current = setTimeout(() => {
+        fetchDoctors(1, false, newState);
+      }, 500);
+
+      return newState;
+    });
+  };
+
+  const handleScroll = ({ clientHeight, scrollHeight, scrollTop }) => {
+    const isNearBottom = scrollHeight - (scrollTop + clientHeight) < 50;
+
+    if (
+      isNearBottom &&
+      !doctorSearchData.isFetchingMore &&
+      doctorSearchData.hasMore
+    ) {
+      fetchDoctors(doctorSearchData.currentPage + 1, true);
+    }
+  };
+
+  // Fetch services for this branch
+  useEffect(() => {
+    const fetchServices = async () => {
+      if (!branchId) {
+        setServiceSearchState((prev) => ({
+          ...prev,
+          error: "Branch ID not provided",
+          loading: false,
+          isFetchingAll: false,
+        }));
+        return;
+      }
+
+      setServiceSearchState((prev) => ({
+        ...prev,
+        loading: true,
+        isFetchingAll: true,
+        allPagesFetched: false,
+        error: null,
+      }));
+
+      try {
+        // Fetch the first page
+        const firstPageResponse = await axios.get(
+          "https://api.populardiagnostic.com/api/test-service-charges",
+          {
+            params: {
+              token: API_TOKEN,
+              branch_id: branchId,
+              test_service_category_id: 0,
+              page: 1,
+            },
+          }
+        );
+
+        const firstPageData = firstPageResponse.data?.data?.data || [];
+        const totalPages = firstPageResponse.data?.data?.last_page || 1;
+        const hasMorePages = totalPages > 1;
+
+        setServiceSearchState((prev) => ({
+          ...prev,
+          services: firstPageData,
+          allServices: firstPageData,
+          loading: false,
+          isFetchingAll: hasMorePages,
+          allPagesFetched: !hasMorePages,
+        }));
+
+        // Fetch all pages in the background if there are more pages
+        if (hasMorePages) {
+          fetchAllPages(branchId, firstPageData, totalPages);
+        }
+
+        // Restore focus to service search input if it exists
+        if (serviceSearchInputRef.current) {
+          serviceSearchInputRef.current.focus();
+        }
+      } catch (err) {
+        console.error("Error fetching services:", err);
+        setServiceSearchState((prev) => ({
+          ...prev,
+          loading: false,
+          isFetchingAll: false,
+          error: "Failed to fetch services. Please try again later.",
+        }));
+      }
+    };
+
+    if (activeTab === "styled-profile2" && branchId) {
+      fetchServices();
+    }
+  }, [branchId, activeTab]);
 
   const fetchAllPages = async (branchId, initialData, totalPages) => {
     try {
@@ -162,7 +348,7 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
           "https://api.populardiagnostic.com/api/test-service-charges",
           {
             params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+              token: API_TOKEN,
               branch_id: branchId,
               test_service_category_id: 0,
               page: currentPage,
@@ -198,11 +384,11 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     }
   };
 
-  const handleServiceSearch = (e) => {
+  const handleServiceSearchChange = (event) => {
     // Only allow search if all pages are fetched
     if (!serviceSearchState.allPagesFetched) return;
 
-    const searchValue = e.target.value.toLowerCase();
+    const searchValue = event.target.value.toLowerCase();
     setServiceSearchState((prev) => ({
       ...prev,
       searchTerm: searchValue,
@@ -212,68 +398,26 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
     }));
   };
 
-  const handleDoctorSearchChange = (field, value) => {
-    setDoctorSearchState((prev) => ({ ...prev, [field]: value }));
-  };
+  // Handlers
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
 
-  // Effects
-  useEffect(() => {
-    fetchServices(branchId);
-  }, [branchId]);
-
-  useEffect(() => {
-    let result = doctorData1.doctors.filter((doctor) =>
-      doctor.chember.some((ch) => ch.branch === branchName)
-    );
-
-    const {
-      selectedSpecialization,
-      selectedDay,
-      searchTerm,
-      showFemaleDoctors,
-    } = doctorSearchState;
-
+    // If switching to doctor tab and we haven't fetched doctors yet, fetch them
     if (
-      selectedSpecialization ||
-      selectedDay ||
-      searchTerm ||
-      showFemaleDoctors
+      tabId === "styled-profile" &&
+      doctorSearchData.displayedDoctors.length === 0
     ) {
-      if (selectedSpecialization) {
-        result = result.filter(
-          (doctor) => doctor.drSpecilist === selectedSpecialization
-        );
+      // Only fetch if at least one filter is set
+      if (
+        doctorSearchUI.searchTerm ||
+        doctorSearchUI.selectedSpecialization ||
+        doctorSearchUI.selectedDay ||
+        doctorSearchUI.showFemaleDoctors
+      ) {
+        fetchDoctors(1, false);
       }
-
-      if (selectedDay) {
-        result = result.filter((doctor) =>
-          doctor.chember.some((ch) =>
-            ch.weekday.some((wd) => wd.day === selectedDay)
-          )
-        );
-      }
-
-      if (searchTerm) {
-        result = result.filter((doctor) =>
-          doctor.drName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-
-      if (showFemaleDoctors) {
-        result = result.filter((doctor) => doctor.drGender === "Female");
-      }
-    } else {
-      result = [];
     }
-
-    setDoctorSearchState((prev) => ({ ...prev, displayedDoctors: result }));
-  }, [
-    branchName,
-    doctorSearchState.selectedSpecialization,
-    doctorSearchState.selectedDay,
-    doctorSearchState.searchTerm,
-    doctorSearchState.showFemaleDoctors,
-  ]);
+  };
 
   // Render functions
   const renderDoctorTab = () => (
@@ -283,13 +427,14 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
           <select
             className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
             onChange={(e) =>
-              handleDoctorSearchChange("selectedSpecialization", e.target.value)
+              handleFilterChange("selectedSpecialization", e.target.value)
             }
-            value={doctorSearchState.selectedSpecialization}>
+            value={doctorSearchUI.selectedSpecialization}
+            disabled={doctorSearchData.loading}>
             <option value="">Select Specialization</option>
-            {specializations.map((spec) => (
-              <option key={spec} value={spec}>
-                {spec}
+            {doctorSearchData.specializations.map((spec) => (
+              <option key={spec.id} value={spec.id}>
+                {spec.name}
               </option>
             ))}
           </select>
@@ -298,12 +443,11 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
         <div className="relative col-span-3 p-1 mb-0 group">
           <select
             className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
-            onChange={(e) =>
-              handleDoctorSearchChange("selectedDay", e.target.value)
-            }
-            value={doctorSearchState.selectedDay}>
+            onChange={(e) => handleFilterChange("selectedDay", e.target.value)}
+            value={doctorSearchUI.selectedDay}
+            disabled={doctorSearchData.loading}>
             <option value="">Select Day</option>
-            {DAYS_OF_WEEK.map((day) => (
+            {doctorSearchData.days.map((day) => (
               <option key={day} value={day}>
                 {day}
               </option>
@@ -316,13 +460,14 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
             Female Doctor
             <input
               type="checkbox"
-              checked={doctorSearchState.showFemaleDoctors}
+              checked={doctorSearchUI.showFemaleDoctors}
               onChange={() =>
-                handleDoctorSearchChange(
+                handleFilterChange(
                   "showFemaleDoctors",
-                  !doctorSearchState.showFemaleDoctors
+                  !doctorSearchUI.showFemaleDoctors
                 )
               }
+              disabled={doctorSearchData.loading}
               className="form-checkbox text-PDCL-green rounded"
             />
           </label>
@@ -330,36 +475,60 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
 
         <div className="relative col-span-9 mb-1 group">
           <input
+            ref={doctorSearchInputRef}
             className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
             type="text"
             placeholder="Search by doctor's name..."
-            value={doctorSearchState.searchTerm}
-            onChange={(e) =>
-              handleDoctorSearchChange("searchTerm", e.target.value)
-            }
+            value={doctorSearchUI.searchTerm}
+            onChange={(e) => debounceSearch(e.target.value)}
           />
 
-          {doctorSearchState.displayedDoctors.length > 0 && (
+          {doctorSearchData.loading ? (
+            <div className="text-center py-4">
+              <div className="flex justify-center items-center space-x-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00984a]"></div>
+                <span>Loading doctors...</span>
+              </div>
+            </div>
+          ) : doctorSearchData.displayedDoctors.length > 0 ? (
             <div className="flex flex-col min-h-[200px]">
               <ListHeader columns={["Doctor Name", "Speciality"]} />
               <AutoSizer>
                 {({ width }) => (
                   <List
                     height={250}
-                    rowCount={doctorSearchState.displayedDoctors.length}
+                    rowCount={doctorSearchData.displayedDoctors.length}
                     rowHeight={50}
                     rowRenderer={({ index, style }) => (
                       <DoctorRow
-                        doctor={doctorSearchState.displayedDoctors[index]}
+                        doctor={doctorSearchData.displayedDoctors[index]}
                         style={style}
                       />
                     )}
                     overscanRowCount={5}
                     width={width}
+                    onScroll={handleScroll}
                   />
                 )}
               </AutoSizer>
+              {doctorSearchData.isFetchingMore && (
+                <div className="text-center py-2">
+                  <div className="flex justify-center items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#00984a]"></div>
+                    <span>Loading more doctors...</span>
+                  </div>
+                </div>
+              )}
             </div>
+          ) : (
+            (doctorSearchUI.searchTerm ||
+              doctorSearchUI.selectedSpecialization ||
+              doctorSearchUI.selectedDay ||
+              doctorSearchUI.showFemaleDoctors) && (
+              <div className="text-center py-4">
+                No doctors found matching your criteria
+              </div>
+            )
           )}
         </div>
       </div>
@@ -391,9 +560,10 @@ const SearchBoxBranch = ({ branchName, branchId }) => {
         <div className="relative col-span-12 mb-1 group">
           <div className="relative">
             <input
+              ref={serviceSearchInputRef}
               type="text"
               value={serviceSearchState.searchTerm}
-              onChange={handleServiceSearch}
+              onChange={handleServiceSearchChange}
               placeholder={
                 serviceSearchState.isFetchingAll
                   ? "Loading all test prices..."
