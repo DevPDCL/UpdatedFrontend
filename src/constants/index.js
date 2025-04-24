@@ -573,7 +573,7 @@ const branch = [
     braCity: "Dhaka",
     braManImg: MdShahiMahmud,
     braManName: "Md. Shahi Mahmud",
-    braManDesignation: "AGM & Head of Branch",
+    braManDesignation: "DGM & Head of Branch",
     name: "Popular Diagnostic Centre Ltd. (Shantinagar)",
     address: "House # 11, Shantinagar , Motijheel, Dhaka.",
     branchUnits: [
@@ -813,7 +813,7 @@ const branch = [
     Email: "info@populardiagnostic.com",
     braCity: "Bogura",
     braManImg: MrRezwanAhmed,
-    braManName: "Mr. Rezwan Ahmed",
+    braManName: "Rezwan Ahmed",
     braManDesignation: "Senior Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Bogura)",
     address: "H # 12/305, Thanthania Bus-Stand Sherpur Road, Bogura.",
