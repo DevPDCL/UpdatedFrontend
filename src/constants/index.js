@@ -800,7 +800,7 @@ const branch = [
 
     braManImg: MdShahidulIslam,
     braManName: "Md. Shahidul Islam",
-    braManDesignation: "AGM & Head of Branch",
+    braManDesignation: "DGM & Head of Branch",
     name: "Popular Diagnostic Centre Ltd. (Narayangonj)",
     address: "231/4, Bangabandhu Road, Balur Math, Chashara, Narayangonj.",
   },

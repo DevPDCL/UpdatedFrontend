@@ -68,13 +68,26 @@ const Narayangong = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                Bismillahir Rahmanir Raheem. Assalamu Alaikum. <br />
+                Popular Diagnostic Centre Ltd has been making the highest
+                contribution to the health sector of Bangladesh since its
+                establishment in Dhaka in 1983. In line with this, the
+                Narayanganj branch was established two decades ago in Chasara,
+                the heart of Narayanganj, with the aim of bringing healthcare to
+                the doorsteps of the people. <br /> <br />
+                Since its inception, the Narayanganj branch has been providing
+                the desired services to the people of Narayanganj and the
+                surrounding areas.This branch is run by state-of-the-art
+                machines, renowned talented doctors and skilled staff from
+                Bangladesh,where every employee or member has been able to
+                create trust and confidence in the heart of the patients through
+                their utmost sincerity, compassion and service and we are always
+                striving to continuously improve the quality and scope of
+                services through the advice of patients and their
+                relatives.Every employee here has one commitment- "Service is
+                the vow, service is the religion." Work with patience to reduce
+                restlessness. May The Almighty help us. --Shahidul Islam Swapon
+                DGM & Head of Branch, Narayanganj.
               </p>
             </div>
           </div>

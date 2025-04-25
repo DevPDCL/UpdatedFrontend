@@ -1,50 +1,146 @@
 // DoctorDetail.js
 import Marquee from "react-fast-marquee";
 import "@fontsource/ubuntu";
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { doctorData1 } from "../constants"; // Import your doctor data
-import { drBackground, Adecard, Ambrosol, Amlovas, Vonomax, Anorel, Cebergol } from "../assets";
+import React, { useState, useEffect } from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
+import axios from "axios";
+import {
+  drBackground,
+  Adecard,
+  Ambrosol,
+  Amlovas,
+  Vonomax,
+  Anorel,
+  Cebergol,
+} from "../assets";
+import {
+  FaUserMd,
+  FaUser,
+  FaCalendarAlt,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+import { MdPeople, MdMedicalServices } from "react-icons/md";
 
 const DoctorDetail = () => {
   const { doctorId } = useParams();
-  const selectedDoctor = doctorData1.doctors.find(
-    (doctor) => doctor.drID.toString() === doctorId
-  );
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
-  if (!selectedDoctor) {
-    return <div>Doctor not found.</div>;
-  }
+  const [doctor, setDoctor] = useState(null);
+  const [similarDoctors, setSimilarDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingSimilar, setLoadingSimilar] = useState(true);
+  const [error, setError] = useState(null);
 
-  const {
-    drName,
-    drSpecilist,
-    drDegree,
-    chember,
-    drNumber,
-    email,
-    drGender,
-    newPatientVisit,
-    oldPatient,
-    report,
-    image,
-    currPractice,
-  } = selectedDoctor;
+  // Get branch and specialist IDs from URL params
+  const branchIds = queryParams.get("branches") || "";
+  const specialistIds = queryParams.get("specialists") || "";
 
-  const handleClick1 = () => {
-    window.open(url, "_blank", "noopener,noreferrer");
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.populardiagnostic.com/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
+        );
+        if (response.data.success) {
+          setDoctor(response.data.data);
+        } else {
+          setError("Doctor not found");
+        }
+      } catch (err) {
+        setError("Failed to fetch doctor data");
+        console.error("Error fetching doctor:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchSimilarDoctors = async () => {
+      try {
+        // Only fetch similar doctors if we have branch and specialist IDs
+        if (branchIds && specialistIds) {
+          const response = await axios.get(
+            `https://api.populardiagnostic.com/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
+          );
+          if (response.data.success) {
+            // Filter out the current doctor from similar doctors
+            const filteredDoctors = response.data.data.data.filter(
+              (doc) => doc.id.toString() !== doctorId
+            );
+            setSimilarDoctors(filteredDoctors);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching similar doctors:", err);
+      } finally {
+        setLoadingSimilar(false);
+      }
+    };
+
+    fetchDoctor();
+    fetchSimilarDoctors();
+  }, [doctorId, branchIds, specialistIds]);
+
+  const isDoctorOnLeave = () => {
+    if (!doctor?.absent_message) return false;
+
+    // Extract dates from absent message (assuming format: "In Leave from <b>Sun, 20th Apr 2025</b> to <b>Mon, 28th Apr 2025</b>")
+    const dateRegex = /<b>.*?(\d{1,2})(?:st|nd|rd|th)? (\w{3}) (\d{4})<\/b>/g;
+    const dates = [];
+    let match;
+
+    while ((match = dateRegex.exec(doctor.absent_message)) !== null) {
+      const day = match[1];
+      const month = match[2];
+      const year = match[3];
+      dates.push(new Date(`${month} ${day}, ${year}`));
+    }
+
+    if (dates.length === 2) {
+      const today = new Date();
+      return today >= dates[0] && today <= dates[1];
+    }
+
+    return false;
   };
 
-  // Filter for doctors in the same chamber and specialist, excluding the current doctor
-  const relatedDoctors = doctorData1.doctors.filter((doctor) => {
-    return (
-      doctor.chember.branch === chember.branch &&
-      doctor.drSpecilist === drSpecilist &&
-      doctor.drID.toString() !== doctorId
-    );
-  });
+  if (loading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
 
-  
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
+  if (!doctor) {
+    return <div className="text-center py-10">Doctor not found</div>;
+  }
+
+  const handleClick1 = () => {
+    window.open(
+      "http://appointment.populardiagnostic.com/appointment",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
+  // Format schedule data to match the component's expected structure
+  const formattedChamber = {
+    branch: doctor.practicing_branches,
+    building: doctor.branches[0]?.map || "Not specified",
+    room: "Not specified",
+    weekday: doctor.schedule.map((item) => ({
+      day: item.day,
+      time: `${item.start_time} - ${item.end_time}`,
+    })),
+    assistantName: "Not specified",
+    assistantGender: "Not specified",
+    ext: "Not specified",
+    assistantMobile: doctor.branches[0]?.phone || "Not specified",
+  };
+
   return (
     <div className="doctor-detail bg-gray-100">
       <div className="sm:container mx-auto py-10 px-5">
@@ -54,10 +150,10 @@ const DoctorDetail = () => {
             {/* Profile Card */}
             <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
               <div className="image overflow-hidden rounded-xl shadow-xl">
-                {image ? (
+                {doctor.image ? (
                   <img
                     className="h-auto w-full mx-auto"
-                    src={image}
+                    src={doctor.image}
                     alt="Profile"
                     style={{
                       position: "relative",
@@ -67,44 +163,27 @@ const DoctorDetail = () => {
                   />
                 ) : (
                   <div className="no-image font-ubuntu flex flex-col justify-center items-center p-2 h-60">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="256"
-                      height="256"
-                      viewBox="0 0 256 256">
-                      <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                        <circle
-                          cx="58.145"
-                          cy="74.615"
-                          r="13.145"
-                          fill="#ffffff"
-                        />
-                        <path
-                          d="M45 40.375c-9.415 0-17.118-7.703-17.118-17.118v-6.139C27.882 7.703 35.585 0 45 0s17.118 7.703 17.118 17.118v6.139C62.118 32.672 54.415 40.375 45 40.375z"
-                          fill="#d7ffd7"
-                        />
-                        <path
-                          d="M55.078 42.803L45 54.44 34.922 42.803c-12.728 2.118-22.513 13.239-22.513 26.544v17.707c0 1.621 1.326 2.946 2.946 2.946h59.29c1.621 0 2.946-1.326 2.946-2.946V69.346c0-13.305-9.786-24.426-22.513-26.544zM67.204 76.875c0 .667-.541 1.208-1.208 1.208h-3.877v3.877c0 .667-.541 1.208-1.208 1.208H56.73c-.667 0-1.208-.541-1.208-1.208v-3.877h-3.877c-.667 0-1.208-.541-1.208-1.208v-4.179c0-.667.541-1.208 1.208-1.208h3.877V67.61c0-.667.541-1.208 1.208-1.208h4.179c.667 0 1.208.541 1.208 1.208v3.877h3.877c.667 0 1.208.541 1.208 1.208v4.179z"
-                          fill="#d7ffd7"
-                        />
-                      </g>
-                    </svg>
-                    <p className="text-gray-700">No Image Available</p>
+                    <FaUserMd className="text-6xl text-gray-400" />
+                    <p className="text-gray-700 mt-2">No Image Available</p>
                   </div>
                 )}
               </div>
               <h1 className="pt-2 text-gray-700 font-bold text-xl leading-8 my-1">
-                {drName}
+                {doctor.name}
               </h1>
               <h3 className="text-gray-600 font-lg font-medium leading-6">
-                Specialization: {drSpecilist}
+                <MdMedicalServices className="inline mr-1" />
+                {doctor.specialities}
               </h3>
               <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                 <li className="flex items-center py-3">
                   <span>Status</span>
                   <span className="ml-auto">
-                    <span className="bg-[#00984a] py-1 px-2 rounded text-white text-sm">
-                      Active
+                    <span
+                      className={`py-1 px-2 rounded text-white text-sm ${
+                        isDoctorOnLeave() ? "bg-yellow-500" : "bg-[#00984a]"
+                      }`}>
+                      {isDoctorOnLeave() ? "On Leave" : "Active"}
                     </span>
                   </span>
                 </li>
@@ -116,46 +195,46 @@ const DoctorDetail = () => {
             <div className="bg-white rounded-xl shadow-lg p-3 hover:shadow-xl">
               <div className="flex items-center justify-center space-x-3 font-semibold text-gray-900 text-xl leading-8 font-ubuntu">
                 <span className="text-[#00984a]">
-                  {" "}
-                  <svg
-                    className="h-5 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
+                  <MdPeople className="text-2xl" />
                 </span>
-                <span>More from {drSpecilist}</span>
+                <span className="tracking-wide">Similar Doctors</span>
               </div>
               <h2 className="text-gray-500 text-center pb-2">
-                {" "}
-                For different schedules
+                You may also consider
               </h2>
               <hr className="p-2"></hr>
-              {relatedDoctors.length > 0 ? (
-                <div className="grid grid-cols-2 text-[#00984a]">
-                  {relatedDoctors.map((doctor) => (
-                    <div key={doctor.drID} className="text-center my-2">
-                      <Link to={`/doctordetail/${doctor.drID}`}>
+              {loadingSimilar ? (
+                <div className="p-5 font-ubuntu text-center text-gray-800">
+                  Loading similar doctors...
+                </div>
+              ) : similarDoctors.length > 0 ? (
+                <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
+                  {similarDoctors.map((doctor) => (
+                    <div
+                      key={doctor.id}
+                      className="text-center my-2 p-1 hover:bg-gray-50 rounded">
+                      <Link
+                        to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
+                        className="block">
                         <img
-                          className="h-16 w-16 rounded-full mx-auto"
+                          className="h-16 w-16 rounded-full mx-auto object-cover"
                           src={doctor.image}
-                          alt={doctor.drName}
+                          alt={doctor.name}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://via.placeholder.com/64";
+                          }}
                         />
-                        <p>{doctor.drName}</p>
+                        <p className="text-sm mt-1 text-gray-700 line-clamp-2">
+                          {doctor.name}
+                        </p>
                       </Link>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="p-5 font-ubuntu text-center text-gray-800">
-                  No {drSpecilist} doctors available in similar branches.
+                  No similar doctors available
                 </div>
               )}
             </div>
@@ -168,42 +247,39 @@ const DoctorDetail = () => {
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
                 <h1 className="text-[#00984a] p-5 text-center font-ubuntu font-bold text-[26px]">
-                  {" "}
-                  {currPractice}{" "}
+                  {doctor.experience_summery || "Experienced Specialist"}
                 </h1>
               </div>
               <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                 <span className="text-[#00984a]">
-                  <svg
-                    className="h-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+                  <FaUser className="text-lg" />
                 </span>
                 <span className="tracking-wide">About</span>
               </div>
               <div className="text-gray-700">
                 <div className="grid md:grid-cols-2 text-sm">
                   <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold">Degrees:</div>
-                    <div className="px-4 py-2">{drDegree}</div>
+                    <div className="px-4 py-2 font-semibold flex items-center">
+                      <FaUserMd className="mr-2" /> Degrees:
+                    </div>
+                    <div className="px-4 py-2 pl-8">{doctor.degree}</div>
                   </div>
                   <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold">Experience</div>
-                    <div className="px-4 py-2">
-                      <a
-                        className="text-[#00984a]"
-                        href="mailto:jane@example.com">
-                        {email}
-                      </a>
+                    <div className="px-4 py-2 font-semibold flex items-center">
+                      <FaEnvelope className="mr-2" /> Contact
+                    </div>
+                    <div className="px-4 py-2 pl-8">
+                      {doctor.email ? (
+                        <a
+                          className="text-[#00984a] hover:underline flex items-center"
+                          href={`mailto:${doctor.email}`}>
+                          <FaEnvelope className="mr-1" /> {doctor.email}
+                        </a>
+                      ) : (
+                        <span className="text-gray-500">
+                          Email not available
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -213,10 +289,10 @@ const DoctorDetail = () => {
                 target="_blank"
                 rel="noopener noreferrer">
                 <button
-                  className="block w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+                  className="w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4 flex items-center justify-center"
                   onClick={handleClick1}
                   type="button">
-                  Book an Appointment
+                  <FaCalendarAlt className="mr-2" /> Book an Appointment
                 </button>
               </Link>
             </div>
@@ -227,26 +303,36 @@ const DoctorDetail = () => {
               <div>
                 <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
                   <span className="text-[#00984a]">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5"
-                      viewBox="0 0 90 90">
-                      <path
-                        d="M51.948 73.273H38.052c-1.104 0-2-0.896-2-2v-9.621h-9.621c-1.104 0-2-0.896-2-2V45.757c0-1.104 0.896-2 2-2h9.621v-9.62c0-1.104 0.896-2 2-2h13.896c1.104 0 2 0.896 2 2v9.62h9.62c1.104 0 2 0.896 2 2v13.895c0 1.104-0.896 2-2 2h-9.62v9.621C53.948 72.378 53.053 73.273 51.948 73.273z M40.052 69.273h9.896v-9.621c0-1.104 0.896-2 2-2h9.62v-9.895h-9.62c-1.104 0-2-0.896-2-2v-9.62h-9.896v9.62c0 1.104-0.896 2-2 2h-9.621v9.895h9.621c1.104 0 2 0.896 2 2V69.273z"
-                        fill="#00984a"
-                      />
-                      <path
-                        d="M78.113 84.056H11.887c-1.104 0-2-0.896-2-2V30.312c0-1.104 0.896-2 2-2s2 0.896 2 2v49.745h62.226V30.067c0-1.104 0.896-2 2-2s2 0.896 2 2v51.989C80.113 83.161 79.218 84.056 78.113 84.056z"
-                        fill="#00984a"
-                      />
-                      <path
-                        d="M2.002 38.835c-0.65 0-1.287-0.316-1.671-0.898c-0.608-0.922-0.354-2.163 0.568-2.771L44.687 6.274c0.679-0.449 1.561-0.439 2.231 0.019L89.13 35.184c0.911 0.624 1.145 1.869 0.521 2.78c-0.624 0.912-1.867 1.146-2.78 0.521L45.768 10.353L3.102 38.504C2.762 38.728 2.38 38.835 2.002 38.835z"
-                        fill="#00984a"
-                      />
-                    </svg>
+                    <FaMapMarkerAlt className="text-lg" />
                   </span>
                   <span className="tracking-wide text-center">Chamber</span>
                 </div>
+                {doctor.absent_message && (
+                  <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg
+                          className="h-5 w-5 text-yellow-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor">
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p
+                          className="text-sm text-yellow-700"
+                          dangerouslySetInnerHTML={{
+                            __html: doctor.absent_message,
+                          }}></p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div
                   className="chambers-grid m-0 p-0 text-black w-full md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1 mx-auto"
                   style={{
@@ -254,55 +340,57 @@ const DoctorDetail = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
                     gap: "20px",
                   }}>
-                  {selectedDoctor.chember.map((chamber, index) => (
-                    <div
-                      key={index}
-                      className="chamber-card p-4 border border-gray-300 rounded-lg">
-                      <h3 className="font-medium text-center">
-                        {chamber.branch} Branch
-                      </h3>
-                      <p className="text-center">
-                        {chamber.building}, Room: {chamber.room}
-                      </p>
-                      <div className="text-center font-bold text-gray-700 pt-2 text-[24px]">
-                        Schedule
-                      </div>
-                      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                          <div className="overflow-hidden">
-                            <table className="min-w-full text-center">
-                              <thead className="border-b">
-                                <tr>
-                                  <th
-                                    scope="col"
-                                    className="text-sm font-medium text-gray-900 px-6 py-4">
-                                    Day
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm font-medium text-gray-900 px-6 py-4">
-                                    Time
-                                  </th>
+                  <div className="chamber-card p-4 border border-gray-300 rounded-lg">
+                    <h3 className="font-medium text-center">
+                      <FaMapMarkerAlt className="inline mr-1" />
+                      {formattedChamber.branch} Branch
+                    </h3>
+                    <p className="text-center">
+                      {formattedChamber.building}, Room: {formattedChamber.room}
+                    </p>
+                    <p className="text-center">
+                      <FaPhone className="inline mr-1" />
+                      {formattedChamber.assistantMobile}
+                    </p>
+                    <div className="text-center font-bold text-gray-700 pt-2 text-[24px]">
+                      <FaCalendarAlt className="inline mr-2" />
+                      Schedule
+                    </div>
+                    <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                      <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                        <div className="overflow-hidden">
+                          <table className="min-w-full text-center">
+                            <thead className="border-b">
+                              <tr>
+                                <th
+                                  scope="col"
+                                  className="text-sm font-medium text-gray-900 px-6 py-4">
+                                  Day
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="text-sm font-medium text-gray-900 px-6 py-4">
+                                  Time
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {formattedChamber.weekday.map((day, dayIndex) => (
+                                <tr key={dayIndex} className="border-b">
+                                  <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                    {day.day}
+                                  </td>
+                                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {day.time}
+                                  </td>
                                 </tr>
-                              </thead>
-                              <tbody>
-                                {chamber.weekday.map((day, dayIndex) => (
-                                  <tr key={dayIndex} className="border-b">
-                                    <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                      {day.day}
-                                    </td>
-                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      {day.time}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
               {/* End of Chamber grid */}

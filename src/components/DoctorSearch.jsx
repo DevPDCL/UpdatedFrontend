@@ -392,6 +392,20 @@ const DoctorCard = ({ doctor }) => {
   // Get branch name
   const branchName = doctor.branches?.[0]?.branch?.name || "Not specified";
 
+  // Get all branch IDs
+  const branchIds =
+    doctor.branches
+      ?.map((b) => b.branch_id)
+      .filter(Boolean)
+      .join(",") || "";
+
+  // Get all specialist IDs
+  const specialistIds =
+    doctor.specialists
+      ?.map((s) => s.specialist_id)
+      .filter(Boolean)
+      .join(",") || "";
+
   // Check if doctor is currently absent
   const today = new Date();
   const absentFrom = doctor.absent_from ? new Date(doctor.absent_from) : null;
@@ -414,7 +428,7 @@ const DoctorCard = ({ doctor }) => {
 
   return (
     <Link
-      to={`/doctordetail/${doctor.id}`}
+      to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
       className="doctor-card-link group relative">
       {isAbsent && (
         <div className="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full z-10 bg-red-100 text-red-800">
@@ -428,8 +442,7 @@ const DoctorCard = ({ doctor }) => {
           isAbsent ? "opacity-80" : ""
         }`}>
         <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
-   
-          {doctor.imag ? (                  //to stop loading the images, made imag from image. which can be fixed just by adding e after the imag. 
+          {doctor.imag ? ( //to stop loading the images, made imag from image. which can be fixed just by adding e after the imag.
             <>
               <img
                 src={doctor.image}
