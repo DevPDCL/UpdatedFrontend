@@ -45,12 +45,12 @@ const BranchContact = ({ address, Hotline, Email }) => {
   );
 };
 
-const ProjectCard = ({ image, city, address, Hotline, Email, heading }) => {
+const ProjectCard = ({ id, image, city, address, Hotline, Email, heading }) => {
   const navigate = useNavigate();
 
   const handleBranchClick = () => {
     const routePath = `/${heading.replace(/\s+/g, "").toLowerCase()}`;
-    navigate(routePath);
+     navigate(`${routePath}?id=${id}`);
   };
 
   return (
@@ -235,6 +235,7 @@ const Branch = () => {
         {filteredProjectsIncSearch.map((project) => (
           <ProjectCard
             key={project.id}
+            id={project.id}
             image={project.image}
             city={project.city}
             address={project.address.replace(/<[^>]*>/g, "")}

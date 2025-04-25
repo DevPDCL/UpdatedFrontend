@@ -799,7 +799,7 @@ const branch = [
       "https://maps.google.com/maps?q=23.6223054,90.5004152&hl=es;z=14&output=embed",
 
     braManImg: MdShahidulIslam,
-    braManName: "Md. Shahidul Islam",
+    braManName: "Md. Shahidul Islam Swapon",
     braManDesignation: "DGM & Head of Branch",
     name: "Popular Diagnostic Centre Ltd. (Narayangonj)",
     address: "231/4, Bangabandhu Road, Balur Math, Chashara, Narayangonj.",
