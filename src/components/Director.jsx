@@ -8,9 +8,9 @@ const Director = () => {
       <div className="overflow-hidden bg-white py-16 sm:py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-gray-100/5 p-6 rounded-lg shadow-lg">
-            {/* Image & Title Section */}
+
             <div className="relative flex flex-col items-center text-center">
-              {/* SVG Background */}
+
               <div className="relative w-full h-[400px] flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -36,8 +36,6 @@ const Director = () => {
                     />
                   </path>
                 </svg>
-
-                {/* Image */}
                 <img
                   src={DrMostafizurRahman}
                   alt="Late Tahera Akhter"
@@ -45,7 +43,7 @@ const Director = () => {
                 />
               </div>
 
-              {/* Name & Title */}
+
               <h1 className="text-gray-800 text-[28px] sm:text-[32px] md:text-[36px] font-bold mt-4">
                 Dr. Mostafizur Rahman
               </h1>
@@ -54,7 +52,7 @@ const Director = () => {
               </p>
             </div>
 
-            {/* Text Section */}
+
             <div className="text-gray-600 text-justify px-2 sm:px-4">
               <p className="text-[16px] leading-relaxed">
                 Popular started its journey as diagnostic centre in June 1983

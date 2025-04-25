@@ -36,12 +36,10 @@ function Contact() {
 
   return (
     <div className="bg-white">
-      {/* Title */}
       <div className="flex flex-col pt-20 mx-auto max-w-7xl text-center">
         <h2 className="text-gray-900 text-3xl font-bold">CONNECTING WITH US</h2>
       </div>
 
-      {/* Contact Info */}
       <div className="flex flex-col items-center text-center mt-10">
         <h1 className="text-gray-900 font-extrabold text-4xl">
           DISCOVER <span className="text-green-600">POPULAR</span>
@@ -55,7 +53,6 @@ function Contact() {
         <p className="text-lg text-gray-700">Phone: 09666 787801, 10636</p>
       </div>
 
-      {/* Form Section */}
       <div className="flex justify-center mt-10 p-4">
         <div className="w-full max-w-7xl bg-gray-100 shadow-lg rounded-lg p-6">
           <h5 className="text-3xl font-bold text-green-600 text-center mb-5">
@@ -125,7 +122,6 @@ function Contact() {
         </div>
       </div>
 
-      {/* Google Map */}
       <div className="flex max-w-7xl mx-auto justify-center mt-10 p-4">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.2197080792394!2d90.37959757619976!3d23.73954337867781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8ca7af5f82b%3A0xce7d1ab6b16a027!2sPopular%20Diagnostic%20Centre%20Ltd.!5e0!3m2!1sen!2sbd!4v1706512680599!5m2!1sen!2sbd"

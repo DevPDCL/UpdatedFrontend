@@ -104,7 +104,6 @@ const Branch = () => {
           "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4"
         );
         if (response.data.success) {
-          // Clean branch names by removing (U1, U2, U3) and extra spaces
           const cleanedBranches = response.data.data.data.map((branch) => ({
             ...branch,
             cleanedName: branch.name.replace(/\(.*?\)/g, "").trim(),

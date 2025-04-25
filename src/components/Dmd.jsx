@@ -11,9 +11,7 @@ const Dmd = () => {
             <div className="relative lg:pr-8 lg:pt-4">
               <div className="lg:max-w-lg">
                 <div className="me-auto h-auto w-auto">
-                  {/* SVG background container */}
                   <div className="relative">
-                    {/* SVG positioned absolutely */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       x="0px"
@@ -43,7 +41,6 @@ const Dmd = () => {
                         />
                       </path>
                     </svg>
-                    {/* Image with relative positioning */}
                     <img
                       src={SardinRahman}
                       alt="Sardin Rahman"
