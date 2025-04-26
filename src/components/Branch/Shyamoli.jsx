@@ -51,7 +51,8 @@ const Shyamoli = () => {
       </h1>
       <h1
         className=" text-center text text-3xl mt-5 leading-tight sm:text-4xl md:text-5xl xl:text-6xl
-            font-bold text-[#00664a]">
+            font-bold text-[#00664a]"
+      >
         Popular Diagnostic Center{" "}
         <span className="text-7xl text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
           {branchName}{" "}
@@ -82,7 +83,7 @@ const Shyamoli = () => {
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
           <img
             src={branchInfo.braManImg}
-            alt="Late Tahera Akhter"
+            alt="Mr. Nezamul Haque Ripon"
             className="relative mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
           />
           <div className="flex lg:item-start">

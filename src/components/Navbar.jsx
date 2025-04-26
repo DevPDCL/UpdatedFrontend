@@ -8,6 +8,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
+import { styles } from "../styles";
+import axios from "axios";
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
@@ -28,6 +30,32 @@ const NavLink = ({ to, children, onClick }) => {
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [socialLinks, setSocialLinks] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchSocialLinks = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.populardiagnostic.com/api/social-links",
+          {
+            params: {
+              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+            },
+          }
+        );
+        setSocialLinks(response.data.data);
+      } catch (err) {
+        setError("Error fetching social links");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSocialLinks();
+  }, []);
 
   return (
     <>
@@ -262,7 +290,7 @@ const Navbar = () => {
             <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 overflow-y-auto ">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -283,8 +311,8 @@ const Navbar = () => {
                     </button>
                   </div>
 
-                  <div className="space-y-3">
-                    <Menu as="div" className="relative">
+                  <div className="space-y-3 ">
+                    <Menu as="div" className="relative ">
                       <Menu.Button className="inline-flex items-center ml-1 text-[16px] px-3 py-2   font-medium text-gray-700 hover:text-[#00984a] hover:bg-gray-100 rounded-lg">
                         About
                         <ChevronDownIcon className="w-4 h-4 ml-5" />
@@ -297,9 +325,8 @@ const Navbar = () => {
                         leave="transition duration-75 ease-out"
                         leaveFrom="transform scale-100 opacity-100"
                         leaveTo="transform scale-95 opacity-0"
-                        
                       >
-                        <Menu.Items className="absolute z-10 mt-2 w-full overflow-scroll bg-white shadow-lg rounded-lg py-2">
+                        <Menu.Items className="absolute z-10 mt-2 w-full h-40 overflow-scroll bg-white shadow-lg rounded-lg py-2">
                           <Menu.Item>
                             {({ active }) => (
                               <Link
@@ -311,7 +338,9 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">Objectives & Goals</p>
+                                  <p className="pl-5 font-medium">
+                                    Objectives & Goals
+                                  </p>
                                 </div>
                               </Link>
                             )}
@@ -327,7 +356,10 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5"> Message from Chairman</p>
+                                  <p className="pl-5 font-medium">
+                                    {" "}
+                                    Message from Chairman
+                                  </p>
                                 </div>
                               </Link>
                             )}
@@ -343,8 +375,8 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">
-                                    Message from Managing Director
+                                  <p className="pl-5 font-medium">
+                                    Message from MD
                                   </p>
                                 </div>
                               </Link>
@@ -361,8 +393,8 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">
-                                    Message from Deputy Managing Director
+                                  <p className="pl-5 font-medium">
+                                    Message from DMD
                                   </p>
                                 </div>
                               </Link>
@@ -379,7 +411,10 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5"> Management Team</p>
+                                  <p className="pl-5 font-medium">
+                                    {" "}
+                                    Management Team
+                                  </p>
                                 </div>
                               </Link>
                             )}
@@ -395,7 +430,7 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">Notices</p>
+                                  <p className="pl-5 font-medium">Notices</p>
                                 </div>
                               </Link>
                             )}
@@ -411,7 +446,9 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">Our Technologies</p>
+                                  <p className="pl-5 font-medium">
+                                    Our Technologies
+                                  </p>
                                 </div>
                               </Link>
                             )}
@@ -427,7 +464,7 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">Gallery</p>
+                                  <p className="pl-5 font-medium">Gallery</p>
                                 </div>
                               </Link>
                             )}
@@ -443,7 +480,9 @@ const Navbar = () => {
                                 }`}
                               >
                                 <div className="flex col-span-1 items-center">
-                                  <p className="pl-5">Corporate Videos</p>
+                                  <p className="pl-5 font-medium">
+                                    Corporate Videos
+                                  </p>
                                 </div>
                               </Link>
                             )}
@@ -476,6 +515,13 @@ const Navbar = () => {
                     <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
                       Contact
                     </NavLink>
+                    <NavLink
+                      to="/complain"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Complain and Advise
+                    </NavLink>
+                    
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

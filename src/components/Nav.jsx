@@ -37,21 +37,21 @@ const Nav = () => {
       >
         <div className="w-full h-[30px]  flex flex-wrap items-center   justify-between max-w-7xl text-[#ffffff] ">
           <div className="flex flex-row items-center  justify-start me-auto">
-            <div className="flex flex-row items-center justify-center">
+            <div className="flex flex-row  items-center justify-center">
               <svg
-                class="w-4 h-4 fill-white"
+                class="w-4 h-4 fill-white hidden lg:block"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"></path>
               </svg>
 
-              <p className="pl-1 text-[15px] hidden md:block text-white font-extrabold font-ubuntu">
+              <p className="pl-1 text-[15px] hidden lg:block text-white font-extrabold font-ubuntu">
                 24/7
               </p>
             </div>
-            <div className="flex flex-row items-center justify-center ">
-              <div className="text-white flex items-center">
+            <div className="flex flex-row items-center justify-start me-auto ">
+              <div className="text-white flex items-center ">
                 <svg
                   className="w-4 h-4 ml-2 fill-white"
                   viewBox="0 0 512 512"
@@ -71,30 +71,35 @@ const Nav = () => {
             <div className="flex flex-row items-center justify-center ">
               <Link to="/hotlines" className="text-white flex items-center">
                 <h2
-                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal hidden md:block`}
+                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal hidden lg:block`}
                 >
                   Other Branches Hotlines<span> </span>
                 </h2>
               </Link>
-              <Link to="/hotlines" className="text-white flex items-center">
+              <Link
+                to="/hotlines"
+                className="text-white flex  items-center justify-end ms-auto"
+              >
                 <h2
-                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal md:hidden`}
+                  className={`text-[15px] underline pl-3 text font-ubuntu font-normal lg:hidden`}
                 >
                   Other Branches Hotlines <span> </span>
                 </h2>
               </Link>
             </div>
           </div>
-          <Link to="/complain" className="text-white flex items-center">
+          <Link to="/complain" className="text-white flex items-center ">
             <svg
-              className="w-4 h-4 fill-white"
+              className="w-4 h-4 fill-white hidden lg:block"
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
               <path d="M215.4 96H144 107.8 96v8.8V144v40.4 89L.2 202.5c1.6-18.1 10.9-34.9 25.7-45.8L48 140.3V96c0-26.5 21.5-48 48-48h76.6l49.9-36.9C232.2 3.9 243.9 0 256 0s23.8 3.9 33.5 11L339.4 48H416c26.5 0 48 21.5 48 48v44.3l22.1 16.4c14.8 10.9 24.1 27.7 25.7 45.8L416 273.4v-89V144 104.8 96H404.2 368 296.6 215.4zM0 448V242.1L217.6 403.3c11.1 8.2 24.6 12.7 38.4 12.7s27.3-4.4 38.4-12.7L512 242.1V448v0c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64v0zM176 160H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16z"></path>
             </svg>
-            <h2 className={`text-[15px] pl-1 pt-1 font-medium font-ubuntu`}>
+            <h2
+              className={`text-[15px] pl-1 pt-1 hidden lg:block font-medium font-ubuntu`}
+            >
               Complain and Advise
             </h2>
           </Link>
@@ -104,7 +109,7 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="text-white p-1 pl-2 hidden md:block"
+              className="text-white p-1 pl-2 hidden lg:block"
             >
               <svg
                 className="w-4 h-4 text-white"
@@ -121,7 +126,7 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Visit our Youtube channel"
-              className="text-white p-1 pl-2 mr-2 hover:text-gray-900 dark:hover:text-black  hidden md:block"
+              className="text-white p-1 pl-2 mr-2 hover:text-gray-900 dark:hover:text-black  hidden lg:block"
             >
               <svg
                 className="w-6 h-4 text-white"
@@ -138,7 +143,7 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="text-white p-1 pl-2  hidden md:block"
+              className="text-white p-1 pl-2  hidden lg:block"
             >
               <svg
                 className="w-4 h-4 text-white"
@@ -155,7 +160,7 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="twitter"
-              className="text-white p-1 pl-2  hidden md:block"
+              className="text-white p-1 pl-2  hidden lg:block"
             >
               <svg
                 className="w-4 h-4 text-white"
@@ -172,7 +177,7 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="instagram"
-              className="text-white p-1 pl-2  hidden md:block"
+              className="text-white p-1 pl-2  hidden lg:block"
             >
               <svg
                 className="w-4 h-4 text-white"
