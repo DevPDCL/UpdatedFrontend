@@ -83,7 +83,7 @@ const Nav = () => {
                 <h2
                   className={`text-[15px] underline pl-3 text font-ubuntu font-normal lg:hidden`}
                 >
-                  Other Branches Hotlines <span> </span>
+                  Branches Hotlines <span> </span>
                 </h2>
               </Link>
             </div>

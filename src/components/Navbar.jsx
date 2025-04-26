@@ -8,8 +8,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
-import { styles } from "../styles";
-import axios from "axios";
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
@@ -31,31 +29,7 @@ const NavLink = ({ to, children, onClick }) => {
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const [socialLinks, setSocialLinks] = useState([]);
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchSocialLinks = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.populardiagnostic.com/api/social-links",
-          {
-            params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            },
-          }
-        );
-        setSocialLinks(response.data.data);
-      } catch (err) {
-        setError("Error fetching social links");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSocialLinks();
-  }, []);
 
   return (
     <>
