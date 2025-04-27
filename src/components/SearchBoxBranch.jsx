@@ -433,21 +433,16 @@ const SearchBoxBranch = ({ branchId }) => {
     }
   }, [apiRequest, branchId, fetchAllServices]);
 
-  const handleServiceSearchChange = useCallback(
-    (event) => {
-      if (!serviceSearchState.allPagesFetched) return;
-
-      const searchValue = event.target.value.toLowerCase();
-      setServiceSearchState((prev) => ({
-        ...prev,
-        searchTerm: searchValue,
-        services: prev.allServices.filter((service) =>
-          service.name.toLowerCase().includes(searchValue)
-        ),
-      }));
-    },
-    [serviceSearchState.allPagesFetched]
-  );
+  const handleServiceSearchChange = useCallback((event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setServiceSearchState((prev) => ({
+      ...prev,
+      searchTerm: searchValue,
+      services: prev.allServices.filter((service) =>
+        service.name.toLowerCase().includes(searchValue)
+      ),
+    }));
+  }, []);
 
   const handleTabClick = useCallback((tabId) => {
     setActiveTab(tabId);
@@ -560,17 +555,8 @@ const SearchBoxBranch = ({ branchId }) => {
               type="text"
               value={serviceSearchState.searchTerm}
               onChange={handleServiceSearchChange}
-              placeholder={
-                serviceSearchState.isFetchingAll
-                  ? "Loading all test prices..."
-                  : "Search test prices..."
-              }
-              className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
-                serviceSearchState.isFetchingAll
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={serviceSearchState.isFetchingAll}
+              placeholder="Search test prices..."
+              className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
               required
             />
             {serviceSearchState.isFetchingAll && (

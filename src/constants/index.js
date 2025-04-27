@@ -431,14 +431,14 @@ const reportDownload = [
   },
   {
     braID: 7,
-    braName: "Uttara",
+    braName: "Uttara Sector 13",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",
   },
   {
     braID: 39,
-    braName: "Uttara Garib E Newaz",
+    braName: "Uttara Sector 13",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",

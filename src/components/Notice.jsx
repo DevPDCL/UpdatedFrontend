@@ -11,14 +11,14 @@ import axios from "axios";
 const ProjectCard = ({ title, image }) => {
   return (
     <>
-      <div className="mx-auto mb-10 max-w-[370px] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300">
+      <div className="mx-auto border border-[#b0e0cb] shadow-lg hover:shadow-2xl bg-gradient-to-r from-[#f5fbf8] to-[#e0f2eb] rounded-xl  mb-10 max-w-[370px] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300">
         <Popover placement="center">
           <PopoverHandler>
-            <div className="mb-8  rounded">
+            <div className="mb-8">
               <img
                 src={image}
                 alt="project_image"
-                className="w-full max-h-[250px]"
+                className="w-full rounded-t-xl max-h-[250px]"
               />
             </div>
           </PopoverHandler>
@@ -27,8 +27,7 @@ const ProjectCard = ({ title, image }) => {
               <div
                 className="relative w-auto h-auto"
                 data-modal-target="default-modal"
-                data-modal-toggle="default-modal"
-              >
+                data-modal-toggle="default-modal">
                 <img
                   src={image}
                   alt="project_image"
@@ -61,7 +60,6 @@ function Notice() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-   
     axios
       .get(`https://api.populardiagnostic.com/api/news-and-notices`, {
         params: {
@@ -90,7 +88,7 @@ function Notice() {
     <div className="bg-[#ffffff]">
       <motion.div variants={textVariant()}>
         <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
-          <h2 className="text-gray-900/50 pb-10 text-center pl-2 text-[28px] font-bold font-ubuntu">
+          <h2 className="text-[#007a3d] pb-10 text-center pl-2 text-4xl font-bold font-ubuntu mb-4">
             KEEPING YOU INFORMED
           </h2>
         </div>

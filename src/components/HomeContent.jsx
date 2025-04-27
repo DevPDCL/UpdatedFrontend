@@ -2,13 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { logo } from "../assets";
 import { healthPakage } from "../constants";
-import { fadeIn } from "../utils/motion";
 import video from "../assets/contacts.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
 
-// Extracted Counter Component
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
   const countRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +41,6 @@ const Counter = ({ n, suffix = "", suffixExt = "" }) => {
   );
 };
 
-// Extracted StatCard Component
 const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
   return (
     <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
@@ -67,17 +64,13 @@ const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
   );
 };
 
-
 const ProjectCard = ({ name, description, video, source_code_link, link }) => {
   return (
     <div className="h-full flex">
       {" "}
-      {/* Remove fixed width here */}
       <div className="h-full flex flex-col bg-gradient-to-b from-[#F5FFFA]/0 to-[#f0fff0]/60 shadow-md rounded-xl overflow-hidden transition-transform duration-700 hover:-translate-y-3 w-full">
-        {/* Video Section */}
         <div className="relative w-full aspect-video">
           {" "}
-          {/* Use aspect ratio instead of fixed height */}
           <video
             src={video}
             alt="project_image"
@@ -99,10 +92,8 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="flex flex-col p-5 flex-grow">
           {" "}
-          {/* flex-grow for equal height */}
           <h3 className="text-gray-900 font-medium font-ubuntu text-[24px] mb-2">
             {name}
           </h3>
@@ -122,7 +113,6 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
   );
 };
 
-// Extracted EmergencyBanner Component
 const EmergencyBanner = () => {
   return (
     <div className="w-full h-[400px] mt-20 pt-20 relative">
@@ -176,7 +166,7 @@ const HomeContent = () => {
     },
     {
       icon: "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM164.1 325.5C182 346.2 212.6 368 256 368s74-21.8 91.9-42.5c5.8-6.7 15.9-7.4 22.6-1.6s7.4 15.9 1.6 22.6C349.8 372.1 311.1 400 256 400s-93.8-27.9-116.1-53.5c-5.8-6.7-5.1-16.8 1.6-22.6s16.8-5.1 22.6 1.6zm53.5-96.7l0 0 0 0-.2-.2c-.2-.2-.4-.5-.7-.9c-.6-.8-1.6-2-2.8-3.4c-2.5-2.8-6-6.6-10.2-10.3c-8.8-7.8-18.8-14-27.7-14s-18.9 6.2-27.7 14c-4.2 3.7-7.7 7.5-10.2 10.3c-1.2 1.4-2.2 2.6-2.8 3.4c-.3 .4-.6 .7-.7 .9l-.2 .2 0 0 0 0 0 0c-2.1 2.8-5.7 3.9-8.9 2.8s-5.5-4.1-5.5-7.6c0-17.9 6.7-35.6 16.6-48.8c9.8-13 23.9-23.2 39.4-23.2s29.6 10.2 39.4 23.2c9.9 13.2 16.6 30.9 16.6 48.8c0 3.4-2.2 6.5-5.5 7.6s-6.9 0-8.9-2.8l0 0 0 0zm160 0l0 0-.2-.2c-.2-.2-.4-.5-.7-.9c-.6-.8-1.6-2-2.8-3.4c-2.5-2.8-6-6.6-10.2-10.3c-8.8-7.8-18.8-14-27.7-14s-18.9 6.2-27.7 14c-4.2 3.7-7.7 7.5-10.2 10.3c-1.2 1.4-2.2 2.6-2.8 3.4c-.3 .4-.6 .7-.7 .9l-.2 .2 0 0 0 0 0 0c-2.1 2.8-5.7 3.9-8.9 2.8s-5.5-4.1-5.5-7.6c0-17.9 6.7-35.6 16.6-48.8c9.8-13 23.9-23.2 39.4-23.2s29.6 10.2 39.4 23.2c9.9 13.2 16.6 30.9 16.6 48.8c0 3.4-2.2 6.5-5.5 7.6s-6.9 0-8.9-2.8l0 0 0 0 0 0z",
-      value: 8,
+      value: 10,
       label: "HAPPY PATIENTS",
       suffix: "M+",
       suffixExt: "/YR",
@@ -191,7 +181,6 @@ const HomeContent = () => {
 
   return (
     <div className="relative pt-20 fontFamily-ubuntu">
-      {/* Stats Section */}
       <div className="overflow-hidden mt-[-140px] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap justify-center items-center py-5">
@@ -204,7 +193,6 @@ const HomeContent = () => {
         </div>
       </div>
 
-      {/* Services Section */}
       <div className="flex flex-col mx-auto max-w-7xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 -mt-20">
           {healthPakage.map((project) => (
@@ -213,7 +201,6 @@ const HomeContent = () => {
         </div>
       </div>
 
-      {/* Emergency Banner */}
       <EmergencyBanner />
     </div>
   );

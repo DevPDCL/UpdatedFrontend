@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { branch } from "../constants";
 
 const Hotlinecards = (props) => {
-
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(props.Hotline).then(
       () => {
@@ -49,20 +47,20 @@ const Hotlinecards = (props) => {
 };
 
 const Hotlines = () => {
-    const [dhakaBranches, setDhakaBranches] = useState([]);
-    const [otherBranches, setOtherBranches] = useState([]);
+  const [dhakaBranches, setDhakaBranches] = useState([]);
+  const [otherBranches, setOtherBranches] = useState([]);
 
-    useEffect(() => {
-      const dhaka = branch.filter(
-        (b) => b.branchPage?.braCity === "Dhaka" || b.braCity === "Dhaka"
-      );
-      const others = branch.filter(
-        (b) => b.branchPage?.braCity !== "Dhaka" && b.braCity !== "Dhaka"
-      );
+  useEffect(() => {
+    const dhaka = branch.filter(
+      (b) => b.branchPage?.braCity === "Dhaka" || b.braCity === "Dhaka"
+    );
+    const others = branch.filter(
+      (b) => b.branchPage?.braCity !== "Dhaka" && b.braCity !== "Dhaka"
+    );
 
-      setDhakaBranches(dhaka);
-      setOtherBranches(others);
-    }, []);
+    setDhakaBranches(dhaka);
+    setOtherBranches(others);
+  }, []);
   return (
     <div className="bg-gray-50">
       <div className="min-h-screen flex justify-center px-12 pb-10">
@@ -88,7 +86,7 @@ const Hotlines = () => {
               Outside Dhaka
             </h2>
             <div className="rounded-lg flex justify-center items-center flex-wrap">
-              {dhakaBranches.map((props) => (
+              {otherBranches.map((props) => (
                 <div className=" flex justify-center w-full lg:w-1/2 2xl:w-1/3 ">
                   <Hotlinecards key={props.branchID} {...props} />
                 </div>

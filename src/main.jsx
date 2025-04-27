@@ -124,7 +124,7 @@ const routes = [
       { path: "/shantinagar", element: <Shantinagar /> },
       { path: "/shyamoli", element: <Shyamoli /> },
       { path: "/mirpur", element: <Mirpur /> },
-      { path: "/uttarajasimuddin", element: <Uttara /> },
+      { path: "/uttarasector4", element: <Uttara /> },
       { path: "/bogura", element: <Bogura /> },
       { path: "/rangpur", element: <Rangpur /> },
       { path: "/badda", element: <Badda /> },
@@ -142,7 +142,7 @@ const routes = [
       { path: "/noakhali", element: <Noakhali /> },
       { path: "/rajshahi", element: <Rajshahi /> },
       { path: "/savar", element: <Savar /> },
-      { path: "/uttaragarib-e-newaz", element: <UttaraGaribENewaz /> },
+      { path: "/uttarasector13", element: <UttaraGaribENewaz /> },
       //end of branch pages
     ],
     errorElement: <Error />,
