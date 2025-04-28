@@ -30,32 +30,29 @@ const DoctorSearch = () => {
 
   const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 
-  // Fetch initial data
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
         toast.info("Loading doctors...", { autoClose: 2000 });
 
-        // Fetch branches
         const branchesRes = await axios.get(
           `https://api.populardiagnostic.com/api/branch-for-doctor?token=${API_TOKEN}`
         );
         setBranches(branchesRes.data.data.data);
 
-        // Fetch specializations
+ 
         const specializationsRes = await axios.get(
           `https://api.populardiagnostic.com/api/doctor-speciality?token=${API_TOKEN}`
         );
         setSpecializations(specializationsRes.data.data.data);
 
-        // Fetch days
+   
         const daysRes = await axios.get(
           `https://api.populardiagnostic.com/api/practice-days?token=${API_TOKEN}`
         );
         setDays(daysRes.data.data);
 
-        // Fetch initial doctors
         await fetchDoctors(true);
       } catch (error) {
         console.error("Error fetching initial data:", error);
@@ -68,7 +65,6 @@ const DoctorSearch = () => {
     fetchInitialData();
   }, []);
 
-  // Fetch doctors based on filters
   const fetchDoctors = async (reset = false) => {
     try {
       if (reset) {
@@ -84,25 +80,21 @@ const DoctorSearch = () => {
         page: currentPage,
       };
 
-      // Add search term with fast_search if search term exists
       if (searchTerm) {
         params.name = searchTerm;
         params.fast_search = "yes";
       }
 
-      // Add branches if selected
       if (selectedBranches.length > 0) {
         params.branches = selectedBranches.map((b) => b.value).join(",");
       }
 
-      // Add specializations if selected
       if (selectedSpecializations.length > 0) {
         params.specialities = selectedSpecializations
           .map((s) => s.value)
           .join(",");
       }
 
-      // Add days if selected
       if (selectedDays.length > 0) {
         params.days = selectedDays.map((d) => d.value).join(",");
       }
@@ -136,7 +128,6 @@ const DoctorSearch = () => {
     }
   };
 
-  // Handle filter changes with debounce
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchDoctors(true);
@@ -145,7 +136,6 @@ const DoctorSearch = () => {
     return () => clearTimeout(timer);
   }, [searchTerm, selectedBranches, selectedSpecializations, selectedDays]);
 
-  // Handle infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -171,7 +161,6 @@ const DoctorSearch = () => {
     }
   }, [page]);
 
-  // Prepare options for react-select
   const branchOptions = branches.map((branch) => ({
     value: branch.id,
     label: branch.name,
@@ -187,7 +176,6 @@ const DoctorSearch = () => {
     label: day,
   }));
 
-  // Custom styles for react-select
   const selectStyles = {
     control: (base) => ({
       ...base,
@@ -225,7 +213,6 @@ const DoctorSearch = () => {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
       <div className="container mx-auto px-4">
-        {/* Header Section */}
         <div className="pt-24 pb-8 text-center">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -244,14 +231,12 @@ const DoctorSearch = () => {
           </motion.p>
         </div>
 
-        {/* Filter Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
           className="sticky top-16 z-20 bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Search Input */}
             <div className="lg:col-span-2">
               <motion.div
                 whileHover={{ scale: 1.01 }}
@@ -266,7 +251,6 @@ const DoctorSearch = () => {
               </motion.div>
             </div>
 
-            {/* Branch Select */}
             <div>
               <Select
                 options={branchOptions}
@@ -279,7 +263,6 @@ const DoctorSearch = () => {
               />
             </div>
 
-            {/* Specialization Select */}
             <div>
               <Select
                 options={specializationOptions}
@@ -292,7 +275,6 @@ const DoctorSearch = () => {
               />
             </div>
 
-            {/* Day Select */}
             <div>
               <Select
                 options={dayOptions}
@@ -307,7 +289,6 @@ const DoctorSearch = () => {
           </div>
         </motion.div>
 
-        {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-20">
             <div className="flex flex-col items-center">
@@ -317,7 +298,6 @@ const DoctorSearch = () => {
           </div>
         )}
 
-        {/* Doctors Grid */}
         {!loading && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12">
@@ -332,14 +312,12 @@ const DoctorSearch = () => {
               ))}
             </div>
 
-            {/* Loading More Indicator */}
             {loadingMore && (
               <div className="flex justify-center pb-12">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-PDCL-green"></div>
               </div>
             )}
 
-            {/* No Results */}
             {!loading && displayedDoctors.length === 0 && (
               <div className="text-center py-20">
                 <div className="inline-block p-6 bg-gray-100 rounded-full mb-4">
@@ -373,8 +351,6 @@ const DoctorSearch = () => {
   );
 };
 
-
-
 const DoctorCard = ({ doctor }) => {
   const cardBackgroundColor =
     "bg-gradient-to-b from-transparent via-transparent to-[#f0fff0]/80";
@@ -382,45 +358,45 @@ const DoctorCard = ({ doctor }) => {
   const textColor = "text-[#00984a]";
   const secondaryTextColor = "text-gray-600";
 
-  // Get specialist names
   const specialistNames =
     doctor.specialists
       ?.map((spec) => spec.specialist?.name)
       ?.filter(Boolean)
       ?.join(", ") || "Not specified";
 
-  // Get branch name
   const branchName = doctor.branches?.[0]?.branch?.name || "Not specified";
 
-  // Get all branch IDs
   const branchIds =
     doctor.branches
       ?.map((b) => b.branch_id)
       .filter(Boolean)
       .join(",") || "";
 
-  // Get all specialist IDs
   const specialistIds =
     doctor.specialists
       ?.map((s) => s.specialist_id)
       .filter(Boolean)
       .join(",") || "";
 
-  // Check if doctor is currently absent
   const today = new Date();
+  today.setHours(0, 0, 0, 0); 
+
   const absentFrom = doctor.absent_from ? new Date(doctor.absent_from) : null;
   const absentTo = doctor.absent_to ? new Date(doctor.absent_to) : null;
-  const isAbsent =
-    absentFrom && absentTo && today >= absentFrom && today <= absentTo;
 
-  // Format date for display
+  if (absentFrom) absentFrom.setHours(0, 0, 0, 0);
+  if (absentTo) absentTo.setHours(0, 0, 0, 0);
+
+  const isAbsent = absentFrom && absentTo && today >= absentFrom && today <= absentTo;
+  const isFutureAbsent = absentFrom && absentTo && today < absentFrom;
+  const showAbsentPeriod = absentTo && absentTo >= today;
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const options = { day: "numeric", month: "short", year: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Handle image error
   const handleImageError = (e) => {
     e.target.style.display = "none";
     e.target.nextElementSibling.style.display = "flex";
@@ -430,25 +406,18 @@ const DoctorCard = ({ doctor }) => {
     <Link
       to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
       className="doctor-card-link group relative">
-      {isAbsent && (
-        <div className="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full z-10 bg-red-100 text-red-800">
-          <FaUserSlash className="text-red-500" />
-          <span>Absent</span>
-        </div>
-      )}
-
       <div
         className={`relative flex w-72 flex-col rounded-xl ${cardBackgroundColor} bg-clip-border text-gray-700 shadow-md h-full transition-transform duration-300 transform hover:-translate-y-2 hover:shadow-lg ${
-          isAbsent ? "opacity-80" : ""
+          isAbsent ? "border-2 border-red-200 shadow-lg shadow-red-200" : ""
         }`}>
         <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
-          {doctor.imag ? ( //to stop loading the images, made imag from image. which can be fixed just by adding e after the imag.
+          {doctor.imag ? (
             <>
               <img
                 src={doctor.image}
                 alt={`${doctor.name}'s picture`}
                 className={`w-full h-full object-cover object-top shadow-xl ${backgroundColor} rounded-xl transition-all duration-300 group-hover:scale-105 ${
-                  isAbsent ? "brightness-95" : ""
+                  isAbsent ? "opacity-75" : ""
                 }`}
                 onError={handleImageError}
               />
@@ -497,7 +466,19 @@ const DoctorCard = ({ doctor }) => {
               <p className="text-gray-500 mt-2">No Image Available</p>
             </div>
           )}
+
+          {isAbsent && (
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between pointer-events-none">
+              <div className="bg-red-500 text-white text-xs font-bold py-1 px-3 flex items-center justify-center transform -rotate-45 origin-left w-36 absolute -left-4 top-20 shadow-md">
+                <FaUserSlash className="mr-1" />
+                <span>ON LEAVE</span>
+              </div>
+
+              <div className="absolute inset-0 bg-red-100 bg-opacity-20"></div>
+            </div>
+          )}
         </div>
+
         <div className="p-6 text-center">
           <h4
             className={`mb-2 block font-sans ${textColor} text-xl font-semibold leading-snug tracking-normal antialiased`}>
@@ -518,20 +499,28 @@ const DoctorCard = ({ doctor }) => {
             <strong>Branch:</strong> {branchName}
           </p>
 
-          {doctor.absent_from &&
-            doctor.absent_to &&
-            new Date(doctor.absent_to) >= new Date() && (
-              <div className="mt-2 bg-yellow-50 text-yellow-800 text-xs font-medium px-2 py-1 rounded-md flex flex-col items-center justify-center gap-1 border border-yellow-200">
-                <div className="flex items-center gap-1">
-                  <FaCalendarAlt className="text-yellow-600" />
-                  <span className="font-semibold">On Leave:</span>
-                </div>
-                <div>
-                  {formatDate(doctor.absent_from)} -{" "}
-                  {formatDate(doctor.absent_to)}
-                </div>
+          {isAbsent && (
+            <div className="mt-3 bg-red-50 text-red-800 text-xs font-medium px-3 py-2 rounded-md flex items-center justify-center gap-2 border border-red-200">
+              <FaUserSlash size={14} className="text-red-600" />
+              <span className="font-bold">Currently On Leave</span>
+            </div>
+          )}
+
+          {showAbsentPeriod && (
+            <div className="mt-2 bg-yellow-50 text-yellow-800 text-xs font-medium px-2 py-1 rounded-md flex flex-col items-center justify-center gap-1 border border-yellow-200">
+              <div className="flex items-center gap-1">
+                <FaCalendarAlt className="text-yellow-600" />
+                <span className="font-semibold">
+                  {isAbsent ? "On Leave Until" : isFutureAbsent ? "Upcoming Leave" : "Leave Period"}
+                </span>
               </div>
-            )}
+              <div>
+                {isAbsent 
+                  ? `Until ${formatDate(doctor.absent_to)}`
+                  : `${formatDate(doctor.absent_from)} - ${formatDate(doctor.absent_to)}`}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Link>

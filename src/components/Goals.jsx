@@ -1,180 +1,379 @@
-import React from 'react'
+import React from "react";
 import "@fontsource/ubuntu";
 import { Dhanmondi, objective } from "../assets";
 import { Link } from "react-router-dom";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import goals1 from "../assets/goals1.jpg";
+import goals2 from "../assets/goals2.jpg";
+import goals3 from "../assets/goals3.jpg";
+import "react-vertical-timeline-component/style.min.css";
 
-import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
-import goals1 from "../assets/goals1.jpg"
-import goals2 from "../assets/goals2.jpg"
-import goals3 from "../assets/goals3.jpg"
-
-import 'react-vertical-timeline-component/style.min.css';
 const Goals = () => {
   return (
-    <div className="bg-[#F5FFFA]">
-      <div>
-        <div className="pt-[70px] sm:w-[80%] max-w-7xl mx-auto">
-          <div className="flex flex-col  max-w-7xl mx-auto">
-            <h1 className="text-[36px] p-5 text-gray-900">
-              The New Way to Diagnostic Treatment
-            </h1>
-          </div>
-          <div className="  flex-row max-w-7xl mx-auto">
-            <p className="text-[20px] p-5 me-auto text-gray-500">
-              Popular is committed to render the possible standard service to
-              the people of the country at an affordable cost. This will
-              definitely reduce the burden of the government and will make the
-              path of "Health for all".
-            </p>
-            <Link to="/about">
-              <button className="bg-[#f0f0f0] p-2 pl-5 pr-5 w-[200px]  rounded-xl ml-5 mx-auto">
-                SEE OUR TEAM
-              </button>
-            </Link>
-          </div>
+    <div className="bg-gradient-to-b from-[#F5FFFA] to-white">
+      <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            The New Way to{" "}
+            <span className="text-emerald-600">Diagnostic Treatment</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+            Popular is committed to render the possible standard service to the
+            people of the country at an affordable cost. This will definitely
+            reduce the burden of the government and will make the path of
+            "Health for all".
+          </p>
+          <Link to="/about" className="inline-block">
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-emerald-200">
+              Meet Our Team
+            </button>
+          </Link>
         </div>
-        <div className="overflow-hidden -mt-[50px]  py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-7xl grid-cols-1 shadow bg-white p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-              <div className="lg:pr-8 lg:pt-4">
-                <div className="lg:max-w-lg">
-                  <div className="me-auto h-auto w-auto">
-                    <img src={Dhanmondi} className="h-auto  p-5 w-auto" />
-                  </div>
-                </div>
-              </div>
-              <div className=" m-1 p-10   text-start">
-                <div className="flex flex-row  max-w-7xl   ">
-                  <div className="me-auto h-auto w-auto">
-                    <h1 className="font-bold text-gray-900 p-5">Who We Are</h1>
-                    <p className="text-gray-500 p-5">
-                      Popular Diagnostic Centre Ltd. is an advanced Centre for
-                      diagnostic and medical services. It is one of the
-                      prestigious diagnostic complexes of Bangladesh which
-                      started its activities in 1983. Popular Diagnostic Centre
-                      Ltd. is the largest diagnostic services provider
-                      organization in private sector of the country. It is been
-                      pioneer in introducing world latest medical equipments and
-                      advanced technology to provide round the clock medical
-                      investigations and consultancy services. LEGAL STATUS
-                      Popular Diagnostic Centre Ltd. is a private limited
-                      company registered with the Ministry of Health & Family
-                      Welfare, People’s Republic Govt. of Bangladesh having
-                      License No. 1275 &688 & Trade License Number
-                      TRAD/DSCC/211718/2019
-                    </p>
-                  </div>
-                </div>
+      </section>
+
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="p-6 sm:p-8 lg:p-10 flex items-center">
+              <img
+                src={Dhanmondi}
+                className="w-full h-auto rounded-xl shadow-md object-cover transition-transform duration-500 hover:scale-105"
+                alt="Dhanmondi Branch"
+              />
+            </div>
+            <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 relative before:absolute before:bottom-0 before:left-0 before:w-16 before:h-1 before:bg-emerald-500 before:rounded-full pb-2">
+                Who We Are
+              </h2>
+              <p className="text-gray-600 mb-4">
+                Popular Diagnostic Centre Ltd. is an advanced Centre for
+                diagnostic and medical services. It is one of the prestigious
+                diagnostic complexes of Bangladesh which started its activities
+                in 1983.
+              </p>
+              <p className="text-gray-600 mb-4">
+                Popular Diagnostic Centre Ltd. is the largest diagnostic
+                services provider organization in private sector of the country.
+                It has been pioneer in introducing world latest medical
+                equipments and advanced technology to provide round the clock
+                medical investigations and consultancy services.
+              </p>
+              <div className="mt-4 p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                <p className="text-gray-700 font-medium">
+                  <span className="font-bold text-emerald-600">
+                    Legal Status:
+                  </span>{" "}
+                  Registered with the Ministry of Health & Family Welfare,
+                  People's Republic Govt. of Bangladesh (License No. 1275 & 688)
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="overflow-hidden  -mt-[170px] py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-7xl grid-cols-1 shadow bg-white p-5 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-              <div className="lg:pr-8 lg:pt-4">
-                <div className="lg:max-w-lg">
-                  <div className="me-auto h-auto w-auto">
-                    <img src={objective} className="h-auto  p-5 w-auto" />
-                  </div>
-                </div>
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="p-6 sm:p-8 lg:p-10 flex items-center order-last lg:order-first">
+              <img
+                src={objective}
+                className="w-full h-auto rounded-xl shadow-md object-cover transition-transform duration-500 hover:scale-105"
+                alt="Our Objectives"
+              />
+            </div>
+            <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 relative before:absolute before:bottom-0 before:left-0 before:w-16 before:h-1 before:bg-emerald-500 before:rounded-full pb-2">
+                Our Vision
+              </h2>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-emerald-600 mb-3">
+                  Our Goal
+                </h3>
+                <p className="text-gray-600 pl-4 border-l-2 border-emerald-200">
+                  To establish a referral Diagnostic and Medical Services Centre
+                  that sets the benchmark for healthcare excellence.
+                </p>
               </div>
-              <div className=" m-1 p-10   text-start">
-                <div className="flex flex-row  max-w-7xl   ">
-                  <div className="me-auto  h-auto w-auto">
-                    <h1 className="text-gray-900 font-bold p-5">Our Goal</h1>
-                    <p className="text-gray-500 p-5">
-                      To establish a referral Diagnostic and Medical Services
-                      Centre.
-                    </p>
 
-                    <h1 className="text-gray-900 font-bold p-5">
-                      Our Objective
-                    </h1>
-
-                    <ul className="list-disc list-inside space-y-2 p-5 text-gray-500">
-                      <li>
-                        To render the world standard diagnostic service to the
-                        people of the country at an affordable cost and in turn
-                        to limit the outflow of the patient abroad at the
-                        expense of heard earn foreign currency by providing
-                        quality diagnostic services.
-                      </li>
-                      <li>
-                        Out door basis treatment by renowned General
-                        Practitioners, Consultants and Professors in different
-                        medical fields.
-                      </li>
-                      <li>To promote Health Education & Medical Services.</li>
-                      <li>
-                        Day care Centre for follow-up cardiac renal and oncology
-                        patients.
-                      </li>
-                      <li>
-                        To build a full fledged specialized (Tertiary) Hospital.{" "}
-                      </li>
-                      <li>Set up Satellite collection Centre.</li>
-                    </ul>
-                  </div>
-                </div>
+              <div>
+                <h3 className="text-xl font-semibold text-emerald-600 mb-3">
+                  Our Objectives
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      To render world standard diagnostic service at an
+                      affordable cost and limit patient outflow abroad.
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      Out door basis treatment by renowned General
+                      Practitioners, Consultants and Professors.
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      To promote Health Education & Medical Services through
+                      community engagement.
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      Day care Centre for follow-up cardiac, renal and oncology
+                      patients.
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      To build a full fledged specialized (Tertiary) Hospital
+                      with cutting-edge facilities.
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 mr-3 mt-1">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </span>
+                    <span className="text-gray-600">
+                      Expand network with Satellite collection Centres
+                      nationwide.
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-        <h1 className="text-center text-[28px]">Our History</h1>
-        <p className="text-center text-[16px]">
-          How we started, to serve the nation.
-        </p>
-        <div className=" max-w-7xl mx-auto items-center relative justify-center">
-          <VerticalTimeline>
+      </section>
+
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Our <span className="text-emerald-600">Journey</span>
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            How we started and grew to serve the nation with excellence in
+            healthcare.
+          </p>
+        </div>
+
+        <div className="relative">
+          <VerticalTimeline lineColor="#e5e7eb">
             <VerticalTimelineElement
-              className="vertical-timeline-element "
-              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
-              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
-              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
-              icon={
-                <p className="flex  justify-center text-black font-extrabold text-center">
-                  1983
-                </p>
-              }
-            >
-              <img src={goals1} className="object-cover w-full mx-auto" />
-              <p>Started our activities</p>
+              className="vertical-timeline-element--work"
+              contentStyle={{
+                background: "white",
+                boxShadow:
+                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                border: "1px solid #e5e7eb",
+                borderRadius: "0.75rem",
+              }}
+              contentArrowStyle={{ borderRight: "12px solid white" }}
+              date="1983"
+              dateClassName="text-emerald-600 font-bold"
+              iconStyle={{
+                background: "white",
+                boxShadow:
+                  "0 0 0 4px #10b981, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05)",
+                color: "#10b981",
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+              }}>
+              <div className="overflow-hidden rounded-lg mb-4">
+                <img
+                  src={goals1}
+                  className="w-full h-48 sm:h-64 object-cover transition-transform duration-500 hover:scale-105"
+                  alt="1983 Milestone"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Our Humble Beginnings
+              </h3>
+              <p className="text-gray-600">
+                Started our activities with a vision to revolutionize diagnostic
+                services in Bangladesh.
+              </p>
             </VerticalTimelineElement>
+
             <VerticalTimelineElement
-              className="vertical-timeline-element"
-              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
-              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
-              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
-              icon={
-                <p className="flex  justify-center text-black font-extrabold text-center">
-                  2016
-                </p>
-              }
-            >
-              <img src={goals2} className="object-cover w-full mx-auto" />
-              <p>New branches opened at Badda, Dinajpur and Mirpur.</p>
+              className="vertical-timeline-element--work"
+              contentStyle={{
+                background: "white",
+                boxShadow:
+                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                border: "1px solid #e5e7eb",
+                borderRadius: "0.75rem",
+              }}
+              contentArrowStyle={{ borderRight: "12px solid white" }}
+              date="2016"
+              dateClassName="text-emerald-600 font-bold"
+              iconStyle={{
+                background: "white",
+                boxShadow:
+                  "0 0 0 4px #10b981, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05)",
+                color: "#10b981",
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+              }}>
+              <div className="overflow-hidden rounded-lg mb-4">
+                <img
+                  src={goals2}
+                  className="w-full h-48 sm:h-64 object-cover transition-transform duration-500 hover:scale-105"
+                  alt="2016 Milestone"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Expanding Our Reach
+              </h3>
+              <p className="text-gray-600">
+                New branches opened at Badda, Dinajpur and Mirpur to serve more
+                communities across the country.
+              </p>
             </VerticalTimelineElement>
+
             <VerticalTimelineElement
-              className="vertical-timeline-element"
-              contentStyle={{ background: "#f0f0f0", color: "#000000" }}
-              contentArrowStyle={{ borderRight: "10px solid  #f0f0f0" }}
-              iconStyle={{ background: "#f0f0f0", color: "#000000" }}
-              icon={
-                <p className="flex  justify-center text-black font-extrabold text-center">
-                  2017
-                </p>
-              }
-            >
-              <img src={goals3} className=" object-cover w-full mx-auto" />
-              <p>Started six new 'Model Pharmacies' all over Bangladesh</p>
+              className="vertical-timeline-element--work"
+              contentStyle={{
+                background: "white",
+                boxShadow:
+                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                border: "1px solid #e5e7eb",
+                borderRadius: "0.75rem",
+              }}
+              contentArrowStyle={{ borderRight: "12px solid white" }}
+              date="2017"
+              dateClassName="text-emerald-600 font-bold"
+              iconStyle={{
+                background: "white",
+                boxShadow:
+                  "0 0 0 4px #10b981, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05)",
+                color: "#10b981",
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+              }}>
+              <div className="overflow-hidden rounded-lg mb-4">
+                <img
+                  src={goals3}
+                  className="w-full h-48 sm:h-64 object-cover transition-transform duration-500 hover:scale-105"
+                  alt="2017 Milestone"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Comprehensive Healthcare
+              </h3>
+              <p className="text-gray-600">
+                Started six new 'Model Pharmacies' all over Bangladesh to
+                provide complete healthcare solutions.
+              </p>
             </VerticalTimelineElement>
           </VerticalTimeline>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-500 rounded-2xl p-8 sm:p-12 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+            Ready to Experience World-Class Diagnostic Services?
+          </h2>
+          <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of satisfied patients who trust us for accurate
+            diagnostics and compassionate care.
+          </p>
+          <Link to="/contact" className="inline-block">
+            <button className="bg-white hover:bg-gray-100 text-emerald-600 font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+              Contact Us Today
+            </button>
+          </Link>
+        </div>
+      </section>
     </div>
   );
-}
+};
 
-export default Goals
+export default Goals;

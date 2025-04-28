@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
 
-// Constants
+
 const API_URL =
   "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 const ANIMATION_SPRING = { type: "spring", stiffness: 700, damping: 30 };
 
-// Animation Variants
 const buttonVariants = {
   initial: { opacity: 1, scale: 1 },
   animate: { opacity: 1, scale: 1.1 },
@@ -22,7 +21,6 @@ const searchBoxVariants = {
   hover: { scale: 1.03 },
 };
 
-// Sub-components
 const BranchContact = ({ address, Hotline, Email }) => (
   <div className="h-[180px] flex flex-col justify-between text-gray-500 p-2 font-ubuntu text-[16px]">
     <p>
@@ -123,7 +121,6 @@ ProjectCard.propTypes = {
   heading: PropTypes.string.isRequired,
 };
 
-// Filter Controls Component
 const FilterControls = React.memo(
   ({
     filterInsideDhaka,
@@ -192,7 +189,6 @@ FilterControls.propTypes = {
   onSearchChange: PropTypes.func.isRequired,
 };
 
-// Main Component
 const Branch = () => {
   const [filterState, setFilterState] = useState({
     insideDhaka: false,
@@ -203,7 +199,6 @@ const Branch = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch branches data
   useEffect(() => {
     const fetchBranches = async () => {
       try {
@@ -230,7 +225,6 @@ const Branch = () => {
     fetchBranches();
   }, []);
 
-  // Filter handlers
   const handleInsideDhakaToggle = useCallback(() => {
     setFilterState((prev) => ({ ...prev, insideDhaka: !prev.insideDhaka }));
   }, []);
@@ -243,20 +237,17 @@ const Branch = () => {
     setFilterState((prev) => ({ ...prev, searchTerm: e.target.value }));
   }, []);
 
-  // Filtered branches
   const filteredBranches = useMemo(() => {
     const { insideDhaka, outsideDhaka, searchTerm } = filterState;
 
     let result = branches;
 
-    // Location filter
     if (insideDhaka && !outsideDhaka) {
       result = result.filter((branch) => branch.city.toLowerCase() === "dhaka");
     } else if (!insideDhaka && outsideDhaka) {
       result = result.filter((branch) => branch.city.toLowerCase() !== "dhaka");
     }
 
-    // Search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter((branch) =>

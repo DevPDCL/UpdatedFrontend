@@ -1,4 +1,3 @@
-// DoctorDetail.js
 import Marquee from "react-fast-marquee";
 import "@fontsource/ubuntu";
 import React, { useState, useEffect } from "react";
@@ -34,7 +33,6 @@ const DoctorDetail = () => {
   const [loadingSimilar, setLoadingSimilar] = useState(true);
   const [error, setError] = useState(null);
 
-  // Get branch and specialist IDs from URL params
   const branchIds = queryParams.get("branches") || "";
   const specialistIds = queryParams.get("specialists") || "";
 
@@ -59,13 +57,11 @@ const DoctorDetail = () => {
 
     const fetchSimilarDoctors = async () => {
       try {
-        // Only fetch similar doctors if we have branch and specialist IDs
         if (branchIds && specialistIds) {
           const response = await axios.get(
             `https://api.populardiagnostic.com/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
           );
           if (response.data.success) {
-            // Filter out the current doctor from similar doctors
             const filteredDoctors = response.data.data.data.filter(
               (doc) => doc.id.toString() !== doctorId
             );
@@ -86,7 +82,6 @@ const DoctorDetail = () => {
   const isDoctorOnLeave = () => {
     if (!doctor?.absent_message) return false;
 
-    // Extract dates from absent message (assuming format: "In Leave from <b>Sun, 20th Apr 2025</b> to <b>Mon, 28th Apr 2025</b>")
     const dateRegex = /<b>.*?(\d{1,2})(?:st|nd|rd|th)? (\w{3}) (\d{4})<\/b>/g;
     const dates = [];
     let match;
@@ -126,7 +121,6 @@ const DoctorDetail = () => {
     );
   };
 
-  // Format schedule data to match the component's expected structure
   const formattedChamber = {
     branch: doctor.practicing_branches,
     building: doctor.branches[0]?.map || "Not specified",
@@ -145,9 +139,7 @@ const DoctorDetail = () => {
     <div className="doctor-detail bg-gray-100">
       <div className="sm:container mx-auto py-10 px-5">
         <div className="flex flex-wrap -mx-2">
-          {/* Left Side */}
           <div className="w-full md:w-3/12 px-2 mb-4">
-            {/* Profile Card */}
             <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
               <div className="image overflow-hidden rounded-xl shadow-xl">
                 {doctor.image ? (
@@ -181,7 +173,7 @@ const DoctorDetail = () => {
                   <span className="ml-auto">
                     <span
                       className={`py-1 px-2 rounded text-white text-sm ${
-                        isDoctorOnLeave() ? "bg-yellow-500" : "bg-[#00984a]"
+                        isDoctorOnLeave() ? "bg-red-500" : "bg-[#00984a]"
                       }`}>
                       {isDoctorOnLeave() ? "On Leave" : "Active"}
                     </span>
@@ -189,9 +181,7 @@ const DoctorDetail = () => {
                 </li>
               </ul>
             </div>
-            {/* End of profile card  */}
             <div className="my-4"></div>
-            {/* Similar Doctor card  */}
             <div className="bg-white rounded-xl shadow-lg p-3 hover:shadow-xl">
               <div className="flex items-center justify-center space-x-3 font-semibold text-gray-900 text-xl leading-8 font-ubuntu">
                 <span className="text-[#00984a]">
@@ -200,7 +190,7 @@ const DoctorDetail = () => {
                 <span className="tracking-wide">Similar Doctors</span>
               </div>
               <h2 className="text-gray-500 text-center pb-2">
-                You may also consider
+                For different schedules
               </h2>
               <hr className="p-2"></hr>
               {loadingSimilar ? (
@@ -238,12 +228,8 @@ const DoctorDetail = () => {
                 </div>
               )}
             </div>
-            {/* End of Similar Doctor card  */}
           </div>
-          {/* Right Side */}
           <div className="w-full md:w-8/12 px-2">
-            {/* Profile tab  */}
-            {/* About Section  */}
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
                 <h1 className="text-[#00984a] p-5 text-center font-ubuntu font-bold text-[26px]">
@@ -296,9 +282,7 @@ const DoctorDetail = () => {
                 </button>
               </Link>
             </div>
-            {/* End of about section */}
             <div className="my-4"></div>
-            {/* Chamber  */}
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
                 <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
@@ -393,13 +377,10 @@ const DoctorDetail = () => {
                   </div>
                 </div>
               </div>
-              {/* End of Chamber grid */}
             </div>
-            {/* End of profile tab */}
           </div>
 
           <div className="md:w-1/12 h-screen hidden sm:block">
-            {/* Advertise grid */}
             <div className="flex flex-col items-center overflow-x-hidden font-bold h-full">
               <Marquee direction="up" className="h-full">
                 <a
@@ -470,7 +451,6 @@ const DoctorDetail = () => {
                 </a>
               </Marquee>
             </div>
-            {/* End of Advertise grid */}
           </div>
         </div>
       </div>
