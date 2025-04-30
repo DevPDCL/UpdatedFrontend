@@ -73,13 +73,16 @@ const Kushtia = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                বাংলাদেশের চিকিৎসা সেবায় পপুলার ডায়াগনস্টিক সেন্টার লিঃ এক
+                নতুন দিগন্তের উন্মোচন করেছে। উন্নত বিশ্বের অত্যাধুনিক মেশিনারিজ,
+                দক্ষ টেকনিশিয়ান, দেশ সেরা রিপোর্টিং কনসালটেন্টগণের রিপোর্টিং
+                এবং স্বনামধন্য বিশেষজ্ঞ চিকিৎসকগণের নিয়মিত চিকিৎসা সেবা প্রদান
+                আমাদের প্রিয় প্রতিষ্ঠানটিকে করেছে স্বাস্থ্য সেবায় অনন্য।
+                পপুলার গ্রুপের অন্যতম প্রধান সহযোগী প্রতিষ্ঠান পপুলার
+                ডায়াগনস্টিক সেন্টার লিঃ কুষ্টিয়া শাখা তারই ধারাবাহিকতায় অত্র
+                অঞ্চলের রোগীদের রোগ নির্ণয় এবং ডায়াগনস্টিক সেবা প্রদান করে
+                চলেছে নিরলসভাবে। আমরা মানসম্মত এবং বিশ্বমানের চিকিৎসা প্রদানে
+                বদ্ধপরিকর!
               </p>
             </div>
           </div>

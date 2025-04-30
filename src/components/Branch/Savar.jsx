@@ -73,13 +73,14 @@ const Savar = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ, সাভার— বিশ্বমানের সেবায়
+                অঙ্গীকারবদ্ধ উন্নত প্রযুক্তি, দক্ষ টিম এবং দেশসেরা চিকিৎসকদের
+                সমন্বয়ে পপুলার ডায়াগনস্টিক সেন্টার লিঃ স্বাস্থ্যসেবায় নতুন এক
+                দিগন্ত উন্মোচন করেছে। সাভার শাখাও সেই ধারাবাহিকতায় অত্র অঞ্চলের
+                মানুষের নির্ভরতার প্রতীক হয়ে নিরলস সেবা প্রদান করে চলেছে। আমরা
+                মানসম্মত ও বিশ্বমানের চিকিৎসা সেবা দিতে প্রতিশ্রুতিবদ্ধ!
+                **ধন্যবাদান্তে,** 
+                **পপুলার ডায়াগনস্টিক সেন্টার লিঃ, সাভার**
               </p>
             </div>
           </div>

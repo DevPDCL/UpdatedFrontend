@@ -29,8 +29,6 @@ const NavLink = ({ to, children, onClick }) => {
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
-
   return (
     <>
       {/* Top Navbar */}
@@ -305,6 +303,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/goals"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -323,6 +322,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/chairman"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -342,6 +342,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/director"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -360,6 +361,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/dmd"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -378,6 +380,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/about"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -397,6 +400,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/notice"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -413,6 +417,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/tech"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -431,6 +436,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/gallery"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -447,6 +453,7 @@ const Navbar = () => {
                             {({ active }) => (
                               <Link
                                 to="/video"
+                                onClick={() => setMobileOpen(false)}
                                 className={`block px-4 py-2 text-sm ${
                                   active
                                     ? "bg-gray-100 text-[#00984a]"
@@ -495,7 +502,6 @@ const Navbar = () => {
                     >
                       Complain and Advise
                     </NavLink>
-                    
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -508,4 +514,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

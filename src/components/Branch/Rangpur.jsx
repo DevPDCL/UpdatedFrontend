@@ -106,13 +106,13 @@ const Rangpur = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ, রংপুর শাখা, পপুলার গ্রুপ এর
+                একটি অন্যতম সহযোগী এবং স্বনামধন্য প্রতিষ্ঠান। যে প্রতিষ্ঠানে
+                বিশ্বের লিডিং কোম্পানির বিশ্বসেরা মেশিনারিজ ব্যবহার করে, রোগ
+                নির্ণয় করা হয়। এখানে রংপুরের স্বনামধন্য বিশেষজ্ঞ চিকিৎসকরা
+                রিপোর্টারের দায়িত্ব পালন করে থাকেন। এছাড়া, অত্র এলাকার সকল
+                বিষয়ের বিশেষজ্ঞ চিকিৎসকরা নিয়মিত চেম্বার করার মাধ্যমে, পুরো
+                উত্তরাঞ্চলের মানুষের চিকিৎসা সেবা দিয়ে থাকেন।
               </p>
             </div>
           </div>

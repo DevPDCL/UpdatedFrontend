@@ -73,13 +73,17 @@ const Gazipur = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                Popular Diagnostic Center Limited, Gazipur Branch "started its
+                established on April 1, 2019 with the aim of providing better
+                health services to the people of Gazipur. Gazipur district
+                consists of industrial and densely populated areas. This
+                district did not have any developed health service institutions.
+                In our institution, experienced doctors are providing good
+                treatment and consultation to the patients and are providing
+                services by diagnosing diseases using the world's advanced and
+                modern machinery in a comfortable and beautiful environment.
+                Which day by day, Popular Diagnostic Center Ltd. is considered a
+                place of trust for the people of Gazipur district.
               </p>
             </div>
           </div>

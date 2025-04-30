@@ -106,13 +106,11 @@ const Uttara = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ, উওরা জসীমউদ্দীন শাখা (সেক্টর
+                -৪) এখন আরো উন্নত যাহা Ultraviolet Ray Protective Glass সম্বলিত
+                নিজস্ব বিল্ডিং এবং সকল নতুন মেশিন ও ঢাকার বিভিন্ন বিখ্যাত
+                হাসপাতালের ( ঢাকা মেডিকেল ও পিজি হাসপাতাল ও অন্যান্য) প্রখ্যাত
+                সকল প্রফেসর চেম্বার করেন ।
               </p>
             </div>
           </div>

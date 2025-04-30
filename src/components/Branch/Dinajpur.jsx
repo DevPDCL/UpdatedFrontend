@@ -73,13 +73,18 @@ const Dinajpur = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়যগনস্টিক সেন্টার লিঃ, গ্রুপ এর একটি অন্যতম সহযোগী
+                প্রতিষ্ঠান, দিনাজপুররে একটি স্বনামধন্য ব্রাঞ্চ।এখানে বিশ্বের
+                সর্বাধনিক প্রযুক্তির মেশিনের সাহায্যে সকল প্রকার রোগ নির্ণয় করা
+                হয়। আমাদের এখানে অনেক স্বনামধন্য বিশেষজ্ঞ ডাক্তাররা বসেন ।
+                আধুনিক স্বাস্থ্য সেবাএবং সঠিক রোগ নির্ণয়ে পপুলারের বিকল্প হতে
+                পারে না। আমি কৃতজ্ঞ ও ধন্য সমস্ত প্রান প্রিয় সকল সহকর্মীদের
+                প্রতি যারা নিরলস ভাবে রোগীদের সঠিক স্বাস্থ্য সেবা নিশ্চিত করতে
+                বন্ধ পরিকর । আমরা আপনাদের সেবায় সর্বত্র নিয়োজিত আছি। পরিশেষে
+                সকলের সুস্বাস্থ্য ও দীর্ঘায়ু কামনা করছি। 
+                **ধন্যবাদান্তে,**
+                **পপুলার ডায়াগনস্টিক সেন্টার লিঃ,**
+                **দিনাজপুর ব্রাঞ্চ**
               </p>
             </div>
           </div>

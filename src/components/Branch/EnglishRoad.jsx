@@ -73,13 +73,16 @@ const EnglishRoad = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়াগনস্টিক সেন্টার লিমিটেড – ইংলিশ রোড শাখায় আপনাকে
+                স্বাগতম! বাংলাদেশে স্বাস্থ্যসেবার অগ্রগামী প্রতিষ্ঠান হিসেবে
+                আমরা আধুনিক প্রযুক্তি এবং অভিজ্ঞ বিশেষজ্ঞ চিকিৎসকদের মাধ্যমে
+                নির্ভুল ও আন্তর্জাতিক মানসম্মত সেবা নিশ্চিত করি। ইংলিশ রোড শাখায়
+                আমরা আপনাকে আন্তরিকতা, যত্ন এবং বিশ্বমানের সেবা প্রদান করার জন্য
+                প্রতিশ্রুতিবদ্ধ। আমাদের লক্ষ্য হচ্ছে সঠিক রোগ নির্ণয় ও চিকিৎসার
+                মাধ্যমে আপনার স্বাস্থ্য সুরক্ষায় গুরুত্বপূর্ণ ভূমিকা রাখা।
+                পপুলার ডায়াগনস্টিক সেন্টার লিমিটেড – ইংলিশ রোড শাখা বেছে
+                নেওয়ার জন্য ধন্যবাদ। আমরা আপনাকে আন্তরিক সেবা প্রদানে সর্বদা
+                প্রস্তুত। আপনার সুস্বাস্থ্য, আমাদের অগ্রাধিকার।
               </p>
             </div>
           </div>

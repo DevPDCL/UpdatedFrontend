@@ -73,13 +73,13 @@ const Mymensingh = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                স্বাস্থ্য সেবায় পপুলার রোগ নির্ণয়ের হাতিয়ার। বাঁচতে হলে চল সবাই
+                পপুলার এ যাই। পপুলার ময়মনসিংহ শাখা একটি স্বনামধন্য শাখা। এখানে
+                অত্যাধুনিক মেশিনের সাহায্যে সকল প্রকার রোগ নির্ণয় করা হয়
+                ।এখানে অনেক স্বনামধন্য বিশেষজ্ঞ ডাক্তাররা বসেন। আমরা আপনাদের
+                সেবায় সর্বত্র নিয়োজিত আছি। আমাদের ব্রাঞ্চ এ ২৪ ঘণ্টা সিটি
+                স্ক্যান ও এম আর আই পরীক্ষা করা হয়। বাহিরের দালাল চক্র দ্বারা
+                প্রতারিত না হয়ে সরাসরি চলে আসুন আমাদের পপুলার ময়মনসিংহ শাখায়।
               </p>
             </div>
           </div>
