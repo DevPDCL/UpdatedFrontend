@@ -85,7 +85,7 @@ const routes = [
       {
         path: "/doctordetail/:doctorId",
         element: (
-          <Suspense fallback={<h1 className="text-black"> Loading.....</h1>}>
+          <Suspense fallback={null}>
             {" "}
             <DoctorDetail />{" "}
           </Suspense>
@@ -94,7 +94,7 @@ const routes = [
       {
         path: "/DoctorSearch",
         element: (
-          <Suspense fallback={<h1 className="text-black"> Loading.....</h1>}>
+          <Suspense fallback={null}>
             {" "}
             <DoctorSearch />{" "}
           </Suspense>

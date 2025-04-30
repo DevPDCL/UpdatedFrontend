@@ -411,7 +411,7 @@ const DoctorCard = ({ doctor }) => {
           isAbsent ? "border-2 border-red-200 shadow-lg shadow-red-200" : ""
         }`}>
         <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
-          {doctor.image ? (
+          {doctor.imag ? (
             <>
               <img
                 src={doctor.image}
