@@ -4,70 +4,130 @@ import { SardinRahman } from "../assets";
 
 const Dmd = () => {
   return (
-    <div className="bg-[#F5FFFA]">
-      <div className="overflow-hidden bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 shadow-2xl bg-gray-100/5 p-5 rounded gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-            <div className="relative lg:pr-8 lg:pt-4">
-              <div className="lg:max-w-lg">
-                <div className="me-auto h-auto w-auto">
-                  <div className="relative">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 288 288"
-                      className="absolute bottom-5 sm:ml-16 h-full w-auto opacity-50"
-                      style={{ transform: "scale(1.5)" }}>
-                      <linearGradient
-                        id="PSgrad_0"
-                        x1="70.711%"
-                        x2="0%"
-                        y1="70.711%"
-                        y2="0%">
-                        <stop offset="0%" stopColor="#52CC99" stopOpacity="1" />
-                        <stop
-                          offset="100%"
-                          stopColor="#00984a"
-                          stopOpacity="1"
-                        />
-                      </linearGradient>
-                      <path fill="url(#PSgrad_0)">
-                        <animate
-                          repeatCount="indefinite"
-                          attributeName="d"
-                          dur="5s"
-                          values="M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z; M51,171.3c-6.1-17.7-15.3-17.2-20.7-32c-8-21.9,0.7-54.6,20.7-67.1c19.5-12.3,32.8,5.5,67.7-3.4C145.2,62,145,49.9,173,43.4 c12-2.8,41.4-9.6,60.2,6.6c19,16.4,16.7,47.5,16,57.7c-1.7,22.8-10.3,25.5-9.4,46.4c1,22.5,11.2,25.8,9.1,42.6 c-2.2,17.6-16.3,37.5-33.5,40.8c-22,4.1-29.4-22.4-54.9-22.6c-31-0.2-40.8,39-68.3,35.7c-17.3-2-32.2-19.8-37.3-34.8 C48.9,198.6,57.8,191,51,171.3z; M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z"
-                        />
-                      </path>
-                    </svg>
-                    <img
-                      src={SardinRahman}
-                      alt="Sardin Rahman"
-                      className="relative z-10 h-[400px] mx-auto w-auto rounded-3xl "
-                    />
-                  </div>
-                  <h1 className="text-gray-900 text-center text-[36px] font-bold">
+    <div className="bg-gradient-to-b from-[#F5FFFA] to-white min-h-screen">
+      <section className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Executive <span className="text-[#00984a]">Leadership</span>
+          </h1>
+          <p className="text-lg text-gray-600">
+            Driving technological excellence in healthcare services
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="relative p-8 lg:p-10 flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50">
+              <div className="relative w-full max-w-md">
+                <div className="absolute -inset-8 sm:-inset-12 blur-2xl opacity-30">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-600 rounded-full animate-pulse duration-7000"></div>
+                </div>
+
+                <div className="relative z-10 mx-auto w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                  <img
+                    src={SardinRahman}
+                    alt="Sardin Rahman"
+                    className="w-full h-full object-cover"
+                    style={{
+                      imageRendering: "optimizeQuality",
+                      transform: "scale(1.0)",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                    }}
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="text-center mt-8">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                     Sardin Rahman
-                  </h1>
-                  <p className="text-[#00984a] text-center text-[20px] font-medium">
+                  </h2>
+                  <p className="text-[#00984a] text-xl font-medium mt-2">
                     Deputy Managing Director
                   </p>
                 </div>
               </div>
             </div>
-            <div className="m-1 p-10 text-start">
-              <div className="flex flex-row max-w-7xl">
-                <div className="me-auto h-auto w-auto">
-                  <p className="text-gray-500 p-5 h-auto text-justify">
-                    **Message will be updated soon**
+
+            <div className="p-8 lg:p-10 flex flex-col justify-center">
+              <div className="prose prose-lg text-gray-600 max-w-none">
+                <div className="bg-[#00984a]/10 border-l-4 border-[#00984a] p-6 rounded-lg text-center">
+                  <p className="text-[#00984a] font-medium italic">
+                    "Message will be updated soon"
                   </p>
+                </div>
+
+                <div className="mt-8 space-y-4 opacity-75">
+                  <div className="h-4 bg-gray-200 rounded w-full"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6 mt-6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-4/6 mt-6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="mt-16 bg-gradient-to-r from-[#00984a] to-[#007a3d] rounded-2xl p-8 sm:p-12 text-center text-white">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4">
+            Tech-Driven Values
+          </h3>
+          <p className="text-white/90 mb-6 max-w-2xl mx-auto">
+            Principles powering our digital transformation in healthcare
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all hover:scale-105 hover:bg-white/15">
+              <div className="text-3xl font-bold mb-2">🚀 Innovation</div>
+              <div className="text-sm">Pioneering healthcare technology</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all hover:scale-105 hover:bg-white/15">
+              <div className="text-3xl font-bold mb-2">💡 Digital</div>
+              <div className="text-sm">Smart solutions for better care</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all hover:scale-105 hover:bg-white/15">
+              <div className="text-3xl font-bold mb-2">⚡ Energy</div>
+              <div className="text-sm">Dynamic, fast-paced execution</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 transition-all hover:scale-105 hover:bg-white/15">
+              <div className="text-3xl font-bold mb-2">🤝 Collaboration</div>
+              <div className="text-sm">Building tech partnerships</div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-center items-center space-x-4 opacity-90">
+            <div className="animate-bounce" style={{ animationDelay: "0.1s" }}>
+              <svg
+                className="w-8 h-8 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z" />
+              </svg>
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: "0.3s" }}>
+              <svg
+                className="w-8 h-8 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z" />
+              </svg>
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: "0.5s" }}>
+              <svg
+                className="w-8 h-8 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium">
+              Modernizing healthcare through technology...
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
