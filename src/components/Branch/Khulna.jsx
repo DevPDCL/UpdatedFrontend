@@ -27,7 +27,7 @@ const branchInfo = branch.find((b) => b.heading === "Khulna");
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -73,13 +73,14 @@ const branchInfo = branch.find((b) => b.heading === "Khulna");
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ খুলনা শাখায় আপনাকে
+                স্বাগতম,অত্যাধুনিক প্রযুক্তি ও বিশ্বমানের চিকিৎসা সেবা নিয়ে
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ এখন খুলনায়। এখানে বিশেষজ্ঞ
+                চিকিৎসকগণ নিয়মিত চিকিৎসা সেবা ও পরামর্শ সেবা প্রদান করছেন। এছাড়া
+                রয়েছে স্বল্প খরচে সকল রোগের পরিক্ষা নিরীক্ষার সুব্যবস্থা ও
+                নির্ভুল রিপোর্ট প্রদানের নিশ্চয়তা। স্বাস্থ্য সেবাই এক ধাপ এগিয়ে
+                পপুলার ডায়াগনস্টিক সেন্টার লিঃ খুলনা শাখা,‘‘সেবা নিন সুস্থ থাকুন
+                ধন্যবাদ’’
               </p>
             </div>
           </div>

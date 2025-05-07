@@ -27,7 +27,7 @@ const Jatrabari = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -73,13 +73,13 @@ const Jatrabari = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                ”আর নয় বিদেশ এখন সকল ধরনের চিকিৎসা সেবা হবে পপুলার ডায়াগনস্টিক
+                সেন্টার লিঃ যাত্রাবাড়ীতে” উন্নত প্রযুক্তি, বিশ্বসেরা অত্যাধুনিক
+                মেশিন, সুদক্ষ টিম ও দেশবরেন্য সকল বিষয়ের শতাধিক বিশেষজ্ঞ
+                চিকিৎসকদের সমন্বয়ে যাত্রাবাড়ীতে “পপুলার ডায়াগনস্টিক সেন্টার লিঃ’
+                স্বাস্থ্য সেবায় এক নতুন দিগন্ত উন্মেচন করেছে এবং অত্র অঞ্চলের
+                মানুষের বিশ্বস্ত ও নির্ভরতার প্রতীক। আমরা আন্তরিকতার সাথে স্বল্প
+                খরচে বিশ্বমানের অত্যাধুনিক চিকিৎসা সেবা দিতে অঙ্গীকারাবদ্ধ ।
               </p>
             </div>
           </div>

@@ -27,7 +27,7 @@ const Savar = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -79,8 +79,7 @@ const Savar = () => {
                 দিগন্ত উন্মোচন করেছে। সাভার শাখাও সেই ধারাবাহিকতায় অত্র অঞ্চলের
                 মানুষের নির্ভরতার প্রতীক হয়ে নিরলস সেবা প্রদান করে চলেছে। আমরা
                 মানসম্মত ও বিশ্বমানের চিকিৎসা সেবা দিতে প্রতিশ্রুতিবদ্ধ!
-                **ধন্যবাদান্তে,** 
-                **পপুলার ডায়াগনস্টিক সেন্টার লিঃ, সাভার**
+                **ধন্যবাদান্তে,** **পপুলার ডায়াগনস্টিক সেন্টার লিঃ, সাভার**
               </p>
             </div>
           </div>

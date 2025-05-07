@@ -27,7 +27,7 @@ const Dinajpur = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -81,10 +81,8 @@ const Dinajpur = () => {
                 পারে না। আমি কৃতজ্ঞ ও ধন্য সমস্ত প্রান প্রিয় সকল সহকর্মীদের
                 প্রতি যারা নিরলস ভাবে রোগীদের সঠিক স্বাস্থ্য সেবা নিশ্চিত করতে
                 বন্ধ পরিকর । আমরা আপনাদের সেবায় সর্বত্র নিয়োজিত আছি। পরিশেষে
-                সকলের সুস্বাস্থ্য ও দীর্ঘায়ু কামনা করছি। 
-                **ধন্যবাদান্তে,**
-                **পপুলার ডায়াগনস্টিক সেন্টার লিঃ,**
-                **দিনাজপুর ব্রাঞ্চ**
+                সকলের সুস্বাস্থ্য ও দীর্ঘায়ু কামনা করছি। **ধন্যবাদান্তে,**
+                **পপুলার ডায়াগনস্টিক সেন্টার লিঃ,** **দিনাজপুর ব্রাঞ্চ**
               </p>
             </div>
           </div>

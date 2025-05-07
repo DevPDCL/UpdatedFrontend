@@ -27,7 +27,7 @@ const UttaraGaribENewaz = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -73,13 +73,11 @@ const UttaraGaribENewaz = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                বাংলাদেশের স্বাস্থ্য সেবার পথ পরদর্শক পপুলার ডায়াগোনেস্টিক
+                সেন্টার বিশ্বের সর্বাধুনিক মেশিনারিজ, দক্ষ টেকনেশিয়ান এবং
+                সনামধন্য বিশেষজ্ঞ চিকিৎসকবৃন্দের সমন্বয়ে স্বাস্থ্য সেবা প্রদান
+                করে আসছে। তারই ধারাবাহিকতায়, পপুলার ডায়াগোনেস্টিক সেন্টার লিঃ
+                এখন উত্তরার প্রাণকেন্দ্র উত্তরা সেক্টর - ১৩ তে।
               </p>
             </div>
           </div>

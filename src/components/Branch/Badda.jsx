@@ -73,14 +73,13 @@ const Badda = () => {
               </h1>
               <p className="text-black w-full">
                 {" "}
-                <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                <br />A Complete Imaging center for Cancer & all kind of CT &
+                MRI. Advanced center for Immunohisto Chemistry, Core cut Biopsy,
+                CT/USG Guided FNAC with all kind of Histopathology. World best
+                Machine & best Reputed Consultant are Committed to Provide a
+                best Quality Report Insha’Allah. We Expect your kind
+                Co-operations. Regards, Md. Firoz Mia Branch Manager Popular
+                Diagnostic Centre Ltd. Badda Branch.
               </p>
             </div>
           </div>

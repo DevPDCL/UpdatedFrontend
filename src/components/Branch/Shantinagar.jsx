@@ -63,7 +63,7 @@ const Shantinagar = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -109,13 +109,34 @@ const Shantinagar = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                Bismillahir Rahmanir Raheem, Assalamu Alaikum. Since its
+                establishment in Dhaka in 1983, Popular Diagnostic Centre Ltd.
+                has been the leading contributor to Bangladesh’s healthcare
+                sector. True to this legacy, the Shantinagar Branch was
+                inaugurated 25 years ago in the heart of Dhaka City, with a
+                mission to bring world-class healthcare closer to the people.
+                Over the years, the Shantinagar Branch has earned the trust of
+                countless patients by delivering exceptional diagnostic and
+                healthcare services through cutting-edge technology, renowned
+                doctors, and a dedicated team. Responding to the growing demand,
+                we are proud to announce the launch of our 3rd Unit (Bhaban-3),
+                a 1 lakh square feet facility featuring: ✔ *90-car parking space
+                for hassle-free visits , ✔ *3 Tesla MRI (GE Signa Hero) for
+                ultra-precise imaging, ✔ *500-slice Ultra-modern GE Revolution
+                Maxima CT-Scan, ✔ *Latest Siemens Digital Mammography and all
+                types of imaging, ✔ *Fully Automated Modern Lab (TLA - Total
+                Laboratory Automation), ✔ *Highly skilled professionals from
+                Bangladesh and abroad Our team is driven by sincerity,
+                compassion, and an unwavering commitment to service, ensuring
+                every patient receives the highest standard of care. We
+                continuously strive to enhance our services based on valuable
+                feedback from patients and their families. *Our Pledge: *
+                "Patient Satisfaction is our Motto, Service is our Passion."
+                With patience and dedication, we work tirelessly to alleviate
+                suffering and bring peace of mind to our patients. May Almighty
+                Allah guide and bless our efforts. Best Regards, Md. Shahi
+                Mahmud DGM & Head of Branch, Shantinagar, Dhaka Popular
+                Diagnostic Centre Ltd. Where care meets commitment
               </p>
             </div>
           </div>

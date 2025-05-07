@@ -23,7 +23,7 @@ const Sidemenu = () => {
           <Link to="/hotlines" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[300px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center rounded-t-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center rounded-t-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -43,7 +43,7 @@ const Sidemenu = () => {
           <Link to="/complain" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[340px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -62,7 +62,7 @@ const Sidemenu = () => {
           <Link to="/patient_portal" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[380px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -81,7 +81,7 @@ const Sidemenu = () => {
           {/* <Link to="/sample" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -103,7 +103,7 @@ const Sidemenu = () => {
             rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -122,7 +122,7 @@ const Sidemenu = () => {
           <Link to="/" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[460px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center rounded-b-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -145,7 +145,7 @@ const Sidemenu = () => {
           <Link to="/hotlines" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[120px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center rounded-t-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center rounded-t-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -165,7 +165,7 @@ const Sidemenu = () => {
           <Link to="/complain" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[160px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -184,7 +184,7 @@ const Sidemenu = () => {
           <Link to="/patient_portal" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[200px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -203,7 +203,7 @@ const Sidemenu = () => {
           {/* <Link to="/sample" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[240px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -225,7 +225,7 @@ const Sidemenu = () => {
             rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[240px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center  p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg
@@ -244,7 +244,7 @@ const Sidemenu = () => {
           <Link to="/" rel="noopener noreferrer">
             <div className="flex gap-2 fixed top-[280px] right-0 hover:cursor-pointer font-extrabold">
               <span
-                className="inline-flex items-center rounded-b-xl p-2 bg-[#00984a] text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                className="inline-flex items-center rounded-b-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                 role="alert"
                 tabIndex="0">
                 <svg

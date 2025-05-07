@@ -339,7 +339,7 @@ const topManagement = [
     manID: 7,
     manImg: AchintoKumarNag,
     manName: "Achinto Kumar Nag",
-    manDesignation: "AGM (HR & Admin)",
+    manDesignation: "DGM (HR & Admin)",
   },
   {
     manID: 8,
@@ -545,7 +545,7 @@ const branch = [
 
     braManImg: AchintoKumarNag,
     braManName: "Achinto Kumar Nag",
-    braManDesignation: "AGM (HR & Admin)",
+    braManDesignation: "DGM (HR & Admin)",
     name: "Popular Diagnostic Centre Ltd. (Dhanmondi)",
     address: "House # 16, Road # 2, Dhanmondi, Dhaka1205",
   },

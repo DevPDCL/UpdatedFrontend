@@ -27,7 +27,7 @@ const Kushtia = () => {
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
           >
-            Popular Diagnostic Center{" "}
+            Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
             </span>
@@ -81,8 +81,8 @@ const Kushtia = () => {
                 পপুলার গ্রুপের অন্যতম প্রধান সহযোগী প্রতিষ্ঠান পপুলার
                 ডায়াগনস্টিক সেন্টার লিঃ কুষ্টিয়া শাখা তারই ধারাবাহিকতায় অত্র
                 অঞ্চলের রোগীদের রোগ নির্ণয় এবং ডায়াগনস্টিক সেবা প্রদান করে
-                চলেছে নিরলসভাবে। আমরা মানসম্মত এবং বিশ্বমানের চিকিৎসা প্রদানে
-                বদ্ধপরিকর!
+                চলেছে নিরলসভাবে। আমরা মানসম্মত এবং বিশ্বমানের চিকিৎসা
+                প্রদানে বদ্ধপরিকর!
               </p>
             </div>
           </div>

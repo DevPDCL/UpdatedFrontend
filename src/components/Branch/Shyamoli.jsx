@@ -53,7 +53,7 @@ const Shyamoli = () => {
         className=" text-center text text-3xl mt-5 leading-tight sm:text-4xl md:text-5xl xl:text-6xl
             font-bold text-[#00664a]"
       >
-        Popular Diagnostic Center{" "}
+        Popular Diagnostic Centre{" "}
         <span className="text-7xl text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
           {branchName}{" "}
         </span>
@@ -103,13 +103,15 @@ const Shyamoli = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                Welcome to Popular Diagnostic Centre Ltd. (Shyamoli Branch),
+                Dhaka. Located in beautiful place surrounded by many important
+                national specialized hospitals those deliver valuable medical
+                services. We give the all kinds of diagnostic services
+                (biochemical tests with world recognized analyzers, standard
+                microbiological equipment, 3 Tesla MRI, 500 Slice spiral CT
+                scan, other modern radiological equipment’s) and qualified
+                personnel. Renowned Doctors in different specialties of
+                Bangladesh provide medical services in our diagnostic centre.
               </p>
             </div>
           </div>

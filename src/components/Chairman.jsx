@@ -37,7 +37,7 @@ const Chairman = () => {
                     }}
                   />
                 </div>
-\
+
                 <div className="text-center mt-8">
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                     Late Tahera Akhter
