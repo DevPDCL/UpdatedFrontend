@@ -1,7 +1,7 @@
 import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
-import { Search } from "../../components";
+import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
 import { useLocation } from "react-router-dom";
 
@@ -54,15 +54,13 @@ const Rangpur = () => {
         <span className="w-4/12 lg:w-2/12 aspect-square bg-gradient-to-tr from-blue-600 to-[#00984a] absolute -top-5 lg:left-0 rounded-full skew-y-12 blur-2xl opacity-40 skew-x-12 rotate-90"></span>
         <div
           className="relative flex flex-col items-center text-center lg:text-left lg:py-7 xl:py-8 
-            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2"
-        >
+            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2">
           <h1
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
-            font-bold text-[#00664a]"
-          >
+            font-bold text-[#00664a]">
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-              {branchInfo.heading}{" "}
+              {branchName}{" "}
             </span>
             Branch.
           </h1>

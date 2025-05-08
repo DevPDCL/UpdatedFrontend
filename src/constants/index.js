@@ -431,7 +431,7 @@ const reportDownload = [
   },
   {
     braID: 7,
-    braName: "Uttara Sector 13",
+    braName: "Uttara Sector 04",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
     braCity: "Dhaka",
@@ -593,7 +593,7 @@ const branch = [
         location:
           "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
         name: "Shantinagar (U-2)",
-        address: "Level-4, Building#15, Shantinagar, Motijheel, Dhaka.",
+        address: "Building#15, Shantinagar, Motijheel, Dhaka.",
       },
     ],
   },
@@ -665,9 +665,9 @@ const branch = [
         image: MirpurU2,
         location:
           "https://maps.google.com/maps?q=24.7433735,90.4059255&hl=es;z=14&output=embed",
-        name: "Shyamoli (U-2)",
+        name: "Mirpur (U-2)",
         address:
-          "House: 1/5, Block- B, Mohammadpur Housing State, Gajnabi Road, Mohammadpur",
+          "House # 02, Avenue # 01, Block # A, Section-10(Bnaroshi Polli Gate-01), Pallabi, Mirpur, Dhaka.",
       },
     ],
   },
@@ -924,7 +924,7 @@ const branch = [
     braCity: "Rangpur",
     braManImg: MrMdAbdulAhad,
     braManName: "Mr. Md. Abdul Ahad",
-    braManDesignation: "Branch Manager",
+    braManDesignation: "Senior Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Rangpur)",
     address: "77/1, Road No-1, Dhap, Jail Road, Rangpur.",
     branchUnits: [
@@ -1009,7 +1009,7 @@ const branch = [
       "https://maps.google.com/maps?q=22.692741,90.361966&hl=es;z=14&output=embed",
     braManImg: MdMosharrofHossain,
     braManName: "Md. Mosharrof Hossain",
-    braManDesignation: "Branch Manager",
+    braManDesignation: "Senior Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Barishal)",
     address:
       "109, 955 Shahid Nazrul Islam Sarak, South Alekanda Banglabazar, Barishal.",

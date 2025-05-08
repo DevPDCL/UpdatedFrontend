@@ -8,20 +8,33 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
+import { motion } from "framer-motion";
+import {
+  FaUserMd,
+  FaCalendarCheck,
+  FaFlask,
+  FaSearch,
+  FaChevronDown,
+  FaSpinner,
+  FaAngleRight,
+  FaInfoCircle,
+} from "react-icons/fa";
 
 const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 const API_BASE_URL = "https://api.populardiagnostic.com/api";
 
 const TABS = [
-  { id: "doctors", label: "Doctors" },
-  { id: "appointment", label: "Appointment" },
-  { id: "test-prices", label: "Test Prices" },
+  { id: "doctors", label: "Doctors", icon: <FaUserMd /> },
+  { id: "appointment", label: "Appointment", icon: <FaCalendarCheck /> },
+  { id: "test-prices", label: "Test Prices", icon: <FaFlask /> },
 ];
 
 const ListHeader = ({ columns }) => (
-  <div className="flex justify-between px-8 py-2 bg-gray-400 font-bold">
+  <div className="flex justify-between px-4 py-3 bg-gray-200 font-bold rounded-t-lg text-gray-700 text-sm md:text-base">
     {columns.map((col, index) => (
-      <p key={index}>{col}</p>
+      <p key={index} className="flex-1 md:flex-none">
+        {col}
+      </p>
     ))}
   </div>
 );
@@ -31,17 +44,20 @@ ListHeader.propTypes = {
 };
 
 const ServiceRow = React.memo(({ service, style }) => (
-  <li
+  <motion.li
     style={style}
-    className="flex justify-between px-4 py-2 bg-white hover:bg-gray-100">
-    <p className="text-gray-600 font-ubuntu">{service.name}</p>
-    <p className="font-medium text-gray-700 font-ubuntu">
+    className="flex justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100"
+    whileHover={{ backgroundColor: "rgba(0, 152, 74, 0.05)" }}>
+    <p className="text-gray-700 font-ubuntu flex-1 md:flex-none truncate pr-2">
+      {service.name}
+    </p>
+    <p className="font-medium text-gray-800 font-ubuntu whitespace-nowrap">
       {service.price.toLocaleString("en-BD", {
         style: "currency",
         currency: "BDT",
       })}
     </p>
-  </li>
+  </motion.li>
 ));
 
 ServiceRow.propTypes = {
@@ -58,13 +74,23 @@ const DoctorRow = React.memo(({ doctor, style }) => {
     "Not specified";
 
   return (
-    <Link to={`/doctordetail/${doctor.id}`}>
-      <li
+    <Link to={`/doctordetail/${doctor.id}`} className="w-full">
+      <motion.li
         style={style}
-        className="flex justify-between bg-white hover:bg-gray-100 px-4 py-2">
-        <p className="text-gray-600 font-ubuntu">{doctor.name}</p>
-        <p className="text-gray-600 font-ubuntu">{specialties}</p>
-      </li>
+        className="flex justify-between bg-white hover:bg-gray-50 px-4 py-3 transition-colors duration-150 border-b border-gray-100"
+        whileHover={{ backgroundColor: "rgba(0, 152, 74, 0.05)" }}>
+        <div className="flex items-center flex-1 md:flex-none">
+          <p className="text-gray-700 font-ubuntu truncate pr-2">
+            {doctor.name}
+          </p>
+        </div>
+        <div className="flex items-center">
+          <p className="text-gray-600 font-ubuntu text-sm truncate max-w-[150px] md:max-w-none">
+            {specialties}
+          </p>
+          <FaAngleRight className="ml-2 text-[#00984a] opacity-60" />
+        </div>
+      </motion.li>
     </Link>
   );
 });
@@ -81,11 +107,12 @@ DoctorRow.propTypes = {
 const LoadingSpinner = ({ text = "", size = "medium" }) => (
   <div className="text-center py-4">
     <div className="flex justify-center items-center space-x-2">
-      <div
-        className={`animate-spin rounded-full ${
-          size === "small" ? "h-4 w-4 border-b-2" : "h-8 w-8 border-b-2"
-        } border-[#00984a]`}></div>
-      {text && <span>{text}</span>}
+      <FaSpinner
+        className={`animate-spin ${
+          size === "small" ? "h-4 w-4" : "h-6 w-6"
+        } text-[#00984a]`}
+      />
+      {text && <span className="font-ubuntu text-gray-600">{text}</span>}
     </div>
   </div>
 );
@@ -96,23 +123,25 @@ LoadingSpinner.propTypes = {
 };
 
 const DoctorList = ({ doctors, isFetchingMore, onScroll }) => (
-  <div className="flex flex-col min-h-[200px]">
+  <div className="flex flex-col min-h-[200px] shadow-lg rounded-lg overflow-hidden">
     <ListHeader columns={["Doctor Name", "Speciality"]} />
-    <AutoSizer>
-      {({ width }) => (
-        <List
-          height={250}
-          rowCount={doctors.length}
-          rowHeight={50}
-          rowRenderer={({ index, style }) => (
-            <DoctorRow doctor={doctors[index]} style={style} />
-          )}
-          overscanRowCount={5}
-          width={width}
-          onScroll={onScroll}
-        />
-      )}
-    </AutoSizer>
+    <div className="h-[250px]">
+      <AutoSizer>
+        {({ width, height }) => (
+          <List
+            height={height}
+            rowCount={doctors.length}
+            rowHeight={50}
+            rowRenderer={({ index, style }) => (
+              <DoctorRow doctor={doctors[index]} style={style} />
+            )}
+            overscanRowCount={5}
+            width={width}
+            onScroll={onScroll}
+          />
+        )}
+      </AutoSizer>
+    </div>
     {isFetchingMore && (
       <LoadingSpinner text="Loading more doctors..." size="small" />
     )}
@@ -126,27 +155,32 @@ DoctorList.propTypes = {
 };
 
 const ServiceList = ({ services, isFetchingAll }) => (
-  <div className="flex flex-col min-h-[220px]">
+  <div className="flex flex-col min-h-[220px] shadow-lg rounded-lg overflow-hidden">
     <ListHeader columns={["Service Name", "Service Cost"]} />
     {isFetchingAll && (
       <div className="text-center py-2 text-sm text-gray-500">
-        Loading more services... ({services.length} loaded)
+        <div className="flex items-center justify-center">
+          <FaInfoCircle className="mr-2 text-[#00984a]" />
+          <span>Loading more services... ({services.length} loaded)</span>
+        </div>
       </div>
     )}
-    <AutoSizer>
-      {({ width }) => (
-        <List
-          height={250}
-          rowCount={services.length}
-          rowHeight={50}
-          rowRenderer={({ index, style }) => (
-            <ServiceRow service={services[index]} style={style} />
-          )}
-          overscanRowCount={5}
-          width={width}
-        />
-      )}
-    </AutoSizer>
+    <div className="h-[250px]">
+      <AutoSizer>
+        {({ width, height }) => (
+          <List
+            height={height}
+            rowCount={services.length}
+            rowHeight={50}
+            rowRenderer={({ index, style }) => (
+              <ServiceRow service={services[index]} style={style} />
+            )}
+            overscanRowCount={5}
+            width={width}
+          />
+        )}
+      </AutoSizer>
+    </div>
   </div>
 );
 
@@ -457,52 +491,68 @@ const SearchBoxBranch = ({ branchId }) => {
   }, [activeTab, fetchInitialDoctorData, fetchInitialServices]);
 
   const renderDoctorTab = () => (
-    <form className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-6 md:gap-0">
-        <div className="relative z-0 w-full p-1 col-span-3 mb-0 group">
-          <select
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
-            onChange={(e) =>
-              handleDoctorFilterChange("selectedSpecialization", e.target.value)
-            }
-            value={doctorSearchUI.selectedSpecialization}
-            disabled={!doctorSearchData.initialDataLoaded}>
-            <option value="">Select Specialization</option>
-            {doctorSearchData.specializations.map((spec) => (
-              <option key={spec.id} value={spec.id}>
-                {spec.name}
-              </option>
-            ))}
-          </select>
+    <motion.form
+      className="max-w-7xl mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}>
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-4">
+        <div className="relative z-0 w-full col-span-1 md:col-span-3 mb-2 md:mb-3 group">
+          <div className="relative">
+            <select
+              className="block py-2.5 px-4 w-full text-sm rounded-lg shadow-md text-gray-700 bg-white pr-10 border border-gray-200 appearance-none focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:border-[#00984a] transition-all duration-200"
+              onChange={(e) =>
+                handleDoctorFilterChange(
+                  "selectedSpecialization",
+                  e.target.value
+                )
+              }
+              value={doctorSearchUI.selectedSpecialization}
+              disabled={!doctorSearchData.initialDataLoaded}>
+              <option value="">Select Specialization</option>
+              {doctorSearchData.specializations.map((spec) => (
+                <option key={spec.id} value={spec.id}>
+                  {spec.name}
+                </option>
+              ))}
+            </select>
+            <FaChevronDown className="absolute right-3 top-3 text-gray-500 pointer-events-none" />
+          </div>
         </div>
 
-        <div className="relative col-span-3 p-1 mb-0 group">
-          <select
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
-            onChange={(e) =>
-              handleDoctorFilterChange("selectedDay", e.target.value)
-            }
-            value={doctorSearchUI.selectedDay}
-            disabled={!doctorSearchData.initialDataLoaded}>
-            <option value="">Select Day</option>
-            {doctorSearchData.days.map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
-          </select>
+        <div className="relative w-full col-span-1 md:col-span-3 mb-2 md:mb-3 group">
+          <div className="relative">
+            <select
+              className="block py-2.5 px-4 w-full text-sm rounded-lg shadow-md text-gray-700 bg-white pr-10 border border-gray-200 appearance-none focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:border-[#00984a] transition-all duration-200"
+              onChange={(e) =>
+                handleDoctorFilterChange("selectedDay", e.target.value)
+              }
+              value={doctorSearchUI.selectedDay}
+              disabled={!doctorSearchData.initialDataLoaded}>
+              <option value="">Select Day</option>
+              {doctorSearchData.days.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <FaChevronDown className="absolute right-3 top-3 text-gray-500 pointer-events-none" />
+          </div>
         </div>
 
-        <div className="relative col-span-6 mb-1 group">
-          <input
-            ref={doctorSearchInputRef}
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
-            type="text"
-            placeholder="Search by doctor's name..."
-            value={doctorSearchUI.searchTerm}
-            onChange={(e) => debounceSearch(e.target.value)}
-            disabled={!doctorSearchData.initialDataLoaded}
-          />
+        <div className="relative col-span-1 md:col-span-6 mb-3 group">
+          <div className="relative">
+            <input
+              ref={doctorSearchInputRef}
+              className="block py-2.5 px-4 w-full text-sm rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:border-[#00984a] text-gray-700 bg-white border border-gray-200 placeholder-gray-500 pl-10 transition-all duration-200"
+              type="text"
+              placeholder="Search by doctor's name..."
+              value={doctorSearchUI.searchTerm}
+              onChange={(e) => debounceSearch(e.target.value)}
+              disabled={!doctorSearchData.initialDataLoaded}
+            />
+            <FaSearch className="absolute left-3 top-3 text-gray-400" />
+          </div>
 
           {doctorSearchData.loading ? (
             <LoadingSpinner text="Loading doctors..." />
@@ -516,39 +566,61 @@ const SearchBoxBranch = ({ branchId }) => {
             (doctorSearchUI.searchTerm ||
               doctorSearchUI.selectedSpecialization ||
               doctorSearchUI.selectedDay) && (
-              <div className="text-center py-4">
-                No doctors found matching your criteria
+              <div className="text-center py-6 bg-white rounded-lg shadow-lg">
+                <FaInfoCircle className="mx-auto mb-2 text-2xl text-gray-400" />
+                <p className="text-gray-600">
+                  No doctors found matching your criteria
+                </p>
               </div>
             )
           )}
         </div>
       </div>
-    </form>
+    </motion.form>
   );
 
   const renderAppointmentTab = () => (
-    <div className="max-w-screen-xl mx-auto">
-      <div className="grid md:grid-cols-12 md:gap-1">
-        <div className="relative z-0 col-span-12 w-full group">
+    <motion.div
+      className="max-w-screen-xl mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}>
+      <div className="grid grid-cols-1">
+        <div className="relative z-0 col-span-1 w-full group">
           <Link
             to="http://appointment.populardiagnostic.com/appointment"
             target="_blank"
             rel="noopener noreferrer">
-            <button
+            <motion.button
               type="button"
-              className="text-gray-600 w-full rounded block col-span-12 mb-2 h-[43px] hover:text-gray-900 border bg-white shadow-2xl border-none focus:ring-4 focus:outline-none focus:ring-[#00984a] font-ubuntu text-[16px] font-bold px-5 py-2.5 text-center">
-              Make An Appointment <span className="animate-ping">Now</span>
-            </button>
+              className="text-white w-full rounded-lg block col-span-1 mb-2 h-[50px] bg-[#00984a] border-none focus:ring-4 focus:outline-none focus:ring-green-300 font-ubuntu text-lg font-bold px-5 py-2.5 text-center flex items-center justify-center"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+              <FaCalendarCheck className="mr-2" />
+              Make An Appointment
+              <span className="ml-1 relative">
+                <span className="absolute top-0 right-0 -mr-1 -mt-1 flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                </span>
+                Now
+              </span>
+            </motion.button>
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 
   const renderTestPricesTab = () => (
-    <form className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-12 md:gap-1">
-        <div className="relative col-span-12 mb-1 group">
+    <motion.form
+      className="max-w-7xl mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}>
+      <div className="grid grid-cols-1">
+        <div className="relative col-span-1 mb-3 group">
           <div className="relative">
             <input
               ref={serviceSearchInputRef}
@@ -556,12 +628,13 @@ const SearchBoxBranch = ({ branchId }) => {
               value={serviceSearchState.searchTerm}
               onChange={handleServiceSearchChange}
               placeholder="Search test prices..."
-              className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
+              className="block py-2.5 px-4 w-full text-sm rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:border-[#00984a] text-gray-700 bg-white border border-gray-200 placeholder-gray-500 pl-10 transition-all duration-200"
               required
             />
+            <FaSearch className="absolute left-3 top-3 text-gray-400" />
             {serviceSearchState.isFetchingAll && (
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <LoadingSpinner size="small" />
+              <div className="absolute inset-y-0 right-3 flex items-center">
+                <FaSpinner className="animate-spin h-4 w-4 text-[#00984a]" />
               </div>
             )}
           </div>
@@ -569,8 +642,9 @@ const SearchBoxBranch = ({ branchId }) => {
           {serviceSearchState.loading ? (
             <LoadingSpinner text="Loading services..." />
           ) : serviceSearchState.error ? (
-            <div className="text-center py-4 text-red-500">
-              {serviceSearchState.error}
+            <div className="text-center py-4 text-red-500 bg-white rounded-lg shadow-lg mt-4">
+              <FaInfoCircle className="mx-auto mb-2 text-2xl" />
+              <p>{serviceSearchState.error}</p>
             </div>
           ) : serviceSearchState.services.length > 0 ? (
             <ServiceList
@@ -578,40 +652,46 @@ const SearchBoxBranch = ({ branchId }) => {
               isFetchingAll={serviceSearchState.isFetchingAll}
             />
           ) : (
-            <div className="text-center py-4">
-              {serviceSearchState.searchTerm
-                ? "No matching services found"
-                : "No services available for this branch"}
+            <div className="text-center py-6 bg-white rounded-lg shadow-lg mt-4">
+              <FaInfoCircle className="mx-auto mb-2 text-2xl text-gray-400" />
+              <p className="text-gray-600">
+                {serviceSearchState.searchTerm
+                  ? "No matching services found"
+                  : "No services available for this branch"}
+              </p>
             </div>
           )}
         </div>
       </div>
-    </form>
+    </motion.form>
   );
 
   return (
     <div
-      className={`${styles.paddingX} md:-mt-[250px] -mt-[50px] bg-gradient-to-t from-transparent to-white/80 to-40% rounded-t-2xl pt-4 flex relative z-10 max-w-7xl mx-auto justify-center items-bottom text-center flex-col text-gray-900`}>
+      className={`${styles.paddingX} md:-mt-[250px] -mt-[50px] bg-gradient-to-t from-transparent to-white/90 to-40% rounded-t-2xl pt-4 flex relative z-10 max-w-7xl mx-auto justify-center items-bottom text-center flex-col text-gray-900`}>
       <div className="mb-4">
-        <ul className="text-sm font-medium text-center text-gray-900 sm:flex">
+        <ul className="text-sm font-medium text-center text-gray-900 grid grid-cols-3 sm:flex">
           {TABS.map((tab) => (
-            <li key={tab.id} className="w-full p-1 focus-within:z-10">
-              <button
+            <li key={tab.id} className="p-1 focus-within:z-10">
+              <motion.button
                 type="button"
-                className={`inline-block w-full p-3 shadow-2xl rounded border-r border-gray-200 ${
+                className={`inline-flex items-center justify-center w-full p-3 shadow-lg rounded-lg border border-gray-100 ${
                   activeTab === tab.id
-                    ? "bg-white text-gray-900"
+                    ? "bg-white text-[#00984a] font-semibold"
                     : "bg-[#00984a] text-white"
-                }`}
-                onClick={() => handleTabClick(tab.id)}>
-                {tab.label}
-              </button>
+                } transition-all duration-200`}
+                onClick={() => handleTabClick(tab.id)}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}>
+                <span className="mr-2">{tab.icon}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+              </motion.button>
             </li>
           ))}
         </ul>
       </div>
 
-      <div id="search-tab-content">
+      <div id="search-tab-content" className="w-full">
         {activeTab === "doctors" && (
           <div
             className="p-2 rounded"
