@@ -73,13 +73,34 @@ const Chattogram = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                চট্টগ্রামবাসির সুস্বাস্থ্যে ২৫% ডিসকাউন্ট সকল প্রকার টেস্টে”
+                আন্তর্জাতিক মানসম্পন্ন ল্যাব, অত্যাধুনিক প্রযুক্তির বিশেষায়িত
+                মেশিন ও 160+ ঢাকা ও চট্টগ্রামের বিশেষজ্ঞ ডাক্তারদের সেবার
+                মেলবন্ধনে ঢাকার পপুলার এখন চট্টগ্রামে আপনার প্রয়োজনীয় সব
+                স্বাস্থ্য পরীক্ষা এখন একই ছাদের নিচে আরো সাশ্রয়ী মূল্যে ও
+                নির্ভরতায়। আমাদের সেবা সমূহ :  চট্টগ্রামে প্রথম ১২৮ চ্যানেলের
+                বায়োমেট্রিক্স প্রযুক্তির 3 Tesla - Siemens, Germany এর MRI
+                মেশিন ও ৫১২ Slice Dual এনার্জি সম্পন্ন CT Scan মেশিন এখন পপুলার
+                ডায়াগনস্টিক সেন্টার, চট্টগ্রাম শাখায়।  এছাড়া ও আছে লিভার
+                সিরোসিস ও ফ্যাটি লিভার রোগ নির্ণয়ে FibroScan test.  হাড়
+                ক্ষয়ের নির্ভরযোগ্য পরীক্ষার জন্য BMD টেস্ট ।  ব্রেস্ট
+                ক্যান্সার সহ স্তনো সব রোগ নির্ণয়ের জন্য Memography টেস্ট । 
+                সর্বাধুনিক Ultrasound (Voluson E10, GE) America মেশিনে
+                চট্টগ্রামের স্বনামধন্য Radiologist ও Sonologist এর মাধ্যমে
+                Ultrosonogram করার ব্যবস্থা ।  হৃদপিন্ডের সমস্যা ও হৃদরোগ
+                নির্ণয়ে America GE কোম্পানীর VIVID-9 মেশিনের মাধ্যমে Echo /
+                Colour Doppler করা হয় ।  চট্টগ্রামের স্বনামধন্য
+                Gastroenterology / Hepatology Doctor এর মাধ্যমে Endoscopy /
+                Colonoscopy করানো হয় ।  দাঁতের সমস্যা নির্ণয়ে OPG করানো হয় ।
+                 কানের শ্রবন শক্তি নির্ণয়ে Hearing test করানো হয় ।  বিভিন্ন
+                বয়সের এবং বিভিন্ন রোগের জন্য রয়েছে হেলথ চেকআপ প্যাকেজ সুবিধা ও
+                বিশেষজ্ঞ ডাক্তারের পরামর্শ ।  বাসা থেকে Blood এবং Urine Sample
+                কালেকশনের সুব্যবস্থা আছে ।  অফিস কিংবা বাসায় বসে রিপোর্ট
+                ডাউনলোড করার বিশেষ সুবিধা । আপনার সুস্বাস্থ্যই আমাদের অঙ্গীকার।
+                আধুনিক প্রযুক্তি, নির্ভুল রিপোর্ট, সাশ্রয়ী মূল্য – সব সুবিধা
+                একসাথে! আজই যোগাযোগ করুন এবং সুস্থ জীবনযাত্রার প্রথম পদক্ষেপ নিন
+                পপুলার ডায়াগনস্টিক সেন্টার, চট্টগ্রাম শাখার মাধ্যমে । আমাদের
+                হটলাইন নং: 09666787810
               </p>
             </div>
           </div>

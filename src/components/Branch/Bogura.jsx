@@ -73,13 +73,16 @@ const Bogura = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                Popular Diagnostic Center Ltd. Bogura Branch Is a “World Class”
+                Health Service Providing Organization. Here Different Type of
+                Diseases Are Identity By “The World Best Machineries” . All
+                Potential Consultant of Bogura Is Giving Health Related
+                Suggestion Daily for Serious Patients of All Discipline. All of
+                My Beloved Employees Are Continuously Giving Their Services to
+                Patient’s by Hard Work Which Is Our Main Moto & Responsibility.
+                We Always Ready for Patient's Service Promptly. Wishing All for
+                Good Health and Long Live in Wonderful Bangladesh. Thanks,
+                Popular Diagnostic Center Ltd. Bogura Branch.
               </p>
             </div>
           </div>
