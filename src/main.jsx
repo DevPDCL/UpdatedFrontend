@@ -56,6 +56,7 @@ import {
   ChatWidget
 } from "./components";
 import "./index.css";
+import NoticeDetails from "./components/NoticeDetails";
 
 const App = () => {
   return (
@@ -109,6 +110,7 @@ const routes = [
       { path: "/hotlines", element: <Hotlines /> },
       { path: "/Dmd", element: <Dmd /> },
       { path: "/notice", element: <Notice /> },
+      { path: "/notices/:id", element: <NoticeDetails /> },
       { path: "/video", element: <Videos /> },
       { path: "/contact", element: <Contact /> },
       { path: "/health", element: <Health /> },
