@@ -126,12 +126,12 @@ DoctorList.propTypes = {
   onScroll: PropTypes.func.isRequired,
 };
 
-const ServiceList = ({ services, isFetchingAll }) => (
+const ServiceList = ({ services, isLoading }) => (
   <div className="flex flex-col min-h-[220px]">
     <ListHeader columns={["Service Name", "Service Cost"]} />
-    {isFetchingAll && (
+    {isLoading && (
       <div className="text-center py-2 text-sm text-gray-500">
-        Loading more services... ({services.length} loaded)
+        Loading services...
       </div>
     )}
     <AutoSizer>
@@ -153,7 +153,7 @@ const ServiceList = ({ services, isFetchingAll }) => (
 
 ServiceList.propTypes = {
   services: PropTypes.array.isRequired,
-  isFetchingAll: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const Search = () => {
@@ -185,12 +185,13 @@ const Search = () => {
   const [serviceSearchState, setServiceSearchState] = useState({
     selectedBranch: null,
     services: [],
-    allServices: [],
+    allServices: [], // For storing all services when no search term
     searchTerm: "",
     loading: false,
-    isFetchingAll: false,
-    allPagesFetched: false,
+    isFetchingAll: false, // Track if we're fetching all pages
+    allPagesFetched: false, // Track if all pages are loaded
     error: null,
+    totalCount: 0, // Track total services loaded
   });
 
   const fetchInitialDoctorData = useCallback(async () => {
@@ -348,14 +349,16 @@ const Search = () => {
       allServices: [],
       searchTerm: "",
       loading: !!branchId,
-      isFetchingAll: false,
+      isFetchingAll: !!branchId,
       allPagesFetched: false,
+      totalCount: 0,
       error: null,
     }));
 
     if (!branchId) return;
 
     try {
+      // First fetch to get initial data and total pages
       const firstPageResponse = await axios.get(
         `${API_BASE_URL}/test-service-charges`,
         {
@@ -370,19 +373,24 @@ const Search = () => {
 
       const firstPageData = firstPageResponse.data?.data?.data || [];
       const totalPages = firstPageResponse.data?.data?.last_page || 1;
-      const hasMorePages = totalPages > 1;
 
       setServiceSearchState((prev) => ({
         ...prev,
         services: firstPageData,
         allServices: firstPageData,
         loading: false,
-        isFetchingAll: hasMorePages,
-        allPagesFetched: !hasMorePages,
+        totalCount: firstPageData.length,
       }));
 
-      if (hasMorePages) {
+      // If there are more pages, fetch them in the background
+      if (totalPages > 1) {
         fetchAllPages(branchId, firstPageData, totalPages);
+      } else {
+        setServiceSearchState((prev) => ({
+          ...prev,
+          isFetchingAll: false,
+          allPagesFetched: true,
+        }));
       }
 
       if (serviceSearchInputRef.current) {
@@ -424,8 +432,9 @@ const Search = () => {
 
           setServiceSearchState((prev) => ({
             ...prev,
-            services: fetchedData,
             allServices: fetchedData,
+            services: prev.searchTerm ? prev.services : fetchedData,
+            totalCount: fetchedData.length,
           }));
         }
 
@@ -446,16 +455,70 @@ const Search = () => {
     []
   );
 
-  const handleServiceSearchChange = useCallback((event) => {
-    const searchValue = event.target.value.toLowerCase();
-    setServiceSearchState((prev) => ({
-      ...prev,
-      searchTerm: searchValue,
-      services: prev.allServices.filter((service) =>
-        service.name.toLowerCase().includes(searchValue)
-      ),
-    }));
-  }, []);
+  const debounceServiceSearch = useCallback(
+    async (searchValue) => {
+      if (!serviceSearchState.selectedBranch) return;
+
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+
+      setServiceSearchState((prev) => ({
+        ...prev,
+        searchTerm: searchValue,
+        loading: !!searchValue,
+      }));
+
+      searchTimeout.current = setTimeout(async () => {
+        try {
+          if (!searchValue) {
+            // If search is cleared, show all services
+            setServiceSearchState((prev) => ({
+              ...prev,
+              services: prev.allServices,
+              loading: false,
+            }));
+            return;
+          }
+
+          // Perform API search
+          const response = await axios.get(
+            `${API_BASE_URL}/test-service-charges`,
+            {
+              params: {
+                token: API_TOKEN,
+                branch_id: serviceSearchState.selectedBranch,
+                test_service_category_id: 0,
+                name: searchValue,
+                fast_search: "yes",
+              },
+            }
+          );
+
+          setServiceSearchState((prev) => ({
+            ...prev,
+            services: response.data?.data?.data || [],
+            loading: false,
+          }));
+        } catch (err) {
+          console.error("Error searching services:", err);
+          setServiceSearchState((prev) => ({
+            ...prev,
+            loading: false,
+            error: "Failed to search services. Please try again.",
+          }));
+        }
+      }, 500);
+    },
+    [serviceSearchState.selectedBranch]
+  );
+  const handleServiceSearchChange = useCallback(
+    (event) => {
+      const searchValue = event.target.value;
+      debounceServiceSearch(searchValue);
+    },
+    [debounceServiceSearch]
+  );
 
   useEffect(() => {
     if (activeTab === "doctors") {
@@ -593,7 +656,7 @@ const Search = () => {
               ref={serviceSearchInputRef}
               type="text"
               value={serviceSearchState.searchTerm}
-              onChange={handleServiceSearchChange}
+              onChange={(e) => debounceServiceSearch(e.target.value)}
               placeholder={
                 !serviceSearchState.selectedBranch
                   ? "Select a branch first to start searching..."
@@ -607,7 +670,8 @@ const Search = () => {
               disabled={!serviceSearchState.selectedBranch}
               required
             />
-            {serviceSearchState.isFetchingAll && (
+            {(serviceSearchState.loading ||
+              serviceSearchState.isFetchingAll) && (
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <LoadingSpinner size="small" />
               </div>
@@ -615,24 +679,38 @@ const Search = () => {
           </div>
 
           {serviceSearchState.loading ? (
-            <LoadingSpinner text="Loading services..." />
+            <LoadingSpinner text="Searching services..." />
           ) : serviceSearchState.error ? (
             <div className="text-center py-4 text-red-500">
               {serviceSearchState.error}
             </div>
-          ) : serviceSearchState.selectedBranch &&
-            serviceSearchState.services.length > 0 ? (
-            <ServiceList
-              services={serviceSearchState.services}
-              isFetchingAll={serviceSearchState.isFetchingAll}
-            />
-          ) : serviceSearchState.selectedBranch &&
-            serviceSearchState.services.length === 0 ? (
-            <div className="text-center py-4">
-              {serviceSearchState.searchTerm
-                ? "No matching services found"
-                : "No services available for this branch"}
-            </div>
+          ) : serviceSearchState.selectedBranch ? (
+            <>
+              {!serviceSearchState.searchTerm && (
+                <div className="text-center py-2 text-sm text-gray-500">
+                  {serviceSearchState.isFetchingAll
+                    ? `Loading services... (${serviceSearchState.totalCount} loaded)`
+                    : serviceSearchState.allPagesFetched
+                    ? `All ${serviceSearchState.totalCount} services loaded`
+                    : `${serviceSearchState.totalCount} services loaded`}
+                </div>
+              )}
+              {serviceSearchState.services.length > 0 ? (
+                <ServiceList
+                  services={serviceSearchState.services}
+                  isLoading={
+                    serviceSearchState.loading ||
+                    serviceSearchState.isFetchingAll
+                  }
+                />
+              ) : (
+                <div className="text-center py-4">
+                  {serviceSearchState.searchTerm
+                    ? "No matching services found"
+                    : "No services available for this branch"}
+                </div>
+              )}
+            </>
           ) : null}
         </div>
       </div>

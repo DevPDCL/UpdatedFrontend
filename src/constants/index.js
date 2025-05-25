@@ -475,7 +475,7 @@ const reportDownload = [
     braCity: "Bogura",
   },
   {
-    braID: 28,
+    braID: 42,
     braName: "Rajshahi",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Rajshahi",
@@ -493,13 +493,13 @@ const reportDownload = [
     braCity: "Chattogram",
   },
   {
-    braID: 17,
+    braID: 26,
     braName: "Mymensingh",
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Mymensingh",
   },
   {
-    braID: 26,
+    braID: 15,
     braName: "Rangpur",
     downloadLink:
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
