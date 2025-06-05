@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
 
-
 const API_URL =
   "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 const ANIMATION_SPRING = { type: "spring", stiffness: 700, damping: 30 };
@@ -19,6 +18,16 @@ const buttonVariants = {
 const searchBoxVariants = {
   initial: { opacity: 1, scale: 1 },
   hover: { scale: 1.03 },
+};
+
+const countUnits = (branchName) => {
+  const unitMatch = branchName.match(/\(U\d+(?:,\s*U\d+)*\)/g);
+  if (unitMatch) {
+    return unitMatch.reduce((count, match) => {
+      return count + (match.match(/U\d+/g) || []).length;
+    }, 0);
+  }
+  return 1;
 };
 
 const BranchContact = ({ address, Hotline, Email }) => (
@@ -65,7 +74,7 @@ const ProjectCardSkeleton = () => (
 );
 
 const ProjectCard = React.memo(
-  ({ id, image, city, address, Hotline, Email, heading }) => {
+  ({ id, image, city, address, Hotline, Email, heading, units }) => {
     const navigate = useNavigate();
 
     const handleBranchClick = useCallback(() => {
@@ -74,9 +83,22 @@ const ProjectCard = React.memo(
     }, [navigate, id, heading]);
 
     return (
-      <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3">
+      <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3 relative">
+        {" "}
+        {/* Added relative positioning */}
+        {/* Unit indicator - subtle corner ribbon */}
+        {units > 1 && (
+          <motion.div
+            className="absolute -top-2 -right-2 bg-[#00984a] text-white text-xs font-bold px-2 py-1 rounded-tr-2xl rounded-bl-lg z-10 shadow-md"
+            initial={{ scale: 0.5, rotate: 15 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 500 }}>
+            {units} Units
+          </motion.div>
+        )}
         <button onClick={handleBranchClick} className="w-full">
           <div className="relative w-full">
+
             <div className="aspect-square w-full overflow-hidden shadow-xl rounded-3xl">
               <img
                 src={image}
@@ -87,14 +109,18 @@ const ProjectCard = React.memo(
             </div>
           </div>
           <div className="px-4 pt-2 pb-3 flex flex-col justify-between">
-            <h1 className="text-[#00984a] px-2 font-ubuntu font-bold text-center text-[25px]">
-              {heading}
-            </h1>
+            <div className="flex justify-center items-center relative">
+              <h1 className="text-[#00984a] px-2 font-ubuntu font-bold text-center text-[25px]">
+                {heading}
+              </h1>
+            </div>
+
             <p className="text-gray-600 px-2 font-ubuntu font-semibold text-[16px]">
               {city.charAt(0).toUpperCase() + city.slice(1).toLowerCase()}
             </p>
 
             <BranchContact address={address} Hotline={Hotline} Email={Email} />
+
             <motion.button
               className="hover:bg-[#00984a] bg-gray-100 text-[#00984a] hover:text-white hover:font-black font-ubuntu font-medium py-2 px-4 rounded-md mt-2 mx-1 focus:outline-none shadow-md"
               layout
@@ -119,6 +145,7 @@ ProjectCard.propTypes = {
   Hotline: PropTypes.string.isRequired,
   Email: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
+  units: PropTypes.number.isRequired,
 };
 
 const FilterControls = React.memo(
@@ -129,53 +156,88 @@ const FilterControls = React.memo(
     onInsideDhakaToggle,
     onOutsideDhakaToggle,
     onSearchChange,
+    insideDhakaCount,
+    outsideDhakaCount,
+    totalUnits,
+    filteredTotalUnits,
   }) => (
-    <div className="sticky top-[70px] z-10 rounded-xl shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between">
-      <motion.label
-        className={`${
-          filterInsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
-        } text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md flex items-center`}
-        layout
-        transition={ANIMATION_SPRING}
-        whileTap={{ scale: 0.9 }}
-        variants={buttonVariants}
-        whileHover="hover">
-        Inside Dhaka
-        <input
-          type="checkbox"
-          checked={filterInsideDhaka}
-          onChange={onInsideDhakaToggle}
-          className="ml-2 form-checkbox h-4 w-4 rounded"
-        />
-      </motion.label>
+    <div className="sticky top-[70px] z-10 rounded-xl shadow-2xl bg-white flex flex-col-reverse gap-2 sm:flex-row p-5 row-span-1 mx-12 xl:mx-auto xl:max-w-7xl justify-between items-center">
+      <div className="flex gap-2">
+        <motion.label
+          className={`${
+            filterInsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
+          } text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md flex items-center`}
+          layout
+          transition={ANIMATION_SPRING}
+          whileTap={{ scale: 0.9 }}
+          variants={buttonVariants}
+          whileHover="hover">
+          Inside Dhaka
+          <motion.span
+            className="ml-2 bg-white text-[#00984a] rounded-full px-2 py-1 text-xs font-bold"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 500 }}>
+            {insideDhakaCount}
+          </motion.span>
+          <input
+            type="checkbox"
+            checked={filterInsideDhaka}
+            onChange={onInsideDhakaToggle}
+            className="ml-2 form-checkbox h-4 w-4 rounded"
+          />
+        </motion.label>
 
-      <motion.label
-        className={`${
-          filterOutsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
-        } text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md flex items-center`}
-        layout
-        transition={ANIMATION_SPRING}
-        whileTap={{ scale: 0.9 }}
-        variants={buttonVariants}
-        whileHover="hover">
-        Outside Dhaka
-        <input
-          type="checkbox"
-          checked={filterOutsideDhaka}
-          onChange={onOutsideDhakaToggle}
-          className="ml-2 form-checkbox h-4 w-4 rounded"
-        />
-      </motion.label>
+        <motion.label
+          className={`${
+            filterOutsideDhaka ? "bg-[#00984a]" : "bg-gray-500"
+          } text-white font-ubuntu font-medium py-2 px-4 rounded-md focus:outline-none shadow-md flex items-center`}
+          layout
+          transition={ANIMATION_SPRING}
+          whileTap={{ scale: 0.9 }}
+          variants={buttonVariants}
+          whileHover="hover">
+          Outside Dhaka
+          <motion.span
+            className="ml-2 bg-white text-[#00984a] rounded-full px-2 py-1 text-xs font-bold"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 500 }}>
+            {outsideDhakaCount}
+          </motion.span>
+          <input
+            type="checkbox"
+            checked={filterOutsideDhaka}
+            onChange={onOutsideDhakaToggle}
+            className="ml-2 form-checkbox h-4 w-4 rounded"
+          />
+        </motion.label>
+      </div>
 
-      <motion.input
-        className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green font-ubuntu"
-        type="text"
-        placeholder="Search Branches"
-        value={searchTerm}
-        onChange={onSearchChange}
-        variants={searchBoxVariants}
-        whileHover="hover"
-      />
+      <div className="flex items-center gap-4">
+        <motion.div
+          className="flex items-center bg-gray-100 px-3 py-1 rounded-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}>
+          <span className="text-[#00984a] font-ubuntu font-medium">
+            Units:{" "}
+            <span className="font-bold">
+              {filteredTotalUnits}/{totalUnits}
+            </span>
+          </span>
+        </motion.div>
+
+        <motion.input
+          className="px-2 py-1 border text-[#00984a] border-PDCL-green bg-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-PDCL-green font-ubuntu"
+          type="text"
+          placeholder="Search Branches"
+          value={searchTerm}
+          onChange={onSearchChange}
+          variants={searchBoxVariants}
+          whileHover="hover"
+        />
+      </div>
     </div>
   )
 );
@@ -187,6 +249,30 @@ FilterControls.propTypes = {
   onInsideDhakaToggle: PropTypes.func.isRequired,
   onOutsideDhakaToggle: PropTypes.func.isRequired,
   onSearchChange: PropTypes.func.isRequired,
+  insideDhakaCount: PropTypes.number.isRequired,
+  outsideDhakaCount: PropTypes.number.isRequired,
+  totalUnits: PropTypes.number.isRequired,
+  filteredTotalUnits: PropTypes.number.isRequired,
+};
+
+const useBranchCounts = (branches) => {
+  return useMemo(() => {
+    const totalBranches = branches.length;
+    const totalUnits = branches.reduce((sum, branch) => sum + branch.units, 0);
+
+    const insideDhakaBranches = branches.filter(
+      (b) => b.city.toLowerCase() === "dhaka"
+    ).length;
+
+    const outsideDhakaBranches = totalBranches - insideDhakaBranches;
+
+    return {
+      totalBranches,
+      insideDhakaBranches,
+      outsideDhakaBranches,
+      totalUnits,
+    };
+  }, [branches]);
 };
 
 const Branch = () => {
@@ -210,6 +296,7 @@ const Branch = () => {
             address: branch.address.replace(/<[^>]*>/g, ""),
             Hotline: branch.telephone_2 || branch.telephone_1 || "N/A",
             Email: branch.email,
+            units: countUnits(branch.name), // Pre-calculate units here
           }));
           setBranches(cleanedBranches);
         } else {
@@ -258,6 +345,20 @@ const Branch = () => {
     return result;
   }, [branches, filterState]);
 
+  // Calculate counts
+  const {
+    totalBranches,
+    insideDhakaBranches,
+    outsideDhakaBranches,
+    totalUnits,
+  } = useBranchCounts(branches);
+  const {
+    totalBranches: filteredTotalBranches,
+    insideDhakaBranches: filteredInsideDhakaBranches,
+    outsideDhakaBranches: filteredOutsideDhakaBranches,
+    totalUnits: filteredTotalUnits,
+  } = useBranchCounts(filteredBranches);
+
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -271,9 +372,27 @@ const Branch = () => {
   return (
     <div className="bg-[#ffffff]">
       <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
-        <h2 className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu">
+        <motion.h2
+          className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}>
           BRANCHES
-        </h2>
+          <motion.span
+            className="ml-2 bg-[#00984a] text-white rounded-full px-3 py-1 text-sm font-bold"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 500 }}>
+            {filteredTotalBranches}/{totalBranches}
+          </motion.span>
+          <motion.span
+            className="ml-2 bg-[#00984a] text-white rounded-full px-3 py-1 text-sm font-bold"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 500 }}>
+            {filteredTotalUnits} Units
+          </motion.span>
+        </motion.h2>
       </div>
 
       <FilterControls
@@ -283,6 +402,10 @@ const Branch = () => {
         onInsideDhakaToggle={handleInsideDhakaToggle}
         onOutsideDhakaToggle={handleOutsideDhakaToggle}
         onSearchChange={handleSearchChange}
+        insideDhakaCount={filteredInsideDhakaBranches}
+        outsideDhakaCount={filteredOutsideDhakaBranches}
+        totalUnits={totalUnits}
+        filteredTotalUnits={filteredTotalUnits}
       />
 
       <div className="flex mx-auto pb-10 pt-[100px] sm:w-[80%] p-3 max-w-7xl justify-center flex-wrap gap-4">
@@ -301,6 +424,7 @@ const Branch = () => {
               Hotline={branch.Hotline}
               Email={branch.Email}
               heading={branch.cleanedName}
+              units={branch.units}
             />
           ))
         ) : (
