@@ -170,7 +170,6 @@ const HomeContent = () => {
         );
 
         if (data?.success) {
-          // Calculate total units
           let totalUnits = 0;
           data.data.data.forEach((branch) => {
             const unitMatch = branch.name.match(/\(U\d+(?:,\s*U\d+)*\)/g);
@@ -179,7 +178,7 @@ const HomeContent = () => {
                 totalUnits += (match.match(/U\d+/g) || []).length;
               });
             } else {
-              totalUnits += 1; // Count as 1 unit if no units specified
+              totalUnits += 1;
             }
           });
 
@@ -204,12 +203,17 @@ const HomeContent = () => {
     fetchBranchData();
   }, []);
 
+
   const stats = [
     {
       icon: "M192 48c0-26.5 21.5-48 48-48H400c26.5 0 48 21.5 48 48V512H368V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H192V48zM48 96H160V512H48c-26.5 0-48-21.5-48-48V320H80c8.8 0 16-7.2 16-16s-7.2-16-16-16H0V224H80c8.8 0 16-7.2 16-16s-7.2-16-16-16H0V144c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v48H560c-8.8 0-16 7.2-16 16s7.2 16 16 16h80v64H560c-8.8 0-16 7.2-16 16s7.2 16 16 16h80V464c0 26.5-21.5 48-48 48H480V96H592zM312 64c-8.8 0-16 7.2-16 16v24H272c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h24v24c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16V152h24c8.8 0 16-7.2 16-16V120c0-8.8-7.2-16-16-16H344V80c0-8.8-7.2-16-16-16H312z",
       value: branchData.loading ? 0 : branchData.totalBranches,
       label: "BRANCHES",
-      suffixExt: branchData.loading ? "" : `(${branchData.totalUnits} Units)`,
+    },
+    {
+      icon: "M48 0C21.5 0 0 21.5 0 48V464c0 26.5 21.5 48 48 48h96V432c0-26.5 21.5-48 48-48s48 21.5 48 48v80h96c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H48zM64 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V240zm112-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V240c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V240zM80 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V112zM272 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16z",
+      value: branchData.loading ? 0 : branchData.totalUnits,
+      label: "UNITS",
     },
     {
       icon: "M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96v32V480H384V128 96 56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM96 96h24C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H96V96zM416 480h32c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H416V480zM224 208c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H288v48c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V320H176c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h48V208z",
@@ -237,7 +241,7 @@ const HomeContent = () => {
       <div className="overflow-hidden mt-[-140px] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap justify-center items-center py-5">
-            <div className="flex flex-col lg:flex-row gap-5 mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 gap-4 mx-auto">
               {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
               ))}
