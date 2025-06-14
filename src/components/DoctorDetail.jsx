@@ -1,7 +1,7 @@
 import Marquee from "react-fast-marquee";
 import "@fontsource/ubuntu";
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import {
   drBackground,
@@ -24,17 +24,11 @@ import { MdPeople, MdMedicalServices } from "react-icons/md";
 
 const DoctorDetail = () => {
   const { doctorId } = useParams();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
   const [doctor, setDoctor] = useState(null);
   const [similarDoctors, setSimilarDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingSimilar, setLoadingSimilar] = useState(true);
   const [error, setError] = useState(null);
-
-  const branchIds = queryParams.get("branches") || "";
-  const specialistIds = queryParams.get("specialists") || "";
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -44,6 +38,11 @@ const DoctorDetail = () => {
         );
         if (response.data.success) {
           setDoctor(response.data.data);
+          // Fetch similar doctors using the data from the response
+          fetchSimilarDoctors(
+            response.data.data.branches.map((b) => b.branch_id).join(","),
+            response.data.data.specialists.map((s) => s.specialist_id).join(",")
+          );
         } else {
           setError("Doctor not found");
         }
@@ -55,7 +54,7 @@ const DoctorDetail = () => {
       }
     };
 
-    const fetchSimilarDoctors = async () => {
+    const fetchSimilarDoctors = async (branchIds, specialistIds) => {
       try {
         if (branchIds && specialistIds) {
           const response = await axios.get(
@@ -76,29 +75,11 @@ const DoctorDetail = () => {
     };
 
     fetchDoctor();
-    fetchSimilarDoctors();
-  }, [doctorId, branchIds, specialistIds]);
+  }, [doctorId]);
 
+  // Simplified leave status check using API flags
   const isDoctorOnLeave = () => {
-    if (!doctor?.absent_message) return false;
-
-    const dateRegex = /<b>.*?(\d{1,2})(?:st|nd|rd|th)? (\w{3}) (\d{4})<\/b>/g;
-    const dates = [];
-    let match;
-
-    while ((match = dateRegex.exec(doctor.absent_message)) !== null) {
-      const day = match[1];
-      const month = match[2];
-      const year = match[3];
-      dates.push(new Date(`${month} ${day}, ${year}`));
-    }
-
-    if (dates.length === 2) {
-      const today = new Date();
-      return today >= dates[0] && today <= dates[1];
-    }
-
-    return false;
+    return doctor?.on_leave === 1;
   };
 
   if (loading) {
@@ -165,7 +146,7 @@ const DoctorDetail = () => {
               </h1>
               <h3 className="text-gray-600 font-lg font-medium leading-6">
                 <MdMedicalServices className="inline mr-1" />
-                {doctor.specialities}
+                {doctor.specialists[0]?.specialist_name || "Not specified"}
               </h3>
               <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                 <li className="flex items-center py-3">
@@ -199,24 +180,22 @@ const DoctorDetail = () => {
                 </div>
               ) : similarDoctors.length > 0 ? (
                 <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
-                  {similarDoctors.map((doctor) => (
+                  {similarDoctors.map((doc) => (
                     <div
-                      key={doctor.id}
+                      key={doc.id}
                       className="text-center my-2 p-1 hover:bg-gray-50 rounded">
-                      <Link
-                        to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
-                        className="block">
+                      <Link to={`/doctordetail/${doc.id}`} className="block">
                         <img
                           className="h-16 w-16 rounded-full mx-auto object-cover"
-                          src={doctor.image}
-                          alt={doctor.name}
+                          src={doc.image}
+                          alt={doc.name}
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = "https://via.placeholder.com/64";
                           }}
                         />
                         <p className="text-sm mt-1 text-gray-700 line-clamp-2">
-                          {doctor.name}
+                          {doc.name}
                         </p>
                       </Link>
                     </div>

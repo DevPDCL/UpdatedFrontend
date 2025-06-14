@@ -351,7 +351,7 @@ const DoctorSearch = () => {
   );
 };
 
-const DoctorCard = ({ doctor }) => {
+const DoctorCard = React.memo(({ doctor }) => {
   const cardBackgroundColor =
     "bg-gradient-to-b from-transparent via-transparent to-[#f0fff0]/80";
   const backgroundColor = "group-hover:bg-[#d7ffd7]";
@@ -378,29 +378,22 @@ const DoctorCard = ({ doctor }) => {
       .filter(Boolean)
       .join(",") || "";
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); 
+    const formatDate = (dateString) => {
+      if (!dateString) return "";
+      const options = { day: "numeric", month: "short", year: "numeric" };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
-  const absentFrom = doctor.absent_from ? new Date(doctor.absent_from) : null;
-  const absentTo = doctor.absent_to ? new Date(doctor.absent_to) : null;
+    const handleImageError = (e) => {
+      e.target.style.display = "none";
+      e.target.nextElementSibling.style.display = "flex";
+    };
 
-  if (absentFrom) absentFrom.setHours(0, 0, 0, 0);
-  if (absentTo) absentTo.setHours(0, 0, 0, 0);
-
-  const isAbsent = absentFrom && absentTo && today >= absentFrom && today <= absentTo;
-  const isFutureAbsent = absentFrom && absentTo && today < absentFrom;
-  const showAbsentPeriod = absentTo && absentTo >= today;
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const options = { day: "numeric", month: "short", year: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const handleImageError = (e) => {
-    e.target.style.display = "none";
-    e.target.nextElementSibling.style.display = "flex";
-  };
+    // Simplified leave status using API flags
+    const isAbsent = doctor.on_leave === 1;
+    const isFutureAbsent = doctor.on_future_leave === 1;
+    const showAbsentPeriod =
+      doctor.absent_to && new Date(doctor.absent_to) >= new Date();
 
   return (
     <Link
@@ -525,6 +518,6 @@ const DoctorCard = ({ doctor }) => {
       </div>
     </Link>
   );
-};
+});
 
 export default DoctorSearch;
