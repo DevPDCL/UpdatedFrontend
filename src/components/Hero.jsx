@@ -14,6 +14,8 @@ import Image9 from "../assets/HeroImages/9.webp";
 import Image10 from "../assets/HeroImages/10.webp";
 import Image11 from "../assets/HeroImages/11.webp";
 import Image12 from "../assets/HeroImages/12.webp";
+import Image13 from "../assets/HeroImages/13.webp";
+import Image14 from "../assets/HeroImages/14.webp";
 
 const images = [
   { id: 1, src: Image1 },
@@ -28,6 +30,8 @@ const images = [
   { id: 10, src: Image10 },
   { id: 11, src: Image11 },
   { id: 12, src: Image12 },
+  { id: 13, src: Image13 },
+  { id: 14, src: Image14 },
 ];
 
 const Hero = () => {
