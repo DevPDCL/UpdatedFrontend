@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 // Import all images individually
-import Image1 from "../assets/HeroImages/1.webp";
+// import Image1 from "../assets/HeroImages/1.webp";
 import Image2 from "../assets/HeroImages/2.webp";
 import Image3 from "../assets/HeroImages/3.webp";
 import Image4 from "../assets/HeroImages/4.webp";
@@ -18,7 +18,7 @@ import Image13 from "../assets/HeroImages/13.webp";
 import Image14 from "../assets/HeroImages/14.webp";
 
 const images = [
-  { id: 1, src: Image1 },
+  // { id: 1, src: Image1 },
   { id: 2, src: Image2 },
   { id: 3, src: Image3 },
   { id: 4, src: Image4 },
