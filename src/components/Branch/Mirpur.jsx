@@ -54,12 +54,10 @@ const Mirpur = () => {
         <span className="w-4/12 lg:w-2/12 aspect-square bg-gradient-to-tr from-blue-600 to-[#00984a] absolute -top-5 lg:left-0 rounded-full skew-y-12 blur-2xl opacity-40 skew-x-12 rotate-90"></span>
         <div
           className="relative flex flex-col items-center text-center lg:text-left lg:py-7 xl:py-8 
-            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2"
-        >
+            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2">
           <h1
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
-            font-bold text-[#00664a]"
-          >
+            font-bold text-[#00664a]">
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchInfo.heading}{" "}
@@ -83,19 +81,13 @@ const Mirpur = () => {
         <SearchBoxBranch branchId={branchId} />
       </div>
       <div className="relative">
-        <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
+        <div className="mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
           <img
             src={branchInfo.braManImg}
             alt="Mr. Abdullah Al Mahmud"
-            className="relative mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
+            className="relative my-auto mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
           />
           <div className="flex lg:item-start">
-            <h1 className="text-gray-500/30 text-center absolute font-bold text-[96px] -mt-10 ml-5 lg:-mt-20 lg:-ml-48 overflow-hidden">
-              Branch{" "}
-              <h1 className="text-gray-500/20 ml-10 -mt-16 lg:-mt-14 text-[72px] lg:ml-48">
-                Manager
-              </h1>
-            </h1>
             <div className="relative mt-24 p-5">
               <h1 className="text-gray-600 font-bold text-[36px]">
                 {branchInfo.braManName}
@@ -103,16 +95,43 @@ const Mirpur = () => {
               <h1 className="text-gray-500 font-bold text-[18px]">
                 {branchInfo.braManDesignation}
               </h1>
-              <p className="text-black w-full">
+              <p className="text-gray-800 w-full">
                 {" "}
-                <br />
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia d."
+                <br />"
+                <span className="font-bold text-[#00984a]">
+                  {" "}
+                  Bismillahir Rahmanir Raheem As-Salamu Alaikum wa Rahmatullahi
+                  wa Barakatuh,
+                </span>
+                <br /> <br />
+                Welcome to{" "}
+                <span className="font-bold text-[#00984a]">
+                  Popular Diagnostic Centre
+                </span>
+                . May Allah (SWT) bless you with health and ease on your path to
+                healing. It is our honor to serve you with sincerity,
+                compassion, and trust. <br /> <br />
+                Since 1983,{" "}
+                <span className="font-bold text-[#00984a]">
+                  Popular Diagnostic Centre Ltd.
+                </span>{" "}
+                has played a leading role in Bangladesh’s healthcare landscape.
+                Continuing that legacy, the Mirpur branch was established in
+                2012 to deliver modern, dependable diagnostics to this vibrant
+                part of Dhaka.
+                <br /> <br />
+                Here, your health is our highest priority. Through world-class
+                technology, expert professionals, and a commitment to accuracy,
+                we ensure fast, reliable results, empowering you and your
+                doctors to make confident decisions. <br />
+                At Popular Mirpur, every patient is family. Behind every test is
+                a human story, and we are here to support yours with care,
+                clarity, and unwavering respect. <br />
+                <span className="font-medium italic text-[#00984a]">
+                  Let us be part of your journey, where precision meets
+                  compassion, every day.
+                </span>
+                "
               </p>
             </div>
           </div>

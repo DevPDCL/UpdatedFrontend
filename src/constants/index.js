@@ -643,7 +643,7 @@ const branch = [
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     braManImg: MrAbdullahAlMahmud,
-    braManName: "Mr. Abdullah Al Mahmud",
+    braManName: "Abdullah Al Mahmud",
     braManDesignation: "AGM & Head of Branch",
     name: "Popular Diagnostic Centre Ltd. (Mirpur)",
     address:
