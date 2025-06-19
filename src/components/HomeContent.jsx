@@ -7,7 +7,8 @@ import video from "../assets/contacts.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
-
+import { FaPhoneAlt } from "react-icons/fa";
+import { MdLocalHospital } from "react-icons/md";
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
   const countRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -239,9 +240,9 @@ const HomeContent = () => {
   return (
     <div className="relative pt-20 fontFamily-ubuntu">
       <div className="overflow-hidden mt-[-140px] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap justify-center items-center py-5">
-            <div className="grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 gap-4 mx-auto">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
               {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
               ))}
