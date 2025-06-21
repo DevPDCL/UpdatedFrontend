@@ -70,7 +70,7 @@ const Noakhali = () => {
               <h1 className="text-gray-500 font-bold text-[18px]">
                 {branchInfo.braManDesignation}
               </h1>
-              <p className="text-black w-full">
+             {/* <p className="text-black w-full">
                 {" "}
                 <br />
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -80,7 +80,7 @@ const Noakhali = () => {
                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia d."
-              </p>
+              </p>*/}
             </div>
           </div>
         </div>

@@ -173,7 +173,7 @@ const Goals = () => {
                 title: "Expanding Our Reach",
                 description:
                   "New branches opened at Badda, Dinajpur and Mirpur to serve more communities across the country.",
-                image: goals2,
+                //image: goals2,
               },
               {
                 year: "2017",
