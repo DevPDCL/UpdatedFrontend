@@ -63,7 +63,7 @@ const App = () => {
     <div>
       <Nav />
       <Navbar />
-      <ChatWidget />
+      {/* <ChatWidget /> */}
       <Outlet />
       <Sidemenu />
       <Footer />
