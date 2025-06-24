@@ -82,7 +82,7 @@ const Hotlines = () => {
 
           <div className="relative flex flex-col items-center">
             <h1 className="py-8 text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Insude <span className="text-[#00984a]">Dhaka</span>
+              Inside <span className="text-[#00984a]">Dhaka</span>
             </h1>
             <div className="rounded-lg flex justify-center items-center flex-wrap">
               {dhakaBranches.map((props) => (
