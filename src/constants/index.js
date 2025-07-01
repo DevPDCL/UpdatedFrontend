@@ -788,7 +788,7 @@ const branch = [
     image: Gazipur,
     Hotline: "09666787816",
     Email: "info@populardiagnostic.com",
-    braCity: "Dhaka",
+    braCity: "Gazipur",
     location:
       "https://maps.google.com/maps?q=23.9969328,90.4148069&hl=es;z=14&output=embed",
 

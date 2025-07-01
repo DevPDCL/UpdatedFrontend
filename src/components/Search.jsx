@@ -528,7 +528,7 @@ const Search = () => {
 
   const renderDoctorTab = () => (
     <form className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-6 md:gap-0">
+      <div className="flex flex-col md:grid md:grid-cols-3 md:gap-4 gap-1">
         <div className="relative z-0 col-span-2 p-1 w-full mb-0 group">
           <select
             className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"

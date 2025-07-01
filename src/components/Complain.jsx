@@ -323,15 +323,8 @@ function Complain() {
           
         </div>
       </form>
-
       <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        <p className=" pt-0 text-[11px] mx-auto text-[black] font-small font-ubuntu">
-          This form was created inside of Popular Pharmaceuticals Ltd.. Report
-          Abuse
-        </p>
-      </div>
-      <div className="flex max-w-[40rem]  bg-[#e2f0e5] pb-3 mx-auto">
-        <p className=" pt-0 text-[24px] mx-auto text-gray-900/50 font-bold font-ubuntu">
+        <p className=" pt-0 text-[24px] mx-auto text-gray-800/50 font-bold font-ubuntu">
           PDCL Forms
         </p>
       </div>
