@@ -41,6 +41,7 @@ import {
   UttaraGaribENewaz,
   UttaraU1,
   UttaraU2,
+  UttaraU3,
   AchintoKumarNag,
   AjoyKumarDatta,
   MdSohelChowdhury,
@@ -694,7 +695,7 @@ const branch = [
 
         name: "Uttara (U-1)",
         address:
-          "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
+          "House # 23, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
       },
       {
         unitID: 2,
@@ -704,7 +705,17 @@ const branch = [
           "https://maps.google.com/maps?q=23.8613902,90.4007901&hl=es;z=14&output=embed",
         name: "Uttara (U-2)",
         address:
-          "House # 25, Road # 7, Sector # 4, Jashim Uddin Moar, Uttara, Dhaka.",
+          "House # 21, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
+      },
+      {
+        unitID: 3,
+        BranchUnit: "U3",
+        image: UttaraU3,
+        location:
+          "https://maps.google.com/maps?q=23.8610668,90.40031&hl=es;z=14&output=embed",
+        name: "Uttara (U-3)",
+        address:
+          "House # 25, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
       },
     ],
   },

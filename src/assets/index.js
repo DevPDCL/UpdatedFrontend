@@ -51,6 +51,7 @@ import ShyamoliU2 from "./PDCLbranches/ShyamoliU2.webp";
 import UttaraGaribENewaz from "./PDCLbranches/UttaraGaribENewaz.webp";
 import UttaraU1 from "./PDCLbranches/UttaraU1.webp";
 import UttaraU2 from "./PDCLbranches/UttaraU2.webp";
+import UttaraU3 from "./PDCLbranches/UttaraU3.webp";
 
 import AchintoKumarNag from "./PDCLbranches/Managers/AchintoKumarNag.webp";
 import AjoyKumarDatta from "./PDCLbranches/Managers/AjoyKumarDatta.webp";
@@ -196,6 +197,7 @@ export {
   UttaraGaribENewaz,
   UttaraU1,
   UttaraU2,
+  UttaraU3,
   AchintoKumarNag,
   AjoyKumarDatta,
   MdSohelChowdhury,
