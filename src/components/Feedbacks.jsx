@@ -154,7 +154,7 @@ const Feedbacks = () => {
         whileInView={CARD_ANIMATION.animate}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
+        className="text-center text-[#00984a] font-bold mt-20 mb-8 font-ubuntu text-3xl">
         What Our Clients Say
       </motion.h2>
 

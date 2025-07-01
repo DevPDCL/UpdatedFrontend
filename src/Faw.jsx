@@ -1,389 +1,368 @@
-// DoctorDetail.js
-import Marquee from "react-fast-marquee";
+import React, { useEffect, useState } from "react";
 import "@fontsource/ubuntu";
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { doctorData1 } from "../constants"; // Import your doctor data
-import { drBackground, Adecard, Ambrosol, Amlovas, Vonomax, Anorel, Cebergol } from "../assets";
+import video from "../../assets/heroVideo.mp4";
+import { SearchBoxBranch } from "../../components";
+import { branch } from "../../constants";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { FaUserMd, FaFlask, FaAward, FaParking, FaTv } from "react-icons/fa";
 
-const DoctorDetail = () => {
-  const { doctorId } = useParams();
-  const selectedDoctor = doctorData1.doctors.find(
-    (doctor) => doctor.drID.toString() === doctorId
-  );
+const Dhanmondi = () => {
+  const branchInfo = branch.find((b) => b.heading === "Dhanmondi");
+  const branchName = branchInfo.heading;
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const branchId = queryParams.get("id");
 
-  if (!selectedDoctor) {
-    return <div>Doctor not found.</div>;
-  }
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const {
-    drName,
-    drSpecilist,
-    drDegree,
-    chember,
-    drNumber,
-    email,
-    drGender,
-    newPatientVisit,
-    oldPatient,
-    report,
-    //api.populardiagnostic.com/api/doctor-suggestions
-    https: image,
-    currPractice,
-  } = selectedDoctor;
-
-  const handleClick1 = () => {
-    window.open(url, "_blank", "noopener,noreferrer");
+  const fetchDoctors = async (pageNum = 1) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://api.populardiagnostic.com/api/doctors?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=1&page=${pageNum}`
+      );
+      setDoctors(response.data.data.data);
+      setTotalPages(response.data.data.last_page);
+      setPage(pageNum);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Filter for doctors in the same chamber and specialist, excluding the current doctor
-  const relatedDoctors = doctorData1.doctors.filter((doctor) => {
-    return (
-      doctor.chember.branch === chember.branch &&
-      doctor.drSpecilist === drSpecilist &&
-      doctor.drID.toString() !== doctorId
-    );
-  });
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
-  
   return (
-    <div className="doctor-detail bg-gray-100">
-      <div className="sm:container mx-auto py-10 px-5">
-        <div className="flex flex-wrap -mx-2">
-          {/* Left Side */}
-          <div className="w-full md:w-3/12 px-2 mb-4">
-            {/* Profile Card */}
-            <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
-              <div className="image overflow-hidden rounded-xl shadow-xl">
-                {image ? (
-                  <img
-                    className="h-auto w-full mx-auto"
-                    src={image}
-                    alt="Profile"
-                    style={{
-                      position: "relative",
-                      zIndex: 1,
-                      backgroundImage: `url(${drBackground})`,
-                    }}
-                  />
-                ) : (
-                  <div className="no-image font-ubuntu flex flex-col justify-center items-center p-2 h-60">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="256"
-                      height="256"
-                      viewBox="0 0 256 256">
-                      <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                        <circle
-                          cx="58.145"
-                          cy="74.615"
-                          r="13.145"
-                          fill="#ffffff"
-                        />
-                        <path
-                          d="M45 40.375c-9.415 0-17.118-7.703-17.118-17.118v-6.139C27.882 7.703 35.585 0 45 0s17.118 7.703 17.118 17.118v6.139C62.118 32.672 54.415 40.375 45 40.375z"
-                          fill="#d7ffd7"
-                        />
-                        <path
-                          d="M55.078 42.803L45 54.44 34.922 42.803c-12.728 2.118-22.513 13.239-22.513 26.544v17.707c0 1.621 1.326 2.946 2.946 2.946h59.29c1.621 0 2.946-1.326 2.946-2.946V69.346c0-13.305-9.786-24.426-22.513-26.544zM67.204 76.875c0 .667-.541 1.208-1.208 1.208h-3.877v3.877c0 .667-.541 1.208-1.208 1.208H56.73c-.667 0-1.208-.541-1.208-1.208v-3.877h-3.877c-.667 0-1.208-.541-1.208-1.208v-4.179c0-.667.541-1.208 1.208-1.208h3.877V67.61c0-.667.541-1.208 1.208-1.208h4.179c.667 0 1.208.541 1.208 1.208v3.877h3.877c.667 0 1.208.541 1.208 1.208v4.179z"
-                          fill="#d7ffd7"
-                        />
-                      </g>
-                    </svg>
-                    <p className="text-gray-700">No Image Available</p>
-                  </div>
-                )}
-              </div>
-              <h1 className="pt-2 text-gray-700 font-bold text-xl leading-8 my-1">
-                {drName}
-              </h1>
-              <h3 className="text-gray-600 font-lg font-medium leading-6">
-                Specialization: {drSpecilist}
-              </h3>
-              <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-                <li className="flex items-center py-3">
-                  <span>Status</span>
-                  <span className="ml-auto">
-                    <span className="bg-[#00984a] py-1 px-2 rounded text-white text-sm">
-                      Active
-                    </span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-            {/* End of profile card  */}
-            <div className="my-4"></div>
-            {/* Similar Doctor card  */}
-            <div className="bg-white rounded-xl shadow-lg p-3 hover:shadow-xl">
-              <div className="flex items-center justify-center space-x-3 font-semibold text-gray-900 text-xl leading-8 font-ubuntu">
-                <span className="text-[#00984a]">
-                  {" "}
-                  <svg
-                    className="h-5 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                </span>
-                <span>More from {drSpecilist}</span>
-              </div>
-              <h2 className="text-gray-500 text-center pb-2">
-                {" "}
-                For different schedules
+    <div className="font-[Ubuntu]">
+      {/* Enhanced Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/30 z-10" />
+        <video
+          className="w-full h-[70vh] object-cover"
+          alt="Dhanmondi Branch Video"
+          src={video}
+          autoPlay
+          loop
+          muted
+        />
+        <div className="absolute inset-0 flex items-center justify-center z-20 px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center max-w-4xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+              Popular Diagnostic Centre
+            </h1>
+            <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 inline-block">
+              <h2 className="text-2xl md:text-3xl font-bold text-white">
+                {branchName} Branch
               </h2>
-              <hr className="p-2"></hr>
-              {relatedDoctors.length > 0 ? (
-                <div className="grid grid-cols-2 text-[#00984a]">
-                  {relatedDoctors.map((doctor) => (
-                    <div key={doctor.drID} className="text-center my-2">
-                      <Link to={`/doctordetail/${doctor.drID}`}>
-                        <img
-                          className="h-16 w-16 rounded-full mx-auto"
-                          src={doctor.image}
-                          alt={doctor.drName}
-                        />
-                        <p>{doctor.drName}</p>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="p-5 font-ubuntu text-center text-gray-800">
-                  No {drSpecilist} doctors available in similar branches.
-                </div>
-              )}
             </div>
-            {/* End of Similar Doctor card  */}
-          </div>
-          {/* Right Side */}
-          <div className="w-full md:w-8/12 px-2">
-            {/* Profile tab  */}
-            {/* About Section  */}
-            <div className="bg-white p-3 shadow-lg rounded-xl">
-              <div>
-                <h1 className="text-[#00984a] p-5 text-center font-ubuntu font-bold text-[26px]">
-                  {" "}
-                  {currPractice}{" "}
-                </h1>
-              </div>
-              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
-                <span className="text-[#00984a]">
-                  <svg
-                    className="h-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </span>
-                <span className="tracking-wide">About</span>
-              </div>
-              <div className="text-gray-700">
-                <div className="grid md:grid-cols-2 text-sm">
-                  <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold">Degrees:</div>
-                    <div className="px-4 py-2">{drDegree}</div>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold">Experience</div>
-                    <div className="px-4 py-2">
-                      <a
-                        className="text-[#00984a]"
-                        href="mailto:jane@example.com">
-                        {email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Link
-                to="http://appointment.populardiagnostic.com/appointment"
-                target="_blank"
-                rel="noopener noreferrer">
-                <button
-                  className="block w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
-                  onClick={handleClick1}
-                  type="button">
-                  Book an Appointment
-                </button>
-              </Link>
-            </div>
-            {/* End of about section */}
-            <div className="my-4"></div>
-            {/* Chamber  */}
-            <div className="bg-white p-3 shadow-lg rounded-xl">
-              <div>
-                <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                  <span className="text-[#00984a]">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5"
-                      viewBox="0 0 90 90">
-                      <path
-                        d="M51.948 73.273H38.052c-1.104 0-2-0.896-2-2v-9.621h-9.621c-1.104 0-2-0.896-2-2V45.757c0-1.104 0.896-2 2-2h9.621v-9.62c0-1.104 0.896-2 2-2h13.896c1.104 0 2 0.896 2 2v9.62h9.62c1.104 0 2 0.896 2 2v13.895c0 1.104-0.896 2-2 2h-9.62v9.621C53.948 72.378 53.053 73.273 51.948 73.273z M40.052 69.273h9.896v-9.621c0-1.104 0.896-2 2-2h9.62v-9.895h-9.62c-1.104 0-2-0.896-2-2v-9.62h-9.896v9.62c0 1.104-0.896 2-2 2h-9.621v9.895h9.621c1.104 0 2 0.896 2 2V69.273z"
-                        fill="#00984a"
-                      />
-                      <path
-                        d="M78.113 84.056H11.887c-1.104 0-2-0.896-2-2V30.312c0-1.104 0.896-2 2-2s2 0.896 2 2v49.745h62.226V30.067c0-1.104 0.896-2 2-2s2 0.896 2 2v51.989C80.113 83.161 79.218 84.056 78.113 84.056z"
-                        fill="#00984a"
-                      />
-                      <path
-                        d="M2.002 38.835c-0.65 0-1.287-0.316-1.671-0.898c-0.608-0.922-0.354-2.163 0.568-2.771L44.687 6.274c0.679-0.449 1.561-0.439 2.231 0.019L89.13 35.184c0.911 0.624 1.145 1.869 0.521 2.78c-0.624 0.912-1.867 1.146-2.78 0.521L45.768 10.353L3.102 38.504C2.762 38.728 2.38 38.835 2.002 38.835z"
-                        fill="#00984a"
-                      />
-                    </svg>
-                  </span>
-                  <span className="tracking-wide text-center">Chamber</span>
-                </div>
-                <div
-                  className="chambers-grid m-0 p-0 text-black w-full md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1 mx-auto"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                    gap: "20px",
-                  }}>
-                  {selectedDoctor.chember.map((chamber, index) => (
-                    <div
-                      key={index}
-                      className="chamber-card p-4 border border-gray-300 rounded-lg">
-                      <h3 className="font-medium text-center">
-                        {chamber.branch} Branch
-                      </h3>
-                      <p className="text-center">
-                        {chamber.building}, Room: {chamber.room}
-                      </p>
-                      <div className="text-center font-bold text-gray-700 pt-2 text-[24px]">
-                        Schedule
-                      </div>
-                      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                          <div className="overflow-hidden">
-                            <table className="min-w-full text-center">
-                              <thead className="border-b">
-                                <tr>
-                                  <th
-                                    scope="col"
-                                    className="text-sm font-medium text-gray-900 px-6 py-4">
-                                    Day
-                                  </th>
-                                  <th
-                                    scope="col"
-                                    className="text-sm font-medium text-gray-900 px-6 py-4">
-                                    Time
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {chamber.weekday.map((day, dayIndex) => (
-                                  <tr key={dayIndex} className="border-b">
-                                    <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                      {day.day}
-                                    </td>
-                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      {day.time}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* End of Chamber grid */}
-            </div>
-            {/* End of profile tab */}
+            <p className="mt-6 text-lg text-white max-w-2xl mx-auto drop-shadow-md">
+              Established June 1983 | 7 Units | House # 16, Road # 2, Dhanmondi,
+              Dhaka 1205
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-8 bg-[#00664a] hover:bg-[#00984a] text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 shadow-lg">
+              Book an Appointment
+            </motion.button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Key Features Section */}
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#00664a]">
+              Why Choose Our Dhanmondi Branch?
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-gray-600">
+              As our flagship location since 1983, we offer unparalleled
+              diagnostic services
+            </p>
           </div>
 
-          <div className="md:w-1/12 h-screen hidden sm:block">
-            {/* Advertise grid */}
-            <div className="flex flex-col items-center overflow-x-hidden font-bold h-full">
-              <Marquee direction="up" className="h-full">
-                <a
-                  href="https://www.popular-pharma.com/products/82"
-                  target="_blank">
-                  <div className="p-10 text-gray-600">
-                    {" "}
-                    <img src={Adecard} alt="Suggested Medicines" />
-                    <h1 className=" text-gray-800 flex justify-center">
-                      Adec <span className="text-[#ea7726]">ard</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/519"
-                  target="_blank">
-                  <div className="p-10 text-gray-600">
-                    {" "}
-                    <img src={Vonomax} alt="Suggested Medicines" />
-                    <h1 className=" text-[#ea7726] flex justify-center">
-                      Vono <span className="text-[#087b41]">max</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/82"
-                  target="_blank">
-                  <div className="p-10 text-gray-600 ">
-                    {" "}
-                    <img src={Ambrosol} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Ambro<span className="text-[#087b41]">sol</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/68"
-                  target="_blank">
-                  <div className="p-10 text-gray-600 ">
-                    {" "}
-                    <img src={Amlovas} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Amlo<span className="text-red-700">vas</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/117"
-                  target="_blank">
-                  <div className="p-10 text-gray-600 ">
-                    {" "}
-                    <img src={Anorel} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Ano<span className="text-blue-800">rel</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/129"
-                  target="_blank">
-                  <div className="p-10 text-gray-600 ">
-                    {" "}
-                    <img src={Cebergol} alt="Suggested Medicines" />
-                    <h1 className=" text-blue-700 flex justify-center">
-                      Caber <span className="text-[#ea7726]">gol</span>
-                    </h1>
-                  </div>
-                </a>
-              </Marquee>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <FaFlask className="text-4xl text-[#00664a]" />,
+                title: "Advanced Technology",
+                description:
+                  "State-of-the-art diagnostic equipment for accurate results",
+              },
+              {
+                icon: <FaUserMd className="text-4xl text-[#00664a]" />,
+                title: "Expert Specialists",
+                description: "200+ renowned doctors across all specialties",
+              },
+              {
+                icon: <FaAward className="text-4xl text-[#00664a]" />,
+                title: "40 Years of Trust",
+                description: "Pioneers in diagnostic services since 1983",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex justify-center mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-center mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 text-center">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="py-16 bg-gray-50 relative">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+          <span className="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-[#00984a]/10 blur-3xl"></span>
+          <span className="absolute -right-20 -bottom-20 w-64 h-64 rounded-full bg-blue-600/10 blur-3xl"></span>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#00664a]">
+                Book an Appointment or Find Services
+              </h2>
+              <p className="mt-2 text-gray-600">
+                Search for doctors, services, or book appointments at our{" "}
+                {branchName} branch
+              </p>
             </div>
-            {/* End of Advertise grid */}
+            <SearchBoxBranch branchId={branchId} />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Enhanced Doctors Section */}
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#00664a]">
+              Our Specialist Doctors
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-gray-600">
+              Meet our team of experienced medical professionals
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#00664a]"></div>
+            </div>
+          ) : (
+            <>
+              <div className="relative">
+                <div className="flex space-x-4 overflow-x-auto pb-6 scrollbar-hide">
+                  {doctors.map((doctor) => (
+                    <motion.div
+                      key={doctor.id}
+                      whileHover={{ y: -5 }}
+                      className="flex-shrink-0 w-64 bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={doctor.image}
+                          alt={doctor.name}
+                          className="w-full h-full object-cover"
+                        />
+                        {doctor.on_leave && (
+                          <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                            On Leave
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-bold text-lg text-[#00664a]">
+                          {doctor.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {doctor.degree}
+                        </p>
+                        <div className="flex items-center text-sm text-blue-600">
+                          <FaUserMd className="mr-1" />
+                          {doctor.specialists?.[0]?.specialist?.name ||
+                            "General"}
+                        </div>
+                        <button className="mt-3 w-full bg-[#00664a] hover:bg-[#00984a] text-white py-2 rounded-md text-sm transition-colors">
+                          View Profile
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pagination */}
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={() => fetchDoctors(page > 1 ? page - 1 : 1)}
+                  disabled={page === 1}
+                  className="px-4 py-2 mx-1 rounded-md bg-gray-200 disabled:opacity-50">
+                  Previous
+                </button>
+                {[...Array(Math.min(5, totalPages)).keys()].map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => fetchDoctors(num + 1)}
+                    className={`px-4 py-2 mx-1 rounded-md ${
+                      page === num + 1
+                        ? "bg-[#00664a] text-white"
+                        : "bg-gray-200"
+                    }`}>
+                    {num + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() =>
+                    fetchDoctors(page < totalPages ? page + 1 : totalPages)
+                  }
+                  disabled={page === totalPages}
+                  className="px-4 py-2 mx-1 rounded-md bg-gray-200 disabled:opacity-50">
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Facilities Section */}
+      <div className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#00664a]">
+              Our Facilities
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-gray-600">
+              Modern amenities for your comfort and convenience
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Advanced Imaging Center",
+                description: "MRI, CT Scan, Digital X-Ray, Ultrasound",
+                icon: "🖼️",
+              },
+              {
+                title: "Cardiac Care Unit",
+                description: "Echo, ECG, Stress Test, Holter Monitoring",
+                icon: "❤️",
+              },
+              {
+                title: "Pathology Lab",
+                description: "Fully automated analyzers for accurate results",
+                icon: "🧪",
+              },
+              {
+                title: "Comfortable Waiting Area",
+                description: "Spacious seating with TV and magazines",
+                icon: "🛋️",
+              },
+              {
+                title: "Ample Parking",
+                description: "Secure parking facility available",
+                icon: "🚗",
+              },
+              {
+                title: "Cafeteria",
+                description: "Healthy food options available",
+                icon: "☕",
+              },
+            ].map((facility, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.03 }}
+                className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all">
+                <div className="text-4xl mb-4">{facility.icon}</div>
+                <h3 className="text-xl font-semibold mb-2 text-[#00664a]">
+                  {facility.title}
+                </h3>
+                <p className="text-gray-600">{facility.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonials Section (Optional) */}
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#00664a]">
+              Patient Experiences
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-gray-600">
+              What our patients say about our Dhanmondi branch
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote:
+                  "The most accurate diagnostic reports I've ever received. The doctors are extremely knowledgeable.",
+                author: "Rahman Khan",
+                rating: "★★★★★",
+              },
+              {
+                quote:
+                  "Clean facilities and professional staff. The waiting time was much less than I expected.",
+                author: "Nusrat Jahan",
+                rating: "★★★★☆",
+              },
+              {
+                quote:
+                  "As a long-time patient since 1995, I can attest to their consistent quality and care.",
+                author: "Abdul Mannan",
+                rating: "★★★★★",
+              },
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-gray-50 p-6 rounded-lg">
+                <div className="text-yellow-400 text-xl mb-2">
+                  {testimonial.rating}
+                </div>
+                <p className="text-gray-700 italic mb-4">
+                  "{testimonial.quote}"
+                </p>
+                <p className="font-semibold text-[#00664a]">
+                  — {testimonial.author}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
@@ -391,4 +370,4 @@ const DoctorDetail = () => {
   );
 };
 
-export default DoctorDetail;
+export default Dhanmondi;

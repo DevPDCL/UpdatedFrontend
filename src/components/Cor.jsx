@@ -19,8 +19,8 @@ function Cor() {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
             },
           }
-        ); 
-        setImages(response.data.data.data); 
+        );
+        setImages(response.data.data.data);
       } catch (error) {
         console.error("Error fetching images:", error);
       } finally {
@@ -37,7 +37,7 @@ function Cor() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
+        className="text-center text-[#00984a] font-bold mb-8 font-ubuntu text-3xl">
         Corporate Partners
       </motion.h2>
       <div className="flex flex-row p-3 flex-wrap  sm:w-[80%] max-w-screen-xl mx-auto justify-center gap-10">
@@ -55,26 +55,28 @@ function Cor() {
           </div>
         </Marquee>
       </div>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="text-center text-[#00984a] font-bold mb-12 font-ubuntu text-3xl">
-        Service Partners
-      </motion.h2>
+      <div className="mt-20 border border-[#00984a]/30 bg-gray-100 rounded-3xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center text-[#00984a] font-bold pt-8 mb-8 font-ubuntu text-3xl">
+          Service Partners
+        </motion.h2>
 
-      <div className="flex flex-wrap p-5 max-w-screen-xl mx-auto justify-center">
-        {servicePartners.map((technology) => (
-          <div className="w-[300px] p-5 h-28" key={technology.id}>
-            <img
-              src={technology.icon}
-              alt={technology.name}
-              width="300"
-              height="112"
-            />
-          </div>
-        ))}
+        <div className="flex flex-wrap p-5 gap-4 max-w-screen-xl mx-auto justify-center">
+          {servicePartners.map((technology) => (
+            <div className="w-[300px] p-5 h-28" key={technology.id}>
+              <img
+                src={technology.icon}
+                alt={technology.name}
+                width="300"
+                height="112"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
