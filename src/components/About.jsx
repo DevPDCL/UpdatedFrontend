@@ -10,7 +10,7 @@ const ProjectCard = React.memo(({ image, name, designation }) => {
         <img
           src={image}
           alt={`${name}'s profile`}
-          className="w-full shadow-xl rounded-3xl h-[350px] object-cover opacity-95 p-2"
+          className="w-full shadow-xl rounded-3xl h-[350px] object-cover object-top opacity-95 p-2"
           loading="lazy"
         />
       </div>
