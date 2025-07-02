@@ -409,7 +409,7 @@ const DoctorCard = React.memo(({ doctor }) => {
               <img
                 src={doctor.image}
                 alt={`${doctor.name}'s picture`}
-                className={`w-full h-full object-cover object-bottom shadow-xl ${backgroundColor} rounded-xl transition-all duration-300 group-hover:scale-105 ${
+                className={`w-full h-full object-cover object-top shadow-xl ${backgroundColor} rounded-xl transition-all duration-300 group-hover:scale-105 ${
                   isAbsent ? "opacity-75" : ""
                 }`}
                 style={{ aspectRatio: "1/1" }}
