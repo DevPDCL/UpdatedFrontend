@@ -409,9 +409,10 @@ const DoctorCard = React.memo(({ doctor }) => {
               <img
                 src={doctor.image}
                 alt={`${doctor.name}'s picture`}
-                className={`w-full h-full object-cover object-top shadow-xl ${backgroundColor} rounded-xl transition-all duration-300 group-hover:scale-105 ${
+                className={`w-full h-full object-cover object-bottom shadow-xl ${backgroundColor} rounded-xl transition-all duration-300 group-hover:scale-105 ${
                   isAbsent ? "opacity-75" : ""
                 }`}
+                style={{ aspectRatio: "1/1" }}
                 onError={handleImageError}
               />
               <div className="no-image absolute inset-0 font-ubuntu flex-col justify-center items-center p-2 h-full bg-gray-100 rounded-xl hidden">
@@ -504,13 +505,19 @@ const DoctorCard = React.memo(({ doctor }) => {
               <div className="flex items-center gap-1">
                 <FaCalendarAlt className="text-yellow-600" />
                 <span className="font-semibold">
-                  {isAbsent ? "On Leave Until" : isFutureAbsent ? "Upcoming Leave" : "Leave Period"}
+                  {isAbsent
+                    ? "On Leave Until"
+                    : isFutureAbsent
+                    ? "Upcoming Leave"
+                    : "Leave Period"}
                 </span>
               </div>
               <div>
-                {isAbsent 
+                {isAbsent
                   ? `Until ${formatDate(doctor.absent_to)}`
-                  : `${formatDate(doctor.absent_from)} - ${formatDate(doctor.absent_to)}`}
+                  : `${formatDate(doctor.absent_from)} - ${formatDate(
+                      doctor.absent_to
+                    )}`}
               </div>
             </div>
           )}

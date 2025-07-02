@@ -44,7 +44,7 @@ import {
   UttaraU3,
   AchintoKumarNag,
   AjoyKumarDatta,
-  MdSohelChowdhury,
+MdSirazulKabir,
   MdFoyzurRahman,
   MdJahurulIslamRony,
   MdMahbuburRahmanChowdhury,
@@ -985,8 +985,8 @@ const branch = [
     location:
       "https://maps.google.com/maps?q=22.815210,89.555067&hl=es;z=14&output=embed",
 
-    braManImg: MdSohelChowdhury,
-    braManName: "Md. Sohel Chowdhury",
+    braManImg: MdSirazulKabir,
+    braManName: "Md. Sirazul Kabir",
     braManDesignation: "Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Khulna)",
     address:

@@ -55,7 +55,7 @@ import UttaraU3 from "./PDCLbranches/UttaraU3.webp";
 
 import AchintoKumarNag from "./PDCLbranches/Managers/AchintoKumarNag.webp";
 import AjoyKumarDatta from "./PDCLbranches/Managers/AjoyKumarDatta.webp";
-import MdSohelChowdhury from "./PDCLbranches/Managers/MdSohelChowdhury.webp";
+import MdSirazulKabir from "./PDCLbranches/Managers/MdSirazulKabir.webp";
 import MdFoyzurRahman from "./PDCLbranches/Managers/MdFoyzurRahman.webp";
 import MdJahurulIslamRony from "./PDCLbranches/Managers/MdJahurulIslamRony.webp";
 import MdMahbuburRahmanChowdhury from "./PDCLbranches/Managers/MdMahbuburRahmanChowdhury.webp";
@@ -200,7 +200,7 @@ export {
   UttaraU3,
   AchintoKumarNag,
   AjoyKumarDatta,
-  MdSohelChowdhury,
+  MdSirazulKabir,
   MdFoyzurRahman,
   MdJahurulIslamRony,
   MdMahbuburRahmanChowdhury,
