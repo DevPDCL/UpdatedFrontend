@@ -8,6 +8,7 @@ import "react-vertical-timeline-component/style.min.css";
 import { Dhanmondi, objective } from "../assets";
 import goals1 from "../assets/goals1.jpg";
 import goals2 from "../assets/goals2.jpg";
+import mirpur from "../assets/PDCLbranches/MirpurU2.webp";
 import goals3 from "../assets/goals3.jpg";
 
 const Goals = () => {
@@ -173,7 +174,7 @@ const Goals = () => {
                 title: "Expanding Our Reach",
                 description:
                   "New branches opened at Badda, Dinajpur and Mirpur to serve more communities across the country.",
-                //image: goals2,
+                image: mirpur,
               },
               {
                 year: "2017",
@@ -206,7 +207,7 @@ const Goals = () => {
                 <div className="overflow-hidden rounded-lg mb-4">
                   <img
                     src={item.image}
-                    className="w-full h-48 sm:h-64 object-cover"
+                    className="w-full h-48 sm:h-64 object-cover object-bottom"
                     alt={`${item.year} Milestone`}
                     loading={index > 0 ? "lazy" : "eager"}
                     decoding="async"
