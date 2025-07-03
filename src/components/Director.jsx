@@ -1,11 +1,12 @@
 import React from "react";
 import "@fontsource/ubuntu";
-import { DrMostafizurRahman } from "../assets";
+import { DrMostafizurRahman } from "../assets"; // Ensure this is correctly imported
 
 const Director = () => {
   return (
     <div className="bg-gradient-to-b from-[#F5FFFA] to-white min-h-screen">
       <section className="relative py-16 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Executive <span className="text-[#00984a]">Leadership</span>
@@ -15,18 +16,20 @@ const Director = () => {
           </p>
         </div>
 
+        {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="w-full flex h-screen">
-            <div className="relative p-8 lg:p-10 flex items-start lg:pt-40 justify-center  md:w-1/2 bg-gradient-to-br from-emerald-50 to-teal-50">
-              <div className="relative w-full max-w-md">
+          <div className="w-full flex flex-col h-[900px] md:flex-row">
+            {/* Left: Image Section */}
+            <div className="relative p-6 sm:p-8 lg:p-10  flex items-center justify-center md:w-1/2 bg-gradient-to-br from-emerald-50 to-teal-50">
+              <div className="relative w-full  max-w-md">
                 <div className="absolute -inset-8 sm:-inset-12 blur-2xl opacity-30">
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-600 rounded-full animate-pulse duration-7000"></div>
                 </div>
 
-                <div className="relative z-10 mx-auto w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                <div className="relative z-10 mx-auto w-48 h-48  sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
                   <img
                     src={DrMostafizurRahman}
-                    alt="Dr. Mostafizur Rahman"
+                    alt="Sardin Rahman"
                     className="w-full h-full object-cover"
                     style={{
                       imageRendering: "optimizeQuality",
@@ -38,22 +41,23 @@ const Director = () => {
                   />
                 </div>
 
-                <div className="text-center mt-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <div className="text-center mt-6 sm:mt-8">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                     Dr. Mostafizur Rahman
                   </h2>
-                  <p className="text-[#00984a] text-xl font-medium mt-2">
+                  <p className="text-[#00984a] text-lg sm:text-xl font-medium mt-2">
                     Managing Director
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="p-8 lg:p-10 flex flex-col md:w-1/2 justify-start overflow-y-auto custom-scroll">
-              <div className="prose prose-lg text-gray-600 max-w-none">
+            {/* Right: Text/Bio Section */}
+            <div className="p-6 sm:p-8 lg:p-10 flex flex-col md:w-1/2  justify-start overflow-y-auto custom-scroll">
+              <div className="prose prose-sm sm:prose-base md:prose-lg text-gray-600 max-w-none">
                 <p className="mb-6 leading-relaxed">
                   Popular started its journey as diagnostic centre in June 1983
-                  with a Promise to render the possible standard service to the
+                  with a promise to render the possible standard service to the
                   people of the country at an affordable cost and in turn to
                   limit the outflow of the patient abroad at the expense of hard
                   earned foreign currency.
@@ -95,12 +99,14 @@ const Director = () => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
-                          d="M5 13l4 4L19 7"></path>
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </span>
                     <span>
@@ -115,12 +121,14 @@ const Director = () => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
-                          d="M5 13l4 4L19 7"></path>
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </span>
                     <span>
@@ -135,12 +143,14 @@ const Director = () => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
-                          d="M5 13l4 4L19 7"></path>
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </span>
                     <span>
@@ -175,6 +185,7 @@ const Director = () => {
           </div>
         </div>
 
+        {/* Philosophy Section */}
         <div className="mt-16 bg-gradient-to-r from-[#00984a] to-[#007a3d] rounded-2xl p-8 sm:p-12 text-center text-white">
           <h3 className="text-2xl sm:text-3xl font-bold mb-4">
             Management Philosophy

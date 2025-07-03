@@ -371,29 +371,35 @@ const Branch = () => {
 
   return (
     <div className="bg-[#ffffff]">
-      <div className="flex flex-col pt-[80px] mx-auto max-w-7xl">
-        <motion.h2
-          className="text-gray-900/50 pb-5 text-center pl-2 text-[28px] font-bold font-ubuntu"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}>
-          BRANCHES
-          <motion.span
-            className="ml-2 bg-[#00984a] text-white rounded-full px-3 py-1 text-sm font-bold"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 500 }}>
-            {filteredTotalBranches}/{totalBranches}
-          </motion.span>
-          <motion.span
-            className="ml-2 bg-[#00984a] text-white rounded-full px-3 py-1 text-sm font-bold"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 500 }}>
-            {filteredTotalUnits} Units
-          </motion.span>
-        </motion.h2>
-      </div>
+      <div className="flex flex-col pt-16 sm:pt-20 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+  <motion.h2
+    className="text-gray-900/50 pb-4 sm:pb-5 text-center text-2xl sm:text-3xl md:text-4xl font-bold font-ubuntu"
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    BRANCHES
+    <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-3">
+      <motion.span
+        className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 500 }}
+      >
+        {filteredTotalBranches}/{totalBranches}
+      </motion.span>
+      <motion.span
+        className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.3, type: "spring", stiffness: 500 }}
+      >
+        {filteredTotalUnits} Units
+      </motion.span>
+    </div>
+  </motion.h2>
+</div>
+
 
       <FilterControls
         filterInsideDhaka={filterState.insideDhaka}
