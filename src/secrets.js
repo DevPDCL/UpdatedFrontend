@@ -1,3 +1,3 @@
-const BASE_URL = "https://api.populardiagnostic.com";
+const BASE_URL = "https://populardiagnostic.xyz";
 
 export { BASE_URL };
