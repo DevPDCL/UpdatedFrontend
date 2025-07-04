@@ -211,38 +211,44 @@ const DoctorSearch = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <div className="bg-gradient-to-b from-gray-50 to-white overflow-x-hidden">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <div className="pt-24 pb-8 text-center">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-4xl font-bold text-gray-800 font-ubuntu mb-2">
+            className="text-4xl font-bold text-gray-800 font-ubuntu mb-2"
+          >
             Our Expert Consultants
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-gray-600 max-w-2xl mx-auto">
+            className="text-gray-600 max-w-2xl mx-auto"
+          >
             Find and book appointments with our highly qualified medical
             specialists
           </motion.p>
         </div>
 
+        {/* Filters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="sticky top-16 z-20 bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100">
+          className="sticky top-16 z-20 bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="lg:col-span-2">
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}>
+                whileTap={{ scale: 0.98 }}
+              >
                 <input
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-PDCL-green focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   type="text"
                   placeholder="Search by doctor's name..."
                   value={searchTerm}
@@ -259,7 +265,7 @@ const DoctorSearch = () => {
                 value={selectedBranches}
                 onChange={setSelectedBranches}
                 styles={selectStyles}
-                className="text-[#00984a]"
+                className="text-green-700"
               />
             </div>
 
@@ -271,7 +277,7 @@ const DoctorSearch = () => {
                 value={selectedSpecializations}
                 onChange={setSelectedSpecializations}
                 styles={selectStyles}
-                className="text-[#00984a]"
+                className="text-green-700"
               />
             </div>
 
@@ -283,41 +289,47 @@ const DoctorSearch = () => {
                 value={selectedDays}
                 onChange={setSelectedDays}
                 styles={selectStyles}
-                className="text-[#00984a]"
+                className="text-green-700"
               />
             </div>
           </div>
         </motion.div>
 
+        {/* Loading Spinner */}
         {loading && (
           <div className="flex justify-center items-center py-20">
             <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-PDCL-green mb-4"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500 mb-4"></div>
               <p className="text-gray-600">Loading doctors...</p>
             </div>
           </div>
         )}
 
+        {/* Doctor Cards */}
         {!loading && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12 max-w-screen-xl mx-auto">
               {displayedDoctors.map((doctor) => (
                 <motion.div
                   key={doctor.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}>
+                  transition={{ duration: 0.3 }}
+                  className="w-full sm:w-auto"
+                >
                   <DoctorCard doctor={doctor} />
                 </motion.div>
               ))}
             </div>
 
+            {/* Loading more */}
             {loadingMore && (
               <div className="flex justify-center pb-12">
-                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-PDCL-green"></div>
+                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-green-500"></div>
               </div>
             )}
 
+            {/* Empty state */}
             {!loading && displayedDoctors.length === 0 && (
               <div className="text-center py-20">
                 <div className="inline-block p-6 bg-gray-100 rounded-full mb-4">
@@ -326,7 +338,8 @@ const DoctorSearch = () => {
                     className="h-12 w-12 text-gray-400"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -398,11 +411,13 @@ const DoctorCard = React.memo(({ doctor }) => {
   return (
     <Link
       to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
-      className="doctor-card-link group relative">
+      className="doctor-card-link group  relative"
+    >
       <div
         className={`relative flex w-72 flex-col rounded-xl ${cardBackgroundColor} bg-clip-border text-gray-700 shadow-md h-full transition-transform duration-300 transform hover:-translate-y-2 hover:shadow-lg ${
           isAbsent ? "border-2 border-red-200 shadow-lg shadow-red-200" : ""
-        }`}>
+        }`}
+      >
         <div className="relative mx-4 mt-4 h-60 overflow-hidden rounded-xl bg-clip-border text-gray-700 shadow-lg">
           {doctor.image ? (
             <>
@@ -421,7 +436,8 @@ const DoctorCard = React.memo(({ doctor }) => {
                   width="256"
                   height="256"
                   viewBox="0 0 256 256"
-                  className="h-32 w-32 text-gray-400">
+                  className="h-32 w-32 text-gray-400"
+                >
                   <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
                     <circle cx="58.145" cy="74.615" r="13.145" fill="#ffffff" />
                     <path
@@ -444,7 +460,8 @@ const DoctorCard = React.memo(({ doctor }) => {
                 width="256"
                 height="256"
                 viewBox="0 0 256 256"
-                className="h-32 w-32 text-gray-400">
+                className="h-32 w-32 text-gray-400"
+              >
                 <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
                   <circle cx="58.145" cy="74.615" r="13.145" fill="#ffffff" />
                   <path
@@ -475,7 +492,8 @@ const DoctorCard = React.memo(({ doctor }) => {
 
         <div className="p-6 text-center">
           <h4
-            className={`mb-2 block font-sans ${textColor} text-xl font-semibold leading-snug tracking-normal antialiased`}>
+            className={`mb-2 block font-sans ${textColor} text-xl font-semibold leading-snug tracking-normal antialiased`}
+          >
             {doctor.name}
           </h4>
 
