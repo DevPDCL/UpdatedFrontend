@@ -9,9 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
 import { reportDownload } from "../constants";
+import { BASE_URL } from "../secrets";
 
 const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
-const API_BASE_URL = "https://api.populardiagnostic.com/api";
+const API_BASE_URL = `${BASE_URL}/api`;
 
 const TABS = [
   { id: "doctors", label: "Doctors" },

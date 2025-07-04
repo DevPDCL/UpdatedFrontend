@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { reportDownload } from "../constants";
+import { BASE_URL } from "../secrets";
 
 const TestApi = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
@@ -26,7 +27,7 @@ const TestApi = () => {
       try {
         // Fetch the first page
         const firstPageResponse = await axios.get(
-          `https://api.populardiagnostic.com/api/test-service-charges`,
+          `${BASE_URL}/api/test-service-charges`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
@@ -57,7 +58,7 @@ const TestApi = () => {
       let currentPage = 2;
       let fetchedData = [...initialData];
       const response = await axios.get(
-        `https://api.populardiagnostic.com/api/test-service-charges`,
+        `${BASE_URL}/api/test-service-charges`,
         {
           params: {
             token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
@@ -71,7 +72,7 @@ const TestApi = () => {
 
       while (currentPage <= totalPages) {
         const pageResponse = await axios.get(
-          `https://api.populardiagnostic.com/api/test-service-charges`,
+          `${BASE_URL}/api/test-service-charges`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

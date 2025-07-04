@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
+import { BASE_URL } from "../secrets";
 
 const API_URL =
-  "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
+  `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`;
 const ANIMATION_SPRING = { type: "spring", stiffness: 700, damping: 30 };
 
 const buttonVariants = {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "@fontsource/ubuntu";
+import { BASE_URL } from "../secrets";
 
 const LoadingState = () => (
   <div className="bg-white min-h-screen flex items-center justify-center">
@@ -89,7 +90,7 @@ const NoticeDetails = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://api.populardiagnostic.com/api/news/${id}`,
+        `${BASE_URL}/api/news/${id}`,
         {
           params: {
             token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

@@ -21,6 +21,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
+import { BASE_URL } from "../secrets";
 
 const DoctorDetail = () => {
   const { doctorId } = useParams();
@@ -34,7 +35,7 @@ const DoctorDetail = () => {
     const fetchDoctor = async () => {
       try {
         const response = await axios.get(
-          `https://api.populardiagnostic.com/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
+          `${BASE_URL}/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
         );
         if (response.data.success) {
           setDoctor(response.data.data);
@@ -58,7 +59,7 @@ const DoctorDetail = () => {
       try {
         if (branchIds && specialistIds) {
           const response = await axios.get(
-            `https://api.populardiagnostic.com/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
+            `${BASE_URL}/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
           );
           if (response.data.success) {
             const filteredDoctors = response.data.data.data.filter(

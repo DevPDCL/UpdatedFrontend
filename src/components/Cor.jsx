@@ -4,6 +4,7 @@ import axios from "axios";
 import { servicePartners } from "../constants";
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
+import { BASE_URL } from "../secrets";
 
 function Cor() {
   const [images, setImages] = useState([]);
@@ -13,7 +14,7 @@ function Cor() {
     const fetchImages = async () => {
       try {
         const response = await axios.get(
-          `https://api.populardiagnostic.com/api/partners`,
+          `${BASE_URL}/api/partners`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

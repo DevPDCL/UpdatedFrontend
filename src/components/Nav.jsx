@@ -12,7 +12,7 @@ const Nav = () => {
     const fetchSocialLinks = async () => {
       try {
         const response = await axios.get(
-          "https://api.populardiagnostic.com/api/social-links",
+          `${BASE_URL}/api/social-links`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

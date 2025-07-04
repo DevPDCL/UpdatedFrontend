@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "@fontsource/ubuntu";
 import img from "../assets/link.webp";
+import { BASE_URL } from "../secrets";
 
 const Footer = () => {
   const [socialLinks, setSocialLinks] = useState([]);
@@ -12,7 +13,7 @@ const Footer = () => {
     const fetchSocialLinks = async () => {
       try {
         const response = await axios.get(
-          "https://api.populardiagnostic.com/api/social-links",
+          `${BASE_URL}/api/social-links`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

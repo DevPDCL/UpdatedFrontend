@@ -7,6 +7,7 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaUserSlash, FaUserCheck, FaCalendarAlt } from "react-icons/fa";
+import { BASE_URL } from "../secrets";
 
 const spring = {
   type: "spring",
@@ -37,19 +38,19 @@ const DoctorSearch = () => {
         toast.info("Loading doctors...", { autoClose: 2000 });
 
         const branchesRes = await axios.get(
-          `https://api.populardiagnostic.com/api/branch-for-doctor?token=${API_TOKEN}`
+          `${BASE_URL}/api/branch-for-doctor?token=${API_TOKEN}`
         );
         setBranches(branchesRes.data.data.data);
 
  
         const specializationsRes = await axios.get(
-          `https://api.populardiagnostic.com/api/doctor-speciality?token=${API_TOKEN}`
+          `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`
         );
         setSpecializations(specializationsRes.data.data.data);
 
    
         const daysRes = await axios.get(
-          `https://api.populardiagnostic.com/api/practice-days?token=${API_TOKEN}`
+          `${BASE_URL}/api/practice-days?token=${API_TOKEN}`
         );
         setDays(daysRes.data.data);
 
@@ -101,7 +102,7 @@ const DoctorSearch = () => {
 
       const queryString = new URLSearchParams(params).toString();
       const response = await axios.get(
-        `https://api.populardiagnostic.com/api/doctors?${queryString}`
+        `${BASE_URL}/api/doctors?${queryString}`
       );
 
       if (reset) {

@@ -2,6 +2,7 @@ import "@fontsource/ubuntu";
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { BASE_URL } from "../secrets";
 
 const ProjectCard = React.memo(({ image, name, designation }) => {
   return (
@@ -68,7 +69,7 @@ const About = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://api.populardiagnostic.com/api/management-team",
+          `${BASE_URL}/api/management-team`,
           {
             params: {
               token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",

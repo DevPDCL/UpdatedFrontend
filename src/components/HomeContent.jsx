@@ -9,6 +9,9 @@ import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
+import { BASE_URL } from "../secrets";
+
+
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
   const countRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -167,7 +170,7 @@ const HomeContent = () => {
     const fetchBranchData = async () => {
       try {
         const { data } = await axios.get(
-          "https://api.populardiagnostic.com/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4"
+          `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
         );
 
         if (data?.success) {

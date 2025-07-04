@@ -5,9 +5,10 @@ import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import { Tilt } from "react-tilt";
+import { BASE_URL } from "../secrets";
 
 const API_CONFIG = {
-  url: "https://api.populardiagnostic.com/api/testimonials",
+  url: `${BASE_URL}/api/testimonials`,
   params: { token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4" },
 };
 
