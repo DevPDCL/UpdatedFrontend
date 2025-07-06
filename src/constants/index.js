@@ -200,13 +200,13 @@ const corporatePartners = [
 const servicePartners = [
   {
     id: 1,
-    name: "Amarlab",
-    icon: Amarlab,
+    name: "Arogga,",
+    icon: Arogga,
   },
   {
     id: 2,
-    name: "Arogga,",
-    icon: Arogga,
+    name: "Amarlab",
+    icon: Amarlab,
   },
   {
     id: 3,

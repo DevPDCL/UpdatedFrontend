@@ -202,8 +202,8 @@ const Navbar = () => {
                 </Transition>
               </Menu>
               <NavLink to="/health">Packages</NavLink>
-              <NavLink to="/doctorsearch">Doctors</NavLink>
-              <NavLink to="/branch">Branches</NavLink>
+              <NavLink to="/our-doctors">Doctors</NavLink>
+              <NavLink to="/our-branches">Branches</NavLink>
               <NavLink to="/patient_portal">
                 <div className="flex">
                   {" "}
@@ -225,7 +225,7 @@ const Navbar = () => {
                 className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
                 Home Collection
               </a>
-              <NavLink to="/contact">Contact</NavLink>
+              <NavLink to="/contact-us">Contact</NavLink>
             </nav>
 
             <div className="lg:hidden">
@@ -456,11 +456,11 @@ const Navbar = () => {
                       Packages
                     </NavLink>
                     <NavLink
-                      to="/doctorsearch"
+                      to="/our-doctors"
                       onClick={() => setMobileOpen(false)}>
                       Doctors
                     </NavLink>
-                    <NavLink to="/branch" onClick={() => setMobileOpen(false)}>
+                    <NavLink to="/our-branches" onClick={() => setMobileOpen(false)}>
                       Branches
                     </NavLink>
 
@@ -480,7 +480,7 @@ const Navbar = () => {
                       className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
                       Sample Collection
                     </a>
-                    <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
+                    <NavLink to="/contact-us" onClick={() => setMobileOpen(false)}>
                       Contact
                     </NavLink>
                     <NavLink

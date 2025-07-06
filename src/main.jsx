@@ -93,7 +93,7 @@ const routes = [
         ),
       },
       {
-        path: "/DoctorSearch",
+        path: "/our-doctors",
         element: (
           <Suspense fallback={null}>
             {" "}
@@ -104,7 +104,7 @@ const routes = [
       { path: "/tech", element: <Technology /> },
       { path: "/goals", element: <Goals /> },
       { path: "/complain", element: <Complain /> },
-      { path: "/branch", element: <Branch /> },
+      { path: "/our-branches", element: <Branch /> },
       { path: "/director", element: <Director /> },
       { path: "/chairman", element: <Chairman /> },
       { path: "/hotlines", element: <Hotlines /> },
@@ -112,7 +112,7 @@ const routes = [
       { path: "/notice", element: <Notice /> },
       { path: "/notices/:id", element: <NoticeDetails /> },
       { path: "/video", element: <Videos /> },
-      { path: "/contact", element: <Contact /> },
+      { path: "/contact-us", element: <Contact /> },
       { path: "/health", element: <Health /> },
       { path: "/details", element: <Details /> },
       { path: "/about", element: <About /> },
