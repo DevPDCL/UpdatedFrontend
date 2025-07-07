@@ -415,7 +415,7 @@ const reportDownload = [
     braID: 9,
     braName: "Shyamoli",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=706:3:13078707145556:::::",
     braCity: "Dhaka",
   },
   {
@@ -434,14 +434,14 @@ const reportDownload = [
     braID: 7,
     braName: "Uttara Sector 04",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=707:3:16081085007203:::::",
     braCity: "Dhaka",
   },
   {
     braID: 39,
     braName: "Uttara Sector 13",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=709:3:26943732129529:::::",
     braCity: "Dhaka",
   },
   {
@@ -472,7 +472,7 @@ const reportDownload = [
     braID: 12,
     braName: "Bogura",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=708:3:6485788705866:::::",
     braCity: "Bogura",
   },
   {
@@ -503,14 +503,14 @@ const reportDownload = [
     braID: 15,
     braName: "Rangpur",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=711:3:3739606336319:::::",
     braCity: "Rangpur",
   },
   {
     braID: 19,
     braName: "Dinajpur",
     downloadLink:
-      "http://prosoft.populardiagnostic.com:8877/ords/f?p=700:3:8271679877280:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=710:3:3614899581560:::::",
     braCity: "Dinajpur",
   },
   {
