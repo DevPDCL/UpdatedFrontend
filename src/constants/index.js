@@ -599,7 +599,7 @@ const branch = [
     ],
   },
   {
-    branchID: 4,
+    branchID: 9,
     heading: "Shyamoli",
     image: ShyamoliU1,
     Hotline: "09666787806",
@@ -637,7 +637,7 @@ const branch = [
   },
 
   {
-    branchID: 5,
+    branchID: 10,
     heading: "Mirpur",
     image: MirpurU1,
     Hotline: "09666787807",
@@ -673,7 +673,7 @@ const branch = [
     ],
   },
   {
-    branchID: 6,
+    branchID: 7,
     heading: "Uttara",
     image: UttaraU1,
     Hotline: "09666787805",
@@ -720,7 +720,7 @@ const branch = [
     ],
   },
   {
-    branchID: 7,
+    branchID: 39,
     heading: "Uttara Garib E Newaz",
     image: UttaraGaribENewaz,
     Hotline: "09666787823",
@@ -737,7 +737,7 @@ const branch = [
       "House #41, Uttara-Garib-E-Newaz Avenue, Sector # 13, Uttara, Dhaka",
   },
   {
-    branchID: 8,
+    branchID: 18,
     heading: "Badda",
     image: Badda,
     Hotline: "09666787809",
@@ -753,7 +753,7 @@ const branch = [
     address: "Cha-90/2, North Badda (Pragoti Sharoni), Dhaka-1212.",
   },
   {
-    branchID: 9,
+    branchID: 37,
     heading: "Jatrabari",
     image: Jatrabari,
     Hotline: "09666787822",
@@ -768,7 +768,7 @@ const branch = [
     address: "33,Shahid Faruk sarak, North jatrabari, Dhaka-1204",
   },
   {
-    branchID: 10,
+    branchID: 6,
     heading: "Savar",
     image: Savar,
     Hotline: "09666787808",
@@ -783,7 +783,7 @@ const branch = [
     braManDesignation: "Branch In-Charge",
   },
   {
-    branchID: 11,
+    branchID: 27,
     heading: "Gazipur",
     image: Gazipur,
     Hotline: "09666787816",
@@ -800,7 +800,7 @@ const branch = [
       "Gazipur Shibbari More (Near VIP Bus Terminal and Walton Show Room)",
   },
   {
-    branchID: 12,
+    branchID: 5,
     heading: "Narayangonj",
     image: Narayangonj,
     Hotline: "09666787804",
@@ -817,7 +817,7 @@ const branch = [
   },
 
   {
-    branchID: 13,
+    branchID: 12,
     heading: "Bogura",
     image: BoguraU1,
     Hotline: "09666787812",
@@ -860,7 +860,7 @@ const branch = [
   },
 
   {
-    branchID: 14,
+    branchID: 42,
     heading: "Rajshahi",
     image: Rajshahi,
     Hotline: "09666787811",
@@ -876,7 +876,7 @@ const branch = [
     address: "House # 474, Chowdhury Tower, Laxmipur, Rajshahi.",
   },
   {
-    branchID: 15,
+    branchID: 29,
     heading: "Noakhali",
     image: Noakhali,
     Hotline: "09666787818",
@@ -909,7 +909,7 @@ const branch = [
     address: "20/B. K. B. Fazlul Kader Road, Panchlaish, Chattogram.",
   },
   {
-    branchID: 17,
+    branchID: 26,
     heading: "Mymensingh",
     image: Mymensingh,
     Hotline: "09666787814",
@@ -927,7 +927,7 @@ const branch = [
   },
 
   {
-    branchID: 18,
+    branchID: 15,
     heading: "Rangpur",
     image: RangpurU1,
     Hotline: "09666787813",
@@ -976,7 +976,7 @@ const branch = [
     address: "House #44, 1 No. Upashahar, Fulbari Bus stand, Dinajpur.",
   },
   {
-    branchID: 20,
+    branchID: 36,
     heading: "Khulna",
     image: Khulna,
     Hotline: "09666787821",
@@ -993,7 +993,7 @@ const branch = [
       "Popular  Diagnostic  Centre Ltd. Khulna Branch, 37 KDA Avenue, Khulna.",
   },
   {
-    branchID: 21,
+    branchID: 30,
     heading: "Kushtia",
     image: Kushtia,
     Hotline: "09666787817",
@@ -1010,7 +1010,7 @@ const branch = [
       "City Tower - House No.1, Mir Mosharraf Hossain Road, Coart Para, Kushtia",
   },
   {
-    branchID: 22,
+    branchID: 31,
     heading: "Barishal",
     image: Barishal,
     Hotline: "09666787819",

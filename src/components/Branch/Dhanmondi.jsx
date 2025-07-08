@@ -3,7 +3,7 @@ import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import {
@@ -176,9 +176,7 @@ const DoctorSlider = ({ doctors, loading }) => {
 const Dhanmondi = () => {
   const branchInfo = branch.find((b) => b.heading === "Dhanmondi");
   const branchName = branchInfo.heading;
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const branchId = queryParams.get("id");
+  const branchId = branchInfo.branchID;
 
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);

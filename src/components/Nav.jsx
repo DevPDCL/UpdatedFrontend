@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
 import axios from "axios";
+import { BASE_URL } from "../secrets";
+
 const Nav = () => {
   const [socialLinks, setSocialLinks] = useState([]);
   const [loading, setLoading] = useState(true);

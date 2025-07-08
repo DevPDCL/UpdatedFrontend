@@ -7,7 +7,6 @@ import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
-import { useLocation } from "react-router-dom";
 
 const UnitCard = ({ unit }) => {
   return (
@@ -51,9 +50,7 @@ const UnitCard = ({ unit }) => {
 const Shantinagar = () => {
   const branchInfo = branch.find((b) => b.heading === "Shantinagar");
   const branchName = branchInfo.heading;
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const branchId = queryParams.get("id");
+  const branchId = branchInfo.branchID;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -161,18 +158,21 @@ const Shantinagar = () => {
               <div className="relative bg-white/80 p-6 rounded-xl shadow-inner border border-[#00984a]/20">
                 <FaQuoteLeft className="absolute -top-3 -left-3 text-4xl text-[#00664a]/20" />
                 <p className="text-gray-700 leading-relaxed text-justify">
-                  Bismillahir Rahmanir Raheem, Assalamu Alaikum. Since its
-                  establishment in Dhaka in 1983, Popular Diagnostic Centre Ltd.
-                  has been the leading contributor to Bangladesh's healthcare
-                  sector. True to this legacy, the Shantinagar Branch was
-                  inaugurated 25 years ago in the heart of Dhaka City, with a
-                  mission to bring world-class healthcare closer to the people.
-                  Over the years, the Shantinagar Branch has earned the trust of
-                  countless patients by delivering exceptional diagnostic and
-                  healthcare services through cutting-edge technology, renowned
-                  doctors, and a dedicated team. Responding to the growing
-                  demand, we are proud to announce the launch of our 3rd Unit
-                  (Bhaban-3), a 1 lakh square feet facility featuring:
+                  <div className="my-4 font-medium">
+                    Bismillahir Rahmanir Raheem, <br /> Assalamu Alaikum.
+                  </div>
+                  Since its establishment in Dhaka in 1983, Popular Diagnostic
+                  Centre Ltd. has been the leading contributor to Bangladesh's
+                  healthcare sector. True to this legacy, the Shantinagar Branch
+                  was inaugurated 25 years ago in the heart of Dhaka City, with
+                  a mission to bring world-class healthcare closer to the
+                  people. Over the years, the Shantinagar Branch has earned the
+                  trust of countless patients by delivering exceptional
+                  diagnostic and healthcare services through cutting-edge
+                  technology, renowned doctors, and a dedicated team. Responding
+                  to the growing demand, we are proud to announce the launch of
+                  our 3rd Unit (Bhaban-3), a 1 lakh square feet facility
+                  featuring:
                   <ul className="list-disc pl-5 mt-3 space-y-1">
                     <li>
                       <span className="font-medium">90-car parking space</span>{" "}
@@ -208,14 +208,14 @@ const Shantinagar = () => {
                       from Bangladesh and abroad
                     </li>
                   </ul>
-                  <div className="mt-4 p-4 bg-[#00984a]/5 rounded-lg border-l-4 border-[#00664a]">
+                  <div className="mt-4 p-4 bg-[#00984a]/5 rounded-lg border-l-4 border-[#00984a]">
                     Our team is driven by sincerity, compassion, and an
                     unwavering commitment to service, ensuring every patient
                     receives the highest standard of care. We continuously
                     strive to enhance our services based on valuable feedback
                     from patients and their families.
                   </div>
-                  <div className="mt-4 font-medium italic text-[#00664a]">
+                  <div className="mt-4 font-medium italic text-[#00984a]">
                     *Our Pledge:* "Patient Satisfaction is our Motto, Service is
                     our Passion."
                   </div>
@@ -224,12 +224,17 @@ const Shantinagar = () => {
                     alleviate suffering and bring peace of mind to our patients.
                     May Almighty Allah guide and bless our efforts.
                   </div>
-                  <div className="mt-6 font-medium">
+                  <div className="mt-10 font-medium text-right">
                     Best Regards, <br />
-                    Md. Shahi Mahmud <br />
+                    <div className="font-bold">Md. Shahi Mahmud</div>
                     DGM & Head of Branch, Shantinagar, Dhaka <br />
-                    Popular Diagnostic Centre Ltd. <br />
-                    Where care meets commitment
+                    <div className=" text-[#00664a]">
+                      Popular Diagnostic Centre Ltd. <br />
+                      <span className="font-light text-sm italic text-[#00664a]">
+                        {" "}
+                        -Where care meets commitment.
+                      </span>
+                    </div>{" "}
                   </div>
                 </p>
               </div>

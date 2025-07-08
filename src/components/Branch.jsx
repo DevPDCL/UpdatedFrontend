@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
 import { BASE_URL } from "../secrets";
 
-const API_URL =
-  `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`;
+const API_URL = `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`;
 const ANIMATION_SPRING = { type: "spring", stiffness: 700, damping: 30 };
 
 const buttonVariants = {
@@ -80,14 +79,11 @@ const ProjectCard = React.memo(
 
     const handleBranchClick = useCallback(() => {
       const routePath = `/${heading.replace(/\s+/g, "").toLowerCase()}`;
-      navigate(`${routePath}?id=${id}`);
-    }, [navigate, id, heading]);
+      navigate(routePath);
+    }, [navigate, heading]);
 
     return (
       <div className="bg-gradient-to-b from-[#F5FFFA] to-[#f0fff0] shadow-2xl rounded-2xl sm:w-[299px] w-full transition-transform duration-700 transform hover:-translate-y-3 relative">
-        {" "}
-        {/* Added relative positioning */}
-        {/* Unit indicator - subtle corner ribbon */}
         {units > 1 && (
           <motion.div
             className="absolute -top-2 -right-2 bg-[#00984a] text-white text-xs font-bold px-2 py-1 rounded-tr-2xl rounded-bl-lg z-10 shadow-md"
@@ -99,7 +95,6 @@ const ProjectCard = React.memo(
         )}
         <button onClick={handleBranchClick} className="w-full">
           <div className="relative w-full">
-
             <div className="aspect-square w-full overflow-hidden shadow-xl rounded-3xl">
               <img
                 src={image}
@@ -373,34 +368,30 @@ const Branch = () => {
   return (
     <div className="bg-[#ffffff]">
       <div className="flex flex-col pt-16 sm:pt-20 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-  <motion.h2
-    className="text-gray-900/50 pb-4 sm:pb-5 text-center text-2xl sm:text-3xl md:text-4xl font-bold font-ubuntu"
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-  >
-    BRANCHES
-    <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-3">
-      <motion.span
-        className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.2, type: "spring", stiffness: 500 }}
-      >
-        {filteredTotalBranches}/{totalBranches}
-      </motion.span>
-      <motion.span
-        className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.3, type: "spring", stiffness: 500 }}
-      >
-        {filteredTotalUnits} Units
-      </motion.span>
-    </div>
-  </motion.h2>
-</div>
-
+        <motion.h2
+          className="text-gray-900/50 pb-4 sm:pb-5 text-center text-2xl sm:text-3xl md:text-4xl font-bold font-ubuntu"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}>
+          BRANCHES
+          <div className="mt-3 flex flex-wrap justify-center gap-2 sm:gap-3">
+            <motion.span
+              className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 500 }}>
+              {filteredTotalBranches}/{totalBranches}
+            </motion.span>
+            <motion.span
+              className="bg-[#00984a] text-white rounded-full px-3 py-1 text-sm sm:text-base font-bold"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 500 }}>
+              {filteredTotalUnits} Units
+            </motion.span>
+          </div>
+        </motion.h2>
+      </div>
 
       <FilterControls
         filterInsideDhaka={filterState.insideDhaka}

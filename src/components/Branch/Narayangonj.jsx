@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "..";
@@ -8,9 +7,7 @@ import { branch } from "../../constants";
 const Narayangong = () => {
   const branchInfo = branch.find((b) => b.heading === "Narayangonj");
   const branchName = branchInfo.heading;
- const location = useLocation();
- const queryParams = new URLSearchParams(location.search);
- const branchId = queryParams.get("id");
+  const branchId = branchInfo.branchID;
   
   return (
     <section className="relative py-32 lg:py-36 bg-white">

@@ -339,6 +339,10 @@ const SearchBoxBranch = ({ branchId }) => {
 
   const handleDoctorFilterChange = useCallback(
     (field, value) => {
+      if (field === "selectedDay" && value === "Everyday") {
+        return;
+      }
+
       setDoctorSearchUI((prev) => {
         const newState = { ...prev, [field]: value };
 
@@ -531,11 +535,13 @@ const SearchBoxBranch = ({ branchId }) => {
               value={doctorSearchUI.selectedDay}
               disabled={!doctorSearchData.initialDataLoaded}>
               <option value="">Select Day</option>
-              {doctorSearchData.days.map((day) => (
-                <option key={day} value={day}>
-                  {day}
-                </option>
-              ))}
+              {doctorSearchData.days
+                .filter((day) => day !== "Everyday")
+                .map((day) => (
+                  <option key={day} value={day}>
+                    {day}
+                  </option>
+                ))}
             </select>
             <FaChevronDown className="absolute right-3 top-3 text-gray-500 pointer-events-none" />
           </div>

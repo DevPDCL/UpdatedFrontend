@@ -102,7 +102,7 @@ const Hotlines = () => {
               {otherBranches.map((props) => (
                 <div
                   key={props.branchID}
-                  className="flex justify-center w-full lg:w-1/2 2xl:w-1/3">
+                  className="flex justify-center w-full lg:w-1/2 2xl:w-1/3 hover:scale-105 transition duration-300 ">
                   <HotlineCard {...props} />
                 </div>
               ))}

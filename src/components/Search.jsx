@@ -186,13 +186,13 @@ const Search = () => {
   const [serviceSearchState, setServiceSearchState] = useState({
     selectedBranch: null,
     services: [],
-    allServices: [], // For storing all services when no search term
+    allServices: [], 
     searchTerm: "",
     loading: false,
-    isFetchingAll: false, // Track if we're fetching all pages
-    allPagesFetched: false, // Track if all pages are loaded
+    isFetchingAll: false, 
+    allPagesFetched: false, 
     error: null,
-    totalCount: 0, // Track total services loaded
+    totalCount: 0, 
   });
 
   const fetchInitialDoctorData = useCallback(async () => {
@@ -309,6 +309,10 @@ const Search = () => {
 
   const handleDoctorFilterChange = useCallback(
     (field, value) => {
+      if (field === "selectedDay" && value === "Everyday") {
+        return;
+      }
+
       setDoctorSearchUI((prev) => {
         const newState = { ...prev, [field]: value };
 
@@ -573,11 +577,13 @@ const Search = () => {
             value={doctorSearchUI.selectedDay}
             disabled={!doctorSearchData.initialDataLoaded}>
             <option value="">Select Day</option>
-            {doctorSearchData.days.map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
+            {doctorSearchData.days
+              .filter((day) => day !== "Everyday")
+              .map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
           </select>
         </div>
 

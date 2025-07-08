@@ -3,14 +3,11 @@ import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
 import { branch } from "../../constants";
-import { useLocation } from "react-router-dom";
 
 const UttaraGaribENewaz = () => {
   const branchInfo = branch.find((b) => b.heading === "Uttara Garib E Newaz");
   const branchName = branchInfo.heading;
- const location = useLocation();
- const queryParams = new URLSearchParams(location.search);
- const branchId = queryParams.get("id");
+  const branchId = branchInfo.branchID;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
