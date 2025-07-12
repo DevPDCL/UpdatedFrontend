@@ -144,7 +144,7 @@ const routes = [
       { path: "/noakhali", element: <Noakhali /> },
       { path: "/rajshahi", element: <Rajshahi /> },
       { path: "/savar", element: <Savar /> },
-      { path: "/uttarasector13", element: <UttaraGaribENewaz /> },
+      { path: "/uttaragaribenewazsector13", element: <UttaraGaribENewaz /> },
       //end of branch pages
     ],
     errorElement: <Error />,
@@ -159,3 +159,4 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
+uttarasector13;
