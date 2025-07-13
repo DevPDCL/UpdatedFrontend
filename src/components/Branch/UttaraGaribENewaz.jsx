@@ -26,7 +26,7 @@ const UttaraGaribENewaz = () => {
           >
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-              {branchName}{" "}
+              Uttara Sector-13{" "}
             </span>
             Branch.
           </h1>
