@@ -59,7 +59,7 @@ const Uttara = () => {
           >
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-             Uttara Sector-4{" "}
+             Uttara Sector 4{" "}
             </span>
             Branch.
           </h1>
