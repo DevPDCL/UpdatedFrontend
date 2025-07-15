@@ -177,6 +177,7 @@ const Dhanmondi = () => {
   const branchInfo = branch.find((b) => b.heading === "Dhanmondi");
   const branchName = branchInfo.heading;
   const branchId = branchInfo.branchID;
+  const branchForDoctor = 1;
 
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -240,7 +241,10 @@ const Dhanmondi = () => {
 
         <div className="lg:w-1/2 mt-0 lg:mt-56">
           <div className="relative mt-8 lg:mt-0">
-            <SearchBoxBranch branchId={branchId} />
+            <SearchBoxBranch
+              branchId={branchId}
+              branchForDoctor={branchForDoctor}
+            />
           </div>
 
           {/* Why Choose Us Section */}

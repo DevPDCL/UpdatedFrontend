@@ -697,6 +697,7 @@ const branch = [
         address:
           "House # 23, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
       },
+      
       {
         unitID: 2,
         BranchUnit: "U2",

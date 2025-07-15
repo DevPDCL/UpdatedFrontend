@@ -51,6 +51,7 @@ const Shantinagar = () => {
   const branchInfo = branch.find((b) => b.heading === "Shantinagar");
   const branchName = branchInfo.heading;
   const branchId = branchInfo.branchID;
+  const branchForDoctor = 3;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -118,7 +119,10 @@ const Shantinagar = () => {
       </div>
 
       <div className="relative md:mt-[250px] mb-[100px] z-10">
-        <SearchBoxBranch branchId={branchId} />
+        <SearchBoxBranch
+          branchId={branchId}
+          branchForDoctor={branchForDoctor}
+        />
       </div>
 
       <motion.div variants={itemVariants} className="relative z-10 m-4">

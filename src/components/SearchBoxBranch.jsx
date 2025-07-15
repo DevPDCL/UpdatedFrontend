@@ -190,7 +190,7 @@ ServiceList.propTypes = {
   isFetchingAll: PropTypes.bool.isRequired,
 };
 
-const SearchBoxBranch = ({ branchId }) => {
+const SearchBoxBranch = ({ branchId, branchForDoctor }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
   const searchTimeout = useRef(null);
   const doctorSearchInputRef = useRef(null);
@@ -275,7 +275,7 @@ const SearchBoxBranch = ({ branchId }) => {
 
         const params = {
           page,
-          branches: branchId,
+          branches: branchForDoctor,
           ...(searchTerm && { name: searchTerm, fast_search: "yes" }),
           ...(selectedSpecialization && {
             specialities: selectedSpecialization,
@@ -312,7 +312,7 @@ const SearchBoxBranch = ({ branchId }) => {
         }));
       }
     },
-    [apiRequest, branchId, doctorSearchUI]
+    [apiRequest, branchForDoctor, doctorSearchUI]
   );
 
   const debounceSearch = useCallback(

@@ -41,6 +41,7 @@ const Shyamoli = () => {
   const branchInfo = branch.find((b) => b.heading === "Shyamoli");
   const branchName = branchInfo.heading;
   const branchId = branchInfo.branchID;
+  const branchForDoctor = 9;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <h1 className="text-gray-700/70 text-center text-4xl -mt-24 font-bold font-ubuntu">
@@ -48,8 +49,7 @@ const Shyamoli = () => {
       </h1>
       <h1
         className=" text-center text text-3xl mt-5 leading-tight sm:text-4xl md:text-5xl xl:text-6xl
-            font-bold text-[#00664a]"
-      >
+            font-bold text-[#00664a]">
         Popular Diagnostic Centre{" "}
         <span className="text-7xl text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
           {branchName}{" "}
@@ -74,7 +74,10 @@ const Shyamoli = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <SearchBoxBranch branchId={branchId} />
+        <SearchBoxBranch
+          branchId={branchId}
+          branchForDoctor={branchForDoctor}
+        />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">

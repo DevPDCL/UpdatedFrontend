@@ -8,6 +8,8 @@ const Chattogram = () => {
   const branchInfo = branch.find((b) => b.heading === "Chattogram");
   const branchName = branchInfo.heading;
   const branchId = branchInfo.branchID;
+  const branchForDoctor = 16;
+
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
@@ -18,12 +20,10 @@ const Chattogram = () => {
         <span className="w-4/12 lg:w-2/12 aspect-square bg-gradient-to-tr from-blue-600 to-[#00984a] absolute -top-5 lg:left-0 rounded-full skew-y-12 blur-2xl opacity-40 skew-x-12 rotate-90"></span>
         <div
           className="relative flex flex-col items-center text-center lg:text-left lg:py-7 xl:py-8 
-            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2"
-        >
+            lg:items-start lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2">
           <h1
             className="text-3xl leading-tight sm:text-4xl md:text-5xl xl:text-6xl
-            font-bold text-[#00664a]"
-          >
+            font-bold text-[#00664a]">
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
               {branchName}{" "}
@@ -44,7 +44,10 @@ const Chattogram = () => {
         </div>
       </div>
       <div className="relative md:mt-[250px] mb-[100px]">
-        <SearchBoxBranch branchId={branchId} />
+        <SearchBoxBranch
+          branchId={branchId}
+          branchForDoctor={branchForDoctor}
+        />
       </div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-white from-10% via-white via-30% to-[#00984a]/20 mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-start border border-[#00664a]/10 shadow-xl backdrop-blur-sm">

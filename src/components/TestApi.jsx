@@ -5,12 +5,12 @@ import { BASE_URL } from "../secrets";
 
 const TestApi = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
-  const [services, setServices] = useState([]); // To store data being displayed
-  const [allServices, setAllServices] = useState([]); // To store the full dataset
+  const [services, setServices] = useState([]); 
+  const [allServices, setAllServices] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isFetchingAll, setIsFetchingAll] = useState(false); // For background fetch indication
+  const [isFetchingAll, setIsFetchingAll] = useState(false); 
 
   const handleBranchChange = async (event) => {
     const branchName = event.target.value;
@@ -25,7 +25,6 @@ const TestApi = () => {
       setLoading(true);
 
       try {
-        // Fetch the first page
         const firstPageResponse = await axios.get(
           `${BASE_URL}/api/test-service-charges`,
           {
@@ -39,10 +38,10 @@ const TestApi = () => {
         );
 
         const firstPageData = firstPageResponse.data.data.data;
-        setServices(firstPageData); // Populate first page instantly
-        setAllServices(firstPageData); // Temporarily set as full data
+        setServices(firstPageData); 
+        setAllServices(firstPageData); 
 
-        // Start fetching all pages in the background
+
         setIsFetchingAll(true);
         fetchAllPages(branch.braID, firstPageData);
       } catch (err) {
@@ -88,7 +87,7 @@ const TestApi = () => {
       }
 
       setAllServices(fetchedData);
-      setServices(fetchedData); // Replace first page with full data
+      setServices(fetchedData);
     } catch (err) {
       console.error("Error fetching all pages:", err);
     } finally {
