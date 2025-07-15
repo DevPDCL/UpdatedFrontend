@@ -1,6 +1,6 @@
 import Marquee from "react-fast-marquee";
 import "@fontsource/ubuntu";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -32,56 +32,66 @@ const DoctorDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchDoctor = async () => {
+    const fetchData = async () => {
+      // Reset states on doctorId change
+      setLoading(true);
+      setLoadingSimilar(true);
+      setError(null);
+      setDoctor(null);
+      setSimilarDoctors([]);
+
       try {
-        const response = await axios.get(
+        // 1. Fetch the primary doctor's details
+        const doctorResponse = await axios.get(
           `${BASE_URL}/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
         );
-        if (response.data.success) {
-          setDoctor(response.data.data);
-          // Fetch similar doctors using the data from the response
-          fetchSimilarDoctors(
-            response.data.data.branches.map((b) => b.branch_id).join(","),
-            response.data.data.specialists.map((s) => s.specialist_id).join(",")
-          );
-        } else {
-          setError("Doctor not found");
-        }
-      } catch (err) {
-        setError("Failed to fetch doctor data");
-        console.error("Error fetching doctor:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    const fetchSimilarDoctors = async (branchIds, specialistIds) => {
-      try {
+        if (!doctorResponse.data.success) {
+          throw new Error("Doctor not found");
+        }
+
+        const doctorData = doctorResponse.data.data;
+        setDoctor(doctorData);
+
+        // 2. Extract IDs for the next API call
+        const branchIds =
+          doctorData.branches?.map((b) => b.branch_id).join(",") || "";
+        const specialistIds =
+          doctorData.specialists?.map((s) => s.specialist_id).join(",") || "";
+
+        // 3. Fetch similar doctors if IDs are available
         if (branchIds && specialistIds) {
-          const response = await axios.get(
-            `${BASE_URL}/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
-          );
-          if (response.data.success) {
-            const filteredDoctors = response.data.data.data.filter(
-              (doc) => doc.id.toString() !== doctorId
+          try {
+            const similarResponse = await axios.get(
+              `${BASE_URL}/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
             );
-            setSimilarDoctors(filteredDoctors);
+            if (similarResponse.data.success) {
+              const filteredDoctors = similarResponse.data.data.data.filter(
+                (doc) => doc.id.toString() !== doctorId
+              );
+              setSimilarDoctors(filteredDoctors);
+            }
+          } catch (err) {
+            // Fail gracefully if similar doctors can't be fetched
+            console.error("Error fetching similar doctors:", err);
           }
         }
       } catch (err) {
-        console.error("Error fetching similar doctors:", err);
+        setError(err.message || "Failed to fetch doctor data");
+        console.error("Error fetching doctor:", err);
       } finally {
+        setLoading(false);
         setLoadingSimilar(false);
       }
     };
 
-    fetchDoctor();
-  }, [doctorId]);
+    fetchData();
+  }, [doctorId]); // Re-run effect when doctorId changes
 
-  // Simplified leave status check using API flags
-  const isDoctorOnLeave = () => {
+  // Memoize this function to prevent re-creation on re-renders
+  const isDoctorOnLeave = useCallback(() => {
     return doctor?.on_leave === 1;
-  };
+  }, [doctor]);
 
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
@@ -95,6 +105,18 @@ const DoctorDetail = () => {
     return <div className="text-center py-10">Doctor not found</div>;
   }
 
+  // This data transformation is cleaner to do before the return statement
+  const formattedChamber = {
+    branch: doctor.practicing_branches,
+    building: doctor.branches[0]?.map || "Not specified",
+    room: "Not specified", // Not available in API payload
+    weekday: doctor.schedule.map((item) => ({
+      day: item.day,
+      time: `${item.start_time} - ${item.end_time}`,
+    })),
+    assistantMobile: doctor.branches[0]?.phone || "Not specified",
+  };
+
   const handleClick1 = () => {
     window.open(
       "http://appointment.populardiagnostic.com/appointment",
@@ -103,24 +125,11 @@ const DoctorDetail = () => {
     );
   };
 
-  const formattedChamber = {
-    branch: doctor.practicing_branches,
-    building: doctor.branches[0]?.map || "Not specified",
-    room: "Not specified",
-    weekday: doctor.schedule.map((item) => ({
-      day: item.day,
-      time: `${item.start_time} - ${item.end_time}`,
-    })),
-    assistantName: "Not specified",
-    assistantGender: "Not specified",
-    ext: "Not specified",
-    assistantMobile: doctor.branches[0]?.phone || "Not specified",
-  };
-
   return (
     <div className="doctor-detail bg-gray-100">
       <div className="sm:container mx-auto py-10 px-5">
         <div className="flex flex-wrap -mx-2">
+          {/* Left Column: Doctor Profile & Similar Doctors */}
           <div className="w-full md:w-3/12 px-2 mb-4">
             <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
               <div className="image overflow-hidden rounded-xl shadow-xl">
@@ -128,7 +137,7 @@ const DoctorDetail = () => {
                   <img
                     className="h-auto w-full mx-auto"
                     src={doctor.image}
-                    alt="Profile"
+                    alt={doctor.name}
                     style={{
                       position: "relative",
                       zIndex: 1,
@@ -209,6 +218,8 @@ const DoctorDetail = () => {
               )}
             </div>
           </div>
+
+          {/* Right Column: Doctor Details & Chamber Info */}
           <div className="w-full md:w-8/12 px-2">
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>
@@ -250,17 +261,12 @@ const DoctorDetail = () => {
                   </div>
                 </div>
               </div>
-              <Link
-                to="http://appointment.populardiagnostic.com/appointment"
-                target="_blank"
-                rel="noopener noreferrer">
-                <button
-                  className="w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4 flex items-center justify-center"
-                  onClick={handleClick1}
-                  type="button">
-                  <FaCalendarAlt className="mr-2" /> Book an Appointment
-                </button>
-              </Link>
+              <button
+                className="w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4 flex items-center justify-center"
+                onClick={handleClick1}
+                type="button">
+                <FaCalendarAlt className="mr-2" /> Book an Appointment
+              </button>
             </div>
             <div className="my-4"></div>
             <div className="bg-white p-3 shadow-lg rounded-xl">
@@ -274,19 +280,7 @@ const DoctorDetail = () => {
                 {doctor.absent_message && (
                   <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
                     <div className="flex">
-                      <div className="flex-shrink-0">
-                        <svg
-                          className="h-5 w-5 text-yellow-500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor">
-                          <path
-                            fillRule="evenodd"
-                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
+                      <div className="flex-shrink-0">{/* SVG Icon */}</div>
                       <div className="ml-3">
                         <p
                           className="text-sm text-yellow-700"
@@ -298,7 +292,7 @@ const DoctorDetail = () => {
                   </div>
                 )}
                 <div
-                  className="chambers-grid m-0 p-0 text-black w-full md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1 mx-auto"
+                  className="chambers-grid m-0 p-0 text-black w-full"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
@@ -359,7 +353,7 @@ const DoctorDetail = () => {
               </div>
             </div>
           </div>
-
+          {/* Ad Marquee Column */}
           <div className="md:w-1/12 h-screen hidden sm:block">
             <div className="flex flex-col items-center  overflow-x-hidden font-bold h-full">
               <Marquee direction="up" className="h-full">

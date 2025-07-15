@@ -411,7 +411,7 @@ const DoctorCard = React.memo(({ doctor }) => {
 
   return (
     <Link
-      to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
+      to={`/doctordetail/${doctor.id}`}
       className="doctor-card-link group  relative"
     >
       <div
