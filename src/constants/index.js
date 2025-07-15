@@ -886,7 +886,7 @@ const branch = [
       "https://maps.google.com/maps?q=22.875063,91.097225&hl=es;z=14&output=embed",
 
     braManImg: MrMuhammadReazHossain,
-    braManName: "Mr. Muhammad Reaz Hossain",
+    braManName: "Mr. Kazi Md. Reaz Hossain",
     braManDesignation: "Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Noakhali)",
     address:
