@@ -33,7 +33,6 @@ const DoctorDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Reset states on doctorId change
       setLoading(true);
       setLoadingSimilar(true);
       setError(null);
@@ -41,7 +40,6 @@ const DoctorDetail = () => {
       setSimilarDoctors([]);
 
       try {
-        // 1. Fetch the primary doctor's details
         const doctorResponse = await axios.get(
           `${BASE_URL}/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
         );
@@ -53,13 +51,11 @@ const DoctorDetail = () => {
         const doctorData = doctorResponse.data.data;
         setDoctor(doctorData);
 
-        // 2. Extract IDs for the next API call
         const branchIds =
           doctorData.branches?.map((b) => b.branch_id).join(",") || "";
         const specialistIds =
           doctorData.specialists?.map((s) => s.specialist_id).join(",") || "";
 
-        // 3. Fetch similar doctors if IDs are available
         if (branchIds && specialistIds) {
           try {
             const similarResponse = await axios.get(
@@ -72,7 +68,6 @@ const DoctorDetail = () => {
               setSimilarDoctors(filteredDoctors);
             }
           } catch (err) {
-            // Fail gracefully if similar doctors can't be fetched
             console.error("Error fetching similar doctors:", err);
           }
         }
@@ -86,9 +81,9 @@ const DoctorDetail = () => {
     };
 
     fetchData();
-  }, [doctorId]); // Re-run effect when doctorId changes
+  }, [doctorId]);
 
-  // Memoize this function to prevent re-creation on re-renders
+
   const isDoctorOnLeave = useCallback(() => {
     return doctor?.on_leave === 1;
   }, [doctor]);
@@ -105,11 +100,10 @@ const DoctorDetail = () => {
     return <div className="text-center py-10">Doctor not found</div>;
   }
 
-  // This data transformation is cleaner to do before the return statement
   const formattedChamber = {
     branch: doctor.practicing_branches,
     building: doctor.branches[0]?.map || "Not specified",
-    room: "Not specified", // Not available in API payload
+    room: "Not specified",
     weekday: doctor.schedule.map((item) => ({
       day: item.day,
       time: `${item.start_time} - ${item.end_time}`,
@@ -129,7 +123,6 @@ const DoctorDetail = () => {
     <div className="doctor-detail bg-gray-100">
       <div className="sm:container mx-auto py-10 px-5">
         <div className="flex flex-wrap -mx-2">
-          {/* Left Column: Doctor Profile & Similar Doctors */}
           <div className="w-full md:w-3/12 px-2 mb-4">
             <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
               <div className="image overflow-hidden rounded-xl shadow-xl">
@@ -219,7 +212,6 @@ const DoctorDetail = () => {
             </div>
           </div>
 
-          {/* Right Column: Doctor Details & Chamber Info */}
           <div className="w-full md:w-8/12 px-2">
             <div className="bg-white p-3 shadow-lg rounded-xl">
               <div>

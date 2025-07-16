@@ -57,6 +57,7 @@ import Refund from "./Refund";
 import ServiceSearch from "./ServiceSearch";
 import TestAPI from "./TestApi";
 import ChatWidget from "./ChatWidget";
+import ScrollToTop from "./ScrollToTop";
 
 
 export {
@@ -118,5 +119,6 @@ export {
   SearchBoxBranch,
   ServiceSearch,
   TestAPI,
-  ChatWidget
+  ChatWidget,
+  ScrollToTop
 };

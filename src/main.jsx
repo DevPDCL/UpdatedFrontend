@@ -1,151 +1,161 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import {
-  Nav,
-  Navbar,
-  Branch,
-  Layout,
-  Sample,
-  Contact,
-  Health,
-  Search,
-  Technology,
-  Details,
-  About,
-  Complain,
-  Videos,
-  Gallery,
-  Chairman,
-  Goals,
-  Notice,
-  ReportDownload,
-  Terms,
-  Privacy,
-  Director,
-  Error,
-  Footer,
-  Dmd,
-  Sidemenu,
-  Shantinagar,
-  Hotlines,
-  Shyamoli,
-  Mirpur,
-  Uttara,
-  Bogura,
-  Rangpur,
-  Refund,
-  ServiceSearch,
-  Badda,
-  Barishal,
-  Chattogram,
-  Dhanmondi,
-  Dinajpur,
-  EnglishRoad,
-  Gazipur,
-  Jatrabari,
-  Khulna,
-  Kushtia,
-  Mymensingh,
-  Narayangonj,
-  Noakhali,
-  Rajshahi,
-  Savar,
-  UttaraGaribENewaz,
-  TestAPI,
-  ChatWidget
-} from "./components";
+import { Nav, Navbar, Footer, Sidemenu, Error, ScrollToTop } from "./components";
 import "./index.css";
-import NoticeDetails from "./components/NoticeDetails";
+
+const PageLoader = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      fontSize: "1.5rem",
+      color: "#333",
+    }}>
+    Loading...
+  </div>
+);
 
 const App = () => {
   return (
     <div>
+      <ScrollToTop />
       <Nav />
       <Navbar />
-      {/* <ChatWidget /> */}
       <Outlet />
       <Sidemenu />
       <Footer />
     </div>
   );
 };
-const DoctorDetail = lazy(() => import("./components/DoctorDetail"));
-const DoctorSearch = lazy(() => import("./components/DoctorSearch"));
+
+const lazyLoad = (componentName) => {
+  return lazy(() =>
+    import("./components").then((module) => ({
+      default: module[componentName],
+    }))
+  );
+};
+
+const Layout = lazyLoad("Layout");
+const ReportDownload = lazyLoad("ReportDownload");
+const Sample = lazyLoad("Sample");
+const Search = lazyLoad("Search");
+const TestAPI = lazyLoad("TestAPI");
+const DoctorDetail = lazyLoad("DoctorDetail");
+const DoctorSearch = lazyLoad("DoctorSearch");
+const Technology = lazyLoad("Technology");
+const Goals = lazyLoad("Goals");
+const Complain = lazyLoad("Complain");
+const Branch = lazyLoad("Branch");
+const Director = lazyLoad("Director");
+const Chairman = lazyLoad("Chairman");
+const Hotlines = lazyLoad("Hotlines");
+const Dmd = lazyLoad("Dmd");
+const Notice = lazyLoad("Notice");
+const NoticeDetails = lazy(() => import("./components/NoticeDetails")); 
+const Videos = lazyLoad("Videos");
+const Contact = lazyLoad("Contact");
+const Health = lazyLoad("Health");
+const Details = lazyLoad("Details");
+const About = lazyLoad("About");
+const Terms = lazyLoad("Terms");
+const Privacy = lazyLoad("Privacy");
+const Gallery = lazyLoad("Gallery");
+const Refund = lazyLoad("Refund");
+const ServiceSearch = lazyLoad("ServiceSearch");
+
+// Branch Pages
+const Shantinagar = lazyLoad("Shantinagar");
+const Shyamoli = lazyLoad("Shyamoli");
+const Mirpur = lazyLoad("Mirpur");
+const Uttara = lazyLoad("Uttara");
+const Bogura = lazyLoad("Bogura");
+const Rangpur = lazyLoad("Rangpur");
+const Badda = lazyLoad("Badda");
+const Barishal = lazyLoad("Barishal");
+const Chattogram = lazyLoad("Chattogram");
+const Dhanmondi = lazyLoad("Dhanmondi");
+const Dinajpur = lazyLoad("Dinajpur");
+const EnglishRoad = lazyLoad("EnglishRoad");
+const Gazipur = lazyLoad("Gazipur");
+const Jatrabari = lazyLoad("Jatrabari");
+const Khulna = lazyLoad("Khulna");
+const Kushtia = lazyLoad("Kushtia");
+const Mymensingh = lazyLoad("Mymensingh");
+const Narayangonj = lazyLoad("Narayangonj");
+const Noakhali = lazyLoad("Noakhali");
+const Rajshahi = lazyLoad("Rajshahi");
+const Savar = lazyLoad("Savar");
+const UttaraGaribENewaz = lazyLoad("UttaraGaribENewaz");
 
 const routes = [
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <Layout /> },
-      { path: "/patient_portal", element: <ReportDownload /> },
-      { path: "/sample", element: <Sample /> },
-      { path: "/search", element: <Search /> },
-      { path: "/testapi", element: <TestAPI /> },
       {
-        path: "/doctordetail/:doctorId",
         element: (
-          <Suspense fallback={null}>
-            {" "}
-            <DoctorDetail />{" "}
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
           </Suspense>
         ),
-      },
-      {
-        path: "/our-doctors",
-        element: (
-          <Suspense fallback={null}>
-            {" "}
-            <DoctorSearch />{" "}
-          </Suspense>
-        ),
-      },
-      { path: "/tech", element: <Technology /> },
-      { path: "/goals", element: <Goals /> },
-      { path: "/complain", element: <Complain /> },
-      { path: "/our-branches", element: <Branch /> },
-      { path: "/director", element: <Director /> },
-      { path: "/chairman", element: <Chairman /> },
-      { path: "/hotlines", element: <Hotlines /> },
-      { path: "/Dmd", element: <Dmd /> },
-      { path: "/notice", element: <Notice /> },
-      { path: "/notices/:id", element: <NoticeDetails /> },
-      { path: "/video", element: <Videos /> },
-      { path: "/contact-us", element: <Contact /> },
-      { path: "/health", element: <Health /> },
-      { path: "/details", element: <Details /> },
-      { path: "/about", element: <About /> },
-      { path: "/terms&conditions", element: <Terms /> },
-      { path: "/privacy&policy", element: <Privacy /> },
-      { path: "/gallery", element: <Gallery /> },
-      { path: "/refund", element: <Refund /> },
-      { path: "/servicesearch", element: <ServiceSearch /> },
+        children: [
+          { path: "/", element: <Layout /> },
+          { path: "/patient_portal", element: <ReportDownload /> },
+          { path: "/sample", element: <Sample /> },
+          { path: "/search", element: <Search /> },
+          { path: "/testapi", element: <TestAPI /> },
+          { path: "/doctordetail/:doctorId", element: <DoctorDetail /> },
+          { path: "/our-doctors", element: <DoctorSearch /> },
+          { path: "/tech", element: <Technology /> },
+          { path: "/goals", element: <Goals /> },
+          { path: "/complain", element: <Complain /> },
+          { path: "/our-branches", element: <Branch /> },
+          { path: "/director", element: <Director /> },
+          { path: "/chairman", element: <Chairman /> },
+          { path: "/hotlines", element: <Hotlines /> },
+          { path: "/Dmd", element: <Dmd /> },
+          { path: "/notice", element: <Notice /> },
+          { path: "/notices/:id", element: <NoticeDetails /> },
+          { path: "/video", element: <Videos /> },
+          { path: "/contact-us", element: <Contact /> },
+          { path: "/health", element: <Health /> },
+          { path: "/details", element: <Details /> },
+          { path: "/about", element: <About /> },
+          { path: "/terms&conditions", element: <Terms /> },
+          { path: "/privacy&policy", element: <Privacy /> },
+          { path: "/gallery", element: <Gallery /> },
+          { path: "/refund", element: <Refund /> },
+          { path: "/servicesearch", element: <ServiceSearch /> },
 
-      // branch pages
-      { path: "/shantinagar", element: <Shantinagar /> },
-      { path: "/shyamoli", element: <Shyamoli /> },
-      { path: "/mirpur", element: <Mirpur /> },
-      { path: "/uttarasector4", element: <Uttara /> },
-      { path: "/bogura", element: <Bogura /> },
-      { path: "/rangpur", element: <Rangpur /> },
-      { path: "/badda", element: <Badda /> },
-      { path: "/barishal", element: <Barishal /> },
-      { path: "/chattogram", element: <Chattogram /> },
-      { path: "/dhanmondi", element: <Dhanmondi /> },
-      { path: "/dinajpur", element: <Dinajpur /> },
-      { path: "/englishRoad", element: <EnglishRoad /> },
-      { path: "/gazipur", element: <Gazipur /> },
-      { path: "/jatrabari", element: <Jatrabari /> },
-      { path: "/khulna", element: <Khulna /> },
-      { path: "/kushtia", element: <Kushtia /> },
-      { path: "/mymensingh", element: <Mymensingh /> },
-      { path: "/narayangonj", element: <Narayangonj /> },
-      { path: "/noakhali", element: <Noakhali /> },
-      { path: "/rajshahi", element: <Rajshahi /> },
-      { path: "/savar", element: <Savar /> },
-      { path: "/uttarasector13", element: <UttaraGaribENewaz /> },
-      //end of branch pages
+          // Branch pages
+          { path: "/shantinagar", element: <Shantinagar /> },
+          { path: "/shyamoli", element: <Shyamoli /> },
+          { path: "/mirpur", element: <Mirpur /> },
+          { path: "/uttarasector4", element: <Uttara /> },
+          { path: "/bogura", element: <Bogura /> },
+          { path: "/rangpur", element: <Rangpur /> },
+          { path: "/badda", element: <Badda /> },
+          { path: "/barishal", element: <Barishal /> },
+          { path: "/chattogram", element: <Chattogram /> },
+          { path: "/dhanmondi", element: <Dhanmondi /> },
+          { path: "/dinajpur", element: <Dinajpur /> },
+          { path: "/englishRoad", element: <EnglishRoad /> },
+          { path: "/gazipur", element: <Gazipur /> },
+          { path: "/jatrabari", element: <Jatrabari /> },
+          { path: "/khulna", element: <Khulna /> },
+          { path: "/kushtia", element: <Kushtia /> },
+          { path: "/mymensingh", element: <Mymensingh /> },
+          { path: "/narayangonj", element: <Narayangonj /> },
+          { path: "/noakhali", element: <Noakhali /> },
+          { path: "/rajshahi", element: <Rajshahi /> },
+          { path: "/savar", element: <Savar /> },
+          { path: "/uttarasector13", element: <UttaraGaribENewaz /> },
+        ],
+      },
     ],
     errorElement: <Error />,
   },
