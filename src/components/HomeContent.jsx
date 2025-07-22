@@ -36,7 +36,7 @@ const Counter = ({ n, suffix = "", suffixExt = "" }) => {
   });
 
   return (
-    <div ref={countRef} className="flex items-center justify-center">
+    <div ref={countRef} className="flex items-center justify-start">
       <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>
       {suffix && <span>{suffix}</span>}
       {suffixExt && (
@@ -48,20 +48,20 @@ const Counter = ({ n, suffix = "", suffixExt = "" }) => {
 
 const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
   return (
-    <div className="p-5 items-center flex flex-row gap-5 mx-auto text-center hover:scale-110 transition duration-500 group">
-      <div className="rounded-full p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
+    <div className="p-2 sm:p-5 items-center flex flex-row justify-start gap-3 sm:gap-5 sm:mx-auto hover:scale-110 transition duration-500 group">
+      <div className="rounded-full p-2 sm:p-3 border-2 border-dashed border-gray-600 hover:scale-110 group-hover:bg-gray-600 transition duration-500">
         <svg
-          className="w-[40px] h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500"
+          className="w-[30px] h-[45px] sm:w-[40px] sm:h-[60px] fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition duration-500"
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg">
           <path d={icon} />
         </svg>
       </div>
       <div>
-        <h2 className="text-gray-600 text-center font-bold font-ubuntu text-[40px]">
+        <h2 className="text-gray-600 text-left font-bold font-ubuntu text-[24px] sm:text-[40px]">
           <Counter n={value} suffix={suffix} suffixExt={suffixExt} />
         </h2>
-        <p className="text-gray-500 text-center font-bold font-ubuntu text-[16px]">
+        <p className="text-gray-500 text-left font-bold font-ubuntu text-[12px] sm:text-[16px]">
           {label}
         </p>
       </div>
@@ -170,7 +170,7 @@ const HomeContent = () => {
     const fetchBranchData = async () => {
       try {
         const { data } = await axios.get(
-          `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
+          `${BASE_URL}/api/branches?token=${import.meta.env.VITE_API_TOKEN}`
         );
 
         if (data?.success) {
@@ -245,7 +245,7 @@ const HomeContent = () => {
       <div className="overflow-hidden mt-[-140px] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center items-center py-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 w-full">
               {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
               ))}
