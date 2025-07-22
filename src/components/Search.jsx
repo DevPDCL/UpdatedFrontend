@@ -9,10 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
 import { reportDownload } from "../constants";
-import { BASE_URL } from "../secrets";
-
-const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
-const API_BASE_URL = `${BASE_URL}/api`;
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const TABS = [
   { id: "doctors", label: "Doctors" },
@@ -198,9 +195,9 @@ const Search = () => {
   const fetchInitialDoctorData = useCallback(async () => {
     try {
       const [branchesRes, specializationsRes, daysRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/branch-for-doctor?token=${API_TOKEN}`),
-        axios.get(`${API_BASE_URL}/doctor-speciality?token=${API_TOKEN}`),
-        axios.get(`${API_BASE_URL}/practice-days?token=${API_TOKEN}`),
+        axios.get(`${BASE_URL}/api/branch-for-doctor?token=${API_TOKEN}`),
+        axios.get(`${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`),
+        axios.get(`${BASE_URL}/api/practice-days?token=${API_TOKEN}`),
       ]);
 
       setDoctorSearchData((prev) => ({
@@ -251,7 +248,7 @@ const Search = () => {
 
         const queryString = new URLSearchParams(params).toString();
         const response = await axios.get(
-          `${API_BASE_URL}/doctors?${queryString}`
+          `${BASE_URL}/api/doctors?${queryString}`
         );
 
         const newDoctors = response.data.data.data;
@@ -365,7 +362,7 @@ const Search = () => {
     try {
       // First fetch to get initial data and total pages
       const firstPageResponse = await axios.get(
-        `${API_BASE_URL}/test-service-charges`,
+        `${BASE_URL}/api/test-service-charges`,
         {
           params: {
             token: API_TOKEN,
@@ -420,7 +417,7 @@ const Search = () => {
 
         while (currentPage <= totalPages) {
           const pageResponse = await axios.get(
-            `${API_BASE_URL}/test-service-charges`,
+            `${BASE_URL}/api/test-service-charges`,
             {
               params: {
                 token: API_TOKEN,
@@ -488,7 +485,7 @@ const Search = () => {
 
           // Perform API search
           const response = await axios.get(
-            `${API_BASE_URL}/test-service-charges`,
+            `${BASE_URL}/api/test-service-charges`,
             {
               params: {
                 token: API_TOKEN,

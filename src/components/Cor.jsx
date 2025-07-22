@@ -4,7 +4,7 @@ import axios from "axios";
 import { servicePartners } from "../constants";
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 function Cor() {
   const [images, setImages] = useState([]);
@@ -13,14 +13,11 @@ function Cor() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/partners`,
-          {
-            params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            },
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/api/partners`, {
+          params: {
+            token: `${API_TOKEN}`,
+          },
+        });
         setImages(response.data.data.data);
       } catch (error) {
         console.error("Error fetching images:", error);

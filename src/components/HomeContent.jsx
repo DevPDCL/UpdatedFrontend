@@ -9,7 +9,7 @@ import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
-import { BASE_URL } from "../secrets";
+import { BASE_URL, API_TOKEN } from "../secrets";
 
 
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
@@ -170,7 +170,7 @@ const HomeContent = () => {
     const fetchBranchData = async () => {
       try {
         const { data } = await axios.get(
-          `${BASE_URL}/api/branches?token=${import.meta.env.VITE_API_TOKEN}`
+          `${BASE_URL}/api/branches?token=${API_TOKEN}`
         );
 
         if (data?.success) {

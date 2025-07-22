@@ -4,7 +4,7 @@ import "@fontsource/ubuntu";
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
 import axios from "axios";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const SkeletonLoader = () => (
   <div className="mx-auto border border-[#b0e0cb] shadow-lg bg-gradient-to-r from-[#f5fbf8] to-[#e0f2eb] rounded-xl mb-6 w-full h-[400px] overflow-hidden animate-pulse">
@@ -337,15 +337,12 @@ function Notice() {
   const fetchNotices = useCallback(async (page = 1) => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${BASE_URL}/api/news-and-notices`,
-        {
-          params: {
-            token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            page,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/news-and-notices`, {
+        params: {
+          token: `${API_TOKEN}`,
+          page,
+        },
+      });
 
       setNotices(response.data.data.data);
       setPagination({

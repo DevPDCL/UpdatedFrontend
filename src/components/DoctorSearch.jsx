@@ -5,7 +5,7 @@ import axios from "axios";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASE_URL } from "../secrets";
+import { BASE_URL, API_TOKEN } from "../secrets";
 import DoctorCard from "./DoctorCard";
 
 const spring = {
@@ -13,8 +13,6 @@ const spring = {
   stiffness: 700,
   damping: 30,
 };
-
-const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
 
 const selectStyles = {
   control: (base) => ({ ...base, borderColor: "#00984a", "&:hover": { borderColor: "#00984a" }, minHeight: "44px", boxShadow: "none", borderRadius: "0.5rem" }),

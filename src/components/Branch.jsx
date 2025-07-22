@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
-const API_URL = `${BASE_URL}/api/branches?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`;
+const API_URL = `${BASE_URL}/api/branches?token=${API_TOKEN}`;
 const ANIMATION_SPRING = { type: "spring", stiffness: 700, damping: 30 };
 
 const buttonVariants = {

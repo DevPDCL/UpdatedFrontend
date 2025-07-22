@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { reportDownload } from "../constants";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const TestApi = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
@@ -29,7 +29,7 @@ const TestApi = () => {
           `${BASE_URL}/api/test-service-charges`,
           {
             params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+              token: `${API_TOKEN}`,
               branch_id: branch.braID,
               test_service_category_id: 0,
               page: 1,
@@ -60,7 +60,7 @@ const TestApi = () => {
         `${BASE_URL}/api/test-service-charges`,
         {
           params: {
-            token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+            token: `${API_TOKEN}`,
             branch_id: branchId,
             test_service_category_id: 0,
             page: 1,
@@ -74,7 +74,7 @@ const TestApi = () => {
           `${BASE_URL}/api/test-service-charges`,
           {
             params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
+              token: `${API_TOKEN}`,
               branch_id: branchId,
               test_service_category_id: 0,
               page: currentPage,

@@ -13,7 +13,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
-import { BASE_URL } from "../../secrets";
+import { API_TOKEN, BASE_URL } from "../../secrets";
 
 const DoctorSlider = ({ doctors, loading }) => {
   const sliderRef = useRef(null);
@@ -189,7 +189,7 @@ const Dhanmondi = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${BASE_URL}/api/doctors?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=1&page=${pageNum}`
+        `${BASE_URL}/api/doctors?token=${API_TOKEN}&branches=1&page=${pageNum}`
       );
       setDoctors((prev) =>
         pageNum === 1

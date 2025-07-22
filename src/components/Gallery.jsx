@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
 import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const Gallery = () => {
   const [tabs, setTabs] = useState([]);
@@ -14,14 +14,11 @@ const Gallery = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/gallery`,
-          {
-            params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            },
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/api/gallery`, {
+          params: {
+            token: `${API_TOKEN}`,
+          },
+        });
 
         setTabs(response.data.data);
         if (response.data.data?.length > 0) {

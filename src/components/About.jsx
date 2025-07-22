@@ -2,7 +2,7 @@ import "@fontsource/ubuntu";
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const ProjectCard = React.memo(({ image, name, designation }) => {
   return (
@@ -68,15 +68,12 @@ const About = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/management-team`,
-          {
-            params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            },
-            timeout: 5000, // 5 seconds timeout
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/api/management-team`, {
+          params: {
+            token: `${API_TOKEN}`,
+          },
+          timeout: 5000,
+        });
 
         setManagementData({
           row1: response.data.data["Row - 1"]?.slice(0, 2) || [],

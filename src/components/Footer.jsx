@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "@fontsource/ubuntu";
 import img from "../assets/link.webp";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const Footer = () => {
   const [socialLinks, setSocialLinks] = useState([]);
@@ -12,14 +12,11 @@ const Footer = () => {
   useEffect(() => {
     const fetchSocialLinks = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/social-links`,
-          {
-            params: {
-              token: "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4",
-            },
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/api/social-links`, {
+          params: {
+            token: `${API_TOKEN}`,
+          },
+        });
         setSocialLinks(response.data.data);
       } catch (err) {
         console.error("Error fetching social links:", err);

@@ -21,7 +21,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
 const DoctorDetail = () => {
   const { doctorId } = useParams();
@@ -41,7 +41,7 @@ const DoctorDetail = () => {
 
       try {
         const doctorResponse = await axios.get(
-          `${BASE_URL}/api/doctor/${doctorId}?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4`
+          `${BASE_URL}/api/doctor/${doctorId}?token=${API_TOKEN}`
         );
 
         if (!doctorResponse.data.success) {
@@ -59,7 +59,7 @@ const DoctorDetail = () => {
         if (branchIds && specialistIds) {
           try {
             const similarResponse = await axios.get(
-              `${BASE_URL}/api/doctor-suggestions?token=UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4&branches=${branchIds}&specialities=${specialistIds}`
+              `${BASE_URL}/api/doctor-suggestions?token=${API_TOKEN}&branches=${branchIds}&specialities=${specialistIds}`
             );
             if (similarResponse.data.success) {
               const filteredDoctors = similarResponse.data.data.data.filter(

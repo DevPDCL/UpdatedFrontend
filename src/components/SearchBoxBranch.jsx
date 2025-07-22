@@ -19,10 +19,8 @@ import {
   FaAngleRight,
   FaInfoCircle,
 } from "react-icons/fa";
-import { BASE_URL } from "../secrets";
+import { API_TOKEN, BASE_URL } from "../secrets";
 
-const API_TOKEN = "UCbuv3xIyFsMS9pycQzIiwdwaiS3izz4";
-const API_BASE_URL = `${BASE_URL}/api`;
 
 const TABS = [
   { id: "doctors", label: "Doctors", icon: <FaUserMd /> },
@@ -226,7 +224,7 @@ const SearchBoxBranch = ({ branchId, branchForDoctor }) => {
 
   const apiRequest = useCallback(async (endpoint, params = {}) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/${endpoint}`, {
+      const response = await axios.get(`${BASE_URL}/api/${endpoint}`, {
         params: { ...params, token: API_TOKEN },
       });
       return response.data;
