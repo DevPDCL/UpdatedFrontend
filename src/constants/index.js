@@ -280,7 +280,7 @@ const healthPakage = [
   },
   {
     id: 3,
-    name: "HEALTH PAKAGES",
+    name: "HEALTH PACKAGES",
     description:
       "Discover a proactive approach to wellness with our specially designed health packages at Popular Diagnostic Centre Ltd. Each package is curated to offer comprehensive screenings for early detection and peace of mind.",
     tags: [
