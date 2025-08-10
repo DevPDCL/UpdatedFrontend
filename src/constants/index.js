@@ -795,7 +795,7 @@ const branch = [
 
     braManImg: AjoyKumarDatta,
     braManName: "Ajoy Kumar Datta",
-    braManDesignation: "Branch Manager",
+    braManDesignation: "Senior Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (Gazipur)",
     address:
       "Gazipur Shibbari More (Near VIP Bus Terminal and Walton Show Room)",
