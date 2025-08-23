@@ -531,7 +531,15 @@ const reportDownload = [
     downloadLink: "http://akhil.populardiagnostic.com/",
     braCity: "Barishal",
   },
+  {
+    braID: 32,
+    braName: "Tangail",
+    downloadLink:
+      "http://192.168.130.18:8877/ords/f?p=780:3:6021543833956:::::",
+    braCity: "Tangail",
+  },
 ];
+
 
 const branch = [
   {
