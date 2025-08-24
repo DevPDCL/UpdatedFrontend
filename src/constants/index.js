@@ -535,7 +535,7 @@ const reportDownload = [
     braID: 32,
     braName: "Tangail",
     downloadLink:
-      "http://192.168.130.18:8877/ords/f?p=780:3:6021543833956:::::",
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=780:3:1469279010548:::::",
     braCity: "Tangail",
   },
 ];

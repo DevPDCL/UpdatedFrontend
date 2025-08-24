@@ -223,7 +223,7 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
-                Home Collection
+                Home Sample Collection
               </a>
               <NavLink to="/contact-us">Contact</NavLink>
             </nav>
@@ -460,7 +460,9 @@ const Navbar = () => {
                       onClick={() => setMobileOpen(false)}>
                       Doctors
                     </NavLink>
-                    <NavLink to="/our-branches" onClick={() => setMobileOpen(false)}>
+                    <NavLink
+                      to="/our-branches"
+                      onClick={() => setMobileOpen(false)}>
                       Branches
                     </NavLink>
 
@@ -478,9 +480,11 @@ const Navbar = () => {
                       rel="noopener noreferrer"
                       onClick={() => setMobileOpen(false)}
                       className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
-                      Sample Collection
+                      Home Sample Collection
                     </a>
-                    <NavLink to="/contact-us" onClick={() => setMobileOpen(false)}>
+                    <NavLink
+                      to="/contact-us"
+                      onClick={() => setMobileOpen(false)}>
                       Contact
                     </NavLink>
                     <NavLink
