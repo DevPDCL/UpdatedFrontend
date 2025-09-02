@@ -58,6 +58,7 @@ import ServiceSearch from "./ServiceSearch";
 import TestAPI from "./TestApi";
 import ChatWidget from "./ChatWidget";
 import ScrollToTop from "./ScrollToTop";
+import { SampleCollectionMain } from "./SampleCollection";
 
 
 export {
@@ -120,5 +121,6 @@ export {
   ServiceSearch,
   TestAPI,
   ChatWidget,
-  ScrollToTop
+  ScrollToTop,
+  SampleCollectionMain
 };

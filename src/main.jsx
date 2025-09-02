@@ -41,7 +41,7 @@ const lazyLoad = (componentName) => {
 
 const Layout = lazyLoad("Layout");
 const ReportDownload = lazyLoad("ReportDownload");
-const Sample = lazyLoad("Sample");
+const SampleCollectionMain = lazyLoad("SampleCollectionMain");
 const Search = lazyLoad("Search");
 const TestAPI = lazyLoad("TestAPI");
 const DoctorDetail = lazyLoad("DoctorDetail");
@@ -105,7 +105,7 @@ const routes = [
         children: [
           { path: "/", element: <Layout /> },
           { path: "/patient_portal", element: <ReportDownload /> },
-          { path: "/sample", element: <Sample /> },
+          { path: "/sample-collection", element: <SampleCollectionMain /> },
           { path: "/search", element: <Search /> },
           { path: "/testapi", element: <TestAPI /> },
           { path: "/doctordetail/:doctorId", element: <DoctorDetail /> },
