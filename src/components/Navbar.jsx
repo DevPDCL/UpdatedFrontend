@@ -1,249 +1,484 @@
 import image from "../assets/logo1.webp";
 import React, { useState, useEffect, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import {
   ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
+  UserIcon,
+  HeartIcon,
+  BuildingOfficeIcon,
+  PhoneIcon,
 } from "@heroicons/react/24/outline";
+import { useScrollPosition } from "../hooks/useScrollPosition";
+import { useHoverDepth } from "../hooks/useHoverDepth";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useSmartNavigation } from "../hooks/useSmartNavigation";
+import { 
+  navigationVariants, 
+  dropdownVariants, 
+  menuItemVariants,
+  getGlassStyle 
+} from "../utils/3d-effects";
+import clsx from "clsx";
 
-const NavLink = ({ to, children, onClick }) => {
+// Enhanced NavLink with 3D effects and mobile optimization
+const NavLink = ({ to, children, onClick, icon: Icon, description }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
+  const hoverDepth = useHoverDepth({ maxRotation: 5, maxScale: 1.02 });
+
   return (
-    <Link
-      to={to}
-      onClick={onClick}
-      className={`block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 ${
-        isActive
-          ? "text-[#00984a]"
-          : "text-gray-700 hover:bg-gray-100 hover:text-[#00984a]"
-      }`}
-    >
-      {children}
-    </Link>
+    <motion.div
+      className="group"
+      {...hoverDepth.motionProps}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}>
+      <Link
+        to={to}
+        onClick={onClick}
+        className={clsx(
+          "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 touch-manipulation",
+          "group-hover:glass group-hover:shadow-depth-2 group-hover:-translate-y-0.5",
+          "min-h-[48px] active:bg-PDCL-green/5", // Better touch target and active state
+          isActive
+            ? "bg-PDCL-green/10 text-PDCL-green border border-PDCL-green/20"
+            : "text-gray-700 hover:text-PDCL-green"
+        )}
+        style={{ WebkitTapHighlightColor: 'transparent' }}>
+        {Icon && <Icon className="w-5 h-5 flex-shrink-0" />}
+        <div className="flex-1 min-w-0">
+          <div className="font-medium font-ubuntu text-base">{children}</div>
+          {description && (
+            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors">
+              {description}
+            </div>
+          )}
+        </div>
+      </Link>
+    </motion.div>
   );
 };
 
+// Mega Menu Component
+const MegaMenu = ({ isOpen, onClose, title, children }) => {
+  const { prefersReducedMotion, getVariants } = useReducedMotion();
+  
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="absolute top-full left-1/2 -translate-x-1/2 w-80 sm:w-96 md:w-[520px] lg:w-[600px] z-50 mt-2 mega-menu-dropdown"
+          style={{
+            ...getGlassStyle('light', 0.95)
+          }}
+          variants={getVariants(dropdownVariants)}
+          initial="hidden"
+          animate="visible"
+          exit="exit">
+          <div className="glass shadow-depth-4 rounded-2xl border border-white/20 backdrop-blur-xl">
+            <div className="p-6 md:p-8">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 md:mb-6 font-ubuntu">
+                {title}
+              </h3>
+              {children}
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [hoverTimer, setHoverTimer] = useState(null);
+  const location = useLocation();
+  const { hasScrolled, isAtTop } = useScrollPosition();
+  const { contextualActions, trackAction } = useSmartNavigation();
+  const { prefersReducedMotion, getVariants } = useReducedMotion();
+
+  // Smooth hover delay management
+  const handleMouseEnter = (menu) => {
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+      setHoverTimer(null);
+    }
+    setActiveMenu(menu);
+  };
+
+  const handleMouseLeave = () => {
+    const timer = setTimeout(() => {
+      setActiveMenu(null);
+    }, 200); // Slightly longer delay for better UX
+    setHoverTimer(timer);
+  };
+
+  // Handle navigation container mouse leave
+  const handleNavMouseLeave = () => {
+    const timer = setTimeout(() => {
+      setActiveMenu(null);
+    }, 300); // Longer delay when leaving entire nav area
+    setHoverTimer(timer);
+  };
+
+  // Menu configuration with intelligent grouping
+  const menuConfig = {
+    services: {
+      title: 'Services & Tests',
+      items: [
+        {
+          to: '/health',
+          title: 'Health Packages',
+          description: 'Comprehensive health checkups',
+          icon: HeartIcon,
+          featured: true
+        },
+        {
+          to: '/patient_portal',
+          title: 'Patient Portal',
+          description: 'Download reports & manage appointments',
+          icon: UserIcon,
+          featured: true
+        },
+        {
+          href: 'https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform',
+          title: 'Home Collection',
+          description: 'Sample collection at your doorstep',
+          external: true
+        }
+      ]
+    },
+    care: {
+      title: 'Find Care',
+      items: [
+        {
+          to: '/our-doctors',
+          title: 'Find a Doctor',
+          description: 'Expert specialists across all fields',
+          icon: UserIcon,
+          featured: true
+        },
+        {
+          to: '/our-branches',
+          title: 'Our Branches',
+          description: '22+ locations across Bangladesh',
+          icon: BuildingOfficeIcon,
+          featured: true
+        },
+        {
+          to: '/hotlines',
+          title: 'Emergency Hotlines',
+          description: '24/7 emergency support',
+          icon: PhoneIcon
+        }
+      ]
+    },
+    about: {
+      title: 'About PDCL',
+      items: [
+        {
+          to: '/goals',
+          title: 'Our Mission',
+          description: 'Objectives & Goals'
+        },
+        {
+          to: '/chairman',
+          title: 'Chairman\'s Message',
+          description: 'Leadership vision'
+        },
+        {
+          to: '/director',
+          title: 'Managing Director',
+          description: 'Executive message'
+        },
+        {
+          to: '/dmd',
+          title: 'Deputy MD',
+          description: 'Leadership insights'
+        },
+        {
+          to: '/about',
+          title: 'Management Team',
+          description: 'Our leadership'
+        },
+        {
+          to: '/tech',
+          title: 'Our Technologies',
+          description: 'Advanced medical equipment'
+        },
+        {
+          to: '/gallery',
+          title: 'Photo Gallery',
+          description: 'Facilities & events'
+        },
+        {
+          to: '/video',
+          title: 'Corporate Videos',
+          description: 'Learn more about us'
+        },
+        {
+          to: '/notice',
+          title: 'Notices',
+          description: 'Latest announcements'
+        }
+      ]
+    }
+  };
 
   return (
     <>
-      {/* Top Navbar */}
-      <header className="bg-white shadow sticky top-0 z-50">
+      {/* Main Navbar */}
+      <motion.header
+        className={clsx(
+          "sticky z-40 transition-all duration-300", 
+          hasScrolled
+            ? "glass shadow-depth-3 backdrop-blur-xl"
+            : "bg-white shadow-depth-2"
+        )}
+        style={{ 
+          marginTop: 'var(--nav-height, 56px)', // Use dynamic nav height with fallback
+          ...(hasScrolled ? getGlassStyle('light', 0.9) : {})
+        }}
+        variants={getVariants(navigationVariants)}
+        initial="hidden"
+        animate="visible">
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-0">
-              <img
-                src={image}
-                alt="Logo"
-                className="w-[45px] h-[45px] bg-none object-contain"
-              />
-            </Link>
+          <div className="flex justify-between items-center h-16 lg:h-18">
+            
+            {/* Logo with 3D hover effect */}
+            <motion.div
+              whileHover={{ scale: 1.05, rotateY: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="perspective-1000">
+              <Link to="/" className="flex items-center">
+                <img
+                  src={image}
+                  alt="Popular Diagnostic Centre"
+                  className="w-12 h-12 lg:w-14 lg:h-14 object-contain hover-lift"
+                />
+              </Link>
+            </motion.div>
 
-            <nav className="hidden lg:flex space-x-4">
-              <Menu as="div" className="relative">
-                <Menu.Button className="inline-flex items-center px-3 py-2  text-[16px] font-medium text-gray-700 hover:text-[#00984a] hover:bg-gray-100 rounded-lg">
+            {/* Desktop Navigation - Now shows from 768px+ for 720p desktop users */}
+            <nav className="hidden md:flex items-center space-x-2 relative"
+                 role="navigation" 
+                 aria-label="Main navigation"
+                 onMouseLeave={handleNavMouseLeave}>
+              
+              {/* Services Mega Menu */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('services')}
+                onMouseLeave={(e) => {
+                  // Don't close if moving to dropdown
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const dropdown = e.currentTarget.querySelector('.mega-menu-dropdown');
+                  if (dropdown) {
+                    const dropdownRect = dropdown.getBoundingClientRect();
+                    if (e.clientY >= rect.bottom && e.clientY <= dropdownRect.bottom) {
+                      return; // Don't close, moving to dropdown
+                    }
+                  }
+                  handleMouseLeave();
+                }}>
+                <motion.button
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  whileHover={{ scale: 1.02 }}>
+                  <HeartIcon className="w-4 h-4" />
+                  Services
+                  <ChevronDownIcon className="w-4 h-4" />
+                </motion.button>
+                
+                <MegaMenu
+                  isOpen={activeMenu === 'services'}
+                  onClose={() => setActiveMenu(null)}
+                  title={menuConfig.services.title}>
+                  <div className="grid grid-cols-1 gap-4">
+                    {menuConfig.services.items.map((item, index) => (
+                      <motion.div
+                        key={item.to || item.href}
+                        custom={index}
+                        variants={getVariants(menuItemVariants)}
+                        initial="hidden"
+                        animate="visible">
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => trackAction('external-link', 'services')}
+                            className={clsx(
+                              "flex items-center gap-3 p-4 rounded-xl transition-all duration-200",
+                              "hover:glass hover:shadow-depth-2 hover:-translate-y-0.5",
+                              item.featured && "border border-PDCL-green/20 bg-PDCL-green/5"
+                            )}>
+                            {item.icon && <item.icon className="w-6 h-6 text-PDCL-green" />}
+                            <div>
+                              <div className="font-medium text-gray-900 font-ubuntu">{item.title}</div>
+                              <div className="text-sm text-gray-600">{item.description}</div>
+                            </div>
+                          </a>
+                        ) : (
+                          <NavLink
+                            to={item.to}
+                            icon={item.icon}
+                            description={item.description}
+                            onClick={() => {
+                              setActiveMenu(null);
+                              trackAction(item.to, 'services');
+                            }}>
+                            {item.title}
+                          </NavLink>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+                </MegaMenu>
+              </div>
+
+              {/* Find Care Mega Menu */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('care')}
+                onMouseLeave={(e) => {
+                  // Don't close if moving to dropdown
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const dropdown = e.currentTarget.querySelector('.mega-menu-dropdown');
+                  if (dropdown) {
+                    const dropdownRect = dropdown.getBoundingClientRect();
+                    if (e.clientY >= rect.bottom && e.clientY <= dropdownRect.bottom) {
+                      return; // Don't close, moving to dropdown
+                    }
+                  }
+                  handleMouseLeave();
+                }}>
+                <motion.button
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  whileHover={{ scale: 1.02 }}>
+                  <BuildingOfficeIcon className="w-4 h-4" />
+                  Find Care
+                  <ChevronDownIcon className="w-4 h-4" />
+                </motion.button>
+                
+                <MegaMenu
+                  isOpen={activeMenu === 'care'}
+                  onClose={() => setActiveMenu(null)}
+                  title={menuConfig.care.title}>
+                  <div className="grid grid-cols-1 gap-4">
+                    {menuConfig.care.items.map((item, index) => (
+                      <motion.div
+                        key={item.to}
+                        custom={index}
+                        variants={getVariants(menuItemVariants)}
+                        initial="hidden"
+                        animate="visible">
+                        <NavLink
+                          to={item.to}
+                          icon={item.icon}
+                          description={item.description}
+                          onClick={() => {
+                            setActiveMenu(null);
+                            trackAction(item.to, 'care');
+                          }}>
+                          {item.title}
+                        </NavLink>
+                      </motion.div>
+                    ))}
+                  </div>
+                </MegaMenu>
+              </div>
+
+              {/* About Mega Menu */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('about')}
+                onMouseLeave={(e) => {
+                  // Don't close if moving to dropdown
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const dropdown = e.currentTarget.querySelector('.mega-menu-dropdown');
+                  if (dropdown) {
+                    const dropdownRect = dropdown.getBoundingClientRect();
+                    if (e.clientY >= rect.bottom && e.clientY <= dropdownRect.bottom) {
+                      return; // Don't close, moving to dropdown
+                    }
+                  }
+                  handleMouseLeave();
+                }}>
+                <motion.button
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  whileHover={{ scale: 1.02 }}>
                   About
-                  <ChevronDownIcon className="w-4 h-4 ml-1" />
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0">
-                  <Menu.Items className="absolute z-10 mt-2 w-[350px] bg-white shadow-lg rounded-lg py-2">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/goals"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">Objectives & Goals</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/chairman"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5"> Message from Chairman</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/director"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">
-                              Message from Managing Director
-                            </p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/dmd"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">
-                              Message from Deputy Managing Director
-                            </p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/about"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5"> Management Team</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/notice"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">Notices</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/tech"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">Our Technologies</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/gallery"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">Gallery</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/video"
-                          className={`block px-4 py-2 text-sm ${
-                            active
-                              ? "bg-gray-100 text-[#00984a]"
-                              : "text-gray-700"
-                          }`}>
-                          <div className="flex col-span-1 items-center">
-                            <p className="pl-5">Corporate Videos</p>
-                          </div>
-                        </Link>
-                      )}
-                    </Menu.Item>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-              <NavLink to="/health">Packages</NavLink>
-              <NavLink to="/our-doctors">Doctors</NavLink>
-              <NavLink to="/our-branches">Branches</NavLink>
-              <NavLink to="/patient_portal">
-                <div className="flex">
-                  {" "}
-                  Patient Portal{" "}
-                  <svg
-                    className="w-[16px] h-[16px] fill-[#00984a] ml-1"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg">
-                    {/*! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. */}
-                    <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"></path>
-                  </svg>{" "}
-                </div>
+                  <ChevronDownIcon className="w-4 h-4" />
+                </motion.button>
+                
+                <MegaMenu
+                  isOpen={activeMenu === 'about'}
+                  onClose={() => setActiveMenu(null)}
+                  title={menuConfig.about.title}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {menuConfig.about.items.map((item, index) => (
+                      <motion.div
+                        key={item.to}
+                        custom={index}
+                        variants={getVariants(menuItemVariants)}
+                        initial="hidden"
+                        animate="visible">
+                        <NavLink
+                          to={item.to}
+                          description={item.description}
+                          onClick={() => {
+                            setActiveMenu(null);
+                            trackAction(item.to, 'about');
+                          }}>
+                          {item.title}
+                        </NavLink>
+                      </motion.div>
+                    ))}
+                  </div>
+                </MegaMenu>
+              </div>
+
+              {/* Contact Link */}
+              <NavLink to="/contact-us" onClick={() => trackAction('/contact-us', 'primary')}>
+                Contact
               </NavLink>
-              {/* <NavLink to="/sample">Home Collection</NavLink> */}
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
-                Home Sample Collection
-              </a>
-              <NavLink to="/contact-us">Contact</NavLink>
             </nav>
 
-            <div className="lg:hidden">
-              <button
+            {/* Right Section: Mobile Menu */}
+            <div className="flex items-center">
+              {/* Mobile Menu Button - Enhanced for Touch */}
+              <motion.button
                 onClick={() => setMobileOpen(true)}
-                className="text-gray-700">
-                <Bars3Icon className="h-6 w-6" />
-              </button>
+                className="md:hidden p-3 rounded-xl glass-dark text-gray-700 hover:text-PDCL-green transition-colors duration-200 touch-manipulation"
+                style={{ minWidth: '44px', minHeight: '44px' }} // WCAG touch target minimum
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Open mobile menu"
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu">
+                <Bars3Icon className="h-6 w-6 mx-auto" />
+              </motion.button>
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
+      {/* Mobile Navigation Modal */}
       <Transition appear show={mobileOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-50 lg:hidden"
-          onClose={setMobileOpen}>
+          className="relative z-50 md:hidden"
+          onClose={setMobileOpen}
+          id="mobile-menu"
+          aria-labelledby="mobile-menu-title">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -252,246 +487,174 @@ const Navbar = () => {
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
-            <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto ">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-start justify-end p-2 sm:p-4">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="scale-95 opacity-0"
-                enterTo="scale-100 opacity-100"
+                enterFrom="translate-x-full"
+                enterTo="translate-x-0"
                 leave="ease-in duration-200"
-                leaveFrom="scale-100 opacity-100"
-                leaveTo="scale-95 opacity-0">
-                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex justify-between items-center mb-4">
-                    <button
-                      className="text-gray-500 hover:text-gray-700"
-                      onClick={() => setMobileOpen(false)}>
-                      <XMarkIcon className="h-6 w-6" />
-                    </button>
+                leaveFrom="translate-x-0"
+                leaveTo="translate-x-full">
+                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden glass rounded-2xl shadow-depth-5 transition-all max-h-screen">
+                  
+                  {/* Mobile Menu Header */}
+                  <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/20">
+                    <div className="flex items-center gap-3">
+                      <img src={image} alt="PDCL" className="w-10 h-10 object-contain" />
+                      <h2 id="mobile-menu-title" className="text-lg font-semibold text-gray-900 font-ubuntu">
+                        Menu
+                      </h2>
+                    </div>
+                    <motion.button
+                      className="p-3 rounded-xl glass-dark text-gray-600 hover:text-gray-900 touch-manipulation"
+                      style={{ minWidth: '44px', minHeight: '44px' }}
+                      onClick={() => setMobileOpen(false)}
+                      whileHover={{ scale: 1.05, rotate: 90 }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label="Close mobile menu">
+                      <XMarkIcon className="h-5 w-5 mx-auto" />
+                    </motion.button>
                   </div>
 
-                  <div className="space-y-3 ">
-                    <Menu as="div" className="relative ">
-                      <Menu.Button className="inline-flex items-center ml-1 text-[16px] px-3 py-2   font-medium text-gray-700 hover:text-[#00984a] hover:bg-gray-100 rounded-lg">
-                        About
-                        <ChevronDownIcon className="w-4 h-4 ml-5" />
-                      </Menu.Button>
-                      <Transition
-                        as={Fragment}
-                        enter="transition duration-100 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-75 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0">
-                        <Menu.Items className="absolute z-10 mt-2 w-full h-40 overflow-scroll bg-white shadow-lg rounded-lg py-2">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/goals"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    Objectives & Goals
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/chairman"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    {" "}
-                                    Message from Chairman
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/director"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    Message from MD
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/dmd"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    Message from DMD
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/about"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    {" "}
-                                    Management Team
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/notice"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">Notices</p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/tech"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    Our Technologies
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/gallery"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">Gallery</p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/video"
-                                onClick={() => setMobileOpen(false)}
-                                className={`block px-4 py-2 text-sm ${
-                                  active
-                                    ? "bg-gray-100 text-[#00984a]"
-                                    : "text-gray-700"
-                                }`}>
-                                <div className="flex col-span-1 items-center">
-                                  <p className="pl-5 font-medium">
-                                    Corporate Videos
-                                  </p>
-                                </div>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                    <NavLink to="/health" onClick={() => setMobileOpen(false)}>
-                      Packages
-                    </NavLink>
-                    <NavLink
-                      to="/our-doctors"
-                      onClick={() => setMobileOpen(false)}>
-                      Doctors
-                    </NavLink>
-                    <NavLink
-                      to="/our-branches"
-                      onClick={() => setMobileOpen(false)}>
-                      Branches
-                    </NavLink>
+                  {/* Mobile Menu Content */}
+                  <div className="p-4 sm:p-6 space-y-6 max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain"
+                       style={{ scrollbarWidth: 'thin' }}>
+                    
+                    {/* Primary Actions */}
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-900 font-ubuntu">Quick Actions</h3>
+                      
+                      <NavLink 
+                        to="/patient_portal" 
+                        onClick={() => setMobileOpen(false)}
+                        icon={UserIcon}
+                        description="Download reports & appointments">
+                        Patient Portal
+                      </NavLink>
+                      
+                      <NavLink 
+                        to="/our-doctors" 
+                        onClick={() => setMobileOpen(false)}
+                        icon={UserIcon}
+                        description="Find expert specialists">
+                        Find a Doctor
+                      </NavLink>
+                      
+                      <NavLink 
+                        to="/health" 
+                        onClick={() => setMobileOpen(false)}
+                        icon={HeartIcon}
+                        description="Comprehensive health checkups">
+                        Health Packages
+                      </NavLink>
+                    </div>
 
-                    <NavLink
-                      to="/patient_portal"
-                      onClick={() => setMobileOpen(false)}>
-                      Patient Portal
-                    </NavLink>
-                    {/* <NavLink to="/sample" onClick={() => setMobileOpen(false)}>
-                      Sample Collection
-                    </NavLink> */}
-                    <a
-                      href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2 text-base font-medium rounded-lg transition-all duration-150 text-gray-700 hover:bg-gray-100 hover:text-[#00984a]">
-                      Home Sample Collection
-                    </a>
-                    <NavLink
-                      to="/contact-us"
-                      onClick={() => setMobileOpen(false)}>
-                      Contact
-                    </NavLink>
-                    <NavLink
-                      to="/complain"
-                      onClick={() => setMobileOpen(false)}>
-                      Complain and Advise
-                    </NavLink>
+                    {/* Services Section */}
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-900 font-ubuntu">Services</h3>
+                      
+                      <NavLink 
+                        to="/our-branches" 
+                        onClick={() => setMobileOpen(false)}
+                        icon={BuildingOfficeIcon}
+                        description="22+ locations">
+                        Our Branches
+                      </NavLink>
+                      
+                      <motion.a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl glass hover:shadow-depth-2 transition-all duration-200"
+                        whileHover={{ scale: 1.02 }}>
+                        <svg className="w-5 h-5 text-PDCL-green" viewBox="0 0 512 512" fill="currentColor">
+                          <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"/>
+                        </svg>
+                        <div>
+                          <div className="font-medium text-gray-900 font-ubuntu">Home Collection</div>
+                          <div className="text-sm text-gray-600">Sample collection at your doorstep</div>
+                        </div>
+                      </motion.a>
+                    </div>
+
+                    {/* About Section - Accordion Style */}
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-900 font-ubuntu">About PDCL</h3>
+                      
+                      <div className="space-y-2">
+                        {[
+                          { to: '/goals', title: 'Our Mission' },
+                          { to: '/chairman', title: "Chairman's Message" },
+                          { to: '/director', title: 'Managing Director' },
+                          { to: '/dmd', title: 'Deputy MD' },
+                          { to: '/about', title: 'Management Team' },
+                          { to: '/tech', title: 'Our Technologies' },
+                          { to: '/gallery', title: 'Photo Gallery' },
+                          { to: '/video', title: 'Corporate Videos' },
+                          { to: '/notice', title: 'Notices' }
+                        ].map((item, index) => (
+                          <motion.div
+                            key={item.to}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}>
+                            <Link
+                              to={item.to}
+                              onClick={() => setMobileOpen(false)}
+                              className="block px-4 py-2 text-gray-700 hover:text-PDCL-green hover:bg-PDCL-green/5 rounded-lg transition-all duration-200 font-ubuntu">
+                              {item.title}
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Contact & Support */}
+                    <div className="space-y-3 border-t border-white/20 pt-6">
+                      <NavLink 
+                        to="/contact-us" 
+                        onClick={() => setMobileOpen(false)}
+                        description="Get in touch with us">
+                        Contact Us
+                      </NavLink>
+                      
+                      <NavLink 
+                        to="/complain" 
+                        onClick={() => setMobileOpen(false)}
+                        description="Feedback & suggestions">
+                        Complain and Advise
+                      </NavLink>
+                    </div>
+
+                    {/* Emergency Contact - Enhanced */}
+                    <motion.a 
+                      href="tel:10636"
+                      className="block glass-medical rounded-xl p-4 border border-PDCL-green/20 hover:border-PDCL-green/40 transition-all duration-200 touch-manipulation"
+                      style={{ minHeight: '64px' }}
+                      animate={{ scale: [1, 1.01, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      whileTap={{ scale: 0.98 }}>
+                      <div className="flex items-center gap-4">
+                        <motion.div 
+                          className="flex-shrink-0 w-12 h-12 bg-PDCL-green rounded-full flex items-center justify-center"
+                          whileHover={{ rotate: 10 }}>
+                          <PhoneIcon className="w-6 h-6 text-white" />
+                        </motion.div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-PDCL-green font-ubuntu text-base">Emergency Hotline</div>
+                          <div className="text-sm text-gray-600">10636 - Available 24/7</div>
+                        </div>
+                        <div className="text-xs text-PDCL-green font-medium">
+                          TAP TO CALL
+                        </div>
+                      </div>
+                    </motion.a>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

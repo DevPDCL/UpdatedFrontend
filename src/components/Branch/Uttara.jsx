@@ -26,7 +26,7 @@ const UnitCard = ({ unit }) => {
               className="p-2 w-full h-5/6 object-cover rounded-3xl"
               allowfullscreen=""
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
+              referrerPolicy="no-referrer-when-downgrade"></iframe>
             <h1 className="text-center font-medium rounded-md p-2 font-ubuntu text-[18px] text-black shadow-xl">
               Location On Map 🗺️📌
             </h1>

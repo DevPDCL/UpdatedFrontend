@@ -1,269 +1,407 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./tabs.css";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import "@fontsource/ubuntu";
+import { useScrollPosition } from "../hooks/useScrollPosition";
+import { useHoverDepth } from "../hooks/useHoverDepth";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useSmartNavigation } from "../hooks/useSmartNavigation";
+import { 
+  glassCardVariants, 
+  emergencyButtonVariants,
+  getGlassStyle,
+  medicalColors 
+} from "../utils/3d-effects";
+import {
+  PhoneIcon,
+  ChatBubbleLeftRightIcon,
+  DocumentArrowDownIcon,
+  BeakerIcon,
+  PlayCircleIcon,
+  SparklesIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
-const Sidemenu = () => {
-  const [isVisible, setIsVisible] = useState(true);
+const SmartSidemenu = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [dismissedSuggestions, setDismissedSuggestions] = useState(new Set());
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+  const [menuHeight, setMenuHeight] = useState(0);
+  
+  const location = useLocation();
+  const { scrollPosition, hasScrolled, isAtTop, direction, y } = useScrollPosition();
+  const { contextualActions, emergencyMode, trackAction, getSmartSuggestions } = useSmartNavigation();
+  const { prefersReducedMotion, getVariants } = useReducedMotion();
 
+  // Viewport resize handler
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY < window.innerHeight / 0.25); // Adjust threshold as needed
+    const handleResize = () => {
+      setViewportHeight(window.innerHeight);
     };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Calculate safe positioning based on content and viewport
+  const getSafePositioning = () => {
+    const suggestions = getSmartSuggestions.filter(
+      suggestion => !dismissedSuggestions.has(suggestion.action)
+    );
+    
+    // Responsive sizing based on screen size
+    const isSmallScreen = window.innerWidth < 768;
+    const baseActionHeight = isSmallScreen ? 50 : 60;
+    const baseSuggestionHeight = isSmallScreen ? 60 : 80;
+    const maxSuggestionsHeight = isSmallScreen ? 150 : 200;
+    
+    const suggestionHeight = Math.min(suggestions.length * baseSuggestionHeight, maxSuggestionsHeight);
+    const actionsHeight = contextualActions.length * baseActionHeight;
+    const padding = isSmallScreen ? 60 : 100;
+    const totalHeight = suggestionHeight + actionsHeight + padding;
+    
+    // Ensure menu doesn't go beyond viewport boundaries
+    const minTop = 20;
+    const maxTop = Math.max(minTop, viewportHeight - totalHeight - 20);
+    const centeredTop = (viewportHeight - totalHeight) / 2;
+    const safeTop = Math.max(minTop, Math.min(centeredTop, maxTop));
+    
+    return {
+      top: `${safeTop}px`,
+      maxSuggestions: Math.min(suggestions.length, isSmallScreen ? 2 : 3),
+      shouldScroll: suggestions.length > (isSmallScreen ? 2 : 3)
+    };
+  };
+
+  // Update time every minute for time-based suggestions
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Auto-collapse when user scrolls up significantly
+  useEffect(() => {
+    if (direction === 'up' && y > 200) {
+      setIsExpanded(false);
+    }
+  }, [direction, y]);
+
+  // Smart Action Button Component
+  const SmartActionButton = ({ action, index, isExpanded }) => {
+    const hoverDepth = useHoverDepth({ maxScale: 1.1, enableMobile: true });
+    
+    const getActionIcon = (type) => {
+      const iconMap = {
+        'emergency': PhoneIcon,
+        'primary': DocumentArrowDownIcon,
+        'secondary': ChatBubbleLeftRightIcon,
+        'frequent': SparklesIcon,
+      };
+      return iconMap[type] || BeakerIcon;
+    };
+
+    const Icon = getActionIcon(action.type);
+
+    return (
+      <motion.div
+        className="relative"
+        initial={{ opacity: 0, x: 100, rotateY: 45 }}
+        animate={{ opacity: 1, x: 0, rotateY: 0 }}
+        exit={{ opacity: 0, x: 100, rotateY: -45 }}
+        transition={{ 
+          delay: index * 0.1, 
+          type: "spring", 
+          stiffness: 200, 
+          damping: 20 
+        }}
+        {...hoverDepth.motionProps}>
+        
+        {action.href ? (
+          <motion.a
+            href={action.href}
+            target={action.external ? "_blank" : undefined}
+            rel={action.external ? "noopener noreferrer" : undefined}
+            onClick={() => trackAction(action.id, action.type)}
+            className={clsx(
+              "flex items-center justify-end group cursor-pointer",
+              "perspective-1000 transform-3d"
+            )}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}>
+            <ActionContent action={action} Icon={Icon} isExpanded={isExpanded} />
+          </motion.a>
+        ) : (
+          <Link 
+            to={action.href || action.to} 
+            onClick={() => trackAction(action.id, action.type)}
+            className={clsx(
+              "flex items-center justify-end group cursor-pointer",
+              "perspective-1000 transform-3d"
+            )}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}>
+              <ActionContent action={action} Icon={Icon} isExpanded={isExpanded} />
+            </motion.div>
+          </Link>
+        )}
+      </motion.div>
+    );
+  };
+
+  // Action Content Component - Fixed Left Overflow
+  const ActionContent = ({ action, Icon, isExpanded }) => {
+    const [labelRef, setLabelRef] = useState(null);
+    const [useAlternatePosition, setUseAlternatePosition] = useState(false);
+    
+    // Check horizontal boundaries and adjust positioning
+    useEffect(() => {
+      if (labelRef && isExpanded) {
+        const labelRect = labelRef.getBoundingClientRect();
+        const buttonRect = labelRef.parentElement.getBoundingClientRect();
+        
+        // Estimate label width based on text length if not yet rendered
+        const estimatedWidth = Math.max(action.label.length * 8 + 32, 120); // Rough estimate
+        const actualWidth = labelRect.width || estimatedWidth;
+        
+        // Check if label would extend beyond left edge of viewport with some margin
+        const leftEdgePosition = buttonRect.right - actualWidth - 12; // 12px for mr-3 margin
+        const wouldOverflow = leftEdgePosition < 20; // 20px margin from viewport edge
+        
+        setUseAlternatePosition(wouldOverflow);
+      }
+    }, [labelRef, isExpanded, action.label]);
+    
+    // Calculate positioning classes based on available space
+    const getLabelClasses = () => {
+      if (useAlternatePosition) {
+        // Position above the button when horizontal space is constrained
+        return "absolute right-0 bottom-full mb-2 glass rounded-xl px-3 py-2 shadow-depth-2 text-sm max-w-48";
+      } else {
+        // Default position to the left of the button
+        return "absolute right-full top-1/2 -translate-y-1/2 mr-3 glass rounded-xl px-4 py-2 shadow-depth-2 whitespace-nowrap";
+      }
+    };
+
+    return (
+      <div className="relative">
+        {/* Expanded Label - Smart positioned to prevent overflow */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              ref={setLabelRef}
+              initial={{ 
+                opacity: 0, 
+                x: useAlternatePosition ? 0 : 20, 
+                y: useAlternatePosition ? 10 : 0, 
+                scale: 0.8 
+              }}
+              animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+              exit={{ 
+                opacity: 0, 
+                x: useAlternatePosition ? 0 : 20, 
+                y: useAlternatePosition ? 10 : 0, 
+                scale: 0.8 
+              }}
+              className={getLabelClasses()}
+              style={getGlassStyle('light', 0.9)}>
+              <div className={useAlternatePosition ? "text-center" : "text-right"}>
+                <div className="font-semibold text-gray-900 text-sm font-ubuntu">
+                  {action.label}
+                </div>
+                {action.type === 'emergency' && emergencyMode && (
+                  <div className="text-xs text-red-600 animate-pulse">
+                    🚨 After Hours Emergency
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Action Button */}
+      <motion.div
+        className={clsx(
+          "relative p-3 rounded-xl shadow-depth-3 border transition-all duration-200",
+          "group-hover:shadow-depth-4 group-hover:-translate-y-1",
+          action.type === 'emergency' && emergencyMode 
+            ? "bg-red-600 border-red-500 text-white animate-pulse" 
+            : action.type === 'primary'
+            ? "glass-medical border-PDCL-green/30 text-PDCL-green"
+            : "glass border-white/30 text-gray-700"
+        )}
+        whileHover={{ rotateY: 5, rotateX: 5 }}
+        style={
+          action.type === 'emergency' && emergencyMode 
+            ? {} 
+            : getGlassStyle(action.type === 'primary' ? 'medical' : 'light', 0.9)
+        }>
+        
+        <Icon className="w-5 h-5" />
+        
+        {/* Priority Indicator */}
+        {action.priority === 'high' && (
+          <motion.div
+            className="absolute -top-1 -right-1 w-3 h-3 bg-PDCL-green rounded-full"
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        )}
+        
+        {/* Emergency Pulse */}
+        {action.type === 'emergency' && emergencyMode && (
+          <motion.div
+            className="absolute inset-0 rounded-xl border-2 border-red-400"
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.5, 0.8, 0.5]
+            }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+        )}
+        </motion.div>
+      </div>
+    );
+  };
+
+  // Smart Suggestions Component - Limited Height with Scrolling
+  const SmartSuggestions = () => {
+    const suggestions = getSmartSuggestions.filter(
+      suggestion => !dismissedSuggestions.has(suggestion.action)
+    );
+
+    const { maxSuggestions, shouldScroll } = getSafePositioning();
+
+    if (suggestions.length === 0) return null;
+
+    const visibleSuggestions = suggestions.slice(0, maxSuggestions);
+
+    return (
+      <div 
+        className={clsx(
+          "max-h-48 overflow-y-auto overscroll-contain",
+          "scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent",
+          shouldScroll && "pr-2" // Add padding for scrollbar
+        )}
+        style={{ scrollbarWidth: 'thin' }}>
+        <AnimatePresence>
+          {visibleSuggestions.map((suggestion, index) => (
+            <motion.div
+              key={suggestion.action}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ delay: index * 0.1 }}
+              className="mr-4 mb-3 glass rounded-xl p-3 shadow-depth-2"
+              style={getGlassStyle('light', 0.95)}>
+              
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0"> {/* Prevent overflow */}
+                  <div className="text-sm font-medium text-gray-900 font-ubuntu truncate">
+                    💡 {suggestion.text}
+                  </div>
+                  <Link 
+                    to={suggestion.action}
+                    className="text-xs text-PDCL-green hover:underline">
+                    Take action →
+                  </Link>
+                </div>
+                
+                <motion.button
+                  onClick={() => setDismissedSuggestions(prev => new Set([...prev, suggestion.action]))}
+                  className="p-1 text-gray-400 hover:text-gray-600 rounded flex-shrink-0"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}>
+                  <XMarkIcon className="w-4 h-4" />
+                </motion.button>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+        
+        {/* Show remaining count if there are hidden suggestions */}
+        {suggestions.length > maxSuggestions && (
+          <motion.div
+            className="mr-4 text-xs text-gray-500 text-center py-1 font-ubuntu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}>
+            +{suggestions.length - maxSuggestions} more suggestions
+          </motion.div>
+        )}
+      </div>
+    );
+  };
+
+  // Show only if there are contextual actions
+  if (!contextualActions.length) return null;
+
+  const { top: safeTop } = getSafePositioning();
+
   return (
-    <>
-      <div className="fixed z-20 hidden sm:block">
-        <div>
-          <Link to="/hotlines" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[300px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center rounded-t-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Hotlines
-                </span>
-              </span>
-            </div>
-          </Link>
-
-          <Link to="/complain" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[340px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3 0 0 0 0 0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM224 160c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H288v48c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V272H176c-8.8 0-16-7.2-16-16V224c0-8.8 7.2-16 16-16h48V160z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Complain Submission
-                </span>
-              </span>
-            </div>
-          </Link>
-          <Link to="/patient_portal" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[380px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM160 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H224v48c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V352H112c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16h48V240z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Report Download
-                </span>
-              </span>
-            </div>
-          </Link>
-          {/* <Link to="/sample" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Home Sample Collection
-                </span>
-              </span>
-            </div>
-          </Link> */}
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
-            target="_blank"
-            rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[420px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Home Sample Collection
-                </span>
-              </span>
-            </div>
-          </a>
-          <Link to="/" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[460px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center rounded-b-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 576 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2V384c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1V320 192 174.9l14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Video Consultancy
-                </span>
-              </span>
-            </div>
-          </Link>
-        </div>
+    <motion.div
+      className="fixed right-4 z-60 hidden sm:block"
+      style={{ top: safeTop }}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.5 }}>
+      
+      {/* Smart Suggestions */}
+      <div className="mb-4">
+        <SmartSuggestions />
       </div>
-      <div className="fixed z-20  sm:hidden">
-        <div>
-          <Link to="/hotlines" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[120px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center rounded-t-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Hotlines
-                </span>
-              </span>
-            </div>
-          </Link>
 
-          <Link to="/complain" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[160px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3 0 0 0 0 0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM224 160c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H288v48c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V272H176c-8.8 0-16-7.2-16-16V224c0-8.8 7.2-16 16-16h48V160z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Complain Submission
-                </span>
-              </span>
-            </div>
-          </Link>
-          <Link to="/patient_portal" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[200px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM160 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H224v48c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V352H112c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16h48V240z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Report Download
-                </span>
-              </span>
-            </div>
-          </Link>
-          {/* <Link to="/sample" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[240px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Home Sample Collection
-                </span>
-              </span>
-            </div>
-          </Link> */}
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
-            target="_blank"
-            rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[240px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center  p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Home Sample Collection
-                </span>
-              </span>
-            </div>
-          </a>
-          <Link to="/" rel="noopener noreferrer">
-            <div className="flex gap-2 fixed top-[280px] right-0 hover:cursor-pointer font-extrabold">
-              <span
-                className="inline-flex items-center rounded-b-xl p-2 bg-slate-900/80 text-white group transition-all duration-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
-                role="alert"
-                tabIndex="0">
-                <svg
-                  id=""
-                  className="w-[20px] h-[20px] mr-2 fill-white"
-                  viewBox="0 0 576 512"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2V384c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1V320 192 174.9l14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"></path>
-                </svg>
-                <span className="whitespace-nowrap inline-block group-hover:max-w-screen-2xl group-focus:max-w-screen-2xl max-w-0 scale-80 group-hover:scale-100 overflow-hidden transition-all duration-500 group-hover:px-2 group-focus:px-2">
-                  Video Consultancy
-                </span>
-              </span>
-            </div>
-          </Link>
-        </div>
+      {/* Contextual Actions Panel with Toggle */}
+      <div className="relative">
+        {/* Expand/Collapse Toggle - Positioned relative to actions */}
+        <motion.button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="absolute -left-10 top-1/2 -translate-y-1/2 p-2 glass rounded-full shadow-depth-2 text-PDCL-green hover:text-PDCL-green-light transition-colors duration-200 z-10"
+          whileHover={{ scale: 1.1, rotateY: 10 }}
+          whileTap={{ scale: 0.9 }}
+          style={getGlassStyle('medical', 0.9)}
+          aria-label={isExpanded ? "Collapse menu" : "Expand menu"}>
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}>
+            <SparklesIcon className="w-4 h-4" />
+          </motion.div>
+        </motion.button>
+
+        <motion.div
+          className="space-y-3"
+          layout
+          transition={{ type: "spring", stiffness: 200, damping: 30 }}>
+        
+        <AnimatePresence>
+          {contextualActions.slice(0, 6).map((action, index) => (
+            <SmartActionButton
+              key={action.id}
+              action={action}
+              index={index}
+              isExpanded={isExpanded}
+            />
+          ))}
+        </AnimatePresence>
+        </motion.div>
       </div>
-    </>
+
+      {/* AI Indicator */}
+      <motion.div
+        className="mt-4 mr-2 text-right"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}>
+        <div className="text-xs text-gray-500 font-ubuntu flex items-center justify-end gap-1">
+          <SparklesIcon className="w-3 h-3" />
+          Smart Actions
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
-export default Sidemenu;
+export default SmartSidemenu;
