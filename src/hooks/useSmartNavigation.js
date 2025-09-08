@@ -62,36 +62,59 @@ export const useSmartNavigation = () => {
     const currentPath = location.pathname;
     let actions = [];
 
-    // Healthcare emergency actions (always prioritized)
+    // Dynamic hotline action based on time and location
+    const isOnHotlinesPage = currentPath === '/hotlines';
+    const shouldShowCalling = emergencyMode || isOnHotlinesPage;
+    
     actions.push({
-      id: 'emergency',
-      label: emergencyMode ? '24/7 Emergency Support' : 'Medical Hotline',
+      id: 'hotline',
+      label: shouldShowCalling ? (emergencyMode ? '24/7 Emergency Support' : 'Medical Hotline') : 'Medical Hotline',
       icon: 'phone',
-      href: 'tel:10636', // Direct call link for mobile users
+      ...(shouldShowCalling 
+        ? { 
+            href: 'tel:10636', // Direct call link
+            external: true,
+            type: 'emergency'
+          }
+        : { 
+            to: '/hotlines', // Navigate to hotlines page
+            type: 'primary'
+          }
+      ),
       priority: 'high',
-      type: 'emergency',
-      description: emergencyMode ? 'Immediate medical assistance available' : 'Expert medical consultation',
+      description: shouldShowCalling 
+        ? (emergencyMode ? 'Immediate medical assistance available' : 'Call for medical consultation')
+        : 'View hotline numbers and information',
     });
 
     // Page-specific contextual actions
     if (currentPath === '/') {
-      // Homepage actions
+      // Homepage actions - The 3 most important actions
       actions.push(
         {
+          id: 'report-download',
+          label: 'Report Download',
+          icon: 'download',
+          href: '/patient_portal',
+          priority: 'high',
+          type: 'primary',
+        },
+        {
           id: 'find-doctor',
-          label: 'Find a Doctor',
+          label: 'Find Doctor',
           icon: 'user-doctor',
           href: '/our-doctors',
           priority: 'high',
           type: 'primary',
         },
         {
-          id: 'health-packages',
-          label: 'Health Packages',
-          icon: 'heart',
-          href: '/health',
-          priority: 'medium',
+          id: 'book-appointment',
+          label: 'Book Appointment',
+          icon: 'calendar',
+          href: 'https://appointment.populardiagnostic.com/appointment',
+          priority: 'high',
           type: 'primary',
+          external: true,
         }
       );
     } else if (currentPath.includes('/our-doctors')) {
@@ -101,9 +124,10 @@ export const useSmartNavigation = () => {
           id: 'book-appointment',
           label: 'Book Appointment',
           icon: 'calendar',
-          href: '/patient_portal',
+          href: 'https://appointment.populardiagnostic.com/appointment',
           priority: 'high',
           type: 'primary',
+          external: true,
         },
         {
           id: 'find-branch',
@@ -128,10 +152,10 @@ export const useSmartNavigation = () => {
         },
         {
           id: 'report-download',
-          label: 'Download Report',
+          label: 'Report Download',
           icon: 'download',
           href: '/patient_portal',
-          priority: 'medium',
+          priority: 'high',
           type: 'primary',
         }
       );
@@ -170,7 +194,7 @@ export const useSmartNavigation = () => {
     });
 
     return actions.slice(0, 6); // Limit to 6 actions to avoid overwhelming
-  }, [location.pathname, userBehavior.frequentPages]);
+  }, [location.pathname, userBehavior.frequentPages, emergencyMode]);
 
   // Helper function to get page titles
   const getPageTitle = (path) => {
@@ -179,7 +203,7 @@ export const useSmartNavigation = () => {
       '/our-doctors': 'Doctors',
       '/our-branches': 'Branches',
       '/health': 'Health Packages',
-      '/patient_portal': 'Patient Portal',
+      '/patient_portal': 'Report Download',
       '/contact-us': 'Contact',
       '/about': 'About Us',
       '/hotlines': 'Hotlines',
@@ -200,9 +224,9 @@ export const useSmartNavigation = () => {
     const currentHour = now.getHours();
     const currentDay = now.getDay(); // 0 = Sunday, 6 = Saturday
     
-    // After-hours detection (enhanced for healthcare)
-    const isAfterHours = currentHour < 8 || currentHour > 20;
-    const isWeekend = currentDay === 0 || currentDay === 6;
+    // After-hours detection (7 AM to 11 PM, 7 days a week)
+    const isAfterHours = currentHour < 7 || currentHour >= 23;
+    // PDCL operates 7 days a week - no weekend emergency mode
     const isHoliday = checkIfHoliday(now); // Could be enhanced with actual holiday data
     
     // Page context detection
@@ -213,8 +237,8 @@ export const useSmartNavigation = () => {
     const hasRepeatedVisits = userBehavior.pageViews[location.pathname] > 3;
     const quickNavigation = Date.now() - userBehavior.sessionStartTime < 2 * 60 * 1000; // Within 2 minutes
     
-    // Enhanced emergency mode for healthcare
-    return isAfterHours || isWeekend || isEmergencyPage || (quickNavigation && hasRepeatedVisits);
+    // Enhanced emergency mode for healthcare (7 days operation)
+    return isAfterHours || isHoliday || isEmergencyPage || (quickNavigation && hasRepeatedVisits);
   }, [location.pathname, userBehavior.pageViews, userBehavior.sessionStartTime]);
 
   // Basic holiday detection (can be enhanced with actual holiday API)
@@ -267,8 +291,8 @@ export const useSmartNavigation = () => {
     const currentHour = now.getHours();
     const currentPath = location.pathname;
     
-    // Healthcare-specific time-based suggestions
-    if (currentHour >= 8 && currentHour <= 18) {
+    // Healthcare-specific time-based suggestions (7 AM to 11 PM business hours)
+    if (currentHour >= 7 && currentHour < 23) {
       suggestions.push({
         text: 'Schedule your health checkup during business hours',
         action: '/patient_portal',

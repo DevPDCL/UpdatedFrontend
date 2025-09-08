@@ -140,27 +140,29 @@ export const getGlassStyle = (variant = 'light', opacity = 0.1) => {
     case 'dark':
       return {
         ...baseStyle,
-        background: `rgba(0, 0, 0, ${Math.min(opacity, 0.15)})`, // Limit opacity for readability
-        border: `1px solid rgba(255, 255, 255, ${opacity * 0.3})`, // Softer borders
+        background: `rgba(0, 0, 0, ${Math.min(opacity, 0.25)})`, // Increased opacity for better visibility
+        border: `1px solid rgba(255, 255, 255, ${opacity * 0.6})`, // Stronger borders for contrast
       };
     case 'medical':
       return {
         ...baseStyle,
-        background: `rgba(0, 102, 66, ${Math.min(opacity, 0.12)})`, // Calmer medical green
-        border: `1px solid rgba(0, 152, 74, ${opacity * 1.5})`,
+        background: `rgba(255, 255, 255, ${Math.min(opacity * 0.8, 0.85)})`, // More white background for better visibility
+        border: `1px solid rgba(0, 152, 74, ${Math.max(opacity * 2, 0.5)})`, // Stronger medical green border
+        boxShadow: `0 4px 20px rgba(0, 102, 66, ${opacity * 0.3})`, // Medical green glow
       };
     case 'emergency':
       // Replaced with calming amber for healthcare
       return {
         ...baseStyle,
-        background: `rgba(245, 158, 11, ${Math.min(opacity, 0.1)})`, // Warm amber instead of red
-        border: `1px solid rgba(245, 158, 11, ${opacity * 1.8})`,
+        background: `rgba(255, 255, 255, ${Math.min(opacity * 0.9, 0.9)})`, // White background for visibility
+        border: `1px solid rgba(245, 158, 11, ${Math.max(opacity * 2.2, 0.6)})`, // Stronger amber border
+        boxShadow: `0 4px 20px rgba(245, 158, 11, ${opacity * 0.4})`, // Amber glow
       };
     default: // light
       return {
         ...baseStyle,
-        background: `rgba(255, 255, 255, ${Math.min(opacity, 0.9)})`,
-        border: `1px solid rgba(255, 255, 255, ${opacity * 1.5})`,
+        background: `rgba(255, 255, 255, ${Math.min(opacity, 0.95)})`, // Increased max opacity for better visibility
+        border: `1px solid rgba(255, 255, 255, ${Math.max(opacity * 1.8, 0.4)})`, // Stronger borders, minimum 0.4 opacity
       };
   }
 };
@@ -187,10 +189,10 @@ export const medicalColors = {
   warning: '#F59E0B',
   info: '#3B82F6',
   glass: {
-    white: 'rgba(255, 255, 255, 0.1)',
-    dark: 'rgba(0, 0, 0, 0.08)', // Softer shadows
-    medical: 'rgba(0, 102, 66, 0.12)', // Calmer medical green shadow
-    emergency: 'rgba(245, 158, 11, 0.15)', // Warm amber for emergency
+    white: 'rgba(255, 255, 255, 0.9)', // Much stronger white for better visibility
+    dark: 'rgba(0, 0, 0, 0.15)', // Stronger dark for better contrast
+    medical: 'rgba(255, 255, 255, 0.85)', // White background with medical accent
+    emergency: 'rgba(255, 255, 255, 0.9)', // Strong white background for emergency
   },
 };
 

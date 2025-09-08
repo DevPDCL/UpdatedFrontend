@@ -67,9 +67,10 @@ const Shyamoli = () => {
             className=" lg:w-[1000px] lg:h-[500px] mx-auto rounded-3xl object-cover shadow-2xl "
             alt="Hero Video"
             src={video}
-            autoPlay
             loop
             muted
+            playsInline
+            preload="metadata"
           />
         </div>
       </div>

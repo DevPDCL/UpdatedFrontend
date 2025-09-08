@@ -111,9 +111,10 @@ const Shantinagar = () => {
             className="lg:absolute lg:w-full rounded-3xl object-cover shadow-2xl border-4 border-white/20"
             alt="Hero Video"
             src={video}
-            autoPlay
             loop
             muted
+            playsInline
+            preload="metadata"
           />
         </motion.div>
       </div>

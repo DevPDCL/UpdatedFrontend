@@ -20,6 +20,14 @@ import {
   PlayCircleIcon,
   SparklesIcon,
   XMarkIcon,
+  UserIcon,
+  HeartIcon,
+  CalendarIcon,
+  MapPinIcon,
+  TruckIcon,
+  ArrowDownTrayIcon,
+  QuestionMarkCircleIcon,
+  BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
@@ -123,31 +131,50 @@ const SmartSidemenu = () => {
   const SmartActionButton = ({ action, index, isExpanded }) => {
     const hoverDepth = useHoverDepth({ maxScale: 1.1, enableMobile: true });
     
-    const getActionIcon = (type) => {
+    const getActionIcon = (iconName, actionType) => {
+      // First, try to match by specific icon name from action.icon
       const iconMap = {
+        'phone': PhoneIcon,
+        'user-doctor': UserIcon,
+        'heart': HeartIcon,
+        'calendar': CalendarIcon,
+        'map-pin': MapPinIcon,
+        'truck': TruckIcon,
+        'download': ArrowDownTrayIcon,
+        'question-circle': QuestionMarkCircleIcon,
+        'star': SparklesIcon,
+        'building': BuildingOfficeIcon,
+      };
+      
+      // If specific icon exists, use it
+      if (iconName && iconMap[iconName]) {
+        return iconMap[iconName];
+      }
+      
+      // Otherwise, fallback to action type mapping
+      const typeMap = {
         'emergency': PhoneIcon,
         'primary': DocumentArrowDownIcon,
         'secondary': ChatBubbleLeftRightIcon,
         'frequent': SparklesIcon,
       };
-      return iconMap[type] || BeakerIcon;
+      
+      return typeMap[actionType] || BeakerIcon;
     };
 
-    const Icon = getActionIcon(action.type);
+    const Icon = getActionIcon(action.icon, action.type);
 
     return (
       <motion.div
         className="relative"
-        initial={{ opacity: 0, x: 100, rotateY: 45 }}
-        animate={{ opacity: 1, x: 0, rotateY: 0 }}
-        exit={{ opacity: 0, x: 100, rotateY: -45 }}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 50 }}
         transition={{ 
-          delay: index * 0.1, 
-          type: "spring", 
-          stiffness: 200, 
-          damping: 20 
-        }}
-        {...hoverDepth.motionProps}>
+          delay: index * 0.08, 
+          duration: 0.3,
+          ease: "easeOut"
+        }}>
         
         {action.href ? (
           <motion.a
@@ -155,10 +182,7 @@ const SmartSidemenu = () => {
             target={action.external ? "_blank" : undefined}
             rel={action.external ? "noopener noreferrer" : undefined}
             onClick={() => trackAction(action.id, action.type)}
-            className={clsx(
-              "flex items-center justify-end group cursor-pointer",
-              "perspective-1000 transform-3d"
-            )}
+            className="flex items-center justify-end group cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}>
             <ActionContent action={action} Icon={Icon} isExpanded={isExpanded} />
@@ -167,10 +191,7 @@ const SmartSidemenu = () => {
           <Link 
             to={action.href || action.to} 
             onClick={() => trackAction(action.id, action.type)}
-            className={clsx(
-              "flex items-center justify-end group cursor-pointer",
-              "perspective-1000 transform-3d"
-            )}>
+            className="flex items-center justify-end group cursor-pointer">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}>
@@ -224,15 +245,15 @@ const SmartSidemenu = () => {
           "relative p-3 rounded-xl shadow-depth-3 border transition-all duration-200",
           "group-hover:shadow-depth-4 group-hover:-translate-y-1",
           "flex items-center justify-center", // Add flex centering
-          action.type === 'emergency' && emergencyMode 
+          action.type === 'emergency'
             ? "bg-red-600 border-red-500 text-white animate-pulse" 
             : action.type === 'primary'
             ? "glass-medical border-PDCL-green/30 text-PDCL-green"
             : "glass border-white/30 text-gray-700"
         )}
-        whileHover={{ rotateY: 5, rotateX: 5 }}
+        whileHover={{ scale: 1.02 }}
         style={
-          action.type === 'emergency' && emergencyMode 
+          action.type === 'emergency'
             ? {} 
             : getGlassStyle(action.type === 'primary' ? 'medical' : 'light', 0.9)
         }>
@@ -249,7 +270,7 @@ const SmartSidemenu = () => {
         )}
         
         {/* Emergency Pulse */}
-        {action.type === 'emergency' && emergencyMode && (
+        {action.type === 'emergency' && (
           <motion.div
             className="absolute inset-0 rounded-xl border-2 border-red-400"
             animate={{ 
@@ -402,12 +423,10 @@ const SmartSidemenu = () => {
               left: isExpanded ? `${-(maxLabelWidth + 16)}px` : '-40px', // 16px for proper spacing from labels
             }}
             transition={{ 
-              duration: 0.3, 
-              type: "spring", 
-              stiffness: 200, 
-              damping: 20 
+              duration: 0.4,
+              ease: "easeInOut"
             }}
-            whileHover={{ scale: 1.1, rotateY: 10 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
             style={getGlassStyle('medical', 0.9)}
             aria-label={isExpanded ? "Collapse menu" : "Expand menu"}>
@@ -421,7 +440,7 @@ const SmartSidemenu = () => {
           <motion.div
             className="space-y-3"
             layout
-            transition={{ type: "spring", stiffness: 200, damping: 30 }}>
+            transition={{ duration: 0.3, ease: "easeInOut" }}>
           
           <AnimatePresence>
             {contextualActions.slice(0, 6).map((action, index) => (

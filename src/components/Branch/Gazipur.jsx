@@ -36,9 +36,10 @@ const Gazipur = () => {
             className="lg:absolute lg:w-full rounded-3xl object-cover shadow-2xl "
             alt="Hero Video"
             src={video}
-            autoPlay
             loop
             muted
+            playsInline
+            preload="metadata"
           />
         </div>
       </div>

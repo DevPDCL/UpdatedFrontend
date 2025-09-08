@@ -229,10 +229,10 @@ const Dhanmondi = () => {
                   className="w-full h-full object-cover"
                   alt="Hero Video"
                   src={video}
-                  autoPlay
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                 />
               </div>
             </div>
