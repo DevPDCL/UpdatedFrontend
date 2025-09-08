@@ -29,6 +29,7 @@ const SmartSidemenu = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [menuHeight, setMenuHeight] = useState(0);
+  const [maxLabelWidth, setMaxLabelWidth] = useState(0);
   
   const location = useLocation();
   const { scrollPosition, hasScrolled, isAtTop, direction, y } = useScrollPosition();
@@ -89,6 +90,34 @@ const SmartSidemenu = () => {
       setIsExpanded(false);
     }
   }, [direction, y]);
+
+  // Function to calculate label width more accurately
+  const estimateLabelWidth = (text) => {
+    // Create a temporary element to measure text width
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = '14px Ubuntu, system-ui'; // Match the font used in labels
+    const textWidth = context.measureText(text).width;
+    
+    // Add padding: 16px left + 16px right + some buffer
+    return Math.min(textWidth + 40, 220); // Cap at 220px max
+  };
+
+  // Calculate maximum label width when expanded
+  useEffect(() => {
+    if (isExpanded && contextualActions.length > 0) {
+      // Calculate actual width for each action label
+      const maxWidth = Math.max(
+        ...contextualActions.slice(0, 6).map(action => 
+          estimateLabelWidth(action.label)
+        ),
+        120 // Minimum width to ensure toggle doesn't get too close
+      );
+      setMaxLabelWidth(maxWidth);
+    } else {
+      setMaxLabelWidth(0);
+    }
+  }, [isExpanded, contextualActions]);
 
   // Smart Action Button Component
   const SmartActionButton = ({ action, index, isExpanded }) => {
@@ -182,52 +211,19 @@ const SmartSidemenu = () => {
         // Position above the button when horizontal space is constrained
         return "absolute right-0 bottom-full mb-2 glass rounded-xl px-3 py-2 shadow-depth-2 text-sm max-w-48";
       } else {
-        // Default position to the left of the button
-        return "absolute right-full top-1/2 -translate-y-1/2 mr-3 glass rounded-xl px-4 py-2 shadow-depth-2 whitespace-nowrap";
+        // Default position to the left of the button - now using flexbox alignment
+        return "absolute right-full mr-3 glass rounded-xl px-4 py-2 shadow-depth-2 whitespace-nowrap flex items-center h-full";
       }
     };
 
     return (
-      <div className="relative">
-        {/* Expanded Label - Smart positioned to prevent overflow */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              ref={setLabelRef}
-              initial={{ 
-                opacity: 0, 
-                x: useAlternatePosition ? 0 : 20, 
-                y: useAlternatePosition ? 10 : 0, 
-                scale: 0.8 
-              }}
-              animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-              exit={{ 
-                opacity: 0, 
-                x: useAlternatePosition ? 0 : 20, 
-                y: useAlternatePosition ? 10 : 0, 
-                scale: 0.8 
-              }}
-              className={getLabelClasses()}
-              style={getGlassStyle('light', 0.9)}>
-              <div className={useAlternatePosition ? "text-center" : "text-right"}>
-                <div className="font-semibold text-gray-900 text-sm font-ubuntu">
-                  {action.label}
-                </div>
-                {action.type === 'emergency' && emergencyMode && (
-                  <div className="text-xs text-red-600 animate-pulse">
-                    🚨 After Hours Emergency
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
+      <div className="relative flex items-center">
         {/* Action Button */}
       <motion.div
         className={clsx(
           "relative p-3 rounded-xl shadow-depth-3 border transition-all duration-200",
           "group-hover:shadow-depth-4 group-hover:-translate-y-1",
+          "flex items-center justify-center", // Add flex centering
           action.type === 'emergency' && emergencyMode 
             ? "bg-red-600 border-red-500 text-white animate-pulse" 
             : action.type === 'primary'
@@ -264,6 +260,40 @@ const SmartSidemenu = () => {
           />
         )}
         </motion.div>
+
+        {/* Expanded Label - Now positioned relative to the flex container */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              ref={setLabelRef}
+              initial={{ 
+                opacity: 0, 
+                x: useAlternatePosition ? 0 : 20, 
+                y: useAlternatePosition ? 10 : 0, 
+                scale: 0.8 
+              }}
+              animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+              exit={{ 
+                opacity: 0, 
+                x: useAlternatePosition ? 0 : 20, 
+                y: useAlternatePosition ? 10 : 0, 
+                scale: 0.8 
+              }}
+              className={getLabelClasses()}
+              style={getGlassStyle('light', 0.9)}>
+              <div className={useAlternatePosition ? "text-center" : "text-right"}>
+                <div className="font-semibold text-gray-900 text-sm font-ubuntu">
+                  {action.label}
+                </div>
+                {action.type === 'emergency' && emergencyMode && (
+                  <div className="text-xs text-red-600 animate-pulse">
+                    🚨 After Hours Emergency
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   };
@@ -342,65 +372,83 @@ const SmartSidemenu = () => {
   const { top: safeTop } = getSafePositioning();
 
   return (
-    <motion.div
-      className="fixed right-4 z-60 hidden sm:block"
-      style={{ top: safeTop }}
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.5 }}>
-      
-      {/* Smart Suggestions */}
-      <div className="mb-4">
-        <SmartSuggestions />
-      </div>
-
-      {/* Contextual Actions Panel with Toggle */}
-      <div className="relative">
-        {/* Expand/Collapse Toggle - Positioned relative to actions */}
-        <motion.button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="absolute -left-10 top-1/2 -translate-y-1/2 p-2 glass rounded-full shadow-depth-2 text-PDCL-green hover:text-PDCL-green-light transition-colors duration-200 z-10"
-          whileHover={{ scale: 1.1, rotateY: 10 }}
-          whileTap={{ scale: 0.9 }}
-          style={getGlassStyle('medical', 0.9)}
-          aria-label={isExpanded ? "Collapse menu" : "Expand menu"}>
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}>
-            <SparklesIcon className="w-4 h-4" />
-          </motion.div>
-        </motion.button>
-
-        <motion.div
-          className="space-y-3"
-          layout
-          transition={{ type: "spring", stiffness: 200, damping: 30 }}>
-        
-        <AnimatePresence>
-          {contextualActions.slice(0, 6).map((action, index) => (
-            <SmartActionButton
-              key={action.id}
-              action={action}
-              index={index}
-              isExpanded={isExpanded}
-            />
-          ))}
-        </AnimatePresence>
-        </motion.div>
-      </div>
-
-      {/* AI Indicator */}
+    <>
+      {/* Smart Suggestions - Independent positioning */}
       <motion.div
-        className="mt-4 mr-2 text-right"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}>
-        <div className="text-xs text-gray-500 font-ubuntu flex items-center justify-end gap-1">
-          <SparklesIcon className="w-3 h-3" />
-          Smart Actions
-        </div>
+        className="fixed right-4 z-60 hidden sm:block"
+        style={{ top: safeTop }}
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5 }}>
+        <SmartSuggestions />
       </motion.div>
-    </motion.div>
+
+      {/* Contextual Actions Panel - Independent positioning */}
+      <motion.div
+        className="fixed right-4 z-60 hidden sm:block"
+        style={{ 
+          top: `calc(${safeTop} + ${getSmartSuggestions.filter(s => !dismissedSuggestions.has(s.action)).length > 0 ? '250px' : '0px'})` 
+        }}
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.7 }}>
+        
+        <div className="relative">
+          {/* Expand/Collapse Toggle - Dynamic positioning based on expansion state */}
+          <motion.button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="absolute top-1/2 -translate-y-1/2 p-2 glass rounded-full shadow-depth-2 text-PDCL-green hover:text-PDCL-green-light transition-colors duration-200 z-10"
+            animate={{
+              left: isExpanded ? `${-(maxLabelWidth + 16)}px` : '-40px', // 16px for proper spacing from labels
+            }}
+            transition={{ 
+              duration: 0.3, 
+              type: "spring", 
+              stiffness: 200, 
+              damping: 20 
+            }}
+            whileHover={{ scale: 1.1, rotateY: 10 }}
+            whileTap={{ scale: 0.9 }}
+            style={getGlassStyle('medical', 0.9)}
+            aria-label={isExpanded ? "Collapse menu" : "Expand menu"}>
+            <motion.div
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}>
+              <SparklesIcon className="w-4 h-4" />
+            </motion.div>
+          </motion.button>
+
+          <motion.div
+            className="space-y-3"
+            layout
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}>
+          
+          <AnimatePresence>
+            {contextualActions.slice(0, 6).map((action, index) => (
+              <SmartActionButton
+                key={action.id}
+                action={action}
+                index={index}
+                isExpanded={isExpanded}
+              />
+            ))}
+          </AnimatePresence>
+          </motion.div>
+        </div>
+
+        {/* AI Indicator */}
+        <motion.div
+          className="mt-4 mr-2 text-right"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}>
+          <div className="text-xs text-gray-500 font-ubuntu flex items-center justify-end gap-1">
+            <SparklesIcon className="w-3 h-3" />
+            Smart Actions
+          </div>
+        </motion.div>
+      </motion.div>
+    </>
   );
 };
 
