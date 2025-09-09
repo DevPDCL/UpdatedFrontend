@@ -71,6 +71,7 @@ function Cor() {
     },
   });
 
+
   // Render corporate partners section
   const renderCorporatePartners = () => {
     if (corporateLoading) {
@@ -114,24 +115,15 @@ function Cor() {
           pauseOnHover={true}
           className="py-4"
           aria-label="Corporate partners carousel">
-          <div className="flex items-center gap-8 px-4">
-            {corporatePartners.map((partner) => (
-              <motion.div
-                key={partner.id}
-                variants={itemVariants}
-                className="flex-shrink-0 mx-6"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}>
-                <PartnerLogo
-                  src={partner.image}
-                  alt={partner.alt}
-                  companyName={partner.name}
-                  className="h-20 w-auto max-w-[160px] object-contain filter hover:brightness-110 transition-all duration-300"
-                  lazy={false} // Don't lazy load marquee images
-                />
-              </motion.div>
-            ))}
-          </div>
+          {corporatePartners.map((partner) => (
+            <div key={partner.id} className="mx-10">
+              <img
+                src={partner.image}
+                alt={partner.alt || `Image ${partner.id}`}
+                className="h-20 w-50"
+              />
+            </div>
+          ))}
         </Marquee>
       </motion.div>
     );

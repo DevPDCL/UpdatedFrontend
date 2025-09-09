@@ -221,22 +221,30 @@ export const PartnerLogo = ({
   alt, 
   companyName,
   className = 'h-20 w-auto max-w-[200px]',
+  lazy,
   ...props 
 }) => {
+  console.log('PartnerLogo rendering:', { src, companyName, alt, lazy });
+  
+  // For now, use simple img tag to test if images work
   return (
-    <ImageWithFallback
+    <img
       src={src}
       alt={alt || `${companyName} logo`}
       className={className}
-      objectFit="contain"
-      placeholder={
-        <div className="flex items-center justify-center w-full h-full bg-gray-50 border border-gray-200 rounded">
-          <div className="text-center text-gray-400 p-2">
-            <div className="text-xs font-medium">{companyName}</div>
-            <div className="text-xs opacity-75">Logo</div>
-          </div>
-        </div>
-      }
+      style={{ objectFit: 'contain' }}
+      onLoad={() => console.log('PartnerLogo loaded successfully:', src)}
+      onError={(err) => {
+        console.error('PartnerLogo failed to load:', src, err);
+        // Show fallback text
+        err.target.style.display = 'none';
+        const fallback = document.createElement('div');
+        fallback.className = 'flex items-center justify-center bg-gray-50 border border-gray-200 rounded p-2 text-xs text-gray-400';
+        fallback.innerHTML = `<div>${companyName}<br><span class="opacity-75">Logo</span></div>`;
+        fallback.style.width = '160px';
+        fallback.style.height = '80px';
+        err.target.parentNode.appendChild(fallback);
+      }}
       {...props}
     />
   );
