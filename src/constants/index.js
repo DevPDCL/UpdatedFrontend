@@ -276,7 +276,7 @@ const healthPakage = [
     ],
     video: healthConsultation,
     source_code_link: "http://populardiagnostic.com/",
-    link: "/doctorsearch",
+    link: "/our-doctors",
   },
   {
     id: 3,
