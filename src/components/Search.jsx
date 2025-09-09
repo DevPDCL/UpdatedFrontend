@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
 import { reportDownload } from "../constants";
-import { API_TOKEN, BASE_URL } from "../secrets";
+
+// Custom hooks
+import { useDoctorSearch } from "../hooks/useDoctorSearch";
+import { useServiceSearch } from "../hooks/useServiceSearch";
+
+// UI Components
+import SearchInput from "./ui/SearchInput";
+import SelectDropdown from "./ui/SelectDropdown";
 
 const TABS = [
   { id: "doctors", label: "Doctors" },
@@ -17,6 +21,7 @@ const TABS = [
   { id: "test-prices", label: "Test Prices" },
 ];
 
+// Utility Components
 const ListHeader = ({ columns }) => (
   <div className="flex justify-between px-8 py-2 bg-gray-400 font-bold">
     {columns.map((col, index) => (
@@ -154,444 +159,98 @@ ServiceList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 };
 
+// Main Search Component
 const Search = () => {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
-  const searchTimeout = useRef(null);
-  const doctorSearchInputRef = useRef(null);
-  const serviceSearchInputRef = useRef(null);
+  
+  // Custom hooks for search functionality
+  const {
+    searchUI: doctorSearchUI,
+    searchData: doctorSearchData,
+    doctorSearchInputRef,
+    fetchInitialData: fetchDoctorInitialData,
+    handleSearchChange: handleDoctorSearchChange,
+    handleFilterChange: handleDoctorFilterChange,
+    handleScroll: handleDoctorScroll,
+  } = useDoctorSearch();
 
-  const [doctorSearchUI, setDoctorSearchUI] = useState({
-    searchTerm: "",
-    selectedBranch: "",
-    selectedSpecialization: "",
-    selectedDay: "",
-  });
+  const {
+    serviceState: serviceSearchState,
+    serviceSearchInputRef,
+    handleBranchChange: handleServiceBranchChange,
+    handleSearchChange: handleServiceSearchChange,
+  } = useServiceSearch();
 
-  const [doctorSearchData, setDoctorSearchData] = useState({
-    displayedDoctors: [],
-    branches: [],
-    specializations: [],
-    days: [],
-    loading: false,
-    currentPage: 1,
-    totalPages: 1,
-    hasMore: false,
-    isFetchingMore: false,
-    initialDataLoaded: false,
-  });
-
-  const [serviceSearchState, setServiceSearchState] = useState({
-    selectedBranch: null,
-    services: [],
-    allServices: [], 
-    searchTerm: "",
-    loading: false,
-    isFetchingAll: false, 
-    allPagesFetched: false, 
-    error: null,
-    totalCount: 0, 
-  });
-
-  const fetchInitialDoctorData = useCallback(async () => {
-    try {
-      const [branchesRes, specializationsRes, daysRes] = await Promise.all([
-        axios.get(`${BASE_URL}/api/branch-for-doctor?token=${API_TOKEN}`),
-        axios.get(`${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`),
-        axios.get(`${BASE_URL}/api/practice-days?token=${API_TOKEN}`),
-      ]);
-
-      setDoctorSearchData((prev) => ({
-        ...prev,
-        branches: branchesRes.data.data.data,
-        specializations: specializationsRes.data.data.data,
-        days: daysRes.data.data,
-        initialDataLoaded: true,
-      }));
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-      toast.error("Failed to load doctor data. Please try again.");
-    }
-  }, []);
-
-  const fetchDoctors = useCallback(
-    async (page = 1, append = false, filters = null) => {
-      const {
-        selectedBranch,
-        selectedSpecialization,
-        selectedDay,
-        searchTerm,
-      } = filters || doctorSearchUI;
-
-      const hasActiveFilters =
-        selectedBranch || selectedSpecialization || selectedDay || searchTerm;
-
-      try {
-        if (!append) {
-          setDoctorSearchData((prev) => ({
-            ...prev,
-            loading: hasActiveFilters,
-          }));
-        } else {
-          setDoctorSearchData((prev) => ({ ...prev, isFetchingMore: true }));
-        }
-
-        const params = {
-          token: API_TOKEN,
-          page: page,
-          ...(searchTerm && { name: searchTerm, fast_search: "yes" }),
-          ...(selectedBranch && { branches: selectedBranch }),
-          ...(selectedSpecialization && {
-            specialities: selectedSpecialization,
-          }),
-          ...(selectedDay && { days: selectedDay }),
-        };
-
-        const queryString = new URLSearchParams(params).toString();
-        const response = await axios.get(
-          `${BASE_URL}/api/doctors?${queryString}`
-        );
-
-        const newDoctors = response.data.data.data;
-        const totalPages = response.data.data.last_page;
-
-        setDoctorSearchData((prev) => ({
-          ...prev,
-          displayedDoctors: append
-            ? [...prev.displayedDoctors, ...newDoctors]
-            : newDoctors,
-          currentPage: page,
-          totalPages: totalPages,
-          hasMore: page < totalPages,
-          loading: false,
-          isFetchingMore: false,
-        }));
-
-        if (doctorSearchInputRef.current && !append) {
-          doctorSearchInputRef.current.focus();
-        }
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-        toast.error("Failed to load doctors. Please try again.");
-        setDoctorSearchData((prev) => ({
-          ...prev,
-          loading: false,
-          isFetchingMore: false,
-        }));
-      }
-    },
-    [doctorSearchUI]
-  );
-
-  const debounceSearch = useCallback(
-    (searchValue) => {
-      if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current);
-      }
-
-      setDoctorSearchUI((prev) => ({
-        ...prev,
-        searchTerm: searchValue,
-      }));
-
-      searchTimeout.current = setTimeout(() => {
-        const filters = {
-          ...doctorSearchUI,
-          searchTerm: searchValue,
-        };
-        fetchDoctors(1, false, filters);
-      }, 500);
-    },
-    [doctorSearchUI, fetchDoctors]
-  );
-
-  const handleDoctorFilterChange = useCallback(
-    (field, value) => {
-      if (field === "selectedDay" && value === "Everyday") {
-        return;
-      }
-
-      setDoctorSearchUI((prev) => {
-        const newState = { ...prev, [field]: value };
-
-        if (searchTimeout.current) {
-          clearTimeout(searchTimeout.current);
-        }
-
-        searchTimeout.current = setTimeout(() => {
-          fetchDoctors(1, false, newState);
-        }, 500);
-
-        return newState;
-      });
-    },
-    [fetchDoctors]
-  );
-
-  const handleScroll = useCallback(
-    ({ clientHeight, scrollHeight, scrollTop }) => {
-      const isNearBottom = scrollHeight - (scrollTop + clientHeight) < 50;
-
-      if (
-        isNearBottom &&
-        !doctorSearchData.isFetchingMore &&
-        doctorSearchData.hasMore
-      ) {
-        fetchDoctors(doctorSearchData.currentPage + 1, true);
-      }
-    },
-    [doctorSearchData, fetchDoctors]
-  );
-
-  const handleBranchChange = useCallback(async (event) => {
-    const branchId = event.target.value;
-    setServiceSearchState((prev) => ({
-      ...prev,
-      selectedBranch: branchId,
-      services: [],
-      allServices: [],
-      searchTerm: "",
-      loading: !!branchId,
-      isFetchingAll: !!branchId,
-      allPagesFetched: false,
-      totalCount: 0,
-      error: null,
-    }));
-
-    if (!branchId) return;
-
-    try {
-      // First fetch to get initial data and total pages
-      const firstPageResponse = await axios.get(
-        `${BASE_URL}/api/test-service-charges`,
-        {
-          params: {
-            token: API_TOKEN,
-            branch_id: branchId,
-            test_service_category_id: 0,
-            page: 1,
-          },
-        }
-      );
-
-      const firstPageData = firstPageResponse.data?.data?.data || [];
-      const totalPages = firstPageResponse.data?.data?.last_page || 1;
-
-      setServiceSearchState((prev) => ({
-        ...prev,
-        services: firstPageData,
-        allServices: firstPageData,
-        loading: false,
-        totalCount: firstPageData.length,
-      }));
-
-      // If there are more pages, fetch them in the background
-      if (totalPages > 1) {
-        fetchAllPages(branchId, firstPageData, totalPages);
-      } else {
-        setServiceSearchState((prev) => ({
-          ...prev,
-          isFetchingAll: false,
-          allPagesFetched: true,
-        }));
-      }
-
-      if (serviceSearchInputRef.current) {
-        serviceSearchInputRef.current.focus();
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setServiceSearchState((prev) => ({
-        ...prev,
-        loading: false,
-        isFetchingAll: false,
-        error: "Failed to fetch services. Please try again later.",
-      }));
-    }
-  }, []);
-
-  const fetchAllPages = useCallback(
-    async (branchId, initialData, totalPages) => {
-      try {
-        let currentPage = 2;
-        let fetchedData = [...initialData];
-
-        while (currentPage <= totalPages) {
-          const pageResponse = await axios.get(
-            `${BASE_URL}/api/test-service-charges`,
-            {
-              params: {
-                token: API_TOKEN,
-                branch_id: branchId,
-                test_service_category_id: 0,
-                page: currentPage,
-              },
-            }
-          );
-
-          const pageData = pageResponse.data?.data?.data || [];
-          fetchedData = [...fetchedData, ...pageData];
-          currentPage++;
-
-          setServiceSearchState((prev) => ({
-            ...prev,
-            allServices: fetchedData,
-            services: prev.searchTerm ? prev.services : fetchedData,
-            totalCount: fetchedData.length,
-          }));
-        }
-
-        setServiceSearchState((prev) => ({
-          ...prev,
-          isFetchingAll: false,
-          allPagesFetched: true,
-        }));
-      } catch (err) {
-        console.error("Error fetching all pages:", err);
-        setServiceSearchState((prev) => ({
-          ...prev,
-          isFetchingAll: false,
-          error: "Failed to load all services. Showing partial results.",
-        }));
-      }
-    },
-    []
-  );
-
-  const debounceServiceSearch = useCallback(
-    async (searchValue) => {
-      if (!serviceSearchState.selectedBranch) return;
-
-      if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current);
-      }
-
-      setServiceSearchState((prev) => ({
-        ...prev,
-        searchTerm: searchValue,
-        loading: !!searchValue,
-      }));
-
-      searchTimeout.current = setTimeout(async () => {
-        try {
-          if (!searchValue) {
-            // If search is cleared, show all services
-            setServiceSearchState((prev) => ({
-              ...prev,
-              services: prev.allServices,
-              loading: false,
-            }));
-            return;
-          }
-
-          // Perform API search
-          const response = await axios.get(
-            `${BASE_URL}/api/test-service-charges`,
-            {
-              params: {
-                token: API_TOKEN,
-                branch_id: serviceSearchState.selectedBranch,
-                test_service_category_id: 0,
-                name: searchValue,
-                fast_search: "yes",
-              },
-            }
-          );
-
-          setServiceSearchState((prev) => ({
-            ...prev,
-            services: response.data?.data?.data || [],
-            loading: false,
-          }));
-        } catch (err) {
-          console.error("Error searching services:", err);
-          setServiceSearchState((prev) => ({
-            ...prev,
-            loading: false,
-            error: "Failed to search services. Please try again.",
-          }));
-        }
-      }, 500);
-    },
-    [serviceSearchState.selectedBranch]
-  );
-  const handleServiceSearchChange = useCallback(
-    (event) => {
-      const searchValue = event.target.value;
-      debounceServiceSearch(searchValue);
-    },
-    [debounceServiceSearch]
-  );
-
+  // Initialize doctor data when switching to doctors tab
   useEffect(() => {
     if (activeTab === "doctors") {
-      fetchInitialDoctorData();
+      fetchDoctorInitialData();
     }
-  }, [activeTab, fetchInitialDoctorData]);
+  }, [activeTab, fetchDoctorInitialData]);
 
+  // Transform data for SelectDropdown components
+  const branchOptions = doctorSearchData.branches.map(branch => ({
+    value: branch.id,
+    label: branch.name
+  }));
+
+  const specializationOptions = doctorSearchData.specializations.map(spec => ({
+    value: spec.id,
+    label: spec.name
+  }));
+
+  const dayOptions = doctorSearchData.days
+    .filter(day => day !== "Everyday")
+    .map(day => ({
+      value: day,
+      label: day
+    }));
+
+  const serviceBranchOptions = reportDownload.map(branch => ({
+    value: branch.braID,
+    label: branch.braName
+  }));
+
+  // Render functions for each tab
   const renderDoctorTab = () => (
     <form className="max-w-7xl mx-auto">
-      <div className="flex flex-col md:grid md:grid-cols-3 md:gap-4 gap-1">
-        <div className="relative z-0 col-span-2 p-1 w-full mb-0 group">
-          <select
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
-            onChange={(e) =>
-              handleDoctorFilterChange("selectedBranch", e.target.value)
-            }
+      <div className="flex flex-col md:grid md:grid-cols-12 md:gap-4 gap-1">
+        <div className="relative z-0 col-span-12 md:col-span-4 p-1 w-full mb-0 group">
+          <SelectDropdown
             value={doctorSearchUI.selectedBranch}
-            disabled={!doctorSearchData.initialDataLoaded}>
-            <option value="">Select Branch</option>
-            {doctorSearchData.branches.map((branch) => (
-              <option key={branch.id} value={branch.id}>
-                {branch.name}
-              </option>
-            ))}
-          </select>
+            onChange={(e) => handleDoctorFilterChange("selectedBranch", e.target.value)}
+            options={branchOptions}
+            placeholder="Select Branch"
+            disabled={!doctorSearchData.initialDataLoaded}
+          />
         </div>
 
-        <div className="relative z-0 w-full p-1 col-span-2 mb-0 group">
-          <select
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
-            onChange={(e) =>
-              handleDoctorFilterChange("selectedSpecialization", e.target.value)
-            }
+        <div className="relative z-0 w-full p-1 col-span-12 md:col-span-4 mb-0 group">
+          <SelectDropdown
             value={doctorSearchUI.selectedSpecialization}
-            disabled={!doctorSearchData.initialDataLoaded}>
-            <option value="">Select Specialization</option>
-            {doctorSearchData.specializations.map((spec) => (
-              <option key={spec.id} value={spec.id}>
-                {spec.name}
-              </option>
-            ))}
-          </select>
+            onChange={(e) => handleDoctorFilterChange("selectedSpecialization", e.target.value)}
+            options={specializationOptions}
+            placeholder="Select Specialization"
+            disabled={!doctorSearchData.initialDataLoaded}
+          />
         </div>
 
-        <div className="relative col-span-2 p-1 mb-0 group">
-          <select
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer"
-            onChange={(e) =>
-              handleDoctorFilterChange("selectedDay", e.target.value)
-            }
+        <div className="relative col-span-12 md:col-span-4 p-1 mb-0 group">
+          <SelectDropdown
             value={doctorSearchUI.selectedDay}
-            disabled={!doctorSearchData.initialDataLoaded}>
-            <option value="">Select Day</option>
-            {doctorSearchData.days
-              .filter((day) => day !== "Everyday")
-              .map((day) => (
-                <option key={day} value={day}>
-                  {day}
-                </option>
-              ))}
-          </select>
+            onChange={(e) => handleDoctorFilterChange("selectedDay", e.target.value)}
+            options={dayOptions}
+            placeholder="Select Day"
+            disabled={!doctorSearchData.initialDataLoaded}
+          />
         </div>
 
-        <div className="relative col-span-6 mb-1 group">
-          <input
+        <div className="relative col-span-12 mb-1 group">
+          <SearchInput
             ref={doctorSearchInputRef}
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2"
-            type="text"
-            placeholder="Search by doctor's name..."
             value={doctorSearchUI.searchTerm}
-            onChange={(e) => debounceSearch(e.target.value)}
+            onChange={(e) => handleDoctorSearchChange(e.target.value)}
+            placeholder="Search by doctor's name..."
             disabled={!doctorSearchData.initialDataLoaded}
           />
 
@@ -601,7 +260,7 @@ const Search = () => {
             <DoctorList
               doctors={doctorSearchData.displayedDoctors}
               isFetchingMore={doctorSearchData.isFetchingMore}
-              onScroll={handleScroll}
+              onScroll={handleDoctorScroll}
             />
           ) : (
             (doctorSearchUI.searchTerm ||
@@ -639,40 +298,33 @@ const Search = () => {
 
   const renderTestPricesTab = () => (
     <form className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-12 md:gap-1">
+      <div className="grid md:grid-cols-12 md:gap-4 gap-1">
         <div className="relative z-0 w-full col-span-12 mb-1 group">
-          <select
-            value={serviceSearchState.selectedBranch}
-            onChange={handleBranchChange}
-            className="block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl text-gray-900 bg-white pl-2 peer">
-            <option value="">Select Branch</option>
-            {reportDownload.map((branch) => (
-              <option key={branch.braID} value={branch.braID}>
-                {branch.braName}
-              </option>
-            ))}
-          </select>
+          <SelectDropdown
+            value={serviceSearchState.selectedBranch || ""}
+            onChange={(e) => handleServiceBranchChange(e.target.value)}
+            options={serviceBranchOptions}
+            placeholder="Select Branch"
+          />
         </div>
 
         <div className="relative col-span-12 mb-1 group">
           <div className="relative">
-            <input
+            <SearchInput
               ref={serviceSearchInputRef}
-              type="text"
               value={serviceSearchState.searchTerm}
-              onChange={(e) => debounceServiceSearch(e.target.value)}
+              onChange={(e) => handleServiceSearchChange(e.target.value)}
               placeholder={
                 !serviceSearchState.selectedBranch
                   ? "Select a branch first to start searching..."
                   : "Search test prices..."
               }
-              className={`block py-2.5 px-0 w-full text-sm rounded-lg shadow-2xl focus:outline-none focus:ring-0 focus:border-PDCL-green text-gray-900 bg-white placeholder-gray-900 peer pl-2 ${
+              disabled={!serviceSearchState.selectedBranch}
+              className={
                 !serviceSearchState.selectedBranch
                   ? "opacity-50 cursor-not-allowed"
                   : ""
-              }`}
-              disabled={!serviceSearchState.selectedBranch}
-              required
+              }
             />
             {(serviceSearchState.loading ||
               serviceSearchState.isFetchingAll) && (

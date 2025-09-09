@@ -60,6 +60,11 @@ module.exports = {
           "from": { textShadow: "0 0 20px #006642, 0 0 30px #006642, 0 0 40px #006642" },
           "to": { textShadow: "0 0 10px #006642, 0 0 20px #006642, 0 0 30px #006642" },
         },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       fontFamily: {
         ubuntu: ["ubuntu"],

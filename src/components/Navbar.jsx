@@ -11,6 +11,7 @@ import {
   HeartIcon,
   BuildingOfficeIcon,
   PhoneIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { useHoverDepth } from "../hooks/useHoverDepth";
@@ -157,13 +158,6 @@ const Navbar = () => {
           title: 'Health Packages',
           description: 'Comprehensive health checkups',
           icon: HeartIcon,
-          featured: true
-        },
-        {
-          to: '/patient_portal',
-          title: 'Report Download',
-          description: 'Download reports from your visited branch',
-          icon: UserIcon,
           featured: true
         },
         {
@@ -464,6 +458,18 @@ const Navbar = () => {
                   </div>
                 </MegaMenu>
               </div>
+
+              {/* Report Download Link */}
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/patient_portal"
+                  onClick={() => trackAction('/patient_portal', 'primary')}
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  aria-label="Download medical reports">
+                  <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green font-bold stroke-" />
+                  Report Download
+                </Link>
+              </motion.div>
 
               {/* Contact Link */}
               <NavLink to="/contact-us" onClick={() => trackAction('/contact-us', 'primary')}>
