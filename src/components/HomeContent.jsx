@@ -50,28 +50,38 @@ const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
   const ariaLabel = `${value}${suffix}${suffixExt} ${label}`;
   
   return (
-    <div 
-      className="p-4 sm:p-6 items-center flex flex-col sm:flex-row justify-center sm:justify-start gap-4 hover:scale-105 transition-all duration-300 group min-h-[120px] bg-white/50 rounded-xl shadow-sm hover:shadow-md focus-within:outline-none focus-within:ring-2 focus-within:ring-[#00984a] focus-within:ring-offset-2"
+    <div
+      className="relative p-3 sm:p-4 lg:p-6 items-center flex flex-row justify-start gap-3 sm:gap-4 hover:scale-105 transition-all duration-500 group min-h-[100px] sm:min-h-[120px] bg-gradient-to-t from-PDCL-green/10 via-white/60 to-transparent backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl focus-within:outline-none focus-within:ring-2 focus-within:ring-[#00984a] focus-within:ring-offset-2 overflow-hidden"
       role="region"
       aria-label={ariaLabel}
       tabIndex="0">
-      <div className="rounded-full p-3 sm:p-4 border-2 border-dashed border-gray-600 hover:scale-105 group-hover:bg-gray-600 transition-all duration-300 flex-shrink-0">
+      {/* Animated background shimmer */}
+      <div className="absolute inset-0 stat-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+
+      {/* Animated border gradient */}
+      <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-PDCL-green/20 via-PDCL-green-light/20 to-PDCL-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+      <div className="relative z-10 rounded-full p-2 sm:p-3 lg:p-4 border-2 border-dashed border-gray-400 group-hover:border-gray-600 hover:scale-105 group-hover:bg-gray-600 transition-all duration-500 flex-shrink-0">
         <svg
-          className="w-8 h-8 sm:w-10 sm:h-10 fill-gray-600 group-hover:fill-white group-hover:-rotate-12 transition-all duration-300"
+          className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 fill-gray-600 group-hover:fill-gray-200 group-hover:-rotate-12 transition-all duration-500 icon-color-shift"
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true">
           <path d={icon} />
         </svg>
       </div>
-      <div className="text-center sm:text-left flex-1">
-        <h2 className="text-gray-700 font-bold font-ubuntu text-2xl sm:text-3xl lg:text-4xl leading-tight">
+
+      <div className="relative z-10 text-left flex-1 min-w-0">
+        <h2 className="text-gray-700 group-hover:text-PDCL-green font-bold font-ubuntu text-lg sm:text-2xl lg:text-3xl xl:text-4xl leading-tight transition-colors duration-300 stat-pulse">
           <Counter n={value} suffix={suffix} suffixExt={suffixExt} />
         </h2>
-        <p className="text-gray-600 font-semibold font-ubuntu text-sm sm:text-base mt-1 leading-snug">
+        <p className="text-gray-600 group-hover:text-gray-800 font-semibold font-ubuntu text-xs sm:text-sm lg:text-base mt-0.5 sm:mt-1 leading-snug transition-colors duration-300">
           {label}
         </p>
       </div>
+
+      {/* Subtle glow effect */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-PDCL-green/5 via-PDCL-green-light/5 to-PDCL-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     </div>
   );
 };
@@ -294,18 +304,43 @@ const HomeContent = () => {
       <section className="overflow-hidden mt-[-140px] py-24 sm:py-32" aria-label="Hospital statistics">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center items-center py-6 gap-6">
-            {/* First row - 3 cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-4xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
-              {stats.slice(0, 3).map((stat, index) => (
-                <StatCard key={index} {...stat} />
-              ))}
+            {/* Mobile/Tablet: 2 columns, Desktop: 3+2 rows layout */}
+            <div className="grid grid-cols-2 lg:hidden gap-3 sm:gap-6 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre">
+              {stats.map((stat, index) => {
+                const delayClass = index > 0 ? `stat-card-entrance-delay-${index}` : '';
+                return (
+                  <div key={index} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
+                    <StatCard {...stat} />
+                  </div>
+                );
+              })}
             </div>
-            
-            {/* Second row - 2 cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
-              {stats.slice(3, 5).map((stat, index) => (
-                <StatCard key={index + 3} {...stat} />
-              ))}
+
+            {/* Desktop only: Original 3+2 layout */}
+            <div className="hidden lg:flex flex-col gap-6">
+              {/* First row - 3 cards */}
+              <div className="grid grid-cols-3 gap-8 w-full max-w-4xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
+                {stats.slice(0, 3).map((stat, index) => {
+                  const delayClass = index > 0 ? `stat-card-entrance-delay-${index}` : '';
+                  return (
+                    <div key={index} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
+                      <StatCard {...stat} />
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Second row - 2 cards (centered) */}
+              <div className="grid grid-cols-2 gap-8 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
+                {stats.slice(3, 5).map((stat, index) => {
+                  const delayClass = `stat-card-entrance-delay-${index + 3}`;
+                  return (
+                    <div key={index + 3} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
+                      <StatCard {...stat} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

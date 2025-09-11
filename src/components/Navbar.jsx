@@ -459,16 +459,27 @@ const Navbar = () => {
                 </MegaMenu>
               </div>
 
-              {/* Report Download Link */}
+              {/* Report Download Link with Animated Border */}
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to="/patient_portal"
-                  onClick={() => trackAction('/patient_portal', 'primary')}
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
-                  aria-label="Download medical reports">
-                  <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green font-bold stroke-" />
-                  Report Download
-                </Link>
+                <div className="relative p-0.5 rounded-lg overflow-hidden group">
+                  {/* Animated Border Background */}
+                  <div 
+                    className="absolute inset-0 rounded-lg border-animation"
+                    style={{
+                      background: 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
+                      animation: 'borderSpin 3s linear infinite'
+                    }}
+                  />
+                  {/* Button Content */}
+                  <Link
+                    to="/patient_portal"
+                    onClick={() => trackAction('/patient_portal', 'primary')}
+                    className="relative flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-white font-medium rounded-lg hover:bg-black/30 hover:backdrop-blur-md transition-all duration-300 font-ubuntu bg-white"
+                    aria-label="Download medical reports">
+                    <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green font-bold stroke-2" />
+                    Report Download
+                  </Link>
+                </div>
               </motion.div>
 
               {/* Contact Link */}
@@ -495,6 +506,32 @@ const Navbar = () => {
                 </svg>
                 <span className="text-sm font-medium font-ubuntu">Support</span>
               </motion.a>
+
+              {/* Mobile Report Download Icon Button */}
+              <motion.div 
+                className="md:hidden"
+                whileHover={{ scale: 1.05 }} 
+                whileTap={{ scale: 0.95 }}>
+                <div className="relative p-0.5 rounded-xl overflow-hidden">
+                  {/* Animated Border Background */}
+                  <div 
+                    className="absolute inset-0 rounded-xl border-animation"
+                    style={{
+                      background: 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
+                      animation: 'borderSpin 3s linear infinite'
+                    }}
+                  />
+                  {/* Icon Button Content */}
+                  <Link
+                    to="/patient_portal"
+                    onClick={() => trackAction('/patient_portal', 'mobile')}
+                    className="relative flex items-center justify-center p-3 text-gray-700 hover:text-white font-medium rounded-xl hover:bg-black/30 hover:backdrop-blur-md transition-all duration-300 bg-white touch-manipulation"
+                    style={{ minWidth: '44px', minHeight: '44px' }}
+                    aria-label="Download medical reports">
+                    <ArrowDownTrayIcon className="w-5 h-5 text-PDCL-green" />
+                  </Link>
+                </div>
+              </motion.div>
 
               {/* Mobile Menu Button - Enhanced for Touch */}
               <motion.button

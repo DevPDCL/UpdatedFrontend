@@ -108,19 +108,21 @@ function Cor() {
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        className="my-8">
+        className="my-8 w-full">
         <Marquee 
           gradient={false} 
           speed={40}
           pauseOnHover={true}
-          className="py-4"
+          className="py-4 w-full"
+          style={{ width: '100%' }}
           aria-label="Corporate partners carousel">
           {corporatePartners.map((partner) => (
-            <div key={partner.id} className="mx-10">
+            <div key={partner.id} className="mx-3 sm:mx-6 md:mx-8 lg:mx-10">
               <img
                 src={partner.image}
                 alt={partner.alt || `Image ${partner.id}`}
-                className="h-20 w-50"
+                className="h-12 w-auto sm:h-16 md:h-18 lg:h-20 object-contain transition-all duration-300 hover:scale-105 hover:brightness-110 filter grayscale-0"
+                loading="lazy"
               />
             </div>
           ))}
@@ -180,7 +182,7 @@ function Cor() {
           Corporate Partners
         </motion.h2>
 
-        <div className="flex flex-row p-3 flex-wrap sm:w-[80%] max-w-screen-xl mx-auto justify-center">
+        <div className="w-full overflow-hidden">
           {renderCorporatePartners()}
         </div>
       </section>
