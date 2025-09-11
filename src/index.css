@@ -95,6 +95,256 @@
   }
 }
 
+/* Search Component - 35% Hero Coverage */
+.search-35-percent-coverage {
+  /* Calculate exactly 35% of Hero height for each breakpoint */
+  --hero-height: 300px;
+  --search-elevation: calc(var(--hero-height) * -0.35); /* -105px */
+  margin-top: var(--search-elevation);
+  
+  /* Smooth transitions for elevation changes */
+  transition: margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive elevation values - exactly 35% of Hero heights */
+@media (min-width: 640px) {
+  .search-35-percent-coverage {
+    --hero-height: 400px;
+    --search-elevation: calc(var(--hero-height) * -0.35); /* -140px */
+  }
+}
+
+@media (min-width: 768px) {
+  .search-35-percent-coverage {
+    --hero-height: 500px;
+    --search-elevation: calc(var(--hero-height) * -0.35); /* -175px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-35-percent-coverage {
+    --hero-height: 600px;
+    --search-elevation: calc(var(--hero-height) * -0.35); /* -210px */
+  }
+}
+
+/* Flexible percentage-based coverage system */
+.search-hero-coverage {
+  /* Default to 35% coverage - can be overridden */
+  --coverage-percentage: 0.35;
+  --hero-height: 300px;
+  --search-elevation: calc(var(--hero-height) * var(--coverage-percentage) * -1);
+  margin-top: var(--search-elevation);
+  
+  /* Smooth transitions */
+  transition: margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive hero heights for flexible system */
+@media (min-width: 640px) {
+  .search-hero-coverage {
+    --hero-height: 400px;
+  }
+}
+
+@media (min-width: 768px) {
+  .search-hero-coverage {
+    --hero-height: 500px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-hero-coverage {
+    --hero-height: 600px;
+  }
+}
+
+/* Utility classes for different coverage percentages */
+.coverage-25 { --coverage-percentage: 0.25; }
+.coverage-30 { --coverage-percentage: 0.30; }
+.coverage-35 { --coverage-percentage: 0.35; }
+.coverage-40 { --coverage-percentage: 0.40; }
+.coverage-45 { --coverage-percentage: 0.45; }
+.coverage-50 { --coverage-percentage: 0.50; }
+
+/* Keep the old search-elevated for backward compatibility */
+.search-elevated {
+  /* Use CSS custom properties for responsive values */
+  --search-elevation: -5rem; /* 80px - matches ~27% of 300px hero */
+  margin-top: var(--search-elevation);
+  
+  /* Smooth transitions for elevation changes */
+  transition: margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive elevation values - proportional to Hero heights */
+@media (min-width: 640px) {
+  .search-elevated {
+    --search-elevation: -10rem; /* 160px - ~40% of 400px hero */
+  }
+}
+
+@media (min-width: 768px) {
+  .search-elevated {
+    --search-elevation: -18rem; /* 288px - ~58% of 500px hero */
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-elevated {
+    --search-elevation: -24rem; /* 384px - ~64% of 600px hero */
+  }
+}
+
+@media (min-width: 1280px) {
+  .search-elevated {
+    --search-elevation: -28rem; /* 448px - ~75% of 600px hero */
+  }
+}
+
+@media (min-width: 1536px) {
+  .search-elevated {
+    --search-elevation: -32rem; /* 512px - for very large screens */
+  }
+}
+
+/* Alternative: Percentage-based elevation (more fluid and responsive) */
+.search-elevated-fluid {
+  /* Base: Use 25% of viewport height with minimum and maximum bounds */
+  margin-top: clamp(-32rem, -25vh, -5rem);
+}
+
+/* Height-based adjustments for better responsiveness */
+@media (max-height: 500px) {
+  .search-elevated-fluid {
+    margin-top: clamp(-12rem, -20vh, -4rem); /* Less elevation on very short screens */
+  }
+}
+
+@media (min-height: 800px) {
+  .search-elevated-fluid {
+    margin-top: clamp(-40rem, -30vh, -8rem); /* More elevation on tall screens */
+  }
+}
+
+@media (min-height: 1000px) {
+  .search-elevated-fluid {
+    margin-top: clamp(-48rem, -35vh, -12rem); /* Even more elevation on very tall screens */
+  }
+}
+
+/* Container queries for more precise responsive control */
+@container (min-width: 768px) {
+  .search-elevated {
+    --search-elevation: -10rem;
+  }
+}
+
+@container (min-width: 1024px) {
+  .search-elevated {
+    --search-elevation: -12rem;
+  }
+}
+
+/* Advanced responsive utilities with increased elevation */
+.search-elevation-sm { margin-top: -8rem; }   /* 128px */
+.search-elevation-md { margin-top: -16rem; }  /* 256px */
+.search-elevation-lg { margin-top: -24rem; }  /* 384px */
+.search-elevation-xl { margin-top: -32rem; }  /* 512px */
+.search-elevation-2xl { margin-top: -40rem; } /* 640px */
+
+/* Responsive elevation with aspect ratio consideration */
+@media (min-aspect-ratio: 16/9) {
+  .search-elevated {
+    /* Wide screens: Use viewport height calculation for better proportions */
+    --search-elevation: clamp(-32rem, -20vh, -8rem);
+  }
+}
+
+@media (max-aspect-ratio: 4/3) {
+  .search-elevated {
+    /* Tall screens: Use smaller fixed elevation to avoid over-elevation */
+    --search-elevation: clamp(-16rem, -15vh, -6rem);
+  }
+}
+
+/* Ultra-wide screen support */
+@media (min-aspect-ratio: 21/9) {
+  .search-elevated {
+    --search-elevation: clamp(-40rem, -25vh, -12rem);
+  }
+}
+
+/* Enhanced Search List Styling */
+.search-list-container {
+  /* Enhanced shadow with subtle color tint */
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 152, 74, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 152, 74, 0.05);
+}
+
+.search-list-item {
+  /* Smooth hover animations */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-list-item:hover {
+  transform: translateX(2px);
+}
+
+/* Enhanced list header gradient */
+.search-list-header {
+  background: linear-gradient(135deg, #00664a 0%, #00984a 50%, #22c55e 100%);
+  position: relative;
+}
+
+.search-list-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+/* Improved readability for mobile */
+@media (max-width: 768px) {
+  .search-list-item {
+    padding: 1rem 1.25rem;
+  }
+  
+  .search-list-header {
+    padding: 0.875rem 1.25rem;
+  }
+  
+  .search-list-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* Loading state animations */
+.search-list-loading {
+  animation: searchListPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes searchListPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Empty state styling */
+.search-list-empty {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 2px dashed #cbd5e1;
+}
+
 /* Utility classes for stats */
 .stat-pulse {
   animation: statPulse 3s ease-in-out infinite;
@@ -120,6 +370,186 @@
 
 .icon-color-shift {
   animation: iconColorShift 2s ease-in-out infinite;
+}
+
+/* iOS-specific optimizations for Search component */
+.ios-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  will-change: scroll-position;
+  /* Prevent bounce scrolling on iOS */
+  overscroll-behavior: contain;
+}
+
+/* iOS input optimizations */
+input[type="text"], 
+input[type="search"],
+select,
+textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  border-radius: 0.375rem;
+  /* Fix iOS font size zoom */
+  font-size: 16px;
+  /* Prevent iOS zoom on focus */
+  transform: translateZ(0);
+}
+
+/* iOS safe area handling */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-left {
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+  
+  .safe-area-right {
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* iOS touch optimizations */
+.touch-optimized {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+/* Fix iOS button styling */
+button, 
+.btn {
+  -webkit-appearance: none;
+  touch-action: manipulation;
+  /* Ensure proper touch targets */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* iOS-specific focus states */
+@media (hover: none) and (pointer: coarse) {
+  /* Mobile/touch devices */
+  .hover\:bg-gray-100:hover {
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  }
+  
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid #00984a;
+    outline-offset: 2px;
+  }
+}
+
+/* Custom Select Mobile Optimizations */
+.mobile-dropdown {
+  /* Mobile-first dropdown styling */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 768px) {
+  .mobile-dropdown {
+    /* Enhanced mobile shadows and positioning */
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    max-height: 60vh;
+    transform: translateY(2px);
+  }
+}
+
+/* iOS scroll optimization for dropdowns */
+.ios-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ios-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch feedback for dropdown options */
+.dropdown-option {
+  transition: all 0.15s ease-out;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.dropdown-option:active {
+  transform: scale(0.98);
+  background-color: #f3f4f6;
+}
+
+/* Mobile search input optimization */
+.mobile-search-input {
+  font-size: 16px !important; /* Prevent iOS zoom */
+  -webkit-appearance: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mobile-search-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 152, 74, 0.15);
+}
+
+/* Custom Select Animation */
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mobile-dropdown {
+  animation: dropdownSlide 0.2s ease-out;
+}
+
+/* Mobile form improvements */
+@media (max-width: 768px) {
+  .search-form-mobile {
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .search-form-mobile .form-group {
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Better touch targets */
+  .search-form-mobile button,
+  .search-form-mobile .custom-select,
+  .search-form-mobile input {
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+}
+
+/* Backdrop blur for mobile dropdowns */
+@supports (backdrop-filter: blur(10px)) {
+  .mobile-dropdown {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Prevent iOS zoom on form focus */
+@media screen and (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }
 
 /* Staggered entrance animations */

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
-import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
-import List from "react-virtualized/dist/commonjs/List";
 import { Link } from "react-router-dom";
+import VirtualizedList from "./ui/VirtualizedList";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -122,25 +121,19 @@ LoadingSpinner.propTypes = {
 };
 
 const DoctorList = ({ doctors, isFetchingMore, onScroll }) => (
-  <div className="flex flex-col min-h-[200px] shadow-lg rounded-lg overflow-hidden">
+  <div className="flex flex-col min-h-[200px] shadow-lg rounded-lg overflow-hidden ios-optimized">
     <ListHeader columns={["Doctor Name", "Speciality"]} />
-    <div className="h-[250px]">
-      <AutoSizer>
-        {({ width, height }) => (
-          <List
-            height={height}
-            rowCount={doctors.length}
-            rowHeight={50}
-            rowRenderer={({ index, style }) => (
-              <DoctorRow doctor={doctors[index]} style={style} />
-            )}
-            overscanRowCount={5}
-            width={width}
-            onScroll={onScroll}
-          />
-        )}
-      </AutoSizer>
-    </div>
+    <VirtualizedList
+      items={doctors}
+      renderItem={({ index, style, item }) => (
+        <DoctorRow doctor={item} style={style} />
+      )}
+      height={250}
+      itemHeight={50}
+      overscan={5}
+      onScroll={onScroll}
+      className="w-full"
+    />
     {isFetchingMore && (
       <LoadingSpinner text="Loading more doctors..." size="small" />
     )}
@@ -164,22 +157,16 @@ const ServiceList = ({ services, isFetchingAll }) => (
         </div>
       </div>
     )}
-    <div className="h-[250px]">
-      <AutoSizer>
-        {({ width, height }) => (
-          <List
-            height={height}
-            rowCount={services.length}
-            rowHeight={50}
-            rowRenderer={({ index, style }) => (
-              <ServiceRow service={services[index]} style={style} />
-            )}
-            overscanRowCount={5}
-            width={width}
-          />
-        )}
-      </AutoSizer>
-    </div>
+    <VirtualizedList
+      items={services}
+      renderItem={({ index, style, item }) => (
+        <ServiceRow service={item} style={style} />
+      )}
+      height={250}
+      itemHeight={50}
+      overscan={5}
+      className="w-full"
+    />
   </div>
 );
 
