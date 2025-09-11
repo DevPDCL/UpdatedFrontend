@@ -250,19 +250,20 @@ const Nav = () => {
             {/* Dhanmondi Emergency Button - Priority #1 */}
             <a
               href="tel:10636"
-              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-white/90 hover:bg-white/20 transition-colors cursor-pointer group">
+              className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-white/90 hover:bg-white/20 transition-colors cursor-pointer group">
               <svg
                 className="w-3 h-3 fill-current text-green-400 group-hover:text-green-300"
                 viewBox="0 0 512 512">
                 <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
               </svg>
               <span className="text-xs font-ubuntu group-hover:text-white">
-                Dhanmondi-HO: <span className="text-sm font-bold">10636</span> (24/7)
+                Dhanmondi-HO: <span className="text-sm font-bold">10636</span>{" "}
+                (24/7)
               </span>
             </a>
 
             {/* Service Status Indicator */}
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-white/90">
+            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-white/90">
               <div
                 className={clsx(
                   "w-2 h-2 rounded-full",
@@ -276,20 +277,23 @@ const Nav = () => {
           </div>
 
           {/* Center Section: Clear Service Information */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-3">
             {/* Smart Contact Button */}
+
             <SmartContactButton />
 
-            <div className="h-4 w-px bg-white/20"></div>
+            <div className="hidden md:flex">
+              <div className="h-4 w-px bg-white/20"></div>
 
-            <Link
-              to="/our-branches"
-              className="flex items-center gap-1 text-xs text-white/80 hover:text-white transition-colors font-ubuntu">
-              <svg className="w-3 h-3 fill-current" viewBox="0 0 512 512">
-                <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z" />
-              </svg>
-              <span>22+ Branches</span>
-            </Link>
+              <Link
+                to="/our-branches"
+                className="flex items-center gap-1 text-xs text-white/80 hover:text-white transition-colors font-ubuntu">
+                <svg className="w-3 h-3 fill-current" viewBox="0 0 512 512">
+                  <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z" />
+                </svg>
+                <span>22+ Branches</span>
+              </Link>
+            </div>
           </div>
 
           {/* Right Section: Social Media */}
@@ -363,7 +367,7 @@ const Nav = () => {
                 <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
               </svg>
             </div>
-            
+
             {/* Mobile: Two lines, Desktop: One line */}
             <div className="flex-1 text-left lg:text-center">
               {/* Mobile Layout */}
@@ -375,15 +379,17 @@ const Nav = () => {
                   Most branches closed • Emergency line always open
                 </div>
               </div>
-              
+
               {/* Desktop Layout - Single Line */}
               <div className="hidden lg:block">
                 <span className="font-medium text-amber-900 font-ubuntu text-sm">
-                  🚨 After Hours: Most branches closed • Only <strong>Dhanmondi HO</strong> & <strong>Emergency Hotline (10636)</strong> available 24/7
+                  🚨 After Hours: Most branches closed • Only{" "}
+                  <strong>Dhanmondi HO</strong> &{" "}
+                  <strong>Emergency Hotline (10636)</strong> available 24/7
                 </span>
               </div>
             </div>
-            
+
             <a
               href="tel:10636"
               className="px-2.5 py-1 bg-amber-500 text-white rounded text-sm hover:bg-amber-600 transition-colors font-ubuntu font-medium">
@@ -392,7 +398,6 @@ const Nav = () => {
           </div>
         </div>
       )}
-
     </nav>
   );
 };
