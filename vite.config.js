@@ -6,8 +6,19 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: 'esnext',
+    minify: 'terser',
+    sourcemap: false,
     rollupOptions: {
-      treeshake: true, // or 'smallest' for more aggressive tree shaking
+      treeshake: true, // Less aggressive tree shaking
     },
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console statements
+        drop_debugger: true,
+      }
+    }
   },
+  esbuild: {
+    drop: ['console', 'debugger'], // Remove console statements during build
+  }
 })

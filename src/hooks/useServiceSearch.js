@@ -138,20 +138,22 @@ export const useServiceSearch = () => {
     }
   }, [fetchAllPages]);
 
-  // Debounced service search
+  // Debounced service search with optimized state updates
   const debouncedServiceSearch = useDebouncedCallback(
     async (searchValue) => {
       if (!serviceState.selectedBranch) return;
 
+      // Batch initial state updates
       setServiceState((prev) => ({
         ...prev,
         searchTerm: searchValue,
         loading: !!searchValue,
+        error: null, // Clear previous errors
       }));
 
       try {
         if (!searchValue) {
-          // If search is cleared, show all services
+          // If search is cleared, show all services - single state update
           setServiceState((prev) => ({
             ...prev,
             services: prev.allServices,
@@ -174,20 +176,24 @@ export const useServiceSearch = () => {
           }
         );
 
+        // Single state update with all results
         setServiceState((prev) => ({
           ...prev,
           services: response.data?.data?.data || [],
           loading: false,
+          error: null,
         }));
       } catch (err) {
+        // Single error state update
         setServiceState((prev) => ({
           ...prev,
           loading: false,
           error: "Failed to search services. Please try again.",
+          services: [], // Clear services on error
         }));
       }
     },
-    500
+    300 // Reduced debounce time for faster response
   );
 
   // Handle search input change

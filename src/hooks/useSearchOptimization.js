@@ -16,6 +16,7 @@ export const useSearchOptimization = ({
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState(null);
   const [searchHistory, setSearchHistory] = useState([]);
+  const searchHistoryRef = useRef([]);
   
   // Cache and refs
   const searchCache = useRef(new Map());
@@ -33,7 +34,7 @@ export const useSearchOptimization = ({
           setSearchHistory(parsed.slice(0, 10)); // Keep only last 10 searches
         }
       } catch (error) {
-        console.warn('Failed to load search history:', error);
+        // Failed to load search history - continue silently
       }
     }
   }, []);
@@ -91,13 +92,18 @@ export const useSearchOptimization = ({
     }
   }, [cacheEnabled]);
 
+  // Update ref when searchHistory changes
+  useEffect(() => {
+    searchHistoryRef.current = searchHistory;
+  }, [searchHistory]);
+
   // Save search to history
   const saveToHistory = useCallback((term) => {
     if (!term || term.length < minSearchLength) return;
 
     const newHistory = [
       term,
-      ...searchHistory.filter(item => item !== term)
+      ...searchHistoryRef.current.filter(item => item !== term)
     ].slice(0, 10);
 
     setSearchHistory(newHistory);
@@ -107,10 +113,10 @@ export const useSearchOptimization = ({
       try {
         localStorage.setItem('pdcl-search-history', JSON.stringify(newHistory));
       } catch (error) {
-        console.warn('Failed to save search history:', error);
+        // Failed to save search history - continue silently
       }
     }
-  }, [searchHistory, minSearchLength]);
+  }, [minSearchLength]);
 
   // Perform optimized search
   const performSearch = useCallback(async (term, filters = {}) => {
@@ -157,7 +163,6 @@ export const useSearchOptimization = ({
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
-        console.error('Search error:', error);
         setSearchError(error.message || 'Search failed');
         setSearchResults([]);
       }
@@ -171,7 +176,6 @@ export const useSearchOptimization = ({
     setCachedResult,
     saveToHistory,
     searchFunction,
-    debouncedSearchTerm,
   ]);
 
   // Execute search when debounced term changes
@@ -191,7 +195,7 @@ export const useSearchOptimization = ({
       try {
         localStorage.removeItem('pdcl-search-history');
       } catch (error) {
-        console.warn('Failed to clear search history:', error);
+        // Failed to clear search history - continue silently
       }
     }
   }, []);
@@ -216,15 +220,15 @@ export const useSearchOptimization = ({
 
   // Get search suggestions based on history
   const getSearchSuggestions = useCallback((currentTerm) => {
-    if (!currentTerm || currentTerm.length < 1) return searchHistory.slice(0, 5);
+    if (!currentTerm || currentTerm.length < 1) return searchHistoryRef.current.slice(0, 5);
     
-    return searchHistory
+    return searchHistoryRef.current
       .filter(item => 
         item.toLowerCase().includes(currentTerm.toLowerCase()) &&
         item !== currentTerm
       )
       .slice(0, 5);
-  }, [searchHistory]);
+  }, []);
 
   return {
     // State

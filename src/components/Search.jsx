@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
@@ -25,7 +25,7 @@ const TABS = [
 
 // Utility Components
 const ListHeader = ({ columns }) => (
-  <div className="flex px-6 py-4 bg-gradient-to-r from-[#00664a] to-[#00984a] text-white font-semibold rounded-t-xl shadow-sm">
+  <div className="hidden md:flex px-6 py-4 bg-gradient-to-r from-[#00664a] to-[#00984a] text-white font-semibold rounded-t-xl md:rounded-t-xl rounded-t-none shadow-sm">
     <div className="flex-1 pr-4">
       <p className="text-sm md:text-base font-ubuntu tracking-wide">
         {columns[0]}
@@ -43,21 +43,43 @@ ListHeader.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const ServiceRow = React.memo(({ service, style }) => (
+const ServiceRow = React.memo(({ service, style, index }) => (
   <li
     style={style}
-    className="flex items-center px-6 py-4 bg-white hover:bg-gradient-to-r hover:from-[#00984a]/5 hover:to-transparent border-b border-gray-100 last:border-b-0 transition-all duration-200 cursor-pointer group">
-    <div className="flex-1 pr-4">
-      <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
-        {service.name}
-      </p>
+    className={`block md:flex md:items-center px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group ${
+      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+    }`}>
+    {/* Mobile: Vertical card layout */}
+    <div className="block md:hidden">
+      <div className="flex items-start justify-between">
+        <div className="flex-1 pr-3">
+          <p className="text-gray-800 font-ubuntu font-semibold text-base group-hover:text-[#00664a] transition-colors duration-200 leading-tight">
+            {service.name}
+          </p>
+          <div className="flex items-center mt-2">
+            <span className="text-xs text-gray-500 font-ubuntu mr-2">Price:</span>
+            <p className="font-bold text-[#00984a] font-ubuntu text-base">
+              ৳{service.price.toLocaleString("en-BD")}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div className="flex-1 text-right">
-      <div className="flex items-center justify-end space-x-2">
-        <span className="text-xs text-gray-500 font-ubuntu">BDT</span>
-        <p className="font-bold text-[#00984a] font-ubuntu text-sm md:text-base">
-          {service.price.toLocaleString("en-BD")}
+
+    {/* Desktop: Horizontal two-column layout */}
+    <div className="hidden md:flex md:items-center md:w-full">
+      <div className="flex-1 pr-4">
+        <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
+          {service.name}
         </p>
+      </div>
+      <div className="flex-1 text-right">
+        <div className="flex items-center justify-end space-x-2">
+          <span className="text-xs text-gray-500 font-ubuntu">BDT</span>
+          <p className="font-bold text-[#00984a] font-ubuntu text-sm md:text-base">
+            {service.price.toLocaleString("en-BD")}
+          </p>
+        </div>
       </div>
     </div>
   </li>
@@ -69,9 +91,10 @@ ServiceRow.propTypes = {
     price: PropTypes.number.isRequired,
   }).isRequired,
   style: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
-const DoctorRow = React.memo(({ doctor, style }) => {
+const DoctorRow = React.memo(({ doctor, style, index }) => {
   const specialties =
     doctor.specialists?.map((s) => s.specialist?.name).join(", ") ||
     "Not specified";
@@ -80,21 +103,45 @@ const DoctorRow = React.memo(({ doctor, style }) => {
     <Link to={`/doctordetail/${doctor.id}`} className="block">
       <li
         style={style}
-        className="flex items-center px-6 py-4 bg-white hover:bg-gradient-to-r hover:from-[#00984a]/5 hover:to-transparent border-b border-gray-100 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm">
-        <div className="flex-1 pr-4">
-          <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
-            {doctor.name}
-          </p>
+        className={`block md:flex md:items-center px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm ${
+          index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+        }`}>
+        {/* Mobile: Vertical card layout */}
+        <div className="block md:hidden">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 pr-3">
+              <p className="text-gray-800 font-ubuntu font-semibold text-base group-hover:text-[#00664a] transition-colors duration-200 leading-tight">
+                {doctor.name}
+              </p>
+              <p className="text-gray-600 font-ubuntu text-sm mt-1 group-hover:text-gray-700 transition-colors duration-200 leading-relaxed">
+                {specialties}
+              </p>
+            </div>
+            <div className="flex-shrink-0 ml-2 opacity-60 group-hover:opacity-100 transition-opacity duration-200">
+              <svg className="w-5 h-5 text-[#00984a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
         </div>
-        <div className="flex-1 text-right pr-3">
-          <p className="text-gray-600 font-ubuntu text-xs md:text-sm group-hover:text-gray-700 transition-colors duration-200">
-            {specialties}
-          </p>
-        </div>
-        <div className="w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
-          <svg className="w-4 h-4 text-[#00984a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+
+        {/* Desktop: Horizontal two-column layout */}
+        <div className="hidden md:flex md:items-center md:w-full">
+          <div className="flex-1 pr-4">
+            <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
+              {doctor.name}
+            </p>
+          </div>
+          <div className="flex-1 text-right pr-3">
+            <p className="text-gray-600 font-ubuntu text-xs md:text-sm group-hover:text-gray-700 transition-colors duration-200">
+              {specialties}
+            </p>
+          </div>
+          <div className="w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+            <svg className="w-4 h-4 text-[#00984a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
       </li>
     </Link>
@@ -108,6 +155,7 @@ DoctorRow.propTypes = {
     specialists: PropTypes.array,
   }).isRequired,
   style: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 const LoadingSpinner = ({ text = "", size = "medium" }) => (
@@ -133,14 +181,14 @@ const DoctorList = ({ doctors, isFetchingMore, onScroll }) => (
       <ListHeader columns={["Doctor Name", "Speciality"]} />
       <VirtualizedList
         items={doctors}
-        renderItem={({ index: _index, style, item }) => (
-          <DoctorRow doctor={item} style={style} />
+        renderItem={({ index, style, item }) => (
+          <DoctorRow doctor={item} style={style} index={index} />
         )}
         height={280}
         itemHeight={64}
         overscan={5}
         onScroll={onScroll}
-        className="w-full"
+        className="w-full rounded-t-xl md:rounded-t-none"
       />
     </div>
     {isFetchingMore && (
@@ -171,13 +219,13 @@ const ServiceList = ({ services, isLoading }) => (
       )}
       <VirtualizedList
         items={services}
-        renderItem={({ index: _index, style, item }) => (
-          <ServiceRow service={item} style={style} />
+        renderItem={({ index, style, item }) => (
+          <ServiceRow service={item} style={style} index={index} />
         )}
         height={280}
         itemHeight={64}
         overscan={5}
-        className="w-full"
+        className="w-full rounded-t-xl md:rounded-t-none"
       />
     </div>
   </div>
@@ -213,6 +261,7 @@ const Search = () => {
   // Phase 3: Search suggestions and optimization state
   const [showDoctorSuggestions, setShowDoctorSuggestions] = useState(false);
   const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
+  const [localServiceSearchTerm, setLocalServiceSearchTerm] = useState("");
   
   // Smart suggestion function for doctor titles
   const getDoctorSuggestions = (searchTerm) => {
@@ -259,12 +308,13 @@ const Search = () => {
   };
 
   // Doctor search optimization (for search history functionality)
-  const doctorSearchOptimization = useDoctorSearchOptimization((_term, _filters, _options) => {
+  const doctorSearchFunction = useCallback((_term, _filters, _options) => {
     // This would connect to actual search API - for now return empty
     return new Promise((resolve) => {
       setTimeout(() => resolve([]), 100);
     });
-  });
+  }, []);
+  const doctorSearchOptimization = useDoctorSearchOptimization(doctorSearchFunction);
 
   // Quick filters for doctor search - Show full titles, but insert abbreviated forms
   const doctorQuickFilters = [
@@ -301,7 +351,7 @@ const Search = () => {
   };
 
   // Service search optimization
-  const serviceSearchOptimization = useServiceSearchOptimization((term, _filters, _options) => {
+  const serviceSearchFunction = useCallback((term, _filters, _options) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
@@ -311,14 +361,50 @@ const Search = () => {
         ].filter(suggestion => suggestion.toLowerCase().includes(term.toLowerCase())));
       }, 100);
     });
-  });
+  }, []);
+  const serviceSearchOptimization = useServiceSearchOptimization(serviceSearchFunction);
+
+  // Optimized service search handlers to separate UI updates from API calls
+  const handleServiceInputChange = useCallback((value) => {
+    // Immediate UI update - no lag
+    setLocalServiceSearchTerm(value);
+    setShowServiceSuggestions(value.length > 0 && serviceSearchState.selectedBranch);
+    
+    // Debounced API call
+    handleServiceSearchChange(value);
+  }, [handleServiceSearchChange, serviceSearchState.selectedBranch]);
+
+  const handleServiceInputFocus = useCallback(() => {
+    setShowServiceSuggestions(localServiceSearchTerm.length > 0 && serviceSearchState.selectedBranch);
+  }, [localServiceSearchTerm, serviceSearchState.selectedBranch]);
+
+  const handleServiceInputBlur = useCallback(() => {
+    setTimeout(() => setShowServiceSuggestions(false), 150);
+  }, []);
+
+  // Memoized className to prevent recalculation on every render
+  const serviceInputClassName = useMemo(() => {
+    const baseClass = "mobile-search-input";
+    const conditionalClass = !serviceSearchState.selectedBranch ? "opacity-50 cursor-not-allowed" : "";
+    return `${baseClass} ${conditionalClass}`;
+  }, [serviceSearchState.selectedBranch]);
+
+  // Sync local search term with actual search term when branch changes or search is cleared
+  useEffect(() => {
+    setLocalServiceSearchTerm(serviceSearchState.searchTerm);
+  }, [serviceSearchState.searchTerm, serviceSearchState.selectedBranch]);
+
+  // Memoized search suggestions to prevent recalculation on every render
+  const serviceSuggestions = useMemo(() => {
+    return serviceSearchOptimization.getSearchSuggestions(localServiceSearchTerm);
+  }, [serviceSearchOptimization, localServiceSearchTerm]);
 
   // Quick filters for service search
   const serviceQuickFilters = [
-    { label: "Blood Tests", value: "blood", icon: "🩸" },
-    { label: "X-Ray", value: "xray", icon: "📷" },
-    { label: "MRI", value: "mri", icon: "🔬" },
-    { label: "CT Scan", value: "ct", icon: "📊" }
+    { label: "CBC, ESR", value: "CBC, ESR", icon: "🩸" },
+    { label: "X-Ray", value: "X-Ray", icon: "📷" },
+    { label: "MRI", value: "MRI", icon: "🔬" },
+    { label: "CT Scan", value: "CT Scan", icon: "📊" }
   ];
 
   // Initialize doctor data when switching to doctors tab
@@ -329,27 +415,27 @@ const Search = () => {
   }, [activeTab, fetchDoctorInitialData]);
 
   // Transform data for SelectDropdown components
-  const branchOptions = doctorSearchData.branches.map(branch => ({
+  const branchOptions = useMemo(() => doctorSearchData.branches.map(branch => ({
     value: branch.id,
     label: branch.name
-  }));
+  })), [doctorSearchData.branches]);
 
-  const specializationOptions = doctorSearchData.specializations.map(spec => ({
+  const specializationOptions = useMemo(() => doctorSearchData.specializations.map(spec => ({
     value: spec.id,
     label: spec.name
-  }));
+  })), [doctorSearchData.specializations]);
 
-  const dayOptions = doctorSearchData.days
+  const dayOptions = useMemo(() => doctorSearchData.days
     .filter(day => day !== "Everyday")
     .map(day => ({
       value: day,
       label: day
-    }));
+    })), [doctorSearchData.days]);
 
-  const serviceBranchOptions = reportDownload.map(branch => ({
+  const serviceBranchOptions = useMemo(() => reportDownload.map(branch => ({
     value: branch.braID,
     label: branch.braName
-  }));
+  })), [reportDownload]);
 
   // Popular branches for better mobile UX
   const popularBranches = [1, 2, 3, 4, 5, 6]; // Dhanmondi, Shantinagar, Uttara, Mirpur, Shyamoli, Badda
@@ -500,40 +586,33 @@ const Search = () => {
           <div className="relative">
             <SearchInput
               ref={serviceSearchInputRef}
-              value={serviceSearchState.searchTerm}
-              onChange={(e) => {
-                handleServiceSearchChange(e.target.value);
-                setShowServiceSuggestions(e.target.value.length > 0 && serviceSearchState.selectedBranch);
-              }}
-              onFocus={() => setShowServiceSuggestions(serviceSearchState.searchTerm.length > 0 && serviceSearchState.selectedBranch)}
-              onBlur={() => setTimeout(() => setShowServiceSuggestions(false), 150)}
+              value={localServiceSearchTerm}
+              onChange={(e) => handleServiceInputChange(e.target.value)}
+              onFocus={handleServiceInputFocus}
+              onBlur={handleServiceInputBlur}
               placeholder={
                 !serviceSearchState.selectedBranch
                   ? "Select a branch first to start searching..."
                   : "Search test prices..."
               }
               disabled={!serviceSearchState.selectedBranch}
-              className={`mobile-search-input ${
-                !serviceSearchState.selectedBranch
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
+              className={serviceInputClassName}
             />
             
             {/* Search Suggestions for Services */}
             <SearchSuggestions
-              suggestions={serviceSearchOptimization.getSearchSuggestions(serviceSearchState.searchTerm)}
+              suggestions={serviceSuggestions}
               quickFilters={serviceQuickFilters}
               onSuggestionSelect={(suggestion) => {
-                handleServiceSearchChange(suggestion);
+                handleServiceInputChange(suggestion);
                 setShowServiceSuggestions(false);
               }}
               onQuickFilterSelect={(filter) => {
-                handleServiceSearchChange(filter.label);
+                handleServiceInputChange(filter.label);
                 setShowServiceSuggestions(false);
               }}
               isVisible={showServiceSuggestions && !serviceSearchState.loading && serviceSearchState.selectedBranch}
-              currentTerm={serviceSearchState.searchTerm}
+              currentTerm={localServiceSearchTerm}
             />
             
             {(serviceSearchState.loading ||

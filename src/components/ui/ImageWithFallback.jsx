@@ -224,8 +224,6 @@ export const PartnerLogo = ({
   lazy,
   ...props 
 }) => {
-  console.log('PartnerLogo rendering:', { src, companyName, alt, lazy });
-  
   // For now, use simple img tag to test if images work
   return (
     <img
@@ -233,9 +231,7 @@ export const PartnerLogo = ({
       alt={alt || `${companyName} logo`}
       className={className}
       style={{ objectFit: 'contain' }}
-      onLoad={() => console.log('PartnerLogo loaded successfully:', src)}
       onError={(err) => {
-        console.error('PartnerLogo failed to load:', src, err);
         // Show fallback text
         err.target.style.display = 'none';
         const fallback = document.createElement('div');

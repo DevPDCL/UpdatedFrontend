@@ -30,7 +30,7 @@ const Dhanmondi = () => {
       setTotalPages(response.data.data.last_page);
       setPage(pageNum);
     } catch (error) {
-      console.error("Error fetching doctors:", error);
+      // Error fetching doctors - handled silently
     } finally {
       setLoading(false);
     }
