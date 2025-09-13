@@ -298,51 +298,26 @@ const HomeContent = () => {
       <section className="overflow-hidden mt-[-140px] py-24 sm:py-32" aria-label="Hospital statistics">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center items-center py-6 gap-6">
-            {/* Mobile/Tablet: 2 columns, Desktop: 3+2 rows layout */}
-            <div className="grid grid-cols-2 lg:hidden gap-3 sm:gap-6 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre">
-              {stats.map((stat, index) => {
-                const delayClass = index > 0 ? `stat-card-entrance-delay-${index}` : '';
-                return (
-                  <div key={index} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
-                    <StatCard {...stat} />
-                  </div>
-                );
-              })}
+            {/* First row - 3 cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-4xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
+              {stats.slice(0, 3).map((stat, index) => (
+                <StatCard key={index} {...stat} />
+              ))}
             </div>
-
-            {/* Desktop only: Original 3+2 layout */}
-            <div className="hidden lg:flex flex-col gap-6">
-              {/* First row - 3 cards */}
-              <div className="grid grid-cols-3 gap-8 w-full max-w-4xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
-                {stats.slice(0, 3).map((stat, index) => {
-                  const delayClass = index > 0 ? `stat-card-entrance-delay-${index}` : '';
-                  return (
-                    <div key={index} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
-                      <StatCard {...stat} />
-                    </div>
-                  );
-                })}
-              </div>
-              
-              {/* Second row - 2 cards (centered) */}
-              <div className="grid grid-cols-2 gap-8 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
-                {stats.slice(3, 5).map((stat, index) => {
-                  const delayClass = `stat-card-entrance-delay-${index + 3}`;
-                  return (
-                    <div key={index + 3} className={`w-full stat-card-entrance ${delayClass} opacity-0`}>
-                      <StatCard {...stat} />
-                    </div>
-                  );
-                })}
-              </div>
+            
+            {/* Second row - 2 cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
+              {stats.slice(3, 5).map((stat, index) => (
+                <StatCard key={index + 3} {...stat} />
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="flex flex-col mx-auto max-w-7xl" aria-label="Health packages">
+      <section className="flex flex-col mx-auto max-w-7xl mb-12" aria-label="Health packages">
         <h2 className="sr-only">Health Packages and Services</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 -mt-20" role="region" aria-label="Available health packages">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 sm:px-8 lg:px-12 -mt-16" role="region" aria-label="Available health packages">
           {healthPakage.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}

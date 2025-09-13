@@ -303,7 +303,7 @@ const Navbar = () => {
                   handleMouseLeave();
                 }}>
                 <motion.button
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:bg-PDCL-green/5 transition-all duration-200 font-ubuntu"
                   whileHover={{ scale: 1.02 }}>
                   <HeartIcon className="w-4 h-4" />
                   Services
@@ -374,7 +374,7 @@ const Navbar = () => {
                   handleMouseLeave();
                 }}>
                 <motion.button
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:bg-PDCL-green/5 transition-all duration-200 font-ubuntu"
                   whileHover={{ scale: 1.02 }}>
                   <BuildingOfficeIcon className="w-4 h-4" />
                   Find Care
@@ -426,7 +426,7 @@ const Navbar = () => {
                   handleMouseLeave();
                 }}>
                 <motion.button
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:glass transition-all duration-200 font-ubuntu"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:bg-PDCL-green/5 transition-all duration-200 font-ubuntu"
                   whileHover={{ scale: 1.02 }}>
                   About
                   <ChevronDownIcon className="w-4 h-4" />
@@ -462,22 +462,49 @@ const Navbar = () => {
               {/* Report Download Link with Animated Border */}
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <div className="relative p-0.5 rounded-lg overflow-hidden group">
-                  {/* Animated Border Background */}
+                  {/* Animated Border Background - Enhanced when active */}
                   <div 
-                    className="absolute inset-0 rounded-lg border-animation"
+                    className={clsx(
+                      "absolute inset-0 rounded-lg border-animation",
+                      location.pathname === '/patient_portal' && "opacity-100 scale-105"
+                    )}
                     style={{
-                      background: 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
-                      animation: 'borderSpin 3s linear infinite'
+                      background: location.pathname === '/patient_portal' 
+                        ? 'conic-gradient(from 0deg, #006642 0deg, #00984a 120deg, #006642 240deg, #00984a 360deg)'
+                        : 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
+                      animation: location.pathname === '/patient_portal' 
+                        ? 'borderSpin 2s linear infinite' 
+                        : 'borderSpin 3s linear infinite'
                     }}
                   />
+                  {/* Active State Glow */}
+                  {location.pathname === '/patient_portal' && (
+                    <motion.div
+                      className="absolute inset-0 rounded-lg bg-PDCL-green/20 shadow-lg shadow-PDCL-green/30"
+                      animate={{ opacity: [0.3, 0.6, 0.3] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
                   {/* Button Content */}
                   <Link
                     to="/patient_portal"
                     onClick={() => trackAction('/patient_portal', 'primary')}
-                    className="relative flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 font-medium rounded-lg hover:text-PDCL-green hover:bg-white/80 hover:backdrop-blur-md transition-all duration-300 font-ubuntu bg-white"
+                    className={clsx(
+                      "relative flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 font-medium rounded-lg hover:bg-white/80 hover:backdrop-blur-md transition-all duration-300 font-ubuntu bg-white",
+                      location.pathname === '/patient_portal'
+                        ? "text-PDCL-green shadow-inner"
+                        : "text-gray-700 hover:text-PDCL-green"
+                    )}
                     aria-label="Download medical reports">
-                    <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green stroke-2" />
-                    Report Download
+                    <ArrowDownTrayIcon className={clsx(
+                      "w-4 h-4 stroke-2 transition-all",
+                      location.pathname === '/patient_portal'
+                        ? "text-PDCL-green animate-pulse"
+                        : "text-PDCL-green"
+                    )} />
+                    <span className={location.pathname === '/patient_portal' ? "font-semibold" : ""}>
+                      Report Download
+                    </span>
                   </Link>
                 </div>
               </motion.div>
@@ -495,7 +522,7 @@ const Navbar = () => {
                 href="https://complain.populardiagnostic.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg glass-dark text-gray-700 hover:text-PDCL-green transition-all duration-200 hover-lift"
+                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-PDCL-green/5 text-PDCL-green hover:text-PDCL-green-dark hover:bg-PDCL-green/10 transition-all duration-200 hover-lift"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, x: 20 }}
@@ -513,22 +540,47 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }}>
                 <div className="relative p-0.5 rounded-xl overflow-hidden">
-                  {/* Animated Border Background */}
+                  {/* Animated Border Background - Enhanced when active */}
                   <div 
-                    className="absolute inset-0 rounded-xl border-animation"
+                    className={clsx(
+                      "absolute inset-0 rounded-xl border-animation",
+                      location.pathname === '/patient_portal' && "opacity-100 scale-105"
+                    )}
                     style={{
-                      background: 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
-                      animation: 'borderSpin 3s linear infinite'
+                      background: location.pathname === '/patient_portal'
+                        ? 'conic-gradient(from 0deg, #006642 0deg, #00984a 120deg, #006642 240deg, #00984a 360deg)'
+                        : 'conic-gradient(from 0deg, transparent 270deg, #006642 300deg, #00984a 330deg, transparent 360deg)',
+                      animation: location.pathname === '/patient_portal'
+                        ? 'borderSpin 2s linear infinite'
+                        : 'borderSpin 3s linear infinite'
                     }}
                   />
+                  {/* Active State Inner Glow */}
+                  {location.pathname === '/patient_portal' && (
+                    <motion.div
+                      className="absolute inset-1 rounded-lg bg-PDCL-green/10 shadow-inner"
+                      animate={{ opacity: [0.2, 0.4, 0.2] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
                   {/* Icon Button Content */}
                   <Link
                     to="/patient_portal"
                     onClick={() => trackAction('/patient_portal', 'mobile')}
-                    className="relative flex items-center justify-center p-3 text-gray-700 hover:text-white font-medium rounded-xl hover:bg-black/30 hover:backdrop-blur-md transition-all duration-300 bg-white touch-manipulation"
+                    className={clsx(
+                      "relative flex items-center justify-center p-3 font-medium rounded-xl hover:bg-white/80 active:bg-white/80 hover:backdrop-blur-md transition-all duration-300 bg-white touch-manipulation",
+                      location.pathname === '/patient_portal'
+                        ? "text-PDCL-green shadow-inner"
+                        : "text-gray-700 hover:text-white"
+                    )}
                     style={{ minWidth: '44px', minHeight: '44px' }}
                     aria-label="Download medical reports">
-                    <ArrowDownTrayIcon className="w-5 h-5 text-PDCL-green" />
+                    <ArrowDownTrayIcon className={clsx(
+                      "w-5 h-5 stroke-2 font-bold transition-all",
+                      location.pathname === '/patient_portal'
+                        ? "text-PDCL-green animate-bounce"
+                        : "text-PDCL-green"
+                    )} />
                   </Link>
                 </div>
               </motion.div>
@@ -536,7 +588,7 @@ const Navbar = () => {
               {/* Mobile Menu Button - Enhanced for Touch */}
               <motion.button
                 onClick={() => setMobileOpen(true)}
-                className="md:hidden p-3 rounded-xl glass-dark text-gray-700 hover:text-PDCL-green transition-colors duration-200 touch-manipulation"
+                className="md:hidden p-3 rounded-xl bg-PDCL-green/5 text-PDCL-green hover:text-PDCL-green-dark hover:bg-PDCL-green/10 transition-colors duration-200 touch-manipulation"
                 style={{ minWidth: '44px', minHeight: '44px' }} // WCAG touch target minimum
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -590,7 +642,7 @@ const Navbar = () => {
                       </h2>
                     </div>
                     <motion.button
-                      className="p-3 rounded-xl glass-dark text-white/80 hover:text-white touch-manipulation"
+                      className="p-3 rounded-xl bg-PDCL-green/10 text-white/80 hover:text-white hover:bg-PDCL-green/20 transition-colors touch-manipulation"
                       style={{ minWidth: '44px', minHeight: '44px' }}
                       onClick={() => setMobileOpen(false)}
                       whileHover={{ scale: 1.05, rotate: 90 }}

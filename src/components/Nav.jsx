@@ -106,7 +106,7 @@ const Nav = () => {
             "relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full",
             "font-semibold text-sm transition-all duration-200 cursor-pointer",
             isEmergencyMode
-              ? "bg-gray-100 text-gray-700 shadow-sm hover:bg-gray-200 border border-gray-200"
+              ? "bg-white text-gray-700 shadow-sm hover:bg-gray-50 border border-gray-200"
               : "bg-PDCL-green text-white shadow-medical hover:shadow-lg hover:bg-PDCL-green-dark"
           )}
           aria-label={primary}
