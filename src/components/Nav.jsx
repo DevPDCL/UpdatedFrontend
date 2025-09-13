@@ -124,7 +124,7 @@ const Nav = () => {
         {/* Smart Contact Options Dropdown */}
         {showContactOptions && (
           <div
-            className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-sm shadow-lg rounded-xl border border-white/20 p-4 z-[55]"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 md:w-80 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-sm shadow-lg rounded-xl border border-white/20 p-4 z-[55]"
             style={getGlassStyle('light', 0.95)}>
             
             <h3 className="text-sm font-semibold text-gray-900 mb-3 font-ubuntu">
