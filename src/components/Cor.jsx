@@ -1,6 +1,6 @@
 import React from "react";
 import "@fontsource/ubuntu";
-import { servicePartners } from "../constants";
+import { servicePartners } from "../constants/homepage";
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
 import { API_TOKEN, BASE_URL } from "../secrets";

@@ -6,7 +6,7 @@ import { GiHealthNormal } from "react-icons/gi";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
-import { branch } from "../../constants";
+import { branch } from "../../constants/branches";
 
 const UnitCard = ({ unit }) => {
   return (

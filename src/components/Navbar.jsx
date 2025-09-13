@@ -474,9 +474,9 @@ const Navbar = () => {
                   <Link
                     to="/patient_portal"
                     onClick={() => trackAction('/patient_portal', 'primary')}
-                    className="relative flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-white font-medium rounded-lg hover:bg-black/30 hover:backdrop-blur-md transition-all duration-300 font-ubuntu bg-white"
+                    className="relative flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 font-medium rounded-lg hover:text-PDCL-green hover:bg-white/80 hover:backdrop-blur-md transition-all duration-300 font-ubuntu bg-white"
                     aria-label="Download medical reports">
-                    <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green font-bold stroke-2" />
+                    <ArrowDownTrayIcon className="w-4 h-4 text-PDCL-green stroke-2" />
                     Report Download
                   </Link>
                 </div>

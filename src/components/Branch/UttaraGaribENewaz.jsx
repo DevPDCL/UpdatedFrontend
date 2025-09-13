@@ -2,7 +2,7 @@ import React from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
-import { branch } from "../../constants";
+import { branch } from "../../constants/branches";
 
 const UttaraGaribENewaz = () => {
   const branchInfo = branch.find((b) => b.heading === "Uttara Garib E Newaz");

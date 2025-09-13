@@ -1,15 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import axios from "axios";
 import { useSpring, animated } from "react-spring";
 import { logo } from "../assets";
 import { healthPakage } from "../constants/homepage";
+import { branch } from "../constants/branches";
 import video from "../assets/contactsResized.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
-import { BASE_URL, API_TOKEN } from "../secrets";
 
 
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
@@ -176,15 +175,44 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
 };
 
 const EmergencyBanner = () => {
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="w-full h-[300px] sm:h-[350px] lg:h-[400px] mt-16 sm:mt-20 pt-16 sm:pt-20 relative">
-      <video
-        className="w-full h-full object-cover object-top absolute top-0 left-0"
-        src={video}
-        autoPlay
-        loop
-        muted
-      />
+    <div 
+      ref={videoRef}
+      className="w-full h-[300px] sm:h-[350px] lg:h-[400px] mt-16 sm:mt-20 pt-16 sm:pt-20 relative"
+    >
+      {shouldLoadVideo ? (
+        <video
+          className="w-full h-full object-cover object-top absolute top-0 left-0"
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      ) : (
+        <div className="w-full h-full absolute top-0 left-0 bg-[#00984a]/30" />
+      )}
       <div className="absolute w-full h-full top-0 left-0 bg-[#00984a]/70" />
       <div
         className={`${styles.paddingX} absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4`}>
@@ -218,52 +246,18 @@ const EmergencyBanner = () => {
 const HomeContent = () => {
 
 
-  const [branchData, setBranchData] = useState({
-    totalBranches: 0,
-    totalUnits: 0,
-    loading: true,
-    error: null,
-  });
+  // Calculate branch data from static constants (no API call needed)
+  const branchData = React.useMemo(() => {
+    const totalUnits = branch.reduce((count, branchItem) => {
+      return count + (branchItem.branchUnits?.length || 1);
+    }, 0);
 
-  useEffect(() => {
-    const fetchBranchData = async () => {
-      try {
-        const { data } = await axios.get(
-          `${BASE_URL}/api/branches?token=${API_TOKEN}`
-        );
-
-        if (data?.success) {
-          let totalUnits = 0;
-          data.data.data.forEach((branch) => {
-            const unitMatch = branch.name.match(/\(U\d+(?:,\s*U\d+)*\)/g);
-            if (unitMatch) {
-              unitMatch.forEach((match) => {
-                totalUnits += (match.match(/U\d+/g) || []).length;
-              });
-            } else {
-              totalUnits += 1;
-            }
-          });
-
-          setBranchData({
-            totalBranches: data.data.data.length,
-            totalUnits,
-            loading: false,
-            error: null,
-          });
-        } else {
-          throw new Error("Failed to fetch branches");
-        }
-      } catch (err) {
-        setBranchData((prev) => ({
-          ...prev,
-          loading: false,
-          error: err.message,
-        }));
-      }
+    return {
+      totalBranches: branch.length,
+      totalUnits,
+      loading: false,
+      error: null,
     };
-
-    fetchBranchData();
   }, []);
 
 

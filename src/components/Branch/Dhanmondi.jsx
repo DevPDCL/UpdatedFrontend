@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "@fontsource/ubuntu";
 import video from "../../assets/heroVideo.mp4";
 import { SearchBoxBranch } from "../../components";
-import { branch } from "../../constants";
+import { branch } from "../../constants/branches";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";

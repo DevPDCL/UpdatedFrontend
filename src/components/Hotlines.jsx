@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { branch } from "../constants";
+import { branch } from "../constants/branches";
 
 const HotlineCard = React.memo(({ heading, Hotline, branchID }) => {
   const [showTooltip, setShowTooltip] = useState(false);

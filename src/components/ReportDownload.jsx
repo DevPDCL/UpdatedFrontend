@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import BranchIcon from "../assets/branchIcon.webp";
-import { reportDownload } from "../constants";
+import { reportDownload } from "../constants/branches";
 
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);

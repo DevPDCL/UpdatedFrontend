@@ -1,6 +1,6 @@
 import React from "react";
 import "@fontsource/ubuntu";
-import { healthPackages } from "../constants";
+import { healthPackages } from "../constants/health";
 
 const calculateTotalCost = (tests) =>
   tests.reduce((acc, test) => acc + test.testPrice, 0);

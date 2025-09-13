@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
 import { styles } from "../styles";
-import { reportDownload } from "../constants";
+import { reportDownload } from "../constants/branches";
 
 // Custom hooks
 import { useDoctorSearch } from "../hooks/useDoctorSearch";
