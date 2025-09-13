@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { useSpring, animated } from "react-spring";
 import { logo } from "../assets";
-import { healthPakage } from "../constants";
+import { healthPakage } from "../constants/homepage";
 import video from "../assets/contactsResized.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";

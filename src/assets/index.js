@@ -1,16 +1,6 @@
 import logo from "./logo.webp";
 import objective from "./objective.webp";
 import close from "./close.webp";
-import BangladeshBiman from "./Logos/BangladeshBiman.webp";
-import BAT from "./Logos/BAT.webp";
-import Beximco from "./Logos/Beximco.webp";
-import BeximcoPharma from "./Logos/BeximcoPharma.webp";
-import BGB from "./Logos/BGB.webp";
-import BRACBank from "./Logos/BRACBank.webp";
-import DhakaClub from "./Logos/DhakaClub.webp";
-import DMP from "./Logos/DMP.webp";
-import GP from "./Logos/GP.webp";
-import Nestle from "./Logos/Nestle.webp";
 
 import healthConsultation from "./healthConsultation.mp4";
 import healthDiagnosis from "./healthDiagnosis.mp4";
@@ -92,43 +82,7 @@ import MdAsadurRahman from "./TopManagement/MdAsadurRahman.webp";
 import PranobChandraAdhikary from "./TopManagement/PranobChandraAdhikary.webp";
 
 
-import sliceCTScan from "./Notice/1152sliceCTScan.webp";
-import BangladeshWorkersWelfareFoundation from "./Notice/BangladeshWorkersWelfareFoundation.webp";
-import CardiacMRIMachine from "./Notice/CardiacMRIMachine.webp";
-import EmployeesWelfareFund from "./Notice/EmployeesWelfareFund.webp";
-import EmployeesWelfareFund2 from "./Notice/EmployeesWelfareFund2.webp";
-import InsuranceCoverageEmployee from "./Notice/InsuranceCoverageEmployee.webp";
-import ISOCertified90012015 from "./Notice/ISOCertified90012015.webp";
-import RamadanNotice24 from "./Notice/RamadanNotice24.webp";
 
-import ASSO_PROF_DR_ASHRAFUL_ISLAM from "./DoctorImage/ASSO_PROF_DR_ASHRAFUL_ISLAM.webp";
-import ASST_PROF_DR_HENA_KHATUN from "./DoctorImage/ASST_PROF_DR_HENA_KHATUN.webp";
-import ASST_PROF_DR_UTHPOL_KUMAR_DATTA from "./DoctorImage/ASST_PROF_DR_UTHPOL_KUMAR_DATTA.webp";
-import DR_MD_MAHBUB_ALAM from "./DoctorImage/DR_MD_MAHBUB_ALAM.webp";
-import DR_MOSTAFA_KAMAL_AREFIN from "./DoctorImage/DR_MOSTAFA_KAMAL_AREFIN.webp";
-import PROF_DR_ABU_HENA_MOSTAFA_KAMAL from "./DoctorImage/PROF_DR_ABU_HENA_MOSTAFA_KAMAL.webp";
-import PROF_DR_AHAMED_RAQUIB from "./DoctorImage/PROF_DR_AHAMED_RAQUIB.webp";
-import PROF_DR_APARNA_DAS from "./DoctorImage/PROF_DR_APARNA_DAS.webp";
-import PROF_DR_BISWAS_AKHTAR_HOSSAIN from "./DoctorImage/PROF_DR_BISWAS_AKHTAR_HOSSAIN.webp";
-import PROF_DR_KHAN_ABUL_KALAM_AZAD from "./DoctorImage/PROF_DR_KHAN_ABUL_KALAM_AZAD.webp";
-import PROF_DR_MD_ASADUL_KABIR from "./DoctorImage/PROF_DR_MD_ASADUL_KABIR.webp";
-import PROF_DR_MD_ASHRAFUL_ISLAM from "./DoctorImage/PROF_DR_MD_ASHRAFUL_ISLAM.webp";
-import PROF_DR_MD_FAIZUL_ISLAM_CHOWDHURY from "./DoctorImage/PROF_DR_MD_FAIZUL_ISLAM_CHOWDHURY.webp";
-import PROF_DR_MD_MOHSIN_HOSSAIN from "./DoctorImage/PROF_DR_MD_MOHSIN_HOSSAIN.webp";
-import PROF_DR_MD_MONJURUL_ALAM from "./DoctorImage/PROF_DR_MD_MONJURUL_ALAM.webp";
-import PROF_DR_MOHAMMAD_SAFIUDDIN from "./DoctorImage/PROF_DR_MOHAMMAD_SAFIUDDIN.webp";
-import PROF_DR_Q_TARIKUL_ISLAM from "./DoctorImage/PROF_DR_Q_TARIKUL_ISLAM.webp";
-import PROF_DR_SHAKIL_GHAFUR from "./DoctorImage/PROF_DR_SHAKIL_GHAFUR.webp";
-import PROF_DR_SHYMAL_SARKER from "./DoctorImage/PROF_DR_SHYMAL_SARKER.webp";
-import DR_JOYSREE_SAHA from "./DoctorImage/DR_JOYSREE_SAHA.webp";
-import PROF_DR_KANAK_KANTI_BARUA from "./DoctorImage/PROF_DR_KANAK_KANTI_BARUA.webp";
-import PROF_DR_MRS_FARHAT_HOSSAIN from "./DoctorImage/PROF_DR_MRS_FARHAT_HOSSAIN.webp";
-import PROF_DR_MD_SHAFIQUL_ISLAM from "./DoctorImage/PROF_DR_MD_SHAFIQUL_ISLAM.webp";
-import PROF_DR_MRS_SHAHIN_RAHMAN_CHOW from "./DoctorImage/PROF_DR_MRS_SHAHIN_RAHMAN_CHOW.webp";
-import AssotProfDrShaoliSarker from "./DoctorImage/AssotProfDrShaoliSarker.webp";
-import DrAyeshaSiddika from "./DoctorImage/DrAyeshaSiddika.webp";
-import DrBithiDebnath from "./DoctorImage/DrBithiDebnath.webp";
-import RafiqulBari from "./DoctorImage/DrAKMRafiqulBari.webp";
 
 import drBackground from "./DoctorImage/drBackground.webp";
 
@@ -147,7 +101,6 @@ import Lithotripsy from "./OurTechnologies/Lithotripsy.webp";
 
 export {
   logo,
-  RamadanNotice24,
   Arogga,
   objective,
   PureHealth,
@@ -157,16 +110,6 @@ export {
   healthDiagnosis,
   healthPackage,
   close,
-  BangladeshBiman,
-  BAT,
-  Beximco,
-  BeximcoPharma,
-  BGB,
-  BRACBank,
-  DhakaClub,
-  GP,
-  DMP,
-  Nestle,
   Badda,
   Barishal,
   BoguraU1,
@@ -234,41 +177,6 @@ export {
   SardinRahman,
   MdAsadurRahman,
   PranobChandraAdhikary,
-  sliceCTScan,
-  BangladeshWorkersWelfareFoundation,
-  CardiacMRIMachine,
-  EmployeesWelfareFund,
-  EmployeesWelfareFund2,
-  InsuranceCoverageEmployee,
-  ISOCertified90012015,
-  ASSO_PROF_DR_ASHRAFUL_ISLAM,
-  ASST_PROF_DR_HENA_KHATUN,
-  ASST_PROF_DR_UTHPOL_KUMAR_DATTA,
-  DR_MD_MAHBUB_ALAM,
-  DR_MOSTAFA_KAMAL_AREFIN,
-  PROF_DR_ABU_HENA_MOSTAFA_KAMAL,
-  PROF_DR_AHAMED_RAQUIB,
-  PROF_DR_APARNA_DAS,
-  PROF_DR_BISWAS_AKHTAR_HOSSAIN,
-  PROF_DR_KHAN_ABUL_KALAM_AZAD,
-  PROF_DR_MD_ASADUL_KABIR,
-  PROF_DR_MD_ASHRAFUL_ISLAM,
-  PROF_DR_MD_FAIZUL_ISLAM_CHOWDHURY,
-  PROF_DR_MD_MOHSIN_HOSSAIN,
-  PROF_DR_MD_MONJURUL_ALAM,
-  PROF_DR_MOHAMMAD_SAFIUDDIN,
-  PROF_DR_Q_TARIKUL_ISLAM,
-  PROF_DR_SHAKIL_GHAFUR,
-  PROF_DR_SHYMAL_SARKER,
-  DR_JOYSREE_SAHA,
-  PROF_DR_KANAK_KANTI_BARUA,
-  PROF_DR_MRS_FARHAT_HOSSAIN,
-  PROF_DR_MD_SHAFIQUL_ISLAM,
-  PROF_DR_MRS_SHAHIN_RAHMAN_CHOW,
-  AssotProfDrShaoliSarker,
-  DrAyeshaSiddika,
-  DrBithiDebnath,
-  RafiqulBari,
   drBackground,
   Adecard,
   Ambrosol,

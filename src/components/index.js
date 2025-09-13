@@ -11,14 +11,11 @@ import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
 import Branch from "./Branch";
 import Layout from "./Layout";
-import Sample from "./Sample";
-import Complain from "./Complain";
 import Sidemenu from "./Sidemenu";
 import ReportDownload from "./ReportDownload";
 import Cor from "./Cor";
 import Notice from "./Notice";
 import Health from "./Health";
-import Details from "./Details";
 import DoctorDetail from "./DoctorDetail";
 import DoctorSearch from "./DoctorSearch";
 import Director from "./Director";
@@ -54,9 +51,6 @@ import Hotlines from "./Hotlines";
 import Privacy from "./Privacy";
 import Terms from "./Terms";
 import Refund from "./Refund";
-import ServiceSearch from "./ServiceSearch";
-import TestAPI from "./TestApi";
-import ChatWidget from "./ChatWidget";
 import ScrollToTop from "./ScrollToTop";
 import { SampleCollectionMain } from "./SampleCollection";
 
@@ -66,7 +60,6 @@ export {
   Notice,
   Privacy,
   Terms,
-  Details,
   Goals,
   Gallery,
   DoctorSearch,
@@ -96,15 +89,13 @@ export {
   Cor,
   Layout,
   Sidemenu,
-  Search,
   ReportDownload,
-  Complain,
   Hero,
-  Sample,
   Nav,
   Navbar,
   About,
   Footer,
+  Search,
   HomeContent,
   Contact,
   Error,
@@ -118,9 +109,6 @@ export {
   Bogura,
   Rangpur,
   SearchBoxBranch,
-  ServiceSearch,
-  TestAPI,
-  ChatWidget,
   ScrollToTop,
   SampleCollectionMain
 };

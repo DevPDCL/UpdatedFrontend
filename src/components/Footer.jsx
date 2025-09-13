@@ -193,9 +193,9 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/complain" className="hover:underline">
+                <a href="https://complain.populardiagnostic.com/" className="hover:underline">
                   Complain & Advise
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

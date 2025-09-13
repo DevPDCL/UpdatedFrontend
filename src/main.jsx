@@ -42,13 +42,10 @@ const lazyLoad = (componentName) => {
 const Layout = lazyLoad("Layout");
 const ReportDownload = lazyLoad("ReportDownload");
 const SampleCollectionMain = lazyLoad("SampleCollectionMain");
-const Search = lazyLoad("Search");
-const TestAPI = lazyLoad("TestAPI");
 const DoctorDetail = lazyLoad("DoctorDetail");
 const DoctorSearch = lazyLoad("DoctorSearch");
 const Technology = lazyLoad("Technology");
 const Goals = lazyLoad("Goals");
-const Complain = lazyLoad("Complain");
 const Branch = lazyLoad("Branch");
 const Director = lazyLoad("Director");
 const Chairman = lazyLoad("Chairman");
@@ -59,13 +56,11 @@ const NoticeDetails = lazy(() => import("./components/NoticeDetails"));
 const Videos = lazyLoad("Videos");
 const Contact = lazyLoad("Contact");
 const Health = lazyLoad("Health");
-const Details = lazyLoad("Details");
 const About = lazyLoad("About");
 const Terms = lazyLoad("Terms");
 const Privacy = lazyLoad("Privacy");
 const Gallery = lazyLoad("Gallery");
 const Refund = lazyLoad("Refund");
-const ServiceSearch = lazyLoad("ServiceSearch");
 
 // Branch Pages
 const Shantinagar = lazyLoad("Shantinagar");
@@ -106,30 +101,25 @@ const routes = [
           { path: "/", element: <Layout /> },
           { path: "/patient_portal", element: <ReportDownload /> },
           { path: "/sample-collection", element: <SampleCollectionMain /> },
-          { path: "/search", element: <Search /> },
-          { path: "/testapi", element: <TestAPI /> },
           { path: "/doctordetail/:doctorId", element: <DoctorDetail /> },
           { path: "/our-doctors", element: <DoctorSearch /> },
           { path: "/tech", element: <Technology /> },
           { path: "/goals", element: <Goals /> },
-          { path: "/complain", element: <Complain /> },
           { path: "/our-branches", element: <Branch /> },
           { path: "/director", element: <Director /> },
           { path: "/chairman", element: <Chairman /> },
           { path: "/hotlines", element: <Hotlines /> },
-          { path: "/Dmd", element: <Dmd /> },
+          { path: "/dmd", element: <Dmd /> },
           { path: "/notice", element: <Notice /> },
           { path: "/notices/:id", element: <NoticeDetails /> },
           { path: "/video", element: <Videos /> },
           { path: "/contact-us", element: <Contact /> },
           { path: "/health", element: <Health /> },
-          { path: "/details", element: <Details /> },
           { path: "/about", element: <About /> },
           { path: "/terms&conditions", element: <Terms /> },
           { path: "/privacy&policy", element: <Privacy /> },
           { path: "/gallery", element: <Gallery /> },
           { path: "/refund", element: <Refund /> },
-          { path: "/servicesearch", element: <ServiceSearch /> },
 
           // Branch pages
           { path: "/shantinagar", element: <Shantinagar /> },
