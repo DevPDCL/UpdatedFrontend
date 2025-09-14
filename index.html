@@ -4,19 +4,44 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="src/assets/logo1.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Performance optimization meta tags -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#00984a" />
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://api.populardiagnostic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://static.revechat.com" />
+    
+    <!-- Preload critical assets -->
+    <link rel="modulepreload" href="/src/main.jsx" />
+    <link rel="preload" href="/src/assets/logo.webp" as="image" type="image/webp" />
+    
+    <!-- Font optimization -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap" as="style" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    
     <title>Popular Diagnostic Centre Ltd.</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-<!-- Start of REVE Chat Script-->
-<script type='text/javascript'>
-  window.$_REVECHAT_API || (function (d, w) {
-    var r = $_REVECHAT_API = function (c) { r._.push(c); }; w.__revechat_account = '6395607'; w.__revechat_version = 2;
-    r._ = []; var rc = d.createElement('script'); rc.type = 'text/javascript'; rc.async = true; rc.setAttribute('charset', 'utf-8');
-    rc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'static.revechat.com' + '/widget/scripts/new-livechat.js?' + new Date().getTime();
-    var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rc, s);
-  })(document, window);
+    
+<!-- Start of REVE Chat Script - Deferred for performance -->
+<script type='text/javascript' defer>
+  // Defer chat loading until page is fully loaded
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      window.$_REVECHAT_API || (function (d, w) {
+        var r = $_REVECHAT_API = function (c) { r._.push(c); }; w.__revechat_account = '6395607'; w.__revechat_version = 2;
+        r._ = []; var rc = d.createElement('script'); rc.type = 'text/javascript'; rc.async = true; rc.setAttribute('charset', 'utf-8');
+        rc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'static.revechat.com' + '/widget/scripts/new-livechat.js?' + new Date().getTime();
+        var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rc, s);
+      })(document, window);
+    }, 2000); // Load chat after 2 seconds
+  });
 </script>
 <!-- End of REVE Chat Script -->
   </body>

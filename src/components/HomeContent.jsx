@@ -3,12 +3,52 @@ import { useSpring, animated } from "react-spring";
 import { logo } from "../assets";
 import { healthPakage } from "../constants/homepage";
 import { branch } from "../constants/branches";
-import video from "../assets/contactsResized.mp4";
+import videoWebM from "../assets/contactsResized.webm";
+import videoMP4 from "../assets/contactsResized.mp4";
 import { styles } from "../styles";
 import "@fontsource/ubuntu";
 import { Link } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
+
+// Simplified video component with WebM/MP4 fallback
+const VideoElement = ({ videoSources, className, autoPlay = true, loop = true, muted = true, playsInline = true, preload = "metadata", onCanPlay, ariaLabel, ...props }) => {
+  // Handle both old (string) and new (object) video format
+  const getVideoSources = () => {
+    if (typeof videoSources === 'string') {
+      return [{ src: videoSources, type: 'video/mp4' }];
+    }
+    if (videoSources && typeof videoSources === 'object') {
+      const sources = [];
+      if (videoSources.webm) sources.push({ src: videoSources.webm, type: 'video/webm' });
+      if (videoSources.mp4) sources.push({ src: videoSources.mp4, type: 'video/mp4' });
+      return sources;
+    }
+    return [];
+  };
+
+  const sources = getVideoSources();
+
+  return (
+    <video
+      className={className}
+      autoPlay={autoPlay}
+      loop={loop}
+      muted={muted}
+      playsInline={playsInline}
+      preload={preload}
+      onCanPlay={onCanPlay}
+      aria-label={ariaLabel}
+      {...props}
+    >
+      {sources.map((source, index) => (
+        <source key={index} src={source.src} type={source.type} />
+      ))}
+      Your browser does not support the video tag.
+    </video>
+  );
+};
+
 
 
 const Counter = ({ n, suffix = "", suffixExt = "" }) => {
@@ -111,18 +151,13 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
         <div className="relative w-full aspect-video bg-gray-100">
           {isVisible && (
             <>
-              <video
-                src={video}
+              <VideoElement
+                videoSources={video}
                 className={`w-full h-full object-cover transition-opacity duration-300 ${
                   isVideoLoaded ? 'opacity-90' : 'opacity-0'
                 }`}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
                 onCanPlay={() => setIsVideoLoaded(true)}
-                aria-label={`${name} demonstration video`}
+                ariaLabel={`${name} demonstration video`}
               />
               {!isVideoLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#F5FFFA] to-[#f0fff0]" role="status" aria-label="Loading video">
@@ -202,13 +237,10 @@ const EmergencyBanner = () => {
       className="w-full h-[300px] sm:h-[350px] lg:h-[400px] mt-16 sm:mt-20 pt-16 sm:pt-20 relative"
     >
       {shouldLoadVideo ? (
-        <video
+        <VideoElement
+          videoSources={{ webm: videoWebM, mp4: videoMP4 }}
           className="w-full h-full object-cover object-top absolute top-0 left-0"
-          src={video}
-          autoPlay
-          loop
-          muted
-          playsInline
+          ariaLabel="Emergency medical care background video"
         />
       ) : (
         <div className="w-full h-full absolute top-0 left-0 bg-[#00984a]/30" />

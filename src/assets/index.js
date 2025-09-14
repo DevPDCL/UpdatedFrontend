@@ -2,9 +2,31 @@ import logo from "./logo.webp";
 import objective from "./objective.webp";
 import close from "./close.webp";
 
-import healthConsultation from "./healthConsultation.mp4";
-import healthDiagnosis from "./healthDiagnosis.mp4";
-import healthPackage from "./healthPackages.mp4";
+// WebM versions (modern, smaller)
+import healthConsultationWebM from "./healthConsultation.webm";
+import healthDiagnosisWebM from "./healthDiagnosis.webm";
+import healthPackageWebM from "./healthPackages.webm";
+
+// MP4 fallbacks
+import healthConsultationMP4 from "./healthConsultation.mp4";
+import healthDiagnosisMP4 from "./healthDiagnosis.mp4";
+import healthPackageMP4 from "./healthPackages.mp4";
+
+// Video objects with WebM and MP4 sources
+const healthConsultation = {
+  webm: healthConsultationWebM,
+  mp4: healthConsultationMP4
+};
+
+const healthDiagnosis = {
+  webm: healthDiagnosisWebM,
+  mp4: healthDiagnosisMP4
+};
+
+const healthPackage = {
+  webm: healthPackageWebM,
+  mp4: healthPackageMP4
+};
 
 import Amarlab from "./Logos/Amarlab.webp";
 import Hajj from "./Logos/Hajj.webp";

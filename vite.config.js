@@ -9,16 +9,34 @@ export default defineConfig({
     minify: 'terser',
     sourcemap: false,
     rollupOptions: {
-      treeshake: true, // Less aggressive tree shaking
+      treeshake: true,
     },
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console statements
+        drop_console: true,
         drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.warn']
+      },
+      mangle: {
+        safari10: true
       }
-    }
+    },
+    // Performance optimizations
+    chunkSizeWarningLimit: 1000,
+    assetsInlineLimit: 4096, // Inline assets smaller than 4kb
   },
   esbuild: {
-    drop: ['console', 'debugger'], // Remove console statements during build
+    drop: ['console', 'debugger'],
+    legalComments: 'none' // Remove legal comments for smaller bundle
+  },
+  // Optimize deps for better performance
+  optimizeDeps: {
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom', 
+      'framer-motion',
+      'react-spring'
+    ]
   }
 })
