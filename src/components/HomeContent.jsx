@@ -278,19 +278,13 @@ const EmergencyBanner = () => {
 const HomeContent = () => {
 
 
-  // Calculate branch data from static constants (no API call needed)
-  const branchData = React.useMemo(() => {
-    const totalUnits = branch.reduce((count, branchItem) => {
-      return count + (branchItem.branchUnits?.length || 1);
-    }, 0);
-
-    return {
-      totalBranches: branch.length,
-      totalUnits,
-      loading: false,
-      error: null,
-    };
-  }, []);
+  // Hardcoded branch data
+  const branchData = {
+    totalBranches: 23,
+    totalUnits: 41,
+    loading: false,
+    error: null,
+  };
 
 
   const stats = [
