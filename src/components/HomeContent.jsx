@@ -323,18 +323,33 @@ const HomeContent = () => {
     <main className="relative pt-20 fontFamily-ubuntu" role="main">
       <section className="overflow-hidden mt-[-140px] py-24 sm:py-32" aria-label="Hospital statistics">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col justify-center items-center py-6 gap-6">
-            {/* First row - 3 cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-4xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
-              {stats.slice(0, 3).map((stat, index) => (
+          {/* Mobile: 2 columns, Tablet+: Original layout */}
+          <div className="block sm:hidden">
+            {/* Mobile layout: 2 columns, 3 rows */}
+            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre">
+              {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
               ))}
             </div>
+          </div>
+          
+          {/* Tablet and desktop layout: Centered design */}
+          <div className="hidden sm:flex flex-col justify-center items-center py-6 gap-6">
+            {/* First row - 3 cards centered */}
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-8 w-full max-w-6xl mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
+              {stats.slice(0, 3).map((stat, index) => (
+                <div key={index} className="flex-shrink-0">
+                  <StatCard {...stat} />
+                </div>
+              ))}
+            </div>
             
-            {/* Second row - 2 cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full max-w-2xl mx-auto justify-items-center" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
+            {/* Second row - 2 cards centered */}
+            <div className="flex justify-center gap-6 sm:gap-8 w-full max-w-4xl mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
               {stats.slice(3, 5).map((stat, index) => (
-                <StatCard key={index + 3} {...stat} />
+                <div key={index + 3} className="flex-shrink-0">
+                  <StatCard {...stat} />
+                </div>
               ))}
             </div>
           </div>
