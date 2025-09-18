@@ -1,8 +1,8 @@
 import image from "../assets/logo1.webp";
-import React, { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Dialog, Transition, Menu } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
   Bars3Icon,
@@ -66,8 +66,8 @@ const NavLink = ({ to, children, onClick, icon: Icon, description }) => {
 };
 
 // Mega Menu Component
-const MegaMenu = ({ isOpen, onClose, title, children }) => {
-  const { prefersReducedMotion, getVariants } = useReducedMotion();
+const MegaMenu = ({ isOpen, title, children }) => {
+  const { getVariants } = useReducedMotion();
   
   return (
     <AnimatePresence>
@@ -100,29 +100,12 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [hoverTimer, setHoverTimer] = useState(null);
-  const [navbarHeight, setNavbarHeight] = useState(0);
   const navbarRef = useRef(null);
   const location = useLocation();
-  const { hasScrolled, isAtTop } = useScrollPosition();
-  const { contextualActions, trackAction } = useSmartNavigation();
-  const { prefersReducedMotion, getVariants } = useReducedMotion();
+  const { hasScrolled } = useScrollPosition();
+  const { trackAction } = useSmartNavigation();
+  const { getVariants } = useReducedMotion();
 
-  // Measure navbar height for internal use
-  useEffect(() => {
-    const updateNavbarHeight = () => {
-      if (navbarRef.current) {
-        const height = navbarRef.current.offsetHeight;
-        setNavbarHeight(height);
-      }
-    };
-
-    updateNavbarHeight();
-    window.addEventListener('resize', updateNavbarHeight);
-    
-    return () => {
-      window.removeEventListener('resize', updateNavbarHeight);
-    };
-  }, []);
 
   // Smooth hover delay management
   const handleMouseEnter = (menu) => {
@@ -590,12 +573,23 @@ const Navbar = () => {
                 onClick={() => setMobileOpen(true)}
                 className="md:hidden p-3 rounded-xl bg-PDCL-green/5 text-PDCL-green hover:text-PDCL-green-dark hover:bg-PDCL-green/10 transition-colors duration-200 touch-manipulation"
                 style={{ minWidth: '44px', minHeight: '44px' }} // WCAG touch target minimum
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                whileTap={{ scale: 0.95, rotate: -5 }}
+                animate={mobileOpen ? { rotate: 90 } : { rotate: 0 }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 200, 
+                  damping: 20,
+                  duration: 0.3
+                }}
                 aria-label="Open mobile menu"
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu">
-                <Bars3Icon className="h-6 w-6 mx-auto" />
+                <motion.div
+                  animate={mobileOpen ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2 }}>
+                  <Bars3Icon className="h-6 w-6 mx-auto" />
+                </motion.div>
               </motion.button>
             </div>
           </div>
@@ -612,10 +606,10 @@ const Navbar = () => {
           aria-labelledby="mobile-menu-title">
           <Transition.Child
             as={Fragment}
-            enter="ease-out duration-300"
+            enter="ease-out duration-500"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in duration-200"
+            leave="ease-in duration-300"
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
@@ -625,77 +619,139 @@ const Navbar = () => {
             <div className="flex min-h-full items-start justify-end p-2 sm:p-4">
               <Transition.Child
                 as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="translate-x-full"
-                enterTo="translate-x-0"
-                leave="ease-in duration-200"
-                leaveFrom="translate-x-0"
-                leaveTo="translate-x-full">
+                enter="ease-out duration-500"
+                enterFrom="translate-x-full opacity-0 scale-95"
+                enterTo="translate-x-0 opacity-100 scale-100"
+                leave="ease-in duration-300"
+                leaveFrom="translate-x-0 opacity-100 scale-100"
+                leaveTo="translate-x-full opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-sm transform overflow-hidden glass rounded-2xl shadow-depth-5 transition-all max-h-screen">
                   
                   {/* Mobile Menu Header */}
-                  <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/20">
-                    <div className="flex items-center gap-3">
-                      <img src={image} alt="PDCL" className="w-10 h-10 object-contain rounded-lg border-2 border-white/80 bg-white p-1 shadow-sm" />
-                      <h2 id="mobile-menu-title" className="text-lg font-semibold text-white font-ubuntu">
+                  <motion.div 
+                    className="flex items-center justify-between p-4 sm:p-6 border-b border-white/20"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}>
+                    <motion.div 
+                      className="flex items-center gap-3"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}>
+                      <motion.img 
+                        src={image} 
+                        alt="PDCL" 
+                        className="w-10 h-10 object-contain rounded-lg border-2 border-white/80 bg-white p-1 shadow-sm"
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.3, duration: 0.5, type: "spring", stiffness: 200 }} />
+                      <motion.h2 
+                        id="mobile-menu-title" 
+                        className="text-lg font-semibold text-white font-ubuntu"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4, duration: 0.3 }}>
                         Menu
-                      </h2>
-                    </div>
+                      </motion.h2>
+                    </motion.div>
                     <motion.button
                       className="p-3 rounded-xl bg-PDCL-green/10 text-white/80 hover:text-white hover:bg-PDCL-green/20 transition-colors touch-manipulation"
                       style={{ minWidth: '44px', minHeight: '44px' }}
                       onClick={() => setMobileOpen(false)}
+                      initial={{ opacity: 0, scale: 0, rotate: -90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{ delay: 0.3, duration: 0.4, type: "spring", stiffness: 150 }}
                       whileHover={{ scale: 1.05, rotate: 90 }}
                       whileTap={{ scale: 0.95 }}
                       aria-label="Close mobile menu">
                       <XMarkIcon className="h-5 w-5 mx-auto" />
                     </motion.button>
-                  </div>
+                  </motion.div>
 
                   {/* Mobile Menu Content */}
                   <div className="p-4 sm:p-6 space-y-6 max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain"
                        style={{ scrollbarWidth: 'thin' }}>
                     
                     {/* Primary Actions */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-semibold text-white font-ubuntu">Quick Actions</h3>
+                    <motion.div 
+                      className="space-y-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5, duration: 0.4, ease: "easeOut" }}>
+                      <motion.h3 
+                        className="text-lg font-semibold text-white font-ubuntu"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6, duration: 0.3 }}>
+                        Quick Actions
+                      </motion.h3>
                       
-                      <NavLink 
-                        to="/patient_portal" 
-                        onClick={() => setMobileOpen(false)}
-                        icon={UserIcon}
-                        description="Download reports from your visited branch">
-                        Report Download
-                      </NavLink>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.7, duration: 0.3 }}>
+                        <NavLink 
+                          to="/patient_portal" 
+                          onClick={() => setMobileOpen(false)}
+                          icon={UserIcon}
+                          description="Download reports from your visited branch">
+                          Report Download
+                        </NavLink>
+                      </motion.div>
                       
-                      <NavLink 
-                        to="/our-doctors" 
-                        onClick={() => setMobileOpen(false)}
-                        icon={UserIcon}
-                        description="Find expert specialists">
-                        Find a Doctor
-                      </NavLink>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8, duration: 0.3 }}>
+                        <NavLink 
+                          to="/our-doctors" 
+                          onClick={() => setMobileOpen(false)}
+                          icon={UserIcon}
+                          description="Find expert specialists">
+                          Find a Doctor
+                        </NavLink>
+                      </motion.div>
                       
-                      <NavLink 
-                        to="/health" 
-                        onClick={() => setMobileOpen(false)}
-                        icon={HeartIcon}
-                        description="Comprehensive health checkups">
-                        Health Packages
-                      </NavLink>
-                    </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.9, duration: 0.3 }}>
+                        <NavLink 
+                          to="/health" 
+                          onClick={() => setMobileOpen(false)}
+                          icon={HeartIcon}
+                          description="Comprehensive health checkups">
+                          Health Packages
+                        </NavLink>
+                      </motion.div>
+                    </motion.div>
 
                     {/* Services Section */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-semibold text-white font-ubuntu">Services</h3>
+                    <motion.div 
+                      className="space-y-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.0, duration: 0.4, ease: "easeOut" }}>
+                      <motion.h3 
+                        className="text-lg font-semibold text-white font-ubuntu"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.1, duration: 0.3 }}>
+                        Services
+                      </motion.h3>
                       
-                      <NavLink 
-                        to="/our-branches" 
-                        onClick={() => setMobileOpen(false)}
-                        icon={BuildingOfficeIcon}
-                        description="22+ locations">
-                        Our Branches
-                      </NavLink>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.2, duration: 0.3 }}>
+                        <NavLink 
+                          to="/our-branches" 
+                          onClick={() => setMobileOpen(false)}
+                          icon={BuildingOfficeIcon}
+                          description="22+ locations">
+                          Our Branches
+                        </NavLink>
+                      </motion.div>
                       
                       <motion.a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform"
@@ -703,20 +759,39 @@ const Navbar = () => {
                         rel="noopener noreferrer"
                         onClick={() => setMobileOpen(false)}
                         className="flex items-center gap-3 px-4 py-3 rounded-xl glass hover:shadow-depth-2 transition-all duration-200"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.3, duration: 0.3 }}
                         whileHover={{ scale: 1.02 }}>
-                        <svg className="w-5 h-5 text-emerald-300" viewBox="0 0 512 512" fill="currentColor">
+                        <motion.svg 
+                          className="w-5 h-5 text-emerald-300" 
+                          viewBox="0 0 512 512" 
+                          fill="currentColor"
+                          initial={{ rotate: -180, scale: 0 }}
+                          animate={{ rotate: 0, scale: 1 }}
+                          transition={{ delay: 1.4, duration: 0.4, type: "spring" }}>
                           <path d="M0 64C0 46.3 14.3 32 32 32H88h48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96C14.3 96 0 81.7 0 64zM136 96H88V256h48V96zM288 64c0-17.7 14.3-32 32-32h56 48 56c17.7 0 32 14.3 32 32s-14.3 32-32 32V400c0 44.2-35.8 80-80 80s-80-35.8-80-80V96c-17.7 0-32-14.3-32-32zM424 96H376V256h48V96z"/>
-                        </svg>
+                        </motion.svg>
                         <div>
                           <div className="font-medium text-white font-ubuntu">Home Collection</div>
                           <div className="text-sm text-white/70">Sample collection at your doorstep</div>
                         </div>
                       </motion.a>
-                    </div>
+                    </motion.div>
 
                     {/* About Section - Accordion Style */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-semibold text-white font-ubuntu">About PDCL</h3>
+                    <motion.div 
+                      className="space-y-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.5, duration: 0.4, ease: "easeOut" }}>
+                      <motion.h3 
+                        className="text-lg font-semibold text-white font-ubuntu"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.6, duration: 0.3 }}>
+                        About PDCL
+                      </motion.h3>
                       
                       <div className="space-y-2">
                         {[
@@ -734,7 +809,7 @@ const Navbar = () => {
                             key={item.to}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.05 }}>
+                            transition={{ delay: 1.7 + (index * 0.05), duration: 0.3 }}>
                             <Link
                               to={item.to}
                               onClick={() => setMobileOpen(false)}
@@ -744,46 +819,89 @@ const Navbar = () => {
                           </motion.div>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Contact & Support */}
-                    <div className="space-y-3 border-t border-white/20 pt-6">
-                      <NavLink 
-                        to="/contact-us" 
-                        onClick={() => setMobileOpen(false)}
-                        description="Get in touch with us">
-                        Contact Us
-                      </NavLink>
+                    <motion.div 
+                      className="space-y-3 border-t border-white/20 pt-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 2.2, duration: 0.4, ease: "easeOut" }}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 2.3, duration: 0.3 }}>
+                        <NavLink 
+                          to="/contact-us" 
+                          onClick={() => setMobileOpen(false)}
+                          description="Get in touch with us">
+                          Contact Us
+                        </NavLink>
+                      </motion.div>
                       
-                      <NavLink 
-                        to="/complain" 
-                        onClick={() => setMobileOpen(false)}
-                        description="Feedback & suggestions">
-                        Complain and Advise
-                      </NavLink>
-                    </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 2.4, duration: 0.3 }}>
+                        <NavLink 
+                          to="/complain" 
+                          onClick={() => setMobileOpen(false)}
+                          description="Feedback & suggestions">
+                          Complain and Advise
+                        </NavLink>
+                      </motion.div>
+                    </motion.div>
 
                     {/* Emergency Contact - Enhanced */}
                     <motion.a 
                       href="tel:10636"
                       className="block glass-medical rounded-xl p-4 border border-PDCL-green/20 hover:border-PDCL-green/40 transition-all duration-200 touch-manipulation"
                       style={{ minHeight: '64px' }}
-                      animate={{ scale: [1, 1.01, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0, 
+                        scale: 1,
+                        boxShadow: [
+                          "0 0 0 0 rgba(0, 152, 74, 0)",
+                          "0 0 0 10px rgba(0, 152, 74, 0.1)",
+                          "0 0 0 20px rgba(0, 152, 74, 0)",
+                        ]
+                      }}
+                      transition={{ 
+                        delay: 2.5, 
+                        duration: 0.5,
+                        boxShadow: {
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }
+                      }}
                       whileTap={{ scale: 0.98 }}>
                       <div className="flex items-center gap-4">
                         <motion.div 
                           className="flex-shrink-0 w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center"
-                          whileHover={{ rotate: 10 }}>
+                          initial={{ scale: 0, rotate: -180 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{ delay: 2.7, duration: 0.5, type: "spring", stiffness: 200 }}
+                          whileHover={{ rotate: 10, scale: 1.1 }}>
                           <PhoneIcon className="w-6 h-6 text-white" />
                         </motion.div>
-                        <div className="flex-1">
+                        <motion.div 
+                          className="flex-1"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 2.8, duration: 0.3 }}>
                           <div className="font-semibold text-emerald-300 font-ubuntu text-base">Emergency Hotline</div>
                           <div className="text-sm text-white/80">10636 - Available 24/7</div>
-                        </div>
-                        <div className="text-xs text-emerald-300 font-medium">
+                        </motion.div>
+                        <motion.div 
+                          className="text-xs text-emerald-300 font-medium"
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 2.9, duration: 0.3 }}>
                           TAP TO CALL
-                        </div>
+                        </motion.div>
                       </div>
                     </motion.a>
                   </div>
