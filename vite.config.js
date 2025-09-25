@@ -11,6 +11,8 @@ export default defineConfig({
     // Simplified build configuration to fix white screen issue
     rollupOptions: {
       output: {
+        entryFileNames: 'assets/[name]-[hash:8].js',
+        chunkFileNames: 'assets/[name]-[hash:8].js',
         assetFileNames: ({ name }) => {
           if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
             return 'assets/images/[name]-[hash:8][extname]';
