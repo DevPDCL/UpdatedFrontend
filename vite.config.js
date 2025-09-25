@@ -20,11 +20,10 @@ export default defineConfig({
           
           // UI libraries
           'ui-vendor': ['framer-motion', '@material-tailwind/react', '@headlessui/react'],
-          'icons': ['@heroicons/react', '@phosphor-icons/web'],
+          'icons': ['@heroicons/react'],
           
           // Utilities and tools  
-          'utils-vendor': ['axios', 'jspdf', 'react-intersection-observer'],
-          'charts-vendor': ['konva', 'react-konva', '@react-spring/web', '@react-three/fiber'],
+          'utils-vendor': ['axios'],
           
           // Constants and static data
           'constants': [
