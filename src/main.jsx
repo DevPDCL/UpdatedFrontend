@@ -1,8 +1,38 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Nav, Navbar, Footer, Sidemenu, Error, ScrollToTop } from "./components";
 import "./index.css";
+
+// React Query Configuration for optimal performance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Default stale time: 5 minutes
+      staleTime: 1000 * 60 * 5,
+      // Garbage collection time: 10 minutes
+      gcTime: 1000 * 60 * 10,
+      // Retry failed requests
+      retry: (failureCount, error) => {
+        // Don't retry on 4xx errors
+        if (error.response?.status >= 400 && error.response?.status < 500) {
+          return false;
+        }
+        return failureCount < 2;
+      },
+      // Background refetch settings
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      refetchOnMount: true,
+    },
+    mutations: {
+      // Retry mutations once on failure
+      retry: 1,
+    },
+  },
+});
 
 const PageLoader = () => (
   <div
@@ -156,6 +186,12 @@ const router = createBrowserRouter(routes);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      {/* Development tools - only in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
+    </QueryClientProvider>
   </React.StrictMode>
 );
