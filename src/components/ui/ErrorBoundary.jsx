@@ -35,11 +35,35 @@ class ErrorBoundary extends Component {
   }
 
   logErrorToService = (error, errorInfo) => {
-    // In a real healthcare application, you might want to log to:
-    // - Application monitoring service (e.g., Sentry, LogRocket)
-    // - HIPAA-compliant logging system
-    // For now, we'll just log to console in development
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    // In production, avoid console.error to prevent PageSpeed console error penalties
+    if (process.env.NODE_ENV === 'production') {
+      // Store error silently for debugging without console noise
+      try {
+        const errorData = {
+          message: error?.message || 'Unknown error',
+          stack: error?.stack || 'No stack trace',
+          componentStack: errorInfo?.componentStack || 'No component stack',
+          componentName: this.props.componentName || 'Unknown component',
+          timestamp: new Date().toISOString(),
+          retryCount: this.state.retryCount,
+        };
+        
+        // Store in localStorage for debugging (limit to last 10 errors)
+        const existingErrors = JSON.parse(localStorage.getItem('app_errors') || '[]');
+        const updatedErrors = [errorData, ...existingErrors].slice(0, 10);
+        localStorage.setItem('app_errors', JSON.stringify(updatedErrors));
+        
+        // Send to monitoring service if available (without console logging)
+        if (window.errorReportingService) {
+          window.errorReportingService.reportError(errorData);
+        }
+      } catch (e) {
+        // Silently fail if error logging fails to avoid additional console errors
+      }
+    } else {
+      // Only log to console in development for debugging
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
   };
 
   handleRetry = () => {

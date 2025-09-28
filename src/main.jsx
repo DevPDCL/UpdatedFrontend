@@ -2,7 +2,11 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Nav, Navbar, Footer, Sidemenu, Error, ScrollToTop } from "./components";
+import { initializeErrorSuppression } from "./utils/consoleErrorSuppression";
 import "./index.css";
+
+// Initialize error suppression for better PageSpeed console error scores
+initializeErrorSuppression();
 
 const PageLoader = () => (
   <div

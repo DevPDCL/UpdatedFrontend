@@ -74,7 +74,9 @@ export const useApiCall = (url, options = {}) => {
         method,
         params: finalParams,
         cancelToken: cancelTokenRef.current.token,
-        timeout: 10000, // 10 second timeout
+        timeout: 15000, // 15 second timeout for better reliability
+        // Add retry configuration
+        validateStatus: (status) => status < 500, // Don't throw for 4xx errors, handle them gracefully
       });
 
       if (!isMountedRef.current) return;
@@ -184,11 +186,20 @@ const getErrorMessage = (error) => {
         return message || `Request failed with status ${status}`;
     }
   } else if (error.request) {
-    // Network error
-    return 'Network error. Please check your internet connection and try again.';
+    // Network error or timeout
+    if (error.code === 'ECONNABORTED' && error.message?.includes('timeout')) {
+      return 'Request timed out. The server is taking too long to respond. Please check your connection and try again.';
+    }
+    if (error.code === 'ECONNABORTED') {
+      return 'Connection aborted. Please check your internet connection and try again.';
+    }
+    if (error.code === 'NETWORK_ERROR' || error.message?.includes('Network Error')) {
+      return 'Network connection failed. Please check your internet connection and try again.';
+    }
+    return 'Unable to connect to the server. Please check your internet connection and try again.';
   } else {
     // Other error
-    return error.message || 'An unexpected error occurred.';
+    return error.message || 'An unexpected error occurred. Please refresh the page and try again.';
   }
 };
 

@@ -7,15 +7,23 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: 'terser',
-    sourcemap: false,
+    sourcemap: true, // Enable source maps for better debugging and PageSpeed insights
     rollupOptions: {
       treeshake: true,
+      output: {
+        // Ensure proper MIME types for module scripts
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Add proper module format
+        format: 'es'
+      }
     },
     terserOptions: {
       compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.warn']
+        drop_console: process.env.NODE_ENV === 'production',
+        drop_debugger: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.warn'] : []
       },
       mangle: {
         safari10: true

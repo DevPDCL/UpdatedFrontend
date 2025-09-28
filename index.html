@@ -40,6 +40,25 @@
         rc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'static.revechat.com' + '/widget/scripts/new-livechat.js?' + new Date().getTime();
         var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rc, s);
       })(document, window);
+      
+      // Add title attribute to chat iframe for accessibility
+      setTimeout(function() {
+        var attempts = 0;
+        var maxAttempts = 20;
+        
+        function addTitleToIframe() {
+          var iframe = document.getElementById('reve-chat-widget-holder-2');
+          if (iframe && !iframe.getAttribute('title')) {
+            iframe.setAttribute('title', 'Live Chat Support Widget - Contact customer service');
+            iframe.setAttribute('aria-label', 'Live chat widget for customer support assistance');
+          } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(addTitleToIframe, 500);
+          }
+        }
+        
+        addTitleToIframe();
+      }, 3000); // Wait additional 3 seconds for iframe to load
     }, 2000); // Load chat after 2 seconds
   });
 </script>

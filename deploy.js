@@ -73,10 +73,17 @@ console.log('\n📋 Generating S3 deployment metadata...');
 
 const deploymentConfig = {
   metadata: {
-    // JavaScript files
+    // JavaScript files - ensure proper MIME type for ES modules
     'assets/*.js': {
       'Cache-Control': 'public, max-age=31536000, immutable',
-      'Content-Type': 'application/javascript',
+      'Content-Type': 'text/javascript; charset=utf-8',
+      'Content-Encoding': 'gzip'
+    },
+    
+    // Source maps for debugging
+    'assets/*.js.map': {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Content-Type': 'application/json',
       'Content-Encoding': 'gzip'
     },
     

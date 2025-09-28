@@ -160,6 +160,7 @@ const SmartSidemenu = () => {
             rel={action.external ? "noopener noreferrer" : undefined}
             onClick={() => trackAction(action.id, action.type)}
             className="flex items-center justify-end group cursor-pointer"
+            aria-label={action.description || action.label || `Navigate to ${action.href}`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}>
             <ActionContent action={action} Icon={Icon} isExpanded={isExpanded} />
@@ -168,7 +169,8 @@ const SmartSidemenu = () => {
           <Link 
             to={action.href || action.to} 
             onClick={() => trackAction(action.id, action.type)}
-            className="flex items-center justify-end group cursor-pointer">
+            className="flex items-center justify-end group cursor-pointer"
+            aria-label={action.description || action.label || `Navigate to ${action.href || action.to}`}>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}>
