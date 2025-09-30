@@ -15,12 +15,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { useHoverDepth } from "../hooks/useHoverDepth";
-import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSmartNavigation } from "../hooks/useSmartNavigation";
 import { 
-  navigationVariants, 
-  dropdownVariants, 
-  menuItemVariants,
   getGlassStyle 
 } from "../utils/3d-effects";
 import clsx from "clsx";
@@ -35,8 +31,6 @@ const NavLink = ({ to, children, onClick, icon: Icon, description }) => {
     <motion.div
       className="group"
       {...hoverDepth.motionProps}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}>
       <Link
@@ -67,8 +61,6 @@ const NavLink = ({ to, children, onClick, icon: Icon, description }) => {
 
 // Mega Menu Component
 const MegaMenu = ({ isOpen, title, children }) => {
-  const { getVariants } = useReducedMotion();
-  
   return (
     <AnimatePresence>
       {isOpen && (
@@ -77,10 +69,10 @@ const MegaMenu = ({ isOpen, title, children }) => {
           style={{
             ...getGlassStyle('light', 0.95)
           }}
-          variants={getVariants(dropdownVariants)}
-          initial="hidden"
-          animate="visible"
-          exit="exit">
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.2 }}>
           <div className="glass shadow-depth-4 rounded-2xl border border-white/20 backdrop-blur-xl">
             <div className="p-6 md:p-8">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 md:mb-6 font-ubuntu">
@@ -94,8 +86,6 @@ const MegaMenu = ({ isOpen, title, children }) => {
     </AnimatePresence>
   );
 };
-
-
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -104,9 +94,6 @@ const Navbar = () => {
   const location = useLocation();
   const { hasScrolled } = useScrollPosition();
   const { trackAction } = useSmartNavigation();
-  const { getVariants } = useReducedMotion();
-
-
   // Smooth hover delay management
   const handleMouseEnter = (menu) => {
     if (hoverTimer) {
@@ -241,19 +228,16 @@ const Navbar = () => {
         )}
         style={{ 
           ...(hasScrolled ? getGlassStyle('light', 0.9) : {})
-        }}
-        variants={getVariants(navigationVariants)}
-        initial="hidden"
-        animate="visible">
+        }}>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 lg:h-18">
             
             {/* Logo with 3D hover effect */}
-            <motion.div
+            <motion.div 
+              className="perspective-1000"
               whileHover={{ scale: 1.05, rotateY: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className="perspective-1000">
+              whileTap={{ scale: 0.95 }}>
               <Link to="/" className="flex items-center">
                 <img
                   src={image}
@@ -298,13 +282,11 @@ const Navbar = () => {
                   onClose={() => setActiveMenu(null)}
                   title={menuConfig.services.title}>
                   <div className="grid grid-cols-1 gap-4">
-                    {menuConfig.services.items.map((item, index) => (
-                      <motion.div
+                    {menuConfig.services.items.map((item, _index) => (
+                      <div
                         key={item.to || item.href}
-                        custom={index}
-                        variants={getVariants(menuItemVariants)}
-                        initial="hidden"
-                        animate="visible">
+                        
+                        >
                         {item.href ? (
                           <a
                             href={item.href}
@@ -334,7 +316,7 @@ const Navbar = () => {
                             {item.title}
                           </NavLink>
                         )}
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </MegaMenu>
@@ -369,13 +351,11 @@ const Navbar = () => {
                   onClose={() => setActiveMenu(null)}
                   title={menuConfig.care.title}>
                   <div className="grid grid-cols-1 gap-4">
-                    {menuConfig.care.items.map((item, index) => (
-                      <motion.div
+                    {menuConfig.care.items.map((item, _index) => (
+                      <div
                         key={item.to}
-                        custom={index}
-                        variants={getVariants(menuItemVariants)}
-                        initial="hidden"
-                        animate="visible">
+                        
+                        >
                         <NavLink
                           to={item.to}
                           icon={item.icon}
@@ -386,7 +366,7 @@ const Navbar = () => {
                           }}>
                           {item.title}
                         </NavLink>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </MegaMenu>
@@ -420,13 +400,11 @@ const Navbar = () => {
                   onClose={() => setActiveMenu(null)}
                   title={menuConfig.about.title}>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {menuConfig.about.items.map((item, index) => (
-                      <motion.div
+                    {menuConfig.about.items.map((item, _index) => (
+                      <div
                         key={item.to}
-                        custom={index}
-                        variants={getVariants(menuItemVariants)}
-                        initial="hidden"
-                        animate="visible">
+                        
+                        >
                         <NavLink
                           to={item.to}
                           description={item.description}
@@ -436,7 +414,7 @@ const Navbar = () => {
                           }}>
                           {item.title}
                         </NavLink>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </MegaMenu>
@@ -462,10 +440,8 @@ const Navbar = () => {
                   />
                   {/* Active State Glow */}
                   {location.pathname === '/patient_portal' && (
-                    <motion.div
+                    <div
                       className="absolute inset-0 rounded-lg bg-PDCL-green/20 shadow-lg shadow-PDCL-green/30"
-                      animate={{ opacity: [0.3, 0.6, 0.3] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     />
                   )}
                   {/* Button Content */}
@@ -507,10 +483,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-PDCL-green/5 text-PDCL-green hover:text-PDCL-green-dark hover:bg-PDCL-green/10 transition-all duration-200 hover-lift"
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}>
+                whileTap={{ scale: 0.95 }}>
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 512 512">
                   <path d="M215.4 96H144 107.8 96v8.8V144v40.4 89L.2 202.5c1.6-18.1 10.9-34.9 25.7-45.8L48 140.3V96c0-26.5 21.5-48 48-48h76.6l49.9-36.9C232.2 3.9 243.9 0 256 0s23.8 3.9 33.5 11L339.4 48H416c26.5 0 48 21.5 48 48v44.3l22.1 16.4c14.8 10.9 24.1 27.7 25.7 45.8L416 273.4v-89V144 104.8 96H404.2 368 296.6 215.4zM0 448V242.1L217.6 403.3c11.1 8.2 24.6 12.7 38.4 12.7s27.3-4.4 38.4-12.7L512 242.1V448v0c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64v0zM176 160H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
                 </svg>
@@ -540,10 +513,8 @@ const Navbar = () => {
                   />
                   {/* Active State Inner Glow */}
                   {location.pathname === '/patient_portal' && (
-                    <motion.div
+                    <div
                       className="absolute inset-1 rounded-lg bg-PDCL-green/10 shadow-inner"
-                      animate={{ opacity: [0.2, 0.4, 0.2] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     />
                   )}
                   {/* Icon Button Content */}
@@ -780,18 +751,14 @@ const Navbar = () => {
                     </motion.div>
 
                     {/* About Section - Accordion Style */}
-                    <motion.div 
+                    <div 
                       className="space-y-3"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.5, duration: 0.4, ease: "easeOut" }}>
-                      <motion.h3 
+                      >
+                      <h3 
                         className="text-lg font-semibold text-white font-ubuntu"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.6, duration: 0.3 }}>
+                        >
                         About PDCL
-                      </motion.h3>
+                      </h3>
                       
                       <div className="space-y-2">
                         {[
@@ -804,106 +771,73 @@ const Navbar = () => {
                           { to: '/gallery', title: 'Photo Gallery' },
                           { to: '/video', title: 'Corporate Videos' },
                           { to: '/notice', title: 'Notices' }
-                        ].map((item, index) => (
-                          <motion.div
+                        ].map((item, _index) => (
+                          <div
                             key={item.to}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 1.7 + (index * 0.05), duration: 0.3 }}>
+                            >
                             <Link
                               to={item.to}
                               onClick={() => setMobileOpen(false)}
                               className="block px-4 py-2 text-white/90 hover:text-emerald-300 hover:bg-white/10 rounded-lg transition-all duration-200 font-ubuntu">
                               {item.title}
                             </Link>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Contact & Support */}
-                    <motion.div 
+                    <div 
                       className="space-y-3 border-t border-white/20 pt-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 2.2, duration: 0.4, ease: "easeOut" }}>
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 2.3, duration: 0.3 }}>
+                      >
+                      <div
+                        >
                         <NavLink 
                           to="/contact-us" 
                           onClick={() => setMobileOpen(false)}
                           description="Get in touch with us">
                           Contact Us
                         </NavLink>
-                      </motion.div>
+                      </div>
                       
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 2.4, duration: 0.3 }}>
+                      <div
+                        >
                         <NavLink 
                           to="/complain" 
                           onClick={() => setMobileOpen(false)}
                           description="Feedback & suggestions">
                           Complain and Advise
                         </NavLink>
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
 
                     {/* Emergency Contact - Enhanced */}
-                    <motion.a 
+                    <a 
                       href="tel:10636"
                       className="block glass-medical rounded-xl p-4 border border-PDCL-green/20 hover:border-PDCL-green/40 transition-all duration-200 touch-manipulation"
                       style={{ minHeight: '64px' }}
-                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                      animate={{ 
-                        opacity: 1, 
-                        y: 0, 
-                        scale: 1,
-                        boxShadow: [
-                          "0 0 0 0 rgba(0, 152, 74, 0)",
-                          "0 0 0 10px rgba(0, 152, 74, 0.1)",
-                          "0 0 0 20px rgba(0, 152, 74, 0)",
-                        ]
-                      }}
-                      transition={{ 
-                        delay: 2.5, 
-                        duration: 0.5,
-                        boxShadow: {
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }
-                      }}
-                      whileTap={{ scale: 0.98 }}>
+                      
+                      >
                       <div className="flex items-center gap-4">
-                        <motion.div 
+                        <div 
                           className="flex-shrink-0 w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center"
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ delay: 2.7, duration: 0.5, type: "spring", stiffness: 200 }}
-                          whileHover={{ rotate: 10, scale: 1.1 }}>
+                          
+                          >
                           <PhoneIcon className="w-6 h-6 text-white" />
-                        </motion.div>
-                        <motion.div 
+                        </div>
+                        <div 
                           className="flex-1"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 2.8, duration: 0.3 }}>
+                          >
                           <div className="font-semibold text-emerald-300 font-ubuntu text-base">Emergency Hotline</div>
                           <div className="text-sm text-white/80">10636 - Available 24/7</div>
-                        </motion.div>
-                        <motion.div 
+                        </div>
+                        <div 
                           className="text-xs text-emerald-300 font-medium"
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 2.9, duration: 0.3 }}>
+                          >
                           TAP TO CALL
-                        </motion.div>
+                        </div>
                       </div>
-                    </motion.a>
+                    </a>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
