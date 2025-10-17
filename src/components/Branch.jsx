@@ -52,7 +52,6 @@ const cardVariants = {
   },
 };
 
-// Removed floatingElementVariants as it's no longer used for minimal design
 
 const shimmerVariants = {
   initial: { x: "-100%", opacity: 0 },
@@ -336,18 +335,6 @@ const ProjectCard = React.memo(
                   : {})}
               />
             </div>
-
-            {/* Static Location Pin Icon */}
-            <div
-              className="absolute top-3 left-3 glass-medical rounded-full p-2 backdrop-blur-md border border-PDCL-green/30"
-              style={{
-                background: `linear-gradient(135deg, 
-                  rgba(0, 152, 74, 0.15), 
-                  rgba(0, 152, 74, 0.08)
-                )`,
-              }}>
-              <span className="text-PDCL-green text-sm">📍</span>
-            </div>
           </motion.div>
 
           {/* Enhanced Content Section */}
@@ -374,7 +361,7 @@ const ProjectCard = React.memo(
                 style={{
                   background: "rgba(0, 152, 74, 0.05)",
                 }}>
-                <span className="text-sm">🏛️</span>
+ 
                 <span className="text-PDCL-green font-ubuntu font-medium text-xs">
                   {city.charAt(0).toUpperCase() + city.slice(1).toLowerCase()}
                 </span>
@@ -405,9 +392,8 @@ const ProjectCard = React.memo(
                     transition={{ delay: 0.1 }}>
                     <div className="space-y-4 text-sm">
                       {[
-                        { icon: "📧", label: "Email", value: Email },
-                        { icon: "📞", label: "Hotline", value: Hotline },
-                        { icon: "📍", label: "Address", value: address },
+                        { label: "Hotline", value: Hotline },
+                        { label: "Address", value: address },
                       ].map((item, index) => (
                         <motion.div
                           key={item.label}
@@ -521,7 +507,7 @@ const ProjectCard = React.memo(
                 />
 
                 <span className="flex items-center justify-center gap-2 relative z-10">
-                  <span>✨</span>
+                  
                   <span>Explore Branch</span>
                 </span>
               </motion.button>

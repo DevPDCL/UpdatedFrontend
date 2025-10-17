@@ -16,7 +16,7 @@ const TechCard = ({ image, name }) => {
           href="#"
           target="_self"
           rel="noopener noreferrer">
-          Explore Our Machines
+          Precision Medical Equipments
           <svg
             className="ml-2 w-6 h-6"
             fill="none"
@@ -36,7 +36,8 @@ const TechCard = ({ image, name }) => {
         <a
           href="/blog/slug"
           className="block relative text-gray-600 group-hover:text-[#00984a] transition-colors duration-200">
-          Our <span className=" text-[#00984a] font-medium">{name}</span> Machines
+          State-of-the-Art{" "}
+          <span className=" text-[#00984a] font-medium">{name}</span> Equipments
         </a>
       </h3>
       <div />

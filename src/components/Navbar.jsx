@@ -120,24 +120,6 @@ const Navbar = () => {
 
   // Menu configuration with intelligent grouping
   const menuConfig = {
-    services: {
-      title: 'Services & Tests',
-      items: [
-        {
-          to: '/health',
-          title: 'Health Packages',
-          description: 'Comprehensive health checkups',
-          icon: HeartIcon,
-          featured: true
-        },
-        {
-          href: 'https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform',
-          title: 'Home Collection',
-          description: 'Sample collection at your doorstep',
-          external: true
-        }
-      ]
-    },
     care: {
       title: 'Find Care',
       items: [
@@ -149,11 +131,24 @@ const Navbar = () => {
           featured: true
         },
         {
+          to: '/health',
+          title: 'Health Packages',
+          description: 'Comprehensive health checkups',
+          icon: HeartIcon,
+          featured: true
+        },
+        {
           to: '/our-branches',
           title: 'Our Branches',
           description: '22+ locations across Bangladesh',
           icon: BuildingOfficeIcon,
           featured: true
+        },
+        {
+          href: 'https://docs.google.com/forms/d/e/1FAIpQLSfnFAHgePOjueWSh2mAoPOuyCjw93Iwdp7jwK7vHvzvVIWxJw/viewform',
+          title: 'Home Collection',
+          description: 'Sample collection at your doorstep',
+          external: true
         },
         {
           to: '/hotlines',
@@ -253,75 +248,6 @@ const Navbar = () => {
                  aria-label="Main navigation"
                  onMouseLeave={handleNavMouseLeave}>
               
-              {/* Services Mega Menu */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMouseEnter('services')}
-                onMouseLeave={(e) => {
-                  // Don't close if moving to dropdown
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const dropdown = e.currentTarget.querySelector('.mega-menu-dropdown');
-                  if (dropdown) {
-                    const dropdownRect = dropdown.getBoundingClientRect();
-                    if (e.clientY >= rect.bottom && e.clientY <= dropdownRect.bottom) {
-                      return; // Don't close, moving to dropdown
-                    }
-                  }
-                  handleMouseLeave();
-                }}>
-                <motion.button
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:bg-PDCL-green/5 transition-all duration-200 font-ubuntu"
-                  whileHover={{ scale: 1.02 }}>
-                  <HeartIcon className="w-4 h-4" />
-                  Services
-                  <ChevronDownIcon className="w-4 h-4" />
-                </motion.button>
-                
-                <MegaMenu
-                  isOpen={activeMenu === 'services'}
-                  onClose={() => setActiveMenu(null)}
-                  title={menuConfig.services.title}>
-                  <div className="grid grid-cols-1 gap-4">
-                    {menuConfig.services.items.map((item, _index) => (
-                      <div
-                        key={item.to || item.href}
-                        
-                        >
-                        {item.href ? (
-                          <a
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => trackAction('external-link', 'services')}
-                            className={clsx(
-                              "flex items-center gap-3 p-4 rounded-xl transition-all duration-200",
-                              "hover:glass hover:shadow-depth-2 hover:-translate-y-0.5",
-                              item.featured && "border border-PDCL-green/20 bg-PDCL-green/5"
-                            )}>
-                            {item.icon && <item.icon className="w-6 h-6 text-PDCL-green" />}
-                            <div>
-                              <div className="font-medium text-gray-900 font-ubuntu">{item.title}</div>
-                              <div className="text-sm text-gray-600">{item.description}</div>
-                            </div>
-                          </a>
-                        ) : (
-                          <NavLink
-                            to={item.to}
-                            icon={item.icon}
-                            description={item.description}
-                            onClick={() => {
-                              setActiveMenu(null);
-                              trackAction(item.to, 'services');
-                            }}>
-                            {item.title}
-                          </NavLink>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </MegaMenu>
-              </div>
-
               {/* Find Care Mega Menu */}
               <div
                 className="relative"
@@ -341,7 +267,7 @@ const Navbar = () => {
                 <motion.button
                   className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 text-gray-700 hover:text-PDCL-green font-medium rounded-lg hover:bg-PDCL-green/5 transition-all duration-200 font-ubuntu"
                   whileHover={{ scale: 1.02 }}>
-                  <BuildingOfficeIcon className="w-4 h-4" />
+                  <HeartIcon className="w-4 h-4" />
                   Find Care
                   <ChevronDownIcon className="w-4 h-4" />
                 </motion.button>
@@ -703,12 +629,12 @@ const Navbar = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1.0, duration: 0.4, ease: "easeOut" }}>
-                      <motion.h3 
+                      <motion.h3
                         className="text-lg font-semibold text-white font-ubuntu"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 1.1, duration: 0.3 }}>
-                        Services
+                        Find Care
                       </motion.h3>
                       
                       <motion.div

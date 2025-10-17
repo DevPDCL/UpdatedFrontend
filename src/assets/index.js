@@ -58,6 +58,7 @@ import Savar from "./PDCLbranches/Savar.webp";
 import ShantinagarU1 from "./PDCLbranches/ShantinagarU1.webp";
 import ShantinaagarUnit1 from "./PDCLbranches/ShantinaagarUnit1.webp";
 import ShantinagarU2 from "./PDCLbranches/ShantinagarU2.webp";
+import ShantinagarU3 from "./PDCLbranches/ShantinagarU3.webp";
 import ShyamoliU1 from "./PDCLbranches/ShyamoliU1.webp";
 import ShyamoliU2 from "./PDCLbranches/ShyamoliU2.webp";
 import UttaraGaribENewaz from "./PDCLbranches/UttaraGaribENewaz.webp";
@@ -157,6 +158,7 @@ export {
   ShantinagarU1,
   ShantinaagarUnit1,
   ShantinagarU2,
+  ShantinagarU3,
   ShyamoliU1,
   ShyamoliU2,
   UttaraGaribENewaz,

@@ -130,7 +130,7 @@ const Footer = () => {
           {/* Important Links */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold uppercase tracking-wider">
-              Important Links
+              Our Concerns
             </h3>
             <ul className="space-y-3">
               <li>

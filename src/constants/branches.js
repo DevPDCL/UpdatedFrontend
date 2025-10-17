@@ -31,6 +31,7 @@ import {
   UttaraU1,
   UttaraU2,
   UttaraU3,
+  ShantinagarU3,
 } from "../assets";
 
 // Manager image imports
@@ -270,6 +271,15 @@ const branch = [
         name: "Shantinagar (U-2)",
         address: "Building#15, Shantinagar, Motijheel, Dhaka.",
       },
+      {
+        unitID: 3,
+        BranchUnit: "U3",
+        image: ShantinagarU3,
+        location:
+          "https://maps.google.com/maps?q=23.7412031,90.4124384&hl=es;z=14&output=embed",
+        name: "Shantinagar (U-3)",
+        address: "House-170, Shantinagar, Dhaka-1217.",
+      },
     ],
   },
   {
@@ -371,7 +381,7 @@ const branch = [
         address:
           "House # 23, Road # 7, Sector # 4, Jashim Uddin More, Uttara, Dhaka-1230",
       },
-      
+
       {
         unitID: 2,
         BranchUnit: "U2",

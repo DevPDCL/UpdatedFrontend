@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
 import axios from "axios";
 import { API_TOKEN, BASE_URL } from "../secrets";
-import { getGlassStyle } from "../utils/3d-effects";
 import clsx from "clsx";
 
 const Nav = () => {
@@ -11,7 +10,6 @@ const Nav = () => {
   const [loading, setLoading] = useState(true);
   const [isEmergencyMode, setIsEmergencyMode] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [showContactOptions, setShowContactOptions] = useState(false);
   const navRef = useRef(null);
 
 
@@ -65,179 +63,20 @@ const Nav = () => {
     </a>
   );
 
-  // Intelligent Contact Selection Component
-  const SmartContactButton = () => {
-    const dropdownRef = useRef(null);
-
-    // Close dropdown when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setShowContactOptions(false);
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const getContactMessage = () => {
-      // During emergency mode, emphasize that emergency line is primary option
-      // while branches are mostly closed
-      if (isEmergencyMode) {
-        return {
-          primary: "Emergency & Contact Info",
-          icon: "🚨"
-        };
-      }
-      return {
-        primary: "Branch Contacts & Help",
-        icon: "📞"
-      };
-    };
-
-    const { primary } = getContactMessage();
-
+  // Direct Branch Contacts Button Component
+  const BranchContactsButton = () => {
     return (
-      <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={() => setShowContactOptions(!showContactOptions)}
-          className={clsx(
-            "relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full",
-            "font-semibold text-sm transition-all duration-200 cursor-pointer",
-            isEmergencyMode
-              ? "bg-white text-gray-700 shadow-sm hover:bg-gray-50 border border-gray-200"
-              : "bg-PDCL-green text-white shadow-medical hover:shadow-lg hover:bg-PDCL-green-dark"
-          )}
-          aria-label={primary}
-          aria-expanded={showContactOptions}>
-          
-          <svg
-            className="w-3 h-3 fill-current"
-            viewBox="0 0 512 512">
-            <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
-          </svg>
-          
-          <span className="font-ubuntu whitespace-nowrap">{primary}</span>
-        </button>
-
-        {/* Smart Contact Options Dropdown */}
-        {showContactOptions && (
-          <div
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 md:w-80 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-sm shadow-lg rounded-xl border border-white/20 p-4 z-[55]"
-            style={getGlassStyle('light', 0.95)}>
-            
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 font-ubuntu">
-              {isEmergencyMode ? "Emergency Care & Contact Options" : "How can we help you?"}
-            </h3>
-            
-            {/* After-hours notice */}
-            {isEmergencyMode && (
-              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <div className="flex items-start gap-2">
-                  <svg className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 512 512">
-                    <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.5 7.3 27.7 0 40.2S480.4 480 466.2 480H45.8c-14.2 0-27.3-7.5-34.5-19.8s-7.2-27.7 0-40.2l216-368C234.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
-                  </svg>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-amber-900 font-ubuntu">After Business Hours</div>
-                    <div className="text-xs text-amber-700 mt-1">
-                      Most branches are closed. Only <strong>Dhanmondi Head Office</strong> and the <strong>Emergency Hotline (10636)</strong> are available 24/7.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {/* Emergency Contact */}
-            <a
-              href="tel:10636"
-              className="block p-4 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border border-PDCL-green/20 mb-3 hover:border-PDCL-green/40 transition-all duration-200 group touch-manipulation"
-              style={{ minHeight: '64px' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-PDCL-green rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 512 512">
-                    <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="font-semibold text-PDCL-green text-base font-ubuntu">
-                    {isEmergencyMode ? "Emergency Hotline (24/7)" : "Emergency / Urgent Care"}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {isEmergencyMode 
-                      ? "Always available • Dhanmondi Head Office" 
-                      : "Call 10636 • Available 24/7 • Head Office"
-                    }
-                  </div>
-                </div>
-                <div className="text-xs text-PDCL-green font-medium">
-                  TAP TO CALL
-                </div>
-              </div>
-            </a>
-
-            {/* Branch Contact */}
-            <div
-              className={clsx(
-                "p-4 rounded-lg border group",
-                isEmergencyMode 
-                  ? "bg-gray-50/80 border-gray-300" 
-                  : "bg-white/50 border-gray-200"
-              )}
-              style={{ minHeight: '64px' }}>
-              <div className="flex items-center gap-3">
-                <div className={clsx(
-                  "w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0",
-                  isEmergencyMode ? "bg-gray-400" : "bg-blue-500"
-                )}>
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 512 512">
-                    <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/>
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className={clsx(
-                    "font-semibold text-base font-ubuntu",
-                    isEmergencyMode ? "text-gray-600" : "text-gray-900"
-                  )}>
-                    {isEmergencyMode ? "Branch Contacts (Limited)" : "Schedule Visit / Routine Care"}
-                  </div>
-                  <div className={clsx(
-                    "text-sm mb-3",
-                    isEmergencyMode ? "text-gray-500" : "text-gray-600"
-                  )}>
-                    {isEmergencyMode 
-                      ? "Most branches closed • Only Dhanmondi-HO open 24/7" 
-                      : "Contact your preferred branch • Business hours only"
-                    }
-                  </div>
-                  <Link 
-                    to="/hotlines"
-                    className={clsx(
-                      "inline-flex items-center gap-1 px-3 py-1.5 text-white text-xs rounded-md transition-colors duration-200 touch-manipulation",
-                      isEmergencyMode 
-                        ? "bg-gray-500 hover:bg-gray-600" 
-                        : "bg-PDCL-green hover:bg-PDCL-green-dark"
-                    )}
-                    onClick={() => setShowContactOptions(false)}>
-                    <span>View All Branch Contacts</span>
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 512 512">
-                      <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"/>
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Helper text */}
-            <div className="text-xs text-gray-500 mt-3 text-center">
-              {isEmergencyMode 
-                ? "Emergency line (10636) is always available. Most branch contacts are closed until 7 AM." 
-                : "Need help choosing? Emergency line (10636) can redirect you to the right branch."
-              }
-            </div>
-          </div>
-        )}
-      </div>
+      <Link
+        to="/hotlines"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-PDCL-green text-white shadow-medical hover:shadow-lg hover:bg-PDCL-green-dark font-semibold text-sm transition-all duration-200 cursor-pointer"
+        aria-label="View all branch contacts">
+        <svg
+          className="w-3 h-3 fill-current"
+          viewBox="0 0 512 512">
+          <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/>
+        </svg>
+        <span className="font-ubuntu whitespace-nowrap">All Branch Contacts</span>
+      </Link>
     );
   };
 
@@ -280,7 +119,7 @@ const Nav = () => {
           <div className="flex items-center gap-3">
             {/* Smart Contact Button */}
 
-            <SmartContactButton />
+            <BranchContactsButton />
 
             <div className="hidden md:flex">
               <div className="h-4 w-px bg-white/20"></div>
@@ -291,7 +130,7 @@ const Nav = () => {
                 <svg className="w-3 h-3 fill-current" viewBox="0 0 512 512">
                   <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z" />
                 </svg>
-                <span>22+ Branches</span>
+                <span className="text-sm ">22+ Branches</span>
               </Link>
             </div>
           </div>
