@@ -141,7 +141,7 @@ const About = () => {
         });
 
         setManagementData({
-          row1: response.data.data["Row - 1"]?.slice(0, 2) || [],
+          row1: response.data.data["Row - 1"]?.slice(0, 3) || [],
           row2: response.data.data["Row - 2"]?.slice(0, 3) || [],
           row3: response.data.data["Row - 3"]?.slice(0, 3) || [],
           row4: response.data.data["Row - 4"]?.slice(0, 5) || [],
