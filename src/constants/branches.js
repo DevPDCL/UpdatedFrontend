@@ -710,6 +710,22 @@ const branch = [
     address:
       "109, 955 Shahid Nazrul Islam Sarak, South Alekanda Banglabazar, Barishal.",
   },
+  {
+    branchID: 55,
+    heading: "Tangail",
+    image: Dhanmondi,
+    Hotline: "09666787824 ",
+    Email: "info@populardiagnostic.com",
+    braCity: "Tangail",
+    location:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.2197080792394!2d90.37959757619976!3d23.73954337867781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8ca7af5f82b%3A0xce7d1ab6b16a027!2sPopular%20Diagnostic%20Centre%20Ltd.!5e0!3m2!1sen!2sbd!4v1706512680599!5m2!1sen!2sbd",
+
+    braManImg: AchintoKumarNag,
+    braManName: "Achinto Kumar Nag",
+    braManDesignation: "DGM (HR & Admin)",
+    name: "Popular Diagnostic Centre Ltd. (Tangail)",
+    address: "Akota Tower, Mymensingh Road, Sabalia Tangail",
+  },
 ];
 
 export { branch, reportDownload };

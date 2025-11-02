@@ -81,7 +81,6 @@ const SmartSidemenu = () => {
     };
   };
 
-
   // Auto-collapse when user scrolls up significantly
   useEffect(() => {
     if (direction === 'up' && y > 200) {
@@ -425,8 +424,8 @@ const SmartSidemenu = () => {
           }}
           drag="x"
           dragConstraints={{
-            left: Math.max(-200, -(window.innerWidth * 0.3)),
-            right: Math.max(200, window.innerWidth * 0.3),
+            left: -120, // Allow left drag for dismiss gesture
+            right: 0,   // Prevent right overflow
           }}
           dragElastic={0.1}
           onDragStart={() => {
@@ -480,6 +479,8 @@ const SmartSidemenu = () => {
             willChange: isDragging ? "transform" : "auto",
             overflow: "visible", // Allow drag to extend beyond card bounds
             zIndex: isDragging ? 35 : "auto", // Bring to front when dragging, but below navbar
+            maxWidth: "280px", // Prevent cards from becoming too wide
+            minWidth: "220px", // Maintain consistent minimum width
           }}>
           {/* Dedicated drag handle area */}
           <div
@@ -696,19 +697,16 @@ const SmartSidemenu = () => {
   // Show only if there are contextual actions
   if (!contextualActions.length) return null;
 
-  const { top: safeTop, isXSmallScreen, isSmallScreen, isMediumScreen } = getSafePositioning();
+  const { top: safeTop, isXSmallScreen, isSmallScreen } = getSafePositioning();
 
   return (
     <>
-      {/* Smart Suggestions - Adaptive positioning with collision detection */}
+      {/* Smart Suggestions - Positioned at viewport edge to stay outside max-w-7xl content */}
       <motion.div
-        className={clsx(
-          "fixed z-30 hidden sm:block",
-          window.innerWidth < 1200 ? "right-2" : "right-4"
-        )}
+        className="fixed z-30 hidden sm:block"
         style={{
           top: safeTop,
-          right: Math.max(8, Math.min(16, (window.innerWidth - 1200) / 50))
+          right: '16px', // Simple viewport-edge positioning
         }}
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
@@ -716,16 +714,14 @@ const SmartSidemenu = () => {
         <SmartSuggestions />
       </motion.div>
 
-      {/* Contextual Actions Panel - Adaptive positioning */}
+      {/* Contextual Actions Panel - Positioned at viewport edge */}
       <motion.div
-        className={clsx(
-          "fixed z-30 hidden sm:block",
-          window.innerWidth < 1200 ? "right-2" : "right-4"
-        )}
+        className="fixed z-30 hidden sm:block"
         style={{
           top: `calc(${safeTop} + ${getSmartSuggestions.filter(s => !dismissedSuggestions.has(s.action)).length > 0 ?
-            (isXSmallScreen ? '180px' : isSmallScreen ? '220px' : '280px') : '0px'})`,
-          right: Math.max(8, Math.min(16, (window.innerWidth - 1200) / 50))
+            (isXSmallScreen ? '180px' : isSmallScreen ? '220px' : '280px')
+            : '0px'})`,
+          right: '16px', // Simple viewport-edge positioning
         }}
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
