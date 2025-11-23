@@ -205,7 +205,7 @@ DoctorList.propTypes = {
   onScroll: PropTypes.func.isRequired,
 };
 
-const ServiceList = ({ services, isLoading }) => (
+const ServiceList = ({ services, isLoading, onScroll }) => (
   <div className="flex flex-col min-h-[220px] ios-optimized mt-4">
     <div className="bg-white rounded-xl shadow-lg border border-gray-200/50 overflow-hidden">
       <ListHeader columns={["Service Name", "Service Cost"]} />
@@ -225,6 +225,7 @@ const ServiceList = ({ services, isLoading }) => (
         height={280}
         itemHeight={64}
         overscan={5}
+        onScroll={onScroll}
         className="w-full rounded-t-xl md:rounded-t-none"
       />
     </div>
@@ -234,6 +235,7 @@ const ServiceList = ({ services, isLoading }) => (
 ServiceList.propTypes = {
   services: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  onScroll: PropTypes.func.isRequired,
 };
 
 // Main Search Component
@@ -256,6 +258,7 @@ const Search = () => {
     serviceSearchInputRef,
     handleBranchChange: handleServiceBranchChange,
     handleSearchChange: handleServiceSearchChange,
+    handleServiceScroll,
   } = useServiceSearch();
 
   // Phase 3: Search suggestions and optimization state
@@ -433,7 +436,7 @@ const Search = () => {
     })), [doctorSearchData.days]);
 
   const serviceBranchOptions = useMemo(() => reportDownload.map(branch => ({
-    value: branch.braID,
+    value: `${branch.braID}::${branch.braName}`, // Composite key to handle duplicate braIDs
     label: branch.braName
   })), [reportDownload]);
 
@@ -615,8 +618,7 @@ const Search = () => {
               currentTerm={localServiceSearchTerm}
             />
             
-            {(serviceSearchState.loading ||
-              serviceSearchState.isFetchingAll) && (
+            {serviceSearchState.loading && (
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <LoadingSkeleton variant="default" width="w-4" height="h-4" className="animate-spin rounded-full border-2 border-gray-200 border-t-PDCL-green" />
               </div>
@@ -653,10 +655,8 @@ const Search = () => {
               {serviceSearchState.services.length > 0 ? (
                 <ServiceList
                   services={serviceSearchState.services}
-                  isLoading={
-                    serviceSearchState.loading ||
-                    serviceSearchState.isFetchingAll
-                  }
+                  isLoading={serviceSearchState.loading}
+                  onScroll={handleServiceScroll}
                 />
               ) : (
                 <div className="mt-4">
