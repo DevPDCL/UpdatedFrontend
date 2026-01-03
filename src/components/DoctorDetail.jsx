@@ -1,4 +1,3 @@
-import Marquee from "react-fast-marquee";
 import "@fontsource/ubuntu";
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -22,6 +21,53 @@ import {
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
 import { API_TOKEN, BASE_URL } from "../secrets";
+import { motion } from "framer-motion";
+
+// Pharmaceutical ads data for horizontal banner
+const pharmaceuticalAds = [
+  {
+    id: 1,
+    name: "Adecard",
+    image: Adecard,
+    url: "https://www.popular-pharma.com/products/82",
+    brandColors: { primary: "text-gray-800", accent: "text-[#ea7726]" },
+  },
+  {
+    id: 2,
+    name: "Vonomax",
+    image: Vonomax,
+    url: "https://www.popular-pharma.com/products/519",
+    brandColors: { primary: "text-[#ea7726]", accent: "text-[#087b41]" },
+  },
+  {
+    id: 3,
+    name: "Ambrosol",
+    image: Ambrosol,
+    url: "https://www.popular-pharma.com/products/82",
+    brandColors: { primary: "text-gray-800", accent: "text-[#087b41]" },
+  },
+  {
+    id: 4,
+    name: "Amlovas",
+    image: Amlovas,
+    url: "https://www.popular-pharma.com/products/68",
+    brandColors: { primary: "text-gray-800", accent: "text-red-700" },
+  },
+  {
+    id: 5,
+    name: "Anorel",
+    image: Anorel,
+    url: "https://www.popular-pharma.com/products/117",
+    brandColors: { primary: "text-gray-800", accent: "text-blue-800" },
+  },
+  {
+    id: 6,
+    name: "Cebergol",
+    image: Cebergol,
+    url: "https://www.popular-pharma.com/products/129",
+    brandColors: { primary: "text-blue-700", accent: "text-[#ea7726]" },
+  },
+];
 
 const DoctorDetail = () => {
   const { doctorId } = useParams();
@@ -120,15 +166,17 @@ const DoctorDetail = () => {
   };
 
   return (
-    <div className="doctor-detail bg-gray-100">
-      <div className="sm:container mx-auto py-10 px-5">
+    <div className="doctor-detail bg-gray-100 min-h-screen">
+      <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">
         <div className="flex flex-wrap -mx-2">
-          <div className="w-full md:w-3/12 px-2 mb-4">
-            <div className="bg-white p-3 rounded-b-xl shadow-lg border-t-4 border-[#00984a]">
-              <div className="image overflow-hidden rounded-xl shadow-xl">
+          <div className="w-full md:w-3/12 lg:w-4/12 px-2 mb-3 md:mb-4">
+            <div className="bg-white p-3 md:p-4 rounded-2xl shadow-depth-3 border-t-4 border-[#00984a] hover:shadow-depth-4 transition-all duration-300 backdrop-blur-sm bg-white/95">
+              <div className="relative group overflow-hidden rounded-xl shadow-depth-2 hover:shadow-depth-3 transition-shadow">
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#00984a]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
                 {doctor.image ? (
                   <img
-                    className="h-auto w-full mx-auto"
+                    className="h-auto w-full mx-auto transition-transform duration-300 group-hover:scale-105"
                     src={doctor.image}
                     alt={doctor.name}
                     style={{
@@ -138,70 +186,78 @@ const DoctorDetail = () => {
                     }}
                   />
                 ) : (
-                  <div className="no-image font-ubuntu flex flex-col justify-center items-center p-2 h-60">
+                  <div className="no-image font-ubuntu flex flex-col justify-center items-center p-2 h-60 bg-gray-50">
                     <FaUserMd className="text-6xl text-gray-400" />
                     <p className="text-gray-700 mt-2">No Image Available</p>
                   </div>
                 )}
               </div>
-              <h1 className="pt-2 text-gray-700 font-bold text-xl leading-8 my-1">
+              <h1 className="pt-3 text-gray-800 font-bold text-xl leading-tight my-1 font-ubuntu">
                 {doctor.name}
               </h1>
               <h3 className="text-gray-600 font-lg font-medium leading-6">
                 <MdMedicalServices className="inline mr-1" />
                 {doctor.specialists[0]?.specialist_name || "Not specified"}
               </h3>
-              <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-                <li className="flex items-center py-3">
-                  <span>Status</span>
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 hover:shadow-depth-1 py-2 px-3 mt-3 rounded-xl shadow-sm transition-all duration-200">
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-sm font-medium">Status</span>
                   <span className="ml-auto">
                     <span
-                      className={`py-1 px-2 rounded text-white text-sm ${
-                        isDoctorOnLeave() ? "bg-red-500" : "bg-[#00984a]"
+                      className={`py-1.5 px-3 rounded-lg text-white text-sm font-semibold shadow-depth-1 ${
+                        isDoctorOnLeave()
+                          ? "bg-gradient-to-r from-red-500 to-red-600"
+                          : "bg-gradient-to-r from-[#006642] to-[#00984a]"
                       }`}>
                       {isDoctorOnLeave() ? "On Leave" : "Active"}
                     </span>
                   </span>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
-            <div className="my-4"></div>
-            <div className="bg-white rounded-xl shadow-lg p-3 hover:shadow-xl">
-              <div className="flex items-center justify-center space-x-3 font-semibold text-gray-900 text-xl leading-8 font-ubuntu">
+            <div className="my-3 md:my-4"></div>
+            <div className="bg-white rounded-2xl shadow-depth-3 p-3 md:p-4 hover:shadow-depth-4 transition-all duration-300">
+              <div className="flex items-center justify-center space-x-2 md:space-x-3 font-semibold text-gray-900 text-lg md:text-xl leading-8 font-ubuntu mb-2">
                 <span className="text-[#00984a]">
-                  <MdPeople className="text-2xl" />
+                  <MdPeople className="text-xl md:text-2xl" />
                 </span>
                 <span className="tracking-wide">Similar Doctors</span>
               </div>
-              <h2 className="text-gray-500 text-center pb-2">
+              <p className="text-gray-500 text-center text-xs md:text-sm pb-2 md:pb-3">
                 For different schedules
-              </h2>
-              <hr className="p-2"></hr>
+              </p>
+              <hr className="mb-4 border-gray-200" />
               {loadingSimilar ? (
                 <div className="p-5 font-ubuntu text-center text-gray-800">
                   Loading similar doctors...
                 </div>
               ) : similarDoctors.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
+                <div className="grid grid-cols-2 gap-3 max-h-72 overflow-y-auto custom-scroll p-2 -mx-2">
                   {similarDoctors.map((doc) => (
-                    <div
+                    <motion.div
                       key={doc.id}
-                      className="text-center my-2 p-1 hover:bg-gray-50 rounded">
+                      whileHover={{ scale: 1.03, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="text-center p-2 rounded-xl hover:bg-gradient-to-br from-[#00984a]/5 to-[#00984a]/5 hover:shadow-depth-1 transition-all duration-200">
                       <Link to={`/doctordetail/${doc.id}`} className="block">
-                        <img
-                          className="h-16 w-16 rounded-full mx-auto object-cover"
-                          src={doc.image}
-                          alt={doc.name}
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "https://via.placeholder.com/64";
-                          }}
-                        />
-                        <p className="text-sm mt-1 text-gray-700 line-clamp-2">
+                        <div className="relative inline-block mb-2">
+                          <img
+                            className="h-16 w-16 rounded-full mx-auto object-cover ring-2 ring-gray-100 hover:ring-[#00984a]/30 transition-all shadow-depth-1"
+                            src={doc.image}
+                            alt={doc.name}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "https://via.placeholder.com/64";
+                            }}
+                          />
+                          {/* Active indicator dot */}
+                          <span className="absolute bottom-0 right-0 h-3 w-3 bg-[#00984a] rounded-full border-2 border-white" />
+                        </div>
+                        <p className="text-xs mt-1 text-gray-700 font-medium line-clamp-2 leading-tight">
                           {doc.name}
                         </p>
                       </Link>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               ) : (
@@ -210,37 +266,56 @@ const DoctorDetail = () => {
                 </div>
               )}
             </div>
+
+            {/* Scroll Indicator - Shows on mobile to indicate more content below */}
+            <div className="md:hidden mt-4 flex justify-center">
+              <div className="flex flex-col items-center gap-2 text-[#00984a] animate-bounce">
+                <span className="text-xs font-medium font-ubuntu">More Info Below</span>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div className="w-full md:w-8/12 px-2">
-            <div className="bg-white p-3 shadow-lg rounded-xl">
+          <div className="w-full md:w-9/12 lg:w-8/12 px-2">
+            <div className="bg-white p-3 md:p-4 shadow-depth-3 rounded-2xl hover:shadow-depth-4 transition-all duration-300">
               <div>
-                <h1 className="text-[#00984a] p-5 text-center font-ubuntu font-bold text-[26px]">
+                <h1 className="p-3 md:p-5 text-center font-ubuntu font-bold text-xl md:text-2xl lg:text-3xl bg-gradient-to-r from-[#006642] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
                   {doctor.experience_summery || "Experienced Specialist"}
                 </h1>
               </div>
-              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100">
                 <span className="text-[#00984a]">
                   <FaUser className="text-lg" />
                 </span>
-                <span className="tracking-wide">About</span>
+                <span className="tracking-wide text-lg font-ubuntu">About</span>
               </div>
               <div className="text-gray-700">
-                <div className="grid md:grid-cols-2 text-sm">
-                  <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold flex items-center">
-                      <FaUserMd className="mr-2" /> Degrees:
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-xl border border-gray-100">
+                    <div className="font-semibold flex items-center mb-2 text-[#00984a]">
+                      <FaUserMd className="mr-2" /> Degrees
                     </div>
-                    <div className="px-4 py-2 pl-8">{doctor.degree}</div>
+                    <div className="pl-6 text-gray-700 leading-relaxed">{doctor.degree}</div>
                   </div>
-                  <div className="col-span-1">
-                    <div className="px-4 py-2 font-semibold flex items-center">
+                  <div className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-xl border border-gray-100">
+                    <div className="font-semibold flex items-center mb-2 text-[#00984a]">
                       <FaEnvelope className="mr-2" /> Contact
                     </div>
-                    <div className="px-4 py-2 pl-8">
+                    <div className="pl-6">
                       {doctor.email ? (
                         <a
-                          className="text-[#00984a] hover:underline flex items-center"
+                          className="text-[#00984a] hover:text-[#00984a]/70 hover:underline flex items-center transition-colors duration-200"
                           href={`mailto:${doctor.email}`}>
                           <FaEnvelope className="mr-1" /> {doctor.email}
                         </a>
@@ -253,21 +328,69 @@ const DoctorDetail = () => {
                   </div>
                 </div>
               </div>
-              <button
-                className="w-full text-[#00984a] text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4 flex items-center justify-center"
+              <motion.button
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-gradient-to-r from-[#006642] to-[#00984a] text-white text-sm font-semibold rounded-xl hover:shadow-depth-3 focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:ring-offset-2 p-3 md:p-4 my-3 md:my-4 flex items-center justify-center transition-all duration-200 shadow-depth-2"
                 onClick={handleClick1}
                 type="button">
                 <FaCalendarAlt className="mr-2" /> Book an Appointment
-              </button>
+              </motion.button>
             </div>
-            <div className="my-4"></div>
-            <div className="bg-white p-3 shadow-lg rounded-xl">
+            <div className="my-3 md:my-4"></div>
+
+            {/* Horizontal Ad Banner - Sticky */}
+            <div className="my-4 md:my-6 md:sticky md:top-20 z-10">
+              <div className="glass-medical rounded-2xl p-3 md:p-4 shadow-depth-2 border border-[#00984a]/20 hover:border-[#00984a]/30 transition-all duration-300">
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-[#00984a] font-ubuntu">
+                      Featured Medications
+                    </span>
+                    <span className="hidden sm:inline-block px-2 py-0.5 bg-[#00984a]/10 rounded-full text-xs text-[#00984a] font-medium">
+                      Popular Pharma
+                    </span>
+                  </div>
+                  <span className="text-xs text-gray-500 italic">Sponsored</span>
+                </div>
+
+                {/* Horizontal scrolling ad container with padding to prevent shadow clipping */}
+                <div className="flex gap-3 md:gap-4 overflow-x-auto ad-scroll pb-3 pt-1 px-1 -mx-1">
+                  {pharmaceuticalAds.map((ad) => (
+                    <a
+                      key={ad.id}
+                      href={ad.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 w-28 md:w-32 ad-card">
+                      <motion.div
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="bg-white rounded-xl p-2 md:p-3 shadow-depth-1 hover:shadow-depth-3 border border-gray-200 hover:border-[#00984a]/30 transition-all duration-200 h-full flex flex-col">
+                        <div className="flex-1 flex items-center justify-center mb-1 md:mb-2">
+                          <img
+                            src={ad.image}
+                            alt={ad.name}
+                            className="w-full h-16 md:h-20 object-contain"
+                          />
+                        </div>
+                        <h3 className={`text-xs font-semibold text-center leading-tight ${ad.brandColors.primary}`}>
+                          {ad.name}
+                        </h3>
+                      </motion.div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-3 md:p-4 shadow-depth-3 rounded-2xl hover:shadow-depth-4 transition-all duration-300">
               <div>
-                <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                <div className="flex justify-center items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 md:mb-4">
                   <span className="text-[#00984a]">
-                    <FaMapMarkerAlt className="text-lg" />
+                    <FaMapMarkerAlt className="text-lg md:text-xl" />
                   </span>
-                  <span className="tracking-wide text-center">Chamber</span>
+                  <span className="tracking-wide text-lg md:text-xl font-ubuntu">Chamber Details</span>
                 </div>
                 {doctor.absent_message && (
                   <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
@@ -290,132 +413,55 @@ const DoctorDetail = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
                     gap: "20px",
                   }}>
-                  <div className="chamber-card p-4 border border-gray-300 rounded-lg">
-                    <h3 className="font-medium text-center">
-                      <FaMapMarkerAlt className="inline mr-1" />
+                  <div className="chamber-card p-3 md:p-5 border-2 border-gray-200 rounded-xl hover:border-[#00984a]/30 hover:shadow-depth-2 transition-all duration-300 bg-gradient-to-br from-gray-50 to-white">
+                    <h3 className="font-semibold text-base md:text-lg text-center mb-2 text-[#00984a] font-ubuntu">
+                      <FaMapMarkerAlt className="inline mr-1 md:mr-2" />
                       {formattedChamber.branch} Branch
                     </h3>
-                    <p className="text-center">
-                      {formattedChamber.building}, Room: {formattedChamber.room}
+                    <p className="text-center text-sm md:text-base text-gray-600 mb-1">
+                      {formattedChamber.building}
                     </p>
-                    <p className="text-center">
-                      <FaPhone className="inline mr-1" />
+                    <p className="text-center text-sm md:text-base text-gray-600 mb-3 md:mb-4">
+                      <FaPhone className="inline mr-1 md:mr-2 text-[#00984a]" />
                       {formattedChamber.assistantMobile}
                     </p>
-                    <div className="text-center font-bold text-gray-700 pt-2 text-[24px]">
-                      <FaCalendarAlt className="inline mr-2" />
+                    <div className="text-center font-bold text-gray-800 pt-2 md:pt-3 pb-2 text-lg md:text-xl font-ubuntu border-t border-gray-200">
+                      <FaCalendarAlt className="inline mr-1 md:mr-2 text-[#00984a]" />
                       Schedule
                     </div>
-                    <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                      <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                        <div className="overflow-hidden">
-                          <table className="min-w-full text-center">
-                            <thead className="border-b">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="text-sm font-medium text-gray-900 px-6 py-4">
-                                  Day
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="text-sm font-medium text-gray-900 px-6 py-4">
-                                  Time
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {formattedChamber.weekday.map((day, dayIndex) => (
-                                <tr key={dayIndex} className="border-b">
-                                  <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                    {day.day}
-                                  </td>
-                                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {day.time}
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                    <div className="overflow-x-auto rounded-xl">
+                      <table className="min-w-full text-center bg-white rounded-xl overflow-hidden">
+                        <thead className="bg-gradient-to-r from-[#006642] to-[#00984a]">
+                          <tr>
+                            <th
+                              scope="col"
+                              className="text-xs md:text-sm font-semibold text-white px-3 md:px-6 py-2 md:py-3">
+                              Day
+                            </th>
+                            <th
+                              scope="col"
+                              className="text-xs md:text-sm font-semibold text-white px-3 md:px-6 py-2 md:py-3">
+                              Time
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {formattedChamber.weekday.map((day, dayIndex) => (
+                            <tr key={dayIndex} className="hover:bg-[#00984a]/5 transition-colors">
+                              <td className="text-xs md:text-sm text-gray-900 font-medium px-3 md:px-6 py-2 md:py-3 whitespace-nowrap">
+                                {day.day}
+                              </td>
+                              <td className="text-xs md:text-sm text-gray-700 px-3 md:px-6 py-2 md:py-3 whitespace-nowrap">
+                                {day.time}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          {/* Ad Marquee Column */}
-          <div className="md:w-1/12 h-screen hidden sm:block">
-            <div className="flex flex-col items-center  overflow-x-hidden font-bold h-full">
-              <Marquee direction="up" className="h-full">
-                <a
-                  href="https://www.popular-pharma.com/products/82"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600">
-                    {" "}
-                    <img src={Adecard} alt="Suggested Medicines" />
-                    <h1 className=" text-gray-800 flex justify-center">
-                      Adec <span className="text-[#ea7726]">ard</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/519"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600">
-                    {" "}
-                    <img src={Vonomax} alt="Suggested Medicines" />
-                    <h1 className=" text-[#ea7726] flex justify-center">
-                      Vono <span className="text-[#087b41]">max</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/82"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600 ">
-                    {" "}
-                    <img src={Ambrosol} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Ambro<span className="text-[#087b41]">sol</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/68"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600 ">
-                    {" "}
-                    <img src={Amlovas} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Amlo<span className="text-red-700">vas</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/117"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600 ">
-                    {" "}
-                    <img src={Anorel} alt="Suggested Medicines" />
-                    <h1 className="flex justify-center">
-                      Ano<span className="text-blue-800">rel</span>
-                    </h1>
-                  </div>
-                </a>
-                <a
-                  href="https://www.popular-pharma.com/products/129"
-                  target="_blank">
-                  <div className="ml-10 text-gray-600 ">
-                    {" "}
-                    <img src={Cebergol} alt="Suggested Medicines" />
-                    <h1 className=" text-blue-700 flex justify-center">
-                      Caber <span className="text-[#ea7726]">gol</span>
-                    </h1>
-                  </div>
-                </a>
-              </Marquee>
             </div>
           </div>
         </div>
