@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
 import "@fontsource/ubuntu";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { useSmartNavigation } from "../hooks/useSmartNavigation";
@@ -13,7 +13,6 @@ import {
   DocumentArrowDownIcon,
   BeakerIcon,
   SparklesIcon,
-  XMarkIcon,
   UserIcon,
   HeartIcon,
   CalendarIcon,
@@ -303,51 +302,64 @@ const SmartSidemenu = () => {
       suggestion => !dismissedSuggestions.has(suggestion.action)
     );
 
-    const { maxSuggestions, shouldScroll, isXSmallScreen, isSmallScreen, isMediumScreen } = getSafePositioning();
+    const { maxSuggestions, shouldScroll, isXSmallScreen, isSmallScreen } = getSafePositioning();
 
     if (suggestions.length === 0) return null;
 
     const visibleSuggestions = suggestions.slice(0, maxSuggestions);
 
-    // Individual suggestion card component with swipe functionality
-    const SuggestionCard = ({ suggestion, index }) => {
+    // Individual suggestion card component with swipe functionality (memoized for performance)
+    const SuggestionCard = React.memo(({ suggestion }) => {
       const [isDragging, setIsDragging] = useState(false);
-      const [dragX, setDragX] = useState(0);
+      const dragXMotion = useMotionValue(0);
       const [isHovered, setIsHovered] = useState(false);
       const [isPressed, setIsPressed] = useState(false);
       const [isFocused, setIsFocused] = useState(false);
-      const [cardRef, setCardRef] = useState(null);
-      const [cardBounds, setCardBounds] = useState({ top: 0, bottom: 0, height: 0 });
-      const [dragStartTime, setDragStartTime] = useState(0);
+      const cardRef = useRef(null);
+      const [dragStartPos, setDragStartPos] = useState({ x: 0, y: 0 });
       const [hasDragged, setHasDragged] = useState(false);
+      const [currentDragValue, setCurrentDragValue] = useState(0);
 
       const handleDismiss = () => {
         setDismissedSuggestions(prev => new Set([...prev, suggestion.action]));
       };
 
-      // Individual card viewport tracking
-      useEffect(() => {
-        if (cardRef) {
-          const updateCardBounds = () => {
-            const rect = cardRef.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
+      // Animation configurations for different contexts
+      const animations = {
+        enter: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
+        hover: { duration: 0.2, ease: "easeOut" },
+        drag: { duration: 0, ease: "linear" },
+        exit: { duration: 0.3, ease: [0.32, 0, 0.67, 0] }
+      };
 
-            setCardBounds({
-              top: rect.top,
-              bottom: rect.bottom,
-              height: rect.height,
-              isVisible: rect.top >= 0 && rect.bottom <= viewportHeight,
-              isPartiallyVisible: rect.top < viewportHeight && rect.bottom > 0
-            });
-          };
+      // Momentum-based exit animation
+      const handleDismissWithAnimation = (velocity) => {
+        const exitDirection = velocity > 0 ? 1 : -1;
+        const exitDistance = Math.min(Math.abs(velocity) * 0.5, 400);
 
-          updateCardBounds();
-          const resizeObserver = new ResizeObserver(updateCardBounds);
-          resizeObserver.observe(cardRef);
+        animate(cardRef.current, {
+          x: exitDirection * exitDistance,
+          opacity: 0,
+          scale: 0.9,
+          rotateZ: exitDirection * 5
+        }, {
+          duration: 0.35,
+          ease: [0.16, 1, 0.3, 1]
+        }).then(() => {
+          setDismissedSuggestions(prev => new Set([...prev, suggestion.action]));
+        });
+      };
 
-          return () => resizeObserver.disconnect();
-        }
-      }, [cardRef]);
+      // Dynamic message based on drag progress
+      const getMessage = (dragValue) => {
+        const progress = Math.abs(dragValue) / 100;
+
+        if (progress < 0.5) return null;  // No message early in drag
+        if (progress < 0.8) return "Keep swiping...";
+        if (progress >= 1.0) return "Release to dismiss!";
+        return "Almost there!";
+      };
+
 
       // Handle navigation (click vs drag detection)
       const handleNavigation = () => {
@@ -368,12 +380,21 @@ const SmartSidemenu = () => {
           handleNavigation();
         } else if (event.key === 'Escape' || event.key === 'Delete') {
           event.preventDefault();
-          handleDismiss();
+          // Animate fade out for keyboard dismiss
+          animate(cardRef.current, {
+            opacity: 0,
+            scale: 0.95
+          }, {
+            duration: 0.25,
+            ease: "easeOut"
+          }).then(() => {
+            handleDismiss();
+          });
         }
       };
 
-      // Enhanced gradient backgrounds based on suggestion type or context
-      const getCardBackground = () => {
+      // Enhanced gradient backgrounds based on suggestion type or context (memoized for performance)
+      const cardBackground = useMemo(() => {
         const baseGradient = 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.25) 100%)';
         const hoverGradient = 'linear-gradient(135deg, rgba(0, 102, 66, 0.1) 0%, rgba(255, 255, 255, 0.35) 50%, rgba(0, 152, 74, 0.05) 100%)';
         const pressedGradient = 'linear-gradient(135deg, rgba(0, 102, 66, 0.15) 0%, rgba(255, 255, 255, 0.25) 100%)';
@@ -383,11 +404,11 @@ const SmartSidemenu = () => {
         if (isFocused) return focusedGradient;
         if (isHovered) return hoverGradient;
         return baseGradient;
-      };
+      }, [isPressed, isFocused, isHovered]);
 
       return (
         <motion.div
-          ref={setCardRef}
+          ref={cardRef}
           key={suggestion.action}
           role="button"
           tabIndex={0}
@@ -406,47 +427,69 @@ const SmartSidemenu = () => {
               : isHovered || isFocused
               ? 1.02
               : 1,
-            x: dragX,
           }}
           exit={{
             opacity: 0,
             y: -20,
             scale: 0.9,
             x: 50,
-            transition: { duration: 0.4, ease: "easeInOut" },
+            transition: animations.exit,
           }}
           transition={{
-            duration: 0.6,
-            ease: "easeOut",
+            default: animations.enter,
+            scale: animations.hover,
             type: "spring",
-            stiffness: 100,
-            damping: 15,
+            stiffness: 300,
+            damping: 30,
+            mass: 0.5,
           }}
           drag="x"
           dragConstraints={{
-            left: -120, // Allow left drag for dismiss gesture
-            right: 0,   // Prevent right overflow
+            left: -200, // Allow overshoot beyond dismiss point
+            right: 20,  // Slight right overshoot for natural feel
           }}
-          dragElastic={0.1}
-          onDragStart={() => {
+          dragElastic={{
+            left: 0.3,  // More responsive bounce-back on left drag
+            right: 0.8  // Stronger resistance when dragging right (non-dismiss direction)
+          }}
+          onDragStart={(event) => {
             setIsDragging(true);
-            setDragStartTime(Date.now());
+            setDragStartPos({ x: event.clientX, y: event.clientY });
             setHasDragged(false);
           }}
-          onDragEnd={(event, info) => {
+          onDragEnd={(_event, info) => {
             setIsDragging(false);
-            setDragX(0);
 
             const dragDistance = Math.abs(info.offset.x);
+            const dragVelocity = Math.abs(info.velocity.x);
 
-            // If dragged more than 120px in either direction, dismiss
-            if (dragDistance > 120) {
-              handleDismiss();
+            // Dismiss if EITHER:
+            // - Dragged more than 100px (reduced from 120px)
+            // - OR velocity exceeds 500px/s (quick flick)
+            const shouldDismiss = dragDistance > 100 || dragVelocity > 500;
+
+            if (shouldDismiss) {
+              // Animate out with exit velocity
+              handleDismissWithAnimation(info.velocity.x);
+            } else {
+              // Smooth snap back using MotionValue
+              dragXMotion.set(0);
             }
           }}
-          onDrag={(event, info) => {
-            setDragX(info.offset.x);
-            if (Math.abs(info.offset.x) > 5) {
+          onDrag={(_event, info) => {
+            const rawOffset = info.offset.x;
+
+            // Apply progressive resistance beyond -100px
+            let adjustedOffset = rawOffset;
+            if (rawOffset < -100) {
+              const overshoot = Math.abs(rawOffset + 100);
+              // Exponential resistance curve
+              adjustedOffset = -100 - (overshoot * 0.3);
+            }
+
+            dragXMotion.set(adjustedOffset);
+            setCurrentDragValue(adjustedOffset);
+            if (Math.abs(rawOffset) > 5) {
               setHasDragged(true);
             }
           }}
@@ -457,7 +500,15 @@ const SmartSidemenu = () => {
           onMouseLeave={() => setIsPressed(false)}
           onClick={(e) => {
             e.preventDefault();
-            if (!hasDragged) {
+
+            // Calculate total drag distance (Euclidean)
+            const totalDragDistance = Math.sqrt(
+              Math.pow(e.clientX - dragStartPos.x, 2) +
+              Math.pow(e.clientY - dragStartPos.y, 2)
+            );
+
+            // Only navigate if drag distance < 10px
+            if (!hasDragged && totalDragDistance < 10) {
               handleNavigation();
             }
           }}
@@ -466,7 +517,8 @@ const SmartSidemenu = () => {
             isXSmallScreen ? "mr-2" : isSmallScreen ? "mr-3" : "mr-4"
           )}
           style={{
-            background: getCardBackground(),
+            x: dragXMotion,
+            background: cardBackground,
             backdropFilter: "blur(8px) saturate(150%)",
             border:
               isHovered || isFocused
@@ -482,13 +534,14 @@ const SmartSidemenu = () => {
             maxWidth: "280px", // Prevent cards from becoming too wide
             minWidth: "220px", // Maintain consistent minimum width
           }}>
-          {/* Dedicated drag handle area */}
+          {/* Dedicated drag handle area - always visible for better UX */}
           <div
             className={clsx(
-              "absolute left-0 top-0 bottom-0 cursor-grab active:cursor-grabbing flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200",
-              isXSmallScreen ? "w-8" : "w-10"
+              "absolute left-0 top-0 bottom-0 cursor-grab active:cursor-grabbing flex items-center justify-center transition-opacity duration-200",
+              isXSmallScreen ? "w-8" : "w-10",
+              isDragging ? "opacity-80" : "opacity-30 hover:opacity-100"
             )}>
-            <div className="w-1 h-8 bg-gray-300 rounded-full opacity-60 hover:opacity-80 transition-opacity" />
+            <div className="w-1.5 h-10 bg-gray-400 rounded-full shadow-sm" />
           </div>
 
           {/* Main content area - not draggable */}
@@ -501,31 +554,35 @@ const SmartSidemenu = () => {
                 ? "ml-10 p-3.5"
                 : "ml-10 p-4"
             )}>
-            {/* Enhanced swipe indicator with better visual feedback */}
+            {/* Enhanced swipe indicator with progressive visual feedback */}
             <motion.div
               className="absolute inset-0 flex items-center justify-center rounded-2xl"
-              initial={{ opacity: 0 }}
               animate={{
-                opacity: Math.abs(dragX) > 60 ? 0.9 : 0,
-                background:
-                  Math.abs(dragX) > 60
-                    ? "linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(251, 146, 60, 0.3) 100%)"
-                    : "transparent",
+                opacity: Math.abs(currentDragValue) / 100 * 0.9,
+                background: Math.abs(currentDragValue) > 30
+                  ? `linear-gradient(135deg, rgba(249, 115, 22, ${0.15 + (Math.abs(currentDragValue) / 100) * 0.15}) 0%, rgba(251, 146, 60, ${0.2 + (Math.abs(currentDragValue) / 100) * 0.3}) 100%)`
+                  : "transparent",
               }}
-              transition={{ duration: 0.2, ease: "easeOut" }}>
+              transition={{ duration: 0, ease: "linear" }}>
               <AnimatePresence>
-                {Math.abs(dragX) > 60 && (
+                {Math.abs(currentDragValue) > 50 && (
                   <motion.div
                     initial={{ scale: 0, rotate: -10 }}
                     animate={{ scale: 1, rotate: 0 }}
                     exit={{ scale: 0, rotate: 10 }}
                     className="flex items-center gap-2 text-white font-semibold text-sm bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">
                     <motion.span
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}>
-                      {dragX > 60 ? "👉" : "👈"}
+                      animate={{
+                        scale: Math.abs(currentDragValue) >= 100 ? [1, 1.15, 1] : 1,
+                        rotate: isDragging ? [-5, 5, -5] : 0
+                      }}
+                      transition={{
+                        scale: { duration: 0.4, repeat: Math.abs(currentDragValue) >= 100 ? Infinity : 0 },
+                        rotate: { duration: 0.2, ease: "easeInOut" }
+                      }}>
+                      {currentDragValue < 0 ? "👈" : "👉"}
                     </motion.span>
-                    <span className="drop-shadow-sm">Release to dismiss</span>
+                    <span className="drop-shadow-sm">{getMessage(currentDragValue)}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -592,23 +649,41 @@ const SmartSidemenu = () => {
             </div>
           </div>
 
-          {/* Simplified shine effect - single run on hover */}
+          {/* Progress Bar Indicator */}
           <motion.div
-            className="absolute inset-0 pointer-events-none rounded-2xl overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 0.6 : 0 }}
-            transition={{ duration: 0.2 }}>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent transform -skew-x-12"
-              animate={{
-                x: isHovered ? "100%" : "-100%",
-              }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-              }}
-            />
-          </motion.div>
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"
+            animate={{
+              width: `${Math.min((Math.abs(currentDragValue) / 100) * 100, 100)}%`,
+              opacity: isDragging ? 0.8 : 0,
+              boxShadow: Math.abs(currentDragValue) >= 100
+                ? "0 0 10px rgba(249, 115, 22, 0.6)"
+                : "none"
+            }}
+            transition={{ duration: 0.05, ease: "linear" }}
+          />
+
+          {/* Simplified shine effect - single run on hover */}
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div
+                className="absolute inset-0 pointer-events-none rounded-2xl overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent transform -skew-x-12"
+                  animate={{
+                    x: isHovered ? "100%" : "-100%",
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: "easeOut",
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Ripple effect on interaction */}
           <AnimatePresence>
@@ -628,7 +703,10 @@ const SmartSidemenu = () => {
           </AnimatePresence>
         </motion.div>
       );
-    };
+    }, (prevProps, nextProps) => {
+      // Only re-render if suggestion changes
+      return prevProps.suggestion.action === nextProps.suggestion.action;
+    });
 
     return (
       <motion.div

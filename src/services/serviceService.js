@@ -3,9 +3,30 @@ import { akhilApi } from './api/akhilApi';
 import { normalizeResponse } from './api/apiFactory';
 
 /**
- * List of branches that use the Akhil API backend
- * Based on exact branch name matching
+ * ============================================================
+ * AKHIL API - TEMPORARILY DISABLED
+ * ============================================================
+ *
+ * ISSUE: AKHIL API backend experiencing production errors
+ * DATE: 2026-01-03
+ * STATUS: Using Legacy API for ALL branches temporarily
+ *
+ * TO RESTORE AKHIL API WHEN BACKEND IS FIXED:
+ * 1. Uncomment the AKHIL_API_BRANCHES array below
+ * 2. Delete or comment out the empty array line
+ * 3. Delete the AKHIL_TO_LEGACY_ID_MAP object (~20 lines)
+ * 4. Delete the mapToLegacyBranchId function (~20 lines)
+ * 5. Remove ID mapping call in Legacy API block (line ~246)
+ * 6. Test with one branch first (e.g., Dhanmondi)
+ * 7. Monitor for 24 hours before full rollout
+ * 8. Update this comment block with restoration date
+ *
+ * ORIGINAL IMPLEMENTATION: commit 1a4635d2
+ * ============================================================
  */
+
+/*
+// AKHIL API BRANCHES - Restore when backend is fixed
 const AKHIL_API_BRANCHES = [
   'Dhanmondi',
   'English Road',
@@ -24,6 +45,71 @@ const AKHIL_API_BRANCHES = [
   'Kushtia',
   'Barishal',
 ];
+*/
+
+// TEMPORARY: Empty array forces Legacy API for all branches
+const AKHIL_API_BRANCHES = [];
+
+/**
+ * ============================================================
+ * ID MAPPING: AKHIL FACILITY ID → LEGACY BRANCH ID
+ * ============================================================
+ *
+ * The braID values in branches.js were changed to match AKHIL's
+ * facility IDs. When using Legacy API, we must map back to the
+ * original Legacy branch IDs.
+ *
+ * DELETE THIS MAPPING when AKHIL API is restored.
+ * ============================================================
+ */
+const AKHIL_TO_LEGACY_ID_MAP = {
+  // AKHIL ID: Legacy ID
+  2: 1,    // Dhanmondi
+  12: 2,   // English Road
+  9: 3,    // Shantinagar (Note: Shyamoli also uses 9, handled by branch name)
+  13: 10,  // Mirpur
+  3: 18,   // Badda
+  19: 37,  // Jatrabari (Note: Dinajpur also uses 19, handled by branch name)
+  16: 6,   // Savar
+  8: 27,   // Gazipur
+  11: 5,   // Narayangonj
+  18: 42,  // Rajshahi
+  5: 29,   // Noakhali
+  15: 16,  // Chattogram (Note: Rangpur also uses 15, handled by branch name)
+  10: 26,  // Mymensingh
+  14: 36,  // Khulna
+  4: 30,   // Kushtia
+  6: 31,   // Barishal
+};
+
+/**
+ * Maps AKHIL facility ID to Legacy branch ID for specific AKHIL branches
+ * Non-AKHIL branches return their ID unchanged
+ * @param {number} branchId - The current braID (AKHIL facility ID)
+ * @param {string} branchName - The branch name for disambiguation
+ * @returns {number} The correct branch ID for Legacy API
+ */
+const mapToLegacyBranchId = (branchId, branchName) => {
+  // List of branches that WERE using AKHIL API (need ID mapping)
+  const akhilBranchNames = [
+    'Dhanmondi', 'English Road', 'Shantinagar', 'Mirpur',
+    'Badda', 'Jatrabari', 'Savar', 'Gazipur', 'Narayangonj',
+    'Rajshahi', 'Noakhali', 'Chattogram', 'Mymensingh',
+    'Khulna', 'Kushtia', 'Barishal'
+  ];
+
+  // If this branch was using AKHIL, map its ID back to Legacy
+  if (branchName && akhilBranchNames.includes(branchName)) {
+    const legacyId = AKHIL_TO_LEGACY_ID_MAP[branchId];
+    if (legacyId !== undefined) {
+      console.log(`[ID Mapping] ${branchName}: AKHIL ID ${branchId} → Legacy ID ${legacyId}`);
+      return legacyId;
+    }
+  }
+
+  // Non-AKHIL branches: return ID unchanged
+  return branchId;
+};
 
 /**
  * Determines which API to use based on branch name
@@ -159,8 +245,11 @@ export const fetchServiceCharges = async ({
       });
     } else {
       // Legacy API call
+      // TEMPORARY: Map AKHIL facility IDs back to Legacy branch IDs
+      const legacyBranchId = mapToLegacyBranchId(branchId, branch?.braName);
+
       const params = {
-        branch_id: branchId,
+        branch_id: legacyBranchId,  // Use mapped ID for correct Legacy API calls
         test_service_category_id: categoryId,
         page,
       };
