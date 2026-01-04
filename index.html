@@ -30,37 +30,31 @@
     <script type="module" src="/src/main.jsx"></script>
     
 <!-- Start of REVE Chat Script - Deferred for performance -->
-<script type='text/javascript' defer>
-  // Defer chat loading until page is fully loaded
-  window.addEventListener('load', function() {
-    setTimeout(function() {
+<script>
+  (function () {
+    let loaded = false;
+
+    function loadReveChat() {
+      if (loaded) return;
+      loaded = true;
+
       window.$_REVECHAT_API || (function (d, w) {
-        var r = $_REVECHAT_API = function (c) { r._.push(c); }; w.__revechat_account = '6395607'; w.__revechat_version = 2;
-        r._ = []; var rc = d.createElement('script'); rc.type = 'text/javascript'; rc.async = true; rc.setAttribute('charset', 'utf-8');
-        rc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'static.revechat.com' + '/widget/scripts/new-livechat.js?' + new Date().getTime();
-        var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rc, s);
+        var r = $_REVECHAT_API = function (c) { r._.push(c); };
+        w.__revechat_account = '6395607';
+        w.__revechat_version = 2;
+        r._ = [];
+
+        var rc = d.createElement('script');
+        rc.async = true;
+        rc.src = 'https://static.revechat.com/widget/scripts/new-livechat.js';
+        d.head.appendChild(rc);
       })(document, window);
+    }
 
-      // Add title attribute to chat iframe for accessibility
-      setTimeout(function() {
-        var attempts = 0;
-        var maxAttempts = 20;
-
-        function addTitleToIframe() {
-          var iframe = document.getElementById('reve-chat-widget-holder-2');
-          if (iframe && !iframe.getAttribute('title')) {
-            iframe.setAttribute('title', 'Live Chat Support Widget - Contact customer service');
-            iframe.setAttribute('aria-label', 'Live chat widget for customer support assistance');
-          } else if (attempts < maxAttempts) {
-            attempts++;
-            setTimeout(addTitleToIframe, 500);
-          }
-        }
-
-        addTitleToIframe();
-      }, 3000); // Wait additional 3 seconds for iframe to load
-    }, 2000); // Load chat after 2 seconds
-  });
+    ['scroll', 'mousemove', 'touchstart', 'click'].forEach(evt => {
+      window.addEventListener(evt, loadReveChat, { once: true });
+    });
+  })();
 </script>
 <!-- End of REVE Chat Script -->
   </body>
