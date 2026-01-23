@@ -412,7 +412,8 @@ const branch = [
     Email: "info@populardiagnostic.com",
     braCity: "Dhaka",
     location:
-      "https://maps.google.com/maps?q=23.87267692544794,90.3906825609275&hl=es;z=14&output=embed",
+    "https://maps.google.com/maps?q=23.872516,90.3906607&hl=es;z=14&output=embed",
+      
 
     braManImg: MdJahurulIslamRony,
     braManName: " Md. Jahurul Islam Rony",
@@ -420,6 +421,19 @@ const branch = [
     name: "Popular Diagnostic Centre Ltd. (Uttara Garib-E-Newaz)",
     address:
       "House #41, Uttara-Garib-E-Newaz Avenue, Sector # 13, Uttara, Dhaka",
+      branchUnits: [
+      {
+        unitID: 1,
+        BranchUnit: "U1",
+        image: UttaraGaribENewaz,
+        location:
+          "https://maps.google.com/maps?q=23.872516,90.3906607&hl=es;z=14&output=embed",
+
+        name: "Uttara (U-1)",
+        address:
+          "House #41, Uttara-Garib-E-Newaz Avenue, Sector # 13, Uttara, Dhaka",
+      }
+    ]
   },
   {
     branchID: 18,
