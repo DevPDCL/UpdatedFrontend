@@ -38,11 +38,11 @@ const UnitCard = ({ unit }) => {
   );
 };
 
-const Uttara = () => {
+const UttaraGaribENewaz = () => {
   const branchInfo = branch.find((b) => b.heading === "Uttara Garib E Newaz");
   const branchName = branchInfo.heading;
   const branchId = branchInfo.branchID;
-  const branchForDoctor = 39;
+  const branchForDoctor = 35;
   return (
     <section className="relative py-32 lg:py-36 bg-white">
       <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 pb-20">
@@ -59,7 +59,7 @@ const Uttara = () => {
             font-bold text-[#00664a]">
             Popular Diagnostic Centre{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#00664a]  from-20% via-[#00984a] via-30% to-blue-600">
-              Uttara Sector 4{" "}
+              Uttara Sector 13{" "}
             </span>
             Branch.
           </h1>
@@ -87,7 +87,7 @@ const Uttara = () => {
         <div className="bg-gradient-to-bl from-transparent from-80% via-[#00984a] via-30% to-[#00664a] mt-12 mx-auto lg:max-w-7xl w-full flex flex-col lg:flex-row justify-evenly rounded-3xl items-end">
           <img
             src={branchInfo.braManImg}
-            alt="Mr. Zohurul Islam"
+            alt="Md. Jahurul Islam Rony"
             className="relative mx-auto h-full w-auto border-[6px] border-[#00984a] rounded-3xl"
           />
           <div className="flex lg:item-start">
@@ -107,11 +107,11 @@ const Uttara = () => {
               <p className="text-black w-full">
                 {" "}
                 <br />
-                পপুলার ডায়াগনস্টিক সেন্টার লিঃ, উওরা জসীমউদ্দীন শাখা (সেক্টর
-                -৪) এখন আরো উন্নত যাহা Ultraviolet Ray Protective Glass সম্বলিত
-                নিজস্ব বিল্ডিং এবং সকল নতুন মেশিন ও ঢাকার বিভিন্ন বিখ্যাত
-                হাসপাতালের ( ঢাকা মেডিকেল ও পিজি হাসপাতাল ও অন্যান্য) প্রখ্যাত
-                সকল প্রফেসর চেম্বার করেন ।
+                বাংলাদেশের স্বাস্থ্যসেবার পথপ্রদর্শক পপুলার ডায়াগনস্টিক সেন্টার
+                বিশ্বের সর্বাধুনিক যন্ত্রপাতি, দক্ষ টেকনিশিয়ান এবং সুনামধন্য
+                বিশেষজ্ঞ চিকিৎসকবৃন্দের সমন্বয়ে স্বাস্থ্যসেবা প্রদান করে আসছে।
+                তারই ধারাবাহিকতায়, পপুলার ডায়াগনস্টিক সেন্টার লিমিটেড এখন
+                উত্তরার প্রাণকেন্দ্র উত্তরা সেক্টর-১৩ তে।
               </p>
             </div>
           </div>
@@ -132,24 +132,21 @@ const Uttara = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+        transition={{ duration: 0.6, ease: "easeOut" }}>
         <motion.a
           href="https://www.facebook.com/populargaribenewaz"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 bg-[#1877F2] text-white font-semibold rounded-lg shadow-lg transition-all duration-300 group"
           whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+          whileTap={{ scale: 0.95 }}>
           <motion.svg
             className="w-5 h-5"
             fill="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
           </motion.svg>
           <span className="group-hover:tracking-wide transition-all duration-300">
@@ -161,4 +158,4 @@ const Uttara = () => {
   );
 };
 
-export default Uttara;
+export default UttaraGaribENewaz;
