@@ -279,7 +279,7 @@ const Navbar = () => {
                   <div className="grid grid-cols-1 gap-4">
                     {menuConfig.care.items.map((item, _index) => (
                       <div
-                        key={item.to}
+                        key={item.to || item.href}
                         
                         >
                         <NavLink

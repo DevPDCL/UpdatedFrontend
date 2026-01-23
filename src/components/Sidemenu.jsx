@@ -309,7 +309,7 @@ const SmartSidemenu = () => {
     const visibleSuggestions = suggestions.slice(0, maxSuggestions);
 
     // Individual suggestion card component with swipe functionality (memoized for performance)
-    const SuggestionCard = React.memo(({ suggestion }) => {
+    const SuggestionCard = React.memo(React.forwardRef(({ suggestion }, ref) => {
       const [isDragging, setIsDragging] = useState(false);
       const dragXMotion = useMotionValue(0);
       const [isHovered, setIsHovered] = useState(false);
@@ -703,7 +703,7 @@ const SmartSidemenu = () => {
           </AnimatePresence>
         </motion.div>
       );
-    }, (prevProps, nextProps) => {
+    }), (prevProps, nextProps) => {
       // Only re-render if suggestion changes
       return prevProps.suggestion.action === nextProps.suggestion.action;
     });
