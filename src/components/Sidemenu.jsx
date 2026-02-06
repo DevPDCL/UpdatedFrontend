@@ -555,15 +555,14 @@ const SmartSidemenu = () => {
                 : "ml-10 p-4"
             )}>
             {/* Enhanced swipe indicator with progressive visual feedback */}
-            <motion.div
+            <div
               className="absolute inset-0 flex items-center justify-center rounded-2xl"
-              animate={{
+              style={{
                 opacity: Math.abs(currentDragValue) / 100 * 0.9,
                 background: Math.abs(currentDragValue) > 30
                   ? `linear-gradient(135deg, rgba(249, 115, 22, ${0.15 + (Math.abs(currentDragValue) / 100) * 0.15}) 0%, rgba(251, 146, 60, ${0.2 + (Math.abs(currentDragValue) / 100) * 0.3}) 100%)`
                   : "transparent",
-              }}
-              transition={{ duration: 0, ease: "linear" }}>
+              }}>
               <AnimatePresence>
                 {Math.abs(currentDragValue) > 50 && (
                   <motion.div
@@ -586,7 +585,7 @@ const SmartSidemenu = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </div>
 
             <div className="relative z-10">
               <div className="w-full">

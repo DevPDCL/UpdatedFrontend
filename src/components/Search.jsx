@@ -8,7 +8,7 @@ import { reportDownload } from "../constants/branches";
 // Custom hooks
 import { useDoctorSearch } from "../hooks/useDoctorSearch";
 import { useServiceSearch } from "../hooks/useServiceSearch";
-import { useDoctorSearchOptimization, useServiceSearchOptimization } from "../hooks/useSearchOptimization";
+import { useDoctorSearchOptimization } from "../hooks/useSearchOptimization";
 
 // UI Components
 import SearchInput from "./ui/SearchInput";
@@ -25,14 +25,14 @@ const TABS = [
 
 // Utility Components
 const ListHeader = ({ columns }) => (
-  <div className="hidden md:flex px-6 py-4 bg-gradient-to-r from-[#00664a] to-[#00984a] text-white font-semibold rounded-t-xl md:rounded-t-xl rounded-t-none shadow-sm">
-    <div className="flex-1 pr-4">
-      <p className="text-sm md:text-base font-ubuntu tracking-wide">
+  <div className="flex px-3 sm:px-4 md:px-6 py-2.5 md:py-4 bg-gradient-to-r from-[#00664a] to-[#00984a] text-white font-semibold rounded-t-xl shadow-sm">
+    <div className="flex-1 min-w-0 text-left">
+      <p className="text-xs sm:text-sm md:text-base font-ubuntu tracking-wide">
         {columns[0]}
       </p>
     </div>
-    <div className="flex-1 text-right">
-      <p className="text-sm md:text-base font-ubuntu tracking-wide">
+    <div className="flex-shrink-0 text-right">
+      <p className="text-xs sm:text-sm md:text-base font-ubuntu tracking-wide">
         {columns[1]}
       </p>
     </div>
@@ -46,40 +46,18 @@ ListHeader.propTypes = {
 const ServiceRow = React.memo(({ service, style, index }) => (
   <li
     style={style}
-    className={`block md:flex md:items-center px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group ${
+    className={`flex items-center text-left px-3 sm:px-4 md:px-6 py-2 md:py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group ${
       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
     }`}>
-    {/* Mobile: Vertical card layout */}
-    <div className="block md:hidden">
-      <div className="flex items-start justify-between">
-        <div className="flex-1 pr-3">
-          <p className="text-gray-800 font-ubuntu font-semibold text-base group-hover:text-[#00664a] transition-colors duration-200 leading-tight">
-            {service.name}
-          </p>
-          <div className="flex items-center mt-2">
-            <span className="text-xs text-gray-500 font-ubuntu mr-2">Price:</span>
-            <p className="font-bold text-[#00984a] font-ubuntu text-base">
-              ৳{service.price.toLocaleString("en-BD")}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/* Desktop: Horizontal two-column layout */}
-    <div className="hidden md:flex md:items-center md:w-full">
-      <div className="flex-1 pr-4">
-        <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
-          {service.name}
+    <div className="flex items-center justify-between w-full gap-3">
+      <p className="text-gray-800 font-ubuntu font-medium text-[13px] sm:text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 leading-snug flex-1 min-w-0">
+        {service.name}
+      </p>
+      <div className="flex items-center gap-1 flex-shrink-0">
+        <span className="text-[10px] text-gray-400 font-ubuntu hidden sm:inline">BDT</span>
+        <p className="font-bold text-[#00984a] font-ubuntu text-sm md:text-base whitespace-nowrap">
+          ৳{service.price.toLocaleString("en-BD")}
         </p>
-      </div>
-      <div className="flex-1 text-right">
-        <div className="flex items-center justify-end space-x-2">
-          <span className="text-xs text-gray-500 font-ubuntu">BDT</span>
-          <p className="font-bold text-[#00984a] font-ubuntu text-sm md:text-base">
-            {service.price.toLocaleString("en-BD")}
-          </p>
-        </div>
       </div>
     </div>
   </li>
@@ -103,41 +81,26 @@ const DoctorRow = React.memo(({ doctor, style, index }) => {
     <Link to={`/doctordetail/${doctor.id}`} className="block">
       <li
         style={style}
-        className={`block md:flex md:items-center px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm ${
+        className={`flex items-center px-3 sm:px-4 md:px-6 py-2 md:py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm ${
           index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
         }`}>
-        {/* Mobile: Vertical card layout */}
-        <div className="block md:hidden">
-          <div className="flex items-start justify-between">
-            <div className="flex-1 pr-3">
-              <p className="text-gray-800 font-ubuntu font-semibold text-base group-hover:text-[#00664a] transition-colors duration-200 leading-tight">
-                {doctor.name}
-              </p>
-              <p className="text-gray-600 font-ubuntu text-sm mt-1 group-hover:text-gray-700 transition-colors duration-200 leading-relaxed">
-                {specialties}
-              </p>
-            </div>
-            <div className="flex-shrink-0 ml-2 opacity-60 group-hover:opacity-100 transition-opacity duration-200">
-              <svg className="w-5 h-5 text-[#00984a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Desktop: Horizontal two-column layout */}
-        <div className="hidden md:flex md:items-center md:w-full">
-          <div className="flex-1 pr-4">
-            <p className="text-gray-800 font-ubuntu font-medium text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 truncate">
+        <div className="flex items-center justify-between w-full gap-2 min-w-0 text-left">
+          <div className="flex-1 min-w-0">
+            <p className="text-gray-800 font-ubuntu font-medium text-[13px] sm:text-sm md:text-base group-hover:text-[#00664a] transition-colors duration-200 leading-snug truncate">
               {doctor.name}
             </p>
-          </div>
-          <div className="flex-1 text-right pr-3">
-            <p className="text-gray-600 font-ubuntu text-xs md:text-sm group-hover:text-gray-700 transition-colors duration-200">
+            {/* Show specialty below name on mobile only */}
+            <p className="md:hidden text-gray-500 font-ubuntu text-[11px] sm:text-xs mt-0.5 group-hover:text-gray-600 transition-colors duration-200 truncate">
               {specialties}
             </p>
           </div>
-          <div className="w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+          {/* Show specialty in right column on desktop */}
+          <div className="hidden md:block flex-1 text-right min-w-0 pr-2">
+            <p className="text-gray-500 font-ubuntu text-sm group-hover:text-gray-600 transition-colors duration-200 truncate">
+              {specialties}
+            </p>
+          </div>
+          <div className="flex-shrink-0 opacity-40 group-hover:opacity-100 transition-opacity duration-200">
             <svg className="w-4 h-4 text-[#00984a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -184,11 +147,11 @@ const DoctorList = ({ doctors, isFetchingMore, onScroll }) => (
         renderItem={({ index, style, item }) => (
           <DoctorRow doctor={item} style={style} index={index} />
         )}
-        height={280}
-        itemHeight={64}
+        height={300}
+        itemHeight={56}
         overscan={5}
         onScroll={onScroll}
-        className="w-full rounded-t-xl md:rounded-t-none"
+        className="w-full"
       />
     </div>
     {isFetchingMore && (
@@ -208,7 +171,7 @@ DoctorList.propTypes = {
 const ServiceList = ({ services, isLoading, onScroll }) => (
   <div className="flex flex-col min-h-[220px] ios-optimized mt-4">
     <div className="bg-white rounded-xl shadow-lg border border-gray-200/50 overflow-hidden">
-      <ListHeader columns={["Service Name", "Service Cost"]} />
+      <ListHeader columns={["Service Name", "Price"]} />
       {isLoading && (
         <div className="text-center py-4 text-sm text-gray-500 bg-gray-50/50">
           <div className="flex items-center justify-center space-x-2">
@@ -222,11 +185,11 @@ const ServiceList = ({ services, isLoading, onScroll }) => (
         renderItem={({ index, style, item }) => (
           <ServiceRow service={item} style={style} index={index} />
         )}
-        height={280}
-        itemHeight={64}
+        height={300}
+        itemHeight={48}
         overscan={5}
         onScroll={onScroll}
-        className="w-full rounded-t-xl md:rounded-t-none"
+        className="w-full"
       />
     </div>
   </div>
@@ -263,7 +226,6 @@ const Search = () => {
 
   // Phase 3: Search suggestions and optimization state
   const [showDoctorSuggestions, setShowDoctorSuggestions] = useState(false);
-  const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
   const [localServiceSearchTerm, setLocalServiceSearchTerm] = useState("");
   
   // Smart suggestion function for doctor titles
@@ -353,37 +315,14 @@ const Search = () => {
     setShowDoctorSuggestions(false);
   };
 
-  // Service search optimization
-  const serviceSearchFunction = useCallback((term, _filters, _options) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          `${term} Test`,
-          `${term} Scan`,
-          `Complete ${term} Package`
-        ].filter(suggestion => suggestion.toLowerCase().includes(term.toLowerCase())));
-      }, 100);
-    });
-  }, []);
-  const serviceSearchOptimization = useServiceSearchOptimization(serviceSearchFunction);
-
   // Optimized service search handlers to separate UI updates from API calls
   const handleServiceInputChange = useCallback((value) => {
     // Immediate UI update - no lag
     setLocalServiceSearchTerm(value);
-    setShowServiceSuggestions(value.length > 0 && serviceSearchState.selectedBranch);
-    
+
     // Debounced API call
     handleServiceSearchChange(value);
-  }, [handleServiceSearchChange, serviceSearchState.selectedBranch]);
-
-  const handleServiceInputFocus = useCallback(() => {
-    setShowServiceSuggestions(localServiceSearchTerm.length > 0 && serviceSearchState.selectedBranch);
-  }, [localServiceSearchTerm, serviceSearchState.selectedBranch]);
-
-  const handleServiceInputBlur = useCallback(() => {
-    setTimeout(() => setShowServiceSuggestions(false), 150);
-  }, []);
+  }, [handleServiceSearchChange]);
 
   // Memoized className to prevent recalculation on every render
   const serviceInputClassName = useMemo(() => {
@@ -396,19 +335,6 @@ const Search = () => {
   useEffect(() => {
     setLocalServiceSearchTerm(serviceSearchState.searchTerm);
   }, [serviceSearchState.searchTerm, serviceSearchState.selectedBranch]);
-
-  // Memoized search suggestions to prevent recalculation on every render
-  const serviceSuggestions = useMemo(() => {
-    return serviceSearchOptimization.getSearchSuggestions(localServiceSearchTerm);
-  }, [serviceSearchOptimization, localServiceSearchTerm]);
-
-  // Quick filters for service search
-  const serviceQuickFilters = [
-    { label: "CBC, ESR", value: "CBC, ESR", icon: "🩸" },
-    { label: "X-Ray", value: "X-Ray", icon: "📷" },
-    { label: "MRI", value: "MRI", icon: "🔬" },
-    { label: "CT Scan", value: "CT Scan", icon: "📊" }
-  ];
 
   // Initialize doctor data when switching to doctors tab
   useEffect(() => {
@@ -591,8 +517,6 @@ const Search = () => {
               ref={serviceSearchInputRef}
               value={localServiceSearchTerm}
               onChange={(e) => handleServiceInputChange(e.target.value)}
-              onFocus={handleServiceInputFocus}
-              onBlur={handleServiceInputBlur}
               placeholder={
                 !serviceSearchState.selectedBranch
                   ? "Select a branch first to start searching..."
@@ -600,22 +524,6 @@ const Search = () => {
               }
               disabled={!serviceSearchState.selectedBranch}
               className={serviceInputClassName}
-            />
-            
-            {/* Search Suggestions for Services */}
-            <SearchSuggestions
-              suggestions={serviceSuggestions}
-              quickFilters={serviceQuickFilters}
-              onSuggestionSelect={(suggestion) => {
-                handleServiceInputChange(suggestion);
-                setShowServiceSuggestions(false);
-              }}
-              onQuickFilterSelect={(filter) => {
-                handleServiceInputChange(filter.label);
-                setShowServiceSuggestions(false);
-              }}
-              isVisible={showServiceSuggestions && !serviceSearchState.loading && serviceSearchState.selectedBranch}
-              currentTerm={localServiceSearchTerm}
             />
             
             {serviceSearchState.loading && (

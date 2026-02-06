@@ -43,8 +43,8 @@ ListHeader.propTypes = {
 
 const ServiceRow = React.memo(({ service, style }) => (
   <motion.li
-    style={style}
-    className="flex justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100"
+    style={{ ...style, backgroundColor: "#ffffff" }}
+    className="flex justify-between px-4 py-3 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100"
     whileHover={{ backgroundColor: "rgba(0, 152, 74, 0.05)" }}>
     <p className="text-gray-700 font-ubuntu flex-1 md:flex-none truncate pr-2">
       {service.name}
@@ -74,8 +74,8 @@ const DoctorRow = React.memo(({ doctor, style }) => {
   return (
     <Link to={`/doctordetail/${doctor.id}`} className="w-full">
       <motion.li
-        style={style}
-        className="flex justify-between bg-white hover:bg-gray-50 px-4 py-3 transition-colors duration-150 border-b border-gray-100"
+        style={{ ...style, backgroundColor: "#ffffff" }}
+        className="flex justify-between hover:bg-gray-50 px-4 py-3 transition-colors duration-150 border-b border-gray-100"
         whileHover={{ backgroundColor: "rgba(0, 152, 74, 0.05)" }}>
         <div className="flex items-center flex-1 md:flex-none">
           <p className="text-gray-700 font-ubuntu truncate pr-2">
