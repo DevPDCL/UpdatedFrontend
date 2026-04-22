@@ -206,6 +206,13 @@ const reportDownload = [
       "http://prosoft.populardiagnostic.com:8877/ords/f?p=780:3:1469279010548:::::",
     braCity: "Tangail",
   },
+  {
+    braID: 33,
+    braName: "Comilla",
+    downloadLink:
+      "http://prosoft.populardiagnostic.com:8877/ords/f?p=781:3:9820756140585:::::",
+    braCity: "Comilla",
+  },
 ];
 
 const branch = [

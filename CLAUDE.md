@@ -1,75 +1,57 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Identity
 
-## Development Commands
+PDCL (Popular Diagnostic Centre Limited) — public-facing website frontend.
+React 18 + Vite + Tailwind CSS + Framer Motion (JavaScript only).
 
-- `npm run dev` - Start development server with Vite
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint with React-specific rules
-- `npm run preview` - Preview production build locally
+## Commands
 
-## Project Architecture
+```bash
+npm run dev              # Vite dev server with HMR
+npm run build            # Production build (Terser minification)
+npm run build:optimized  # Build with gzip/brotli compression
+npm run lint             # ESLint (max warnings: 0)
+npm run preview          # Preview production build
+npm run deploy:s3        # Deploy to AWS S3 + CloudFront
+```
 
-This is a React + Vite frontend application for Popular Diagnostic Centre Limited (PDCL), a medical diagnostic service provider in Bangladesh.
+## Critical Rules
 
-### Tech Stack
-- **Framework**: React 18 with Vite build tool
-- **Routing**: React Router DOM v6 with lazy loading
-- **Styling**: Tailwind CSS with custom PDCL branding
-- **Animations**: Framer Motion for smooth transitions
-- **HTTP Client**: Axios for API communication
-- **State Management**: React hooks (useState, useEffect)
-- **UI Components**: Material Tailwind, Headless UI
+- **JavaScript only** — no TypeScript files
+- **No new dependencies** without explicit approval
+- **Never commit `.env` files** — secrets live in Vite env vars (`VITE_*`)
+- **All API calls** go through `src/services/api/apiFactory.js` — never use raw axios
+- **Lazy load** all route-level components via `React.lazy()`
+- **No console.log** in production — Terser strips them, but ESLint warns
 
-### Key Architecture Patterns
+## Architecture Quick Reference
 
-**Lazy Loading**: All route components use React.lazy() for code splitting and performance optimization. The main entry point (`src/main.jsx`) implements a centralized lazy loading system.
+```
+src/
+├── components/           # Page + UI components
+│   ├── Branch/           # 22 branch-specific pages
+│   ├── SampleCollection/ # Sample collection booking flow
+│   └── ui/               # Reusable UI primitives
+├── hooks/                # Custom React hooks
+├── hoc/                  # Higher-order components (SectionWrapper)
+├── services/api/         # API layer (apiFactory, legacyApi, akhilApi)
+├── constants/            # Static data (branches, health, management)
+├── assets/               # Images organized by type
+├── utils/                # Utility functions
+├── main.jsx              # Entry point with lazy loading
+└── secrets.js            # Env var exports (VITE_*)
+```
 
-**Component Organization**:
-- `/src/components/` - Reusable UI components and page components
-- `/src/components/Branch/` - Individual branch-specific pages (22+ locations)
-- `/src/constants/` - Static data and configuration (large file ~1.1MB)
-- `/src/assets/` - Organized by type (DoctorImage, HeroImages, Logos, etc.)
+## API Backends
 
-**API Integration**: The app communicates with `https://api.populardiagnostic.com/api/` for:
-- Doctor listings and profiles
-- Branch information and services
-- Report downloads and patient portal features
+| API | Base URL | Auth | Purpose |
+|-----|----------|------|---------|
+| Legacy | `VITE_BASE_URL` | Token query param | Doctors, branches, services, reports |
+| Akhil | `VITE_AKHIL_API_BASE_URL` | Bearer token (fetched via `/api/Token/GetToken`) | Branch-specific service charges |
 
-**Branch System**: Each PDCL branch has its own dedicated page component with:
-- Hero video section
-- Doctor listings with pagination
-- Service search functionality
-- Branch-specific contact information
+## Deployment
 
-### Environment Configuration
-- Uses Vite environment variables (`VITE_BASE_URL`, `VITE_API_TOKEN`)
-- Configuration stored in `src/secrets.js`
-
-### Custom Styling
-- PDCL brand colors: `#006642` (primary green), `#00984a` (hover state)
-- Custom Tailwind utilities for gradient text animations
-- Responsive design with mobile-first approach
-- Custom animations: blob, upDown, gradient flows
-
-### Performance Optimizations
-- Vite build configuration with tree shaking enabled
-- Lazy loading for all major components
-- Image optimization with WebP format
-- Component-level code splitting
-
-### Routing Structure
-- Root layout with persistent navigation (Nav, Navbar, Footer, Sidemenu)
-- Nested routing for branches and services
-- Error boundary with custom Error component
-- ScrollToTop component for navigation
-
-### Notable Components
-- `SearchBoxBranch` - Branch-specific service search
-- `DoctorSearch` - Doctor finder with specialization filters  
-- `ReportDownload` - Patient portal for downloading reports
-- `ChatWidget` - Customer support integration
-- `FacebookChat` - Social media integration
-
-The codebase follows React best practices with functional components, hooks, and modern ES6+ syntax. The large constants file suggests extensive static data for branch information, doctor profiles, and service listings.
+- **AWS S3 + CloudFront** — primary production deployment
+- **Vercel** — alternative deployment (vercel.json configured)
+- Cache: 1-year immutable for hashed assets, 5-min for HTML
