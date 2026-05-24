@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
-import { styles } from "../styles";
 import { reportDownload } from "../constants/branches";
 
 // Custom hooks
@@ -596,14 +595,14 @@ const Search = () => {
 
   return (
     <div
-      className={`${styles.paddingX} search-35-percent-coverage bg-gradient-to-t from-transparent to-white/80 to-40% rounded-t-2xl pt-4 flex relative z-10 max-w-7xl mx-auto justify-center items-bottom text-center flex-col text-gray-900 safe-area-top ios-optimized`}>
-      <div className="mb-4">
+      className={`px-4 sm:px-8 md:px-12 xl:px-16 search-35-percent-coverage bg-gradient-to-t from-transparent to-white/80 to-40% rounded-t-2xl pt-3 sm:pt-4 flex relative z-10 max-w-7xl mx-auto justify-center items-bottom text-center flex-col text-gray-900 safe-area-top ios-optimized`}>
+      <div className="mb-2 sm:mb-3 md:mb-4">
         <ul className="text-sm font-medium text-center text-gray-900 sm:flex">
           {TABS.map((tab) => (
             <li key={tab.id} className="w-full p-1 focus-within:z-10">
               <button
                 type="button"
-                className={`inline-block w-full p-3 shadow-2xl rounded text-gray-900 border-r border-gray-200 ${
+                className={`inline-block w-full p-2 sm:p-2.5 md:p-3 shadow-2xl rounded text-gray-900 border-r border-gray-200 ${
                   activeTab === tab.id
                     ? "bg-[#ffffff] text-gray-900"
                     : "bg-[#00984a] text-white"
@@ -619,7 +618,7 @@ const Search = () => {
       <div id="search-tab-content">
         {activeTab === "doctors" && (
           <div
-            className="p-2 rounded"
+            className="p-1 sm:p-2 rounded"
             role="tabpanel"
             aria-labelledby="doctors-tab">
             {renderDoctorTab()}
@@ -628,7 +627,7 @@ const Search = () => {
 
         {activeTab === "appointment" && (
           <div
-            className="p-2 rounded"
+            className="p-1 sm:p-2 rounded"
             role="tabpanel"
             aria-labelledby="appointment-tab">
             {renderAppointmentTab()}
@@ -637,7 +636,7 @@ const Search = () => {
 
         {activeTab === "test-prices" && (
           <div
-            className="p-2 rounded"
+            className="p-1 sm:p-2 rounded"
             role="tabpanel"
             aria-labelledby="test-prices-tab">
             {renderTestPricesTab()}

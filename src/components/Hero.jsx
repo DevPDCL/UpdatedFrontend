@@ -49,7 +49,7 @@ const Hero = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full">
+      <div className="relative w-full h-[clamp(260px,50vh,360px)] sm:h-[clamp(320px,52vh,420px)] md:h-[clamp(360px,55vh,500px)] lg:h-[clamp(400px,60vh,560px)] xl:h-[clamp(440px,62vh,600px)] 2xl:h-[clamp(480px,65vh,640px)]">
         {images.map((image, index) => (
           <motion.div
             key={image.id}

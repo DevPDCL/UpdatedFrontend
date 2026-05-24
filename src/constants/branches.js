@@ -243,7 +243,7 @@ const branch = [
       "https://maps.google.com/maps?q=23.713776,90.4109699&hl=es;z=14&output=embed",
     braManImg: MdMahbuburRahmanChowdhury,
     braManName: "Md. Mahbubur Rahman Chowdhury",
-    braManDesignation: "Branch Manager",
+    braManDesignation: "Senior Branch Manager",
     name: "Popular Diagnostic Centre Ltd. (English road)",
     address: "House # 2, English Road, Dhaka.",
   },
@@ -486,7 +486,7 @@ const branch = [
       "https://maps.google.com/maps?q=23.839972,90.257242&hl=es;z=14&output=embed",
     braManImg: MrRajuAhmmedKhalek,
     braManName: " Mr. Raju Ahmmed Khalek",
-    braManDesignation: "Branch In-Charge",
+    braManDesignation: "Branch Manager",
   },
   {
     branchID: 27,
@@ -494,7 +494,7 @@ const branch = [
     image: Gazipur,
     Hotline: "09666787816",
     Email: "info@populardiagnostic.com",
-    braCity: "Gazipur",
+    braCity: "Dhaka",
     location:
       "https://maps.google.com/maps?q=23.9969328,90.4148069&hl=es;z=14&output=embed",
 
@@ -746,6 +746,14 @@ const branch = [
     braManDesignation: "DGM (HR & Admin)",
     name: "Popular Diagnostic Centre Ltd. (Tangail)",
     address: "Akota Tower, Mymensingh Road, Sabalia Tangail",
+  },
+  {
+    branchID: 56,
+    heading: "Comilla",
+    Hotline: "09666787825",
+    Email: "info@populardiagnostic.com",
+    braCity: "Comilla",
+    name: "Popular Diagnostic Centre Ltd. (Comilla)",
   },
 ];
 

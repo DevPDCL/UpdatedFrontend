@@ -25,6 +25,7 @@ import Error from "./Error";
 import Dmd from "./Dmd";
 import Gallery from "./Gallery";
 import Videos from "./Videos";
+import HealthTalks from "./HealthTalks";
 import Shantinagar from "../components/Branch/Shantinagar";
 import Shyamoli from "../components/Branch/Shyamoli";
 import Mirpur from "../components/Branch/Mirpur";
@@ -70,6 +71,7 @@ export {
   Dinajpur,
   EnglishRoad,
   Videos,
+  HealthTalks,
   Gazipur,
   Jatrabari,
   Khulna,

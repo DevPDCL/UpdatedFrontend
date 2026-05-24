@@ -95,36 +95,42 @@
   }
 }
 
-/* Search Component - 35% Hero Coverage */
+/* Search Component - Viewport-aware Hero Coverage
+ * Pulls the search panel up over the hero. Uses clamp(min, vh-based, max)
+ * so the elevation scales with viewport height (critical for short laptop
+ * displays like 720p/768p), while keeping a sensible ceiling on tall monitors. */
 .search-35-percent-coverage {
-  /* Calculate exactly 35% of Hero height for each breakpoint */
-  --hero-height: 300px;
-  --search-elevation: calc(var(--hero-height) * -0.35); /* -105px */
-  margin-top: var(--search-elevation);
-  
-  /* Smooth transitions for elevation changes */
+  margin-top: clamp(-150px, -18vh, -80px);
   transition: margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Responsive elevation values - exactly 35% of Hero heights */
 @media (min-width: 640px) {
   .search-35-percent-coverage {
-    --hero-height: 400px;
-    --search-elevation: calc(var(--hero-height) * -0.35); /* -140px */
+    margin-top: clamp(-170px, -20vh, -110px);
   }
 }
 
 @media (min-width: 768px) {
   .search-35-percent-coverage {
-    --hero-height: 500px;
-    --search-elevation: calc(var(--hero-height) * -0.35); /* -175px */
+    margin-top: clamp(-200px, -22vh, -140px);
   }
 }
 
 @media (min-width: 1024px) {
   .search-35-percent-coverage {
-    --hero-height: 600px;
-    --search-elevation: calc(var(--hero-height) * -0.35); /* -210px */
+    margin-top: clamp(-220px, -24vh, -160px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .search-35-percent-coverage {
+    margin-top: clamp(-260px, -26vh, -190px);
+  }
+}
+
+@media (min-width: 1536px) {
+  .search-35-percent-coverage {
+    margin-top: clamp(-300px, -28vh, -220px);
   }
 }
 

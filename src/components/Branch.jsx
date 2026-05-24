@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import PropTypes from "prop-types";
 import "@fontsource/ubuntu";
 import { API_TOKEN, BASE_URL } from "../secrets";
+import logoFallback from "../assets/logo.webp";
  
 
 const API_URL = `${BASE_URL}/api/branches?token=${API_TOKEN}`;
@@ -181,7 +182,7 @@ const ProjectCardSkeleton = () => (
 );
 
 const ProjectCard = React.memo(
-  ({ id, image, city, address, Hotline, Email, heading, units }) => {
+  ({ id, image, city, address, Hotline, heading, units }) => {
     const navigate = useNavigate();
     const [isExpanded, setIsExpanded] = useState(false);
     const reducedMotion = useReducedMotion();
@@ -525,7 +526,6 @@ ProjectCard.propTypes = {
   city: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
   Hotline: PropTypes.string.isRequired,
-  Email: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
   units: PropTypes.number.isRequired,
 };
@@ -729,11 +729,11 @@ const Branch = () => {
         if (data?.success) {
           const cleanedBranches = data.data.data.map((branch) => ({
             ...branch,
-            cleanedName: branch.name.replace(/\(.*?\)/g, "").trim(),
-            address: branch.address.replace(/<[^>]*>/g, ""),
+            image: branch.image || logoFallback,
+            cleanedName: (branch.name ?? "").replace(/\(.*?\)/g, "").trim(),
+            address: (branch.address ?? "").replace(/<[^>]*>/g, ""),
             Hotline: branch.telephone_2 || branch.telephone_1 || "N/A",
-            Email: branch.email,
-            units: countUnits(branch.name), // Pre-calculate units here
+            units: countUnits(branch.name),
           }));
           setBranches(cleanedBranches);
         } else {
@@ -926,7 +926,6 @@ const Branch = () => {
                     city={branch.city}
                     address={branch.address}
                     Hotline={branch.Hotline}
-                    Email={branch.Email}
                     heading={branch.cleanedName}
                     units={branch.units}
                   />

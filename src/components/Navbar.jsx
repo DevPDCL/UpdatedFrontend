@@ -12,10 +12,12 @@ import {
   BuildingOfficeIcon,
   PhoneIcon,
   ArrowDownTrayIcon,
+  PlayCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { useHoverDepth } from "../hooks/useHoverDepth";
 import { useSmartNavigation } from "../hooks/useSmartNavigation";
+import { branch } from "../constants";
 import { 
   getGlassStyle 
 } from "../utils/3d-effects";
@@ -94,6 +96,7 @@ const Navbar = () => {
   const location = useLocation();
   const { hasScrolled } = useScrollPosition();
   const { trackAction } = useSmartNavigation();
+  const branchCount = branch.length;
   // Smooth hover delay management
   const handleMouseEnter = (menu) => {
     if (hoverTimer) {
@@ -140,7 +143,7 @@ const Navbar = () => {
         {
           to: "/our-branches",
           title: "Our Branches",
-          description: "22+ locations across Bangladesh",
+          description: `${branchCount}+ locations across Bangladesh`,
           icon: BuildingOfficeIcon,
           featured: true,
         },
@@ -155,6 +158,12 @@ const Navbar = () => {
           title: "Emergency Hotlines",
           description: "24/7 emergency support",
           icon: PhoneIcon,
+        },
+        {
+          to: "/health-talks",
+          title: "Health Talks",
+          description: "Doctor-led health & disease awareness",
+          icon: PlayCircleIcon,
         },
       ],
     },
@@ -690,7 +699,7 @@ const Navbar = () => {
                           to="/our-branches"
                           onClick={() => setMobileOpen(false)}
                           icon={BuildingOfficeIcon}
-                          description="22+ locations">
+                          description={`${branchCount}+ locations`}>
                           Our Branches
                         </NavLink>
                       </motion.div>
@@ -727,6 +736,19 @@ const Navbar = () => {
                           </div>
                         </div>
                       </motion.a>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.4, duration: 0.3 }}>
+                        <NavLink
+                          to="/health-talks"
+                          onClick={() => setMobileOpen(false)}
+                          icon={PlayCircleIcon}
+                          description="Doctor-led health & disease awareness">
+                          Health Talks
+                        </NavLink>
+                      </motion.div>
                     </motion.div>
 
                     {/* About Section - Accordion Style */}

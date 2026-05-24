@@ -96,7 +96,7 @@ import LateTaheraAkhter from "./TopManagement/LateTaheraAkhter.webp";
 import MdAlauddinFCMA from "./TopManagement/MdAlauddinFCMA.webp";
 import MdSahabUddin from "./TopManagement/MdSahabUddin.webp";
 import MdZiaulHaqueFaruk from "./TopManagement/MdZiaulHaqueFaruk.webp";
-import MohammadArif from "./TopManagement/MohammadArif.webp";
+import KowsiqAhmed from "./TopManagement/KowsiqAhmed.jpeg";
 import MosaddequeHossain from "./TopManagement/MosaddequeHossain.webp";
 import MostafaNurmohammadPalash from "./TopManagement/MostafaNurmohammadPalash.webp";
 import MrKabirAhmed from "./TopManagement/MrKabirAhmed.webp";
@@ -194,7 +194,7 @@ export {
   MdAlauddinFCMA,
   MdSahabUddin,
   MdZiaulHaqueFaruk,
-  MohammadArif,
+  KowsiqAhmed,
   MosaddequeHossain,
   MostafaNurmohammadPalash,
   MrKabirAhmed,

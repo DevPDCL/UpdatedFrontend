@@ -6,7 +6,7 @@ import {
   MdAlauddinFCMA,
   MdSahabUddin,
   MdZiaulHaqueFaruk,
-  MohammadArif,
+  KowsiqAhmed,
   MosaddequeHossain,
   MostafaNurmohammadPalash,
   MrKabirAhmed,
@@ -73,9 +73,9 @@ export const topManagement = [
   },
   {
     manID: 10,
-    manImg: MohammadArif,
-    manName: "Mohammad Arif",
-    manDesignation: "Manager, (ICT)",
+    manImg: KowsiqAhmed,
+    manName: "Kowsiq Ahmed",
+    manDesignation: "Head of ICT",
   },
   {
     manID: 11,

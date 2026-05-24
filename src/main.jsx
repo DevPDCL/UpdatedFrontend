@@ -58,6 +58,7 @@ const Dmd = lazyLoad("Dmd");
 const Notice = lazyLoad("Notice");
 const NoticeDetails = lazy(() => import("./components/NoticeDetails")); 
 const Videos = lazyLoad("Videos");
+const HealthTalks = lazyLoad("HealthTalks");
 const Contact = lazyLoad("Contact");
 const Health = lazyLoad("Health");
 const About = lazyLoad("About");
@@ -117,6 +118,7 @@ const routes = [
           { path: "/notice", element: <Notice /> },
           { path: "/notices/:id", element: <NoticeDetails /> },
           { path: "/video", element: <Videos /> },
+          { path: "/health-talks", element: <HealthTalks /> },
           { path: "/contact-us", element: <Contact /> },
           { path: "/health", element: <Health /> },
           { path: "/about", element: <About /> },
