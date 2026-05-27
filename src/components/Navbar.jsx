@@ -159,12 +159,12 @@ const Navbar = () => {
           description: "24/7 emergency support",
           icon: PhoneIcon,
         },
-        {
-          to: "/health-talks",
-          title: "Health Talks",
-          description: "Doctor-led health & disease awareness",
-          icon: PlayCircleIcon,
-        },
+        // {
+        //   to: "/health-talks",
+        //   title: "Health Talks",
+        //   description: "Doctor-led health & disease awareness",
+        //   icon: PlayCircleIcon,
+        // },
       ],
     },
     about: {
@@ -737,7 +737,7 @@ const Navbar = () => {
                         </div>
                       </motion.a>
 
-                      <motion.div
+                      {/* <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.4, duration: 0.3 }}>
@@ -748,7 +748,7 @@ const Navbar = () => {
                           description="Doctor-led health & disease awareness">
                           Health Talks
                         </NavLink>
-                      </motion.div>
+                      </motion.div> */}
                     </motion.div>
 
                     {/* About Section - Accordion Style */}

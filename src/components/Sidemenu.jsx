@@ -4,7 +4,8 @@ import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion"
 import "@fontsource/ubuntu";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import { useSmartNavigation } from "../hooks/useSmartNavigation";
-import { 
+import PromoCard from "./PromoCard";
+import {
   getGlassStyle
 } from "../utils/3d-effects";
 import {
@@ -29,6 +30,10 @@ const SmartSidemenu = () => {
   const [dismissedSuggestions, setDismissedSuggestions] = useState(new Set());
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [maxLabelWidth, setMaxLabelWidth] = useState(0);
+  // PromoCard dismissal is in-memory only — a full page reload re-shows it.
+  const [promoDismissed, setPromoDismissed] = useState(false);
+
+  const dismissPromo = () => setPromoDismissed(true);
 
   const navigate = useNavigate();
   const { direction, y } = useScrollPosition();
@@ -62,10 +67,19 @@ const SmartSidemenu = () => {
     const suggestionHeight = Math.min(suggestions.length * baseSuggestionHeight, maxSuggestionsHeight);
     const actionsHeight = contextualActions.length * baseActionHeight;
     const padding = isXSmallScreen ? 40 : isSmallScreen ? 70 : 100;
-    const totalHeight = suggestionHeight + actionsHeight + padding;
+    // Reserve vertical space for the PromoCard only while it's still visible
+    const promoHeight = promoDismissed
+      ? 0
+      : isXSmallScreen
+      ? 250
+      : isSmallScreen
+      ? 275
+      : 295;
+    const totalHeight = promoHeight + suggestionHeight + actionsHeight + padding;
 
-    // Ensure menu doesn't go beyond viewport boundaries with better mobile handling
-    const minTop = isXSmallScreen ? 10 : 20;
+    // Ensure menu doesn't go beyond viewport boundaries with better mobile handling.
+    // Reserve clearance for the sticky top navbar so the pinned promo never sits behind it.
+    const minTop = isXSmallScreen ? 90 : 120;
     const maxTop = Math.max(minTop, viewportHeight - totalHeight - (isXSmallScreen ? 10 : 20));
     const centeredTop = (viewportHeight - totalHeight) / 2;
     const safeTop = Math.max(minTop, Math.min(centeredTop, maxTop));
@@ -771,31 +785,66 @@ const SmartSidemenu = () => {
     );
   };
 
-  // Show only if there are contextual actions
-  if (!contextualActions.length) return null;
-
   const { top: safeTop, isXSmallScreen, isSmallScreen } = getSafePositioning();
+  const hasActions = contextualActions.length > 0;
+
+  // While the PromoCard is on screen, the glass suggestion cards are suppressed.
+  // Once the user swipes the promo away, suggestion mode comes back.
+  const showPromo = !promoDismissed;
+  const showGlassSuggestions = hasActions && promoDismissed;
+
+  // Promo card adds a fixed vertical block above the smart suggestions, but
+  // only while it's visible.
+  const promoOffset = showPromo
+    ? isXSmallScreen
+      ? 250
+      : isSmallScreen
+      ? 275
+      : 295
+    : 0;
 
   return (
     <>
-      {/* Smart Suggestions - Positioned at viewport edge to stay outside max-w-7xl content */}
-      <motion.div
-        className="fixed z-30 hidden sm:block"
-        style={{
-          top: safeTop,
-          right: '16px', // Simple viewport-edge positioning
-        }}
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.5 }}>
-        <SmartSuggestions />
-      </motion.div>
+      {/* Featured Campaign PromoCard - swipe to dismiss; once dismissed, suggestion mode returns */}
+      <AnimatePresence>
+        {showPromo && (
+          <motion.div
+            key="promo-card"
+            className="fixed z-30 hidden sm:block"
+            style={{
+              top: safeTop,
+              right: '16px',
+            }}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            transition={{ delay: 0.35 }}>
+            <PromoCard compact={isSmallScreen} onDismiss={dismissPromo} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Smart Suggestions - shifted below the pinned promo */}
+      {showGlassSuggestions && (
+        <motion.div
+          className="fixed z-30 hidden sm:block"
+          style={{
+            top: `calc(${safeTop} + ${promoOffset}px)`,
+            right: '16px', // Simple viewport-edge positioning
+          }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}>
+          <SmartSuggestions />
+        </motion.div>
+      )}
 
       {/* Contextual Actions Panel - Positioned at viewport edge */}
+      {hasActions && (
       <motion.div
         className="fixed z-30 hidden sm:block"
         style={{
-          top: `calc(${safeTop} + ${getSmartSuggestions.filter(s => !dismissedSuggestions.has(s.action)).length > 0 ?
+          top: `calc(${safeTop} + ${promoOffset}px + ${showGlassSuggestions && getSmartSuggestions.filter(s => !dismissedSuggestions.has(s.action)).length > 0 ?
             (isXSmallScreen ? '180px' : isSmallScreen ? '220px' : '280px')
             : '0px'})`,
           right: '16px', // Simple viewport-edge positioning
@@ -857,6 +906,7 @@ const SmartSidemenu = () => {
           </div>
         </motion.div>
       </motion.div>
+      )}
     </>
   );
 };
