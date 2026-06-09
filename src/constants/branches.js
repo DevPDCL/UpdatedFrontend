@@ -64,19 +64,19 @@ const reportDownload = [
   {
     braID: 2,
     braName: "Dhanmondi",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 12,
     braName: "English Road",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 9,
     braName: "Shantinagar",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
@@ -89,13 +89,13 @@ const reportDownload = [
   {
     braID: 13,
     braName: "Mirpur",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 3,
     braName: "Badda",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
@@ -115,25 +115,25 @@ const reportDownload = [
   {
     braID: 19,
     braName: "Jatrabari",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 16,
     braName: "Savar",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 8,
     braName: "Gazipur",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
     braID: 11,
     braName: "Narayangonj",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Dhaka",
   },
   {
@@ -146,25 +146,25 @@ const reportDownload = [
   {
     braID: 18,
     braName: "Rajshahi",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Rajshahi",
   },
   {
     braID: 5,
     braName: "Noakhali",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Noakhali",
   },
   {
     braID: 15,
     braName: "Chattogram",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Chattogram",
   },
   {
     braID: 10,
     braName: "Mymensingh",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Mymensingh",
   },
   {
@@ -184,19 +184,19 @@ const reportDownload = [
   {
     braID: 14,
     braName: "Khulna",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Khulna",
   },
   {
     braID: 4,
     braName: "Kushtia",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Kushtia",
   },
   {
     braID: 6,
     braName: "Barishal",
-    downloadLink: "http://report.populardiagnostic.com/",
+    downloadLink: "https://report.populardiagnostic.com/",
     braCity: "Barishal",
   },
   {
