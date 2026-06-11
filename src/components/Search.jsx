@@ -22,6 +22,9 @@ const TABS = [
   { id: "test-prices", label: "Test Prices" },
 ];
 
+// Branches hidden from the Test Prices dropdown (prices not public for these)
+const HIDDEN_PRICE_BRANCHES = ["Comilla", "Tangail"];
+
 // Utility Components
 const ListHeader = ({ columns }) => (
   <div className="flex px-3 sm:px-4 md:px-6 py-2.5 md:py-4 bg-gradient-to-r from-[#00664a] to-[#00984a] text-white font-semibold rounded-t-xl shadow-sm">
@@ -360,10 +363,12 @@ const Search = () => {
       label: day
     })), [doctorSearchData.days]);
 
-  const serviceBranchOptions = useMemo(() => reportDownload.map(branch => ({
-    value: `${branch.braID}::${branch.braName}`, // Composite key to handle duplicate braIDs
-    label: branch.braName
-  })), [reportDownload]);
+  const serviceBranchOptions = useMemo(() => reportDownload
+    .filter(branch => !HIDDEN_PRICE_BRANCHES.includes(branch.braName))
+    .map(branch => ({
+      value: `${branch.braID}::${branch.braName}`, // Composite key to handle duplicate braIDs
+      label: branch.braName
+    })), []);
 
   // Popular branches for better mobile UX
   const popularBranches = [1, 2, 3, 4, 5, 6]; // Dhanmondi, Shantinagar, Uttara, Mirpur, Shyamoli, Badda
