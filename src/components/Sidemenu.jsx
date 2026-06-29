@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
 import "@fontsource/ubuntu";
 import { useScrollPosition } from "../hooks/useScrollPosition";
@@ -36,6 +36,9 @@ const SmartSidemenu = () => {
   const dismissPromo = () => setPromoDismissed(true);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  // The video PromoCard is only allowed on the homepage; every other route hides it.
+  const isHomepage = location.pathname === "/";
   const { direction, y } = useScrollPosition();
   const { contextualActions, emergencyMode, trackAction, getSmartSuggestions } = useSmartNavigation();
 
@@ -68,7 +71,8 @@ const SmartSidemenu = () => {
     const actionsHeight = contextualActions.length * baseActionHeight;
     const padding = isXSmallScreen ? 40 : isSmallScreen ? 70 : 100;
     // Reserve vertical space for the PromoCard only while it's still visible
-    const promoHeight = promoDismissed
+    // (homepage only — it never renders elsewhere).
+    const promoHeight = (!isHomepage || promoDismissed)
       ? 0
       : isXSmallScreen
       ? 250
@@ -790,8 +794,10 @@ const SmartSidemenu = () => {
 
   // While the PromoCard is on screen, the glass suggestion cards are suppressed.
   // Once the user swipes the promo away, suggestion mode comes back.
-  const showPromo = !promoDismissed;
-  const showGlassSuggestions = hasActions && promoDismissed;
+  // The promo (video) is homepage-only; on every other route the glass
+  // suggestions take over immediately since there is no promo to dismiss.
+  const showPromo = isHomepage && !promoDismissed;
+  const showGlassSuggestions = hasActions && !showPromo;
 
   // Promo card adds a fixed vertical block above the smart suggestions, but
   // only while it's visible.

@@ -918,3 +918,157 @@ button,
 .ad-card {
   scroll-snap-align: start;
 }
+
+/* ============================================================
+   Leadership / About — Liquid Glass system (lg-*)
+   Light, app-consistent base (green-50 → white) carrying rich,
+   glossy frosted-glass panels. The diagnostic brand lives in
+   glass: lab slides, lenses, clarity — so the leaders sit on
+   bright "specimen plates" framed by luminous green glass.
+   ============================================================ */
+
+.lg-page {
+  position: relative;
+  isolation: isolate;
+}
+
+/* soft, out-of-focus green orbs — a touch of depth on the light base */
+.lg-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: -1;
+  animation: lgDrift 20s ease-in-out infinite;
+}
+
+@keyframes lgDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -28px, 0) scale(1.08); }
+}
+
+/* frosted "instrument" strip (error panel) */
+.lg-rail {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 18px 40px -20px rgba(6, 60, 40, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* the glass panel that frames each leader */
+.lg-card {
+  position: relative;
+  background:
+    linear-gradient(157deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.55) 45%, rgba(0, 152, 74, 0.08) 100%);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 22px 45px -22px rgba(6, 60, 40, 0.28),
+    0 6px 16px -10px rgba(6, 60, 40, 0.18),
+    0 0 0 1px rgba(0, 102, 66, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  overflow: hidden;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.55s ease, border-color 0.55s ease;
+}
+
+/* fixed top-left specular gloss (the still reflection on the glass) */
+.lg-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 36%);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* the moving specular glint, on hover */
+.lg-card::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -75%;
+  width: 55%;
+  height: 120%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.lg-card:hover::after,
+.lg-card:focus-within::after { left: 130%; }
+
+.lg-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 152, 74, 0.35);
+  box-shadow:
+    0 36px 60px -26px rgba(6, 60, 40, 0.35),
+    0 0 0 1px rgba(0, 152, 74, 0.18),
+    0 0 40px rgba(0, 152, 74, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* the portrait "specimen plate" inside the glass */
+.lg-plate {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, #ffffff, #eef8f1);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 102, 66, 0.08),
+    0 10px 22px -14px rgba(6, 60, 40, 0.35);
+}
+
+.lg-plate img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.lg-card:hover .lg-plate img { transform: scale(1.045); }
+
+/* green light bleeding the portrait down into the glass body */
+.lg-plate-scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 30%;
+  background: linear-gradient(180deg, transparent, rgba(0, 102, 66, 0.12));
+  pointer-events: none;
+}
+
+/* the jade accent that grows under each name on hover */
+.lg-underline {
+  display: block;
+  height: 2px;
+  width: 32px;
+  margin: 3px auto 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #006642, #00b365);
+  opacity: 0.75;
+  transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.5s ease;
+}
+
+.lg-card:hover .lg-underline { width: 60px; opacity: 1; }
+
+/* glass skeleton shimmer while loading */
+.lg-skeleton {
+  background: linear-gradient(100deg, rgba(0, 102, 66, 0.05) 30%, rgba(0, 102, 66, 0.12) 50%, rgba(0, 102, 66, 0.05) 70%);
+  background-size: 220% 100%;
+  animation: lgShimmer 1.6s linear infinite;
+}
+
+@keyframes lgShimmer {
+  0% { background-position: 180% 0; }
+  100% { background-position: -180% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-orb { animation: none; }
+  .lg-card,
+  .lg-plate img,
+  .lg-underline { transition: none; }
+  .lg-card::after { display: none; }
+  .lg-card:hover { transform: none; }
+  .lg-skeleton { animation: none; }
+}

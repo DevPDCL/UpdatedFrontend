@@ -1,261 +1,241 @@
 import "@fontsource/ubuntu";
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-import { API_TOKEN, BASE_URL } from "../secrets";
+import { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { legacyApi } from "../services/api/legacyApi";
 
-const ProjectCard = ({ image, name, designation }) => {
+/* The leadership team is an org hierarchy, not a flat gallery. Each tier is a
+   labelled band whose cards step down in scale, so rank reads at a glance. */
+const TIERS = [
+  { key: "row1", label: "Executive Leadership", max: "max-w-[1000px]", cols: "grid-cols-1 sm:grid-cols-3", size: "xl", fill: 3 },
+  { key: "row2", label: "General Management", max: "max-w-[880px]", cols: "grid-cols-1 sm:grid-cols-3", size: "lg", fill: 3 },
+  { key: "row3", label: "Deputy General Management", max: "max-w-[780px]", cols: "grid-cols-1 sm:grid-cols-3", size: "md", fill: 3 },
+  { key: "row4", label: "Department Heads", max: "max-w-[1120px]", cols: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5", size: "sm", fill: 5 },
+];
+
+const SIZE = {
+  xl: { name: "text-lg sm:text-xl", role: "text-xs sm:text-sm", pad: "p-3.5", plate: "rounded-[1.4rem]", foot: "pt-4 pb-3" },
+  lg: { name: "text-base sm:text-lg", role: "text-xs", pad: "p-3", plate: "rounded-[1.25rem]", foot: "pt-3.5 pb-3" },
+  md: { name: "text-sm sm:text-base", role: "text-[11px] sm:text-xs", pad: "p-3", plate: "rounded-[1.1rem]", foot: "pt-3 pb-2.5" },
+  sm: { name: "text-sm", role: "text-[11px]", pad: "p-2.5", plate: "rounded-[1rem]", foot: "pt-3 pb-2.5" },
+};
+
+// Initials for the graceful fallback when a portrait fails to load.
+const getInitials = (name = "") =>
+  name
+    .replace(/\(.*?\)/g, "")
+    .trim()
+    .split(/\s+/)
+    .filter((w) => !/^(dr\.?|mr\.?|mrs\.?|ms\.?|md\.?|late)$/i.test(w))
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+
+const LeaderCard = ({ image, name, designation, size }) => {
+  const s = SIZE[size];
+  const [imgError, setImgError] = useState(false);
+
   return (
-    <div className="glass-medical rounded-2xl sm:rounded-3xl w-full sm:w-[280px] lg:w-[299px] h-full shadow-depth-2 transition-all duration-500 hover-lift group touch-manipulation relative lg:hover:z-50 lg:hover:scale-110 lg:hover:shadow-depth-5 flex flex-col">
-      {/* Image section - restored glassmorphism */}
-      <div className="relative w-full overflow-hidden p-2 rounded-t-2xl sm:rounded-t-3xl flex-shrink-0">
-        <img
-          src={image}
-          alt={`${name}&apos;s profile - ${designation}`}
-          className="w-full h-72 bg-white sm:h-80 lg:h-[350px] object-cover object-top transition-all duration-500 group-hover:scale-105 rounded-2xl sm:rounded-3xl"
-          loading="lazy"
-          decoding="async"
-          style={{ WebkitBackfaceVisibility: "hidden" }}
-        />
-        {/* Subtle overlay for better text readability on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-PDCL-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl m-2"></div>
-        
-        {/* Professional corner accent - visible on hover */}
-        <div className="absolute top-4 right-4 w-8 h-8 bg-PDCL-green-light rounded-full flex items-center justify-center opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
+    <article className={`lg-card flex h-full flex-col rounded-[1.75rem] ${s.pad}`}>
+      <div className={`lg-plate relative overflow-hidden ${s.plate}`}>
+        <div className="aspect-[4/5] w-full">
+          {imgError ? (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#e7f7ee] to-[#cfead9]">
+              <span className="font-ubuntu text-3xl font-semibold tracking-wide text-[#00795c]">
+                {getInitials(name)}
+              </span>
+            </div>
+          ) : (
+            <img
+              src={image}
+              alt={`${name}, ${designation}`}
+              onError={() => setImgError(true)}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover object-top"
+            />
+          )}
         </div>
+        <span className="lg-plate-scrim" aria-hidden="true" />
       </div>
-      
-      {/* Content section - restored glassmorphism transparency with flex-grow */}
-      <div className="p-4 sm:p-6 lg:p-7 text-center flex-grow flex flex-col justify-center relative">
-        <div className="flex-grow flex flex-col justify-center">
-          <h3 className="text-gray-900 font-bold font-ubuntu text-lg sm:text-xl lg:text-2xl mb-2 leading-tight group-hover:text-PDCL-green-light transition-colors duration-300">
-            {name}
-          </h3>
-          <p className="text-gray-600 font-medium font-ubuntu text-sm sm:text-base leading-relaxed lg:group-hover:text-PDCL-green transition-colors duration-300">
-            {designation}
-          </p>
-        </div>
-        
-        {/* Enhanced info badge - appears on hover for large screens */}
-        <div className="mt-3 inline-flex items-center justify-center px-3 py-1 rounded-full bg-PDCL-green-light/10 text-PDCL-green-light text-xs font-medium opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-          Leadership Team
-        </div>
-        
-        {/* Bottom accent line - enhanced on hover */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 lg:group-hover:w-16 h-1 bg-gradient-to-r from-PDCL-green-light to-PDCL-green rounded-full transition-all duration-300"></div>
+
+      <div className={`relative z-10 flex flex-1 flex-col px-1 text-center ${s.foot}`}>
+        <h3 className={`font-ubuntu font-semibold leading-snug text-gray-900 ${s.name}`}>{name}</h3>
+        <p className={`mt-1 leading-snug text-gray-500 ${s.role}`}>{designation}</p>
+      </div>
+
+      <span className="lg-underline" aria-hidden="true" />
+    </article>
+  );
+};
+
+const SkeletonCard = ({ size }) => {
+  const s = SIZE[size];
+  return (
+    <div className={`lg-card flex h-full flex-col rounded-[1.75rem] ${s.pad}`}>
+      <div className={`lg-skeleton ${s.plate} aspect-[4/5] w-full`} />
+      <div className={`flex flex-1 flex-col items-center gap-2 px-1 ${s.foot}`}>
+        <div className="lg-skeleton h-4 w-3/4 rounded-full" />
+        <div className="lg-skeleton h-3 w-1/2 rounded-full" />
       </div>
     </div>
   );
 };
 
-ProjectCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  designation: PropTypes.string.isRequired,
-};
+const Tier = ({ tier, members, loading, reduce }) => {
+  const container = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+  };
+  const item = reduce
+    ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 26 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.2, 0.7, 0.2, 1] } },
+      };
 
-const SkeletonLoader = () => (
-  <div className="glass-medical rounded-2xl sm:rounded-3xl w-full sm:w-[280px] lg:w-[299px] h-full shadow-depth-1 animate-pulse flex flex-col">
-    <div className="relative w-full overflow-hidden rounded-t-2xl sm:rounded-t-3xl flex-shrink-0">
-      <div className="w-full h-72 sm:h-80 lg:h-[350px] bg-gray-200 p-2 rounded-2xl sm:rounded-3xl" />
-    </div>
-    <div className="p-4 sm:p-6 lg:p-7 text-center space-y-3 flex-grow flex flex-col justify-center">
-      <div className="h-5 sm:h-6 bg-gray-200 rounded mx-2" />
-      <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto" />
-    </div>
-  </div>
-);
+  const cards = loading ? Array.from({ length: tier.fill }) : members;
+  if (!loading && members.length === 0) return null;
 
-const ErrorMessage = ({ message }) => (
-  <div className="w-full py-12 px-4 text-center">
-    <div className="glass-medical rounded-2xl p-6 sm:p-8 max-w-md mx-auto border-l-4 border-red-400">
-      <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mx-auto mb-4">
-        <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
-        </svg>
+  return (
+    <section className="relative px-4 py-9 sm:px-6 sm:py-12 lg:px-8">
+      <div className={`mx-auto ${tier.max}`}>
+        <div className="mb-7 flex items-center gap-4 sm:mb-9">
+          <h2 className="whitespace-nowrap font-ubuntu text-xs font-medium uppercase tracking-[0.25em] text-[#006642] sm:text-sm">
+            {tier.label}
+          </h2>
+          <span className="h-px flex-1 bg-gradient-to-r from-[#00984a]/45 via-[#00984a]/15 to-transparent" />
+          <span className="text-xs tabular-nums text-[#00984a]/55 sm:text-sm">
+            {loading ? "" : String(members.length).padStart(2, "0")}
+          </span>
+        </div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.12 }}
+          className={`grid gap-5 sm:gap-6 ${tier.cols} justify-items-center`}
+        >
+          {cards.map((m, i) => (
+            <motion.div key={m?._id || i} variants={item} className="h-full w-full max-w-[340px]">
+              {loading ? <SkeletonCard size={tier.size} /> : <LeaderCard {...m} size={tier.size} />}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-      <p className="text-red-600 font-ubuntu text-base sm:text-lg font-medium leading-relaxed">{message}</p>
-      <button 
-        onClick={() => window.location.reload()}
-        className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 touch-manipulation min-h-[44px]"
-      >
-        Try Again
-      </button>
-    </div>
+    </section>
+  );
+};
+
+const Atmosphere = () => (
+  <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <span
+      className="lg-orb"
+      style={{ width: 420, height: 420, top: -110, left: -90, background: "radial-gradient(circle, #86efac, transparent 70%)" }}
+    />
+    <span
+      className="lg-orb"
+      style={{ width: 320, height: 320, top: "34%", right: -80, background: "radial-gradient(circle, #6ee7b7, transparent 70%)", animationDelay: "5s" }}
+    />
+    <span
+      className="lg-orb"
+      style={{ width: 480, height: 480, bottom: -170, left: "24%", background: "radial-gradient(circle, #a7f3d0, transparent 70%)", animationDelay: "9s" }}
+    />
   </div>
 );
-
-ErrorMessage.propTypes = {
-  message: PropTypes.string.isRequired,
-};
 
 const About = () => {
-  const [managementData, setManagementData] = useState({
-    row1: [],
-    row2: [],
-    row3: [],
-    row4: [],
-  });
+  const [data, setData] = useState({ row1: [], row2: [], row3: [], row4: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const sectionsRef = useRef([]);
-
-  // Mobile-first scroll animation observer with iOS optimizations
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            // iOS performance optimization
-            entry.target.style.transform = 'translateZ(0)';
-          }
-        });
-      },
-      { 
-        threshold: prefersReducedMotion ? 0.3 : 0.1, 
-        rootMargin: '30px'
-      }
-    );
-
-    sectionsRef.current.forEach((section) => {
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, [loading]); // Re-run when loading changes
+  const reduce = useReducedMotion();
 
   useEffect(() => {
+    let active = true;
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get(`${BASE_URL}/api/management-team`, {
-          params: {
-            token: `${API_TOKEN}`,
-          },
-          timeout: 5000,
+        const response = await legacyApi.get("/api/management-team");
+        const rows = response.data?.data ?? {};
+        if (!active) return;
+        setData({
+          row1: rows["Row - 1"]?.slice(0, 3) || [],
+          row2: rows["Row - 2"]?.slice(0, 3) || [],
+          row3: rows["Row - 3"]?.slice(0, 3) || [],
+          row4: rows["Row - 4"]?.slice(0, 5) || [],
         });
-
-        setManagementData({
-          row1: response.data.data["Row - 1"]?.slice(0, 3) || [],
-          row2: response.data.data["Row - 2"]?.slice(0, 3) || [],
-          row3: response.data.data["Row - 3"]?.slice(0, 3) || [],
-          row4: response.data.data["Row - 4"]?.slice(0, 5) || [],
-        });
-      } catch (err) {
-        // Log error for debugging in development
-        if (process.env.NODE_ENV === 'development') {
-          // eslint-disable-next-line no-console
-          console.error("Failed to fetch management data:", err);
-        }
-        setError(
-          "Failed to load management team data. Please try again later."
-        );
+      } catch {
+        if (active) setError("We couldn't load the leadership team right now. Please try again.");
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
-
     fetchData();
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const renderManagementRow = (teamMembers, key, rowIndex) => (
-    <div
-      key={key}
-      className="scroll-fade px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-7xl mx-auto"
-      ref={(el) => (sectionsRef.current[rowIndex] = el)}
-    >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 justify-items-center items-start">
-        {loading
-          ? Array(teamMembers.length || 3)
-              .fill()
-              .map((_, i) => <SkeletonLoader key={`skeleton-${key}-${i}`} />)
-          : teamMembers.map((member, index) => (
-              <div 
-                key={member._id} 
-                className="w-full max-w-sm h-full"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <ProjectCard {...member} />
-              </div>
-            ))}
-      </div>
-    </div>
-  );
-
   if (error) {
-    return <ErrorMessage message={error} />;
+    return (
+      <div className="lg-page relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-green-50 to-white px-4">
+        <Atmosphere />
+        <div className="lg-rail max-w-md rounded-3xl p-8 text-center">
+          <p className="font-ubuntu text-lg font-medium text-gray-800">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-6 rounded-full bg-gradient-to-r from-[#00984a] to-[#00b358] px-6 py-2.5 font-medium text-white transition-all duration-300 hover:brightness-110"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="bg-gradient-to-b from-green-50 to-white min-h-screen overflow-x-hidden">
-      {/* Mobile-first hero section with iOS safe areas */}
-      <section 
-        className="relative pt-16 pb-8 px-4 sm:pt-20 sm:pb-12 md:pt-28 md:pb-16 lg:px-8 max-w-7xl mx-auto"
-        style={{ paddingTop: "max(4rem, env(safe-area-inset-top))" }}
+    <div className="lg-page relative min-h-screen overflow-x-hidden bg-gradient-to-b from-green-50 to-white pb-10">
+      <Atmosphere />
+
+      {/* Hero — institutional thesis, then the people */}
+      <section
+        className="relative px-4 pb-8 pt-16 text-center sm:px-6 sm:pb-12 sm:pt-20 lg:px-8 lg:pt-24"
+        style={{ paddingTop: "max(4.5rem, env(safe-area-inset-top))" }}
       >
-        <div className="text-center max-w-4xl mx-auto scroll-fade" ref={(el) => (sectionsRef.current[0] = el)}>
-          <h1 className="text-3xl leading-tight sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Our{" "}
-            <span className="text-PDCL-green-light bg-gradient-to-r from-PDCL-green-light to-PDCL-green bg-clip-text text-transparent">
-              Leadership Team
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 22 }}
+          animate={reduce ? false : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+          className="mx-auto max-w-4xl"
+        >
+          <p className="mb-5 font-ubuntu text-[10px] font-medium uppercase tracking-[0.32em] text-[#00984a] sm:mb-6 sm:text-xs">
+            Popular Diagnostic Centre · Since 1983
+          </p>
+          <h1 className="font-ubuntu text-3xl font-bold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+            Leadership built on
+            <br />
+            <span className="bg-gradient-to-r from-[#00b365] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
+              four decades of trust
             </span>
           </h1>
-          <p className="text-lg leading-relaxed sm:text-xl md:text-2xl text-gray-600 mb-8 sm:mb-12 font-light px-2 sm:px-0">
-            Meet the visionary leaders driving healthcare excellence and innovation at Popular Diagnostic Centre Ltd.
+          <p className="mx-auto mt-5 max-w-2xl text-base font-light leading-relaxed text-gray-600 sm:mt-6 sm:text-lg">
+            From a single centre in Dhaka to a nationwide diagnostic network, these are the people guiding Popular
+            Diagnostic Centre&apos;s commitment to accurate, accessible healthcare.
           </p>
-          
-          {/* Leadership Philosophy Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-8">
-            {[
-              { 
-                icon: "🎯", 
-                title: "Visionary Leadership", 
-                description: "Pioneering healthcare innovation since 1983"
-              },
-              { 
-                icon: "🤝", 
-                title: "Collaborative Excellence", 
-                description: "United in our commitment to patient care"
-              },
-              { 
-                icon: "🌟", 
-                title: "Healthcare Innovation", 
-                description: "Leading Bangladesh's diagnostic revolution"
-              },
-            ].map((item, index) => (
-              <div key={index} className="text-center p-4 sm:p-6 glass-medical rounded-2xl hover-lift group transition-all duration-300">
-                <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {item.icon}
-                </div>
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-PDCL-green-light transition-colors duration-300">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Management rows with improved spacing and mobile-first design */}
-      {renderManagementRow(managementData.row1, "row1", 1)}
-      {renderManagementRow(managementData.row2, "row2", 2)}
-      {renderManagementRow(managementData.row3, "row3", 3)}
-      {renderManagementRow(managementData.row4, "row4", 4)}
-      
-      {/* Bottom spacing with iOS safe area */}
+      {TIERS.map((tier) => (
+        <Tier key={tier.key} tier={tier} members={data[tier.key]} loading={loading} reduce={reduce} />
+      ))}
+
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
 };
 
-About.displayName = 'About';
+About.displayName = "About";
 
 export default About;
