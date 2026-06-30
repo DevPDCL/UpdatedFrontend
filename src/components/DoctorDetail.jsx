@@ -247,7 +247,9 @@ const DoctorDetail = () => {
                             alt={doc.name}
                             onError={(e) => {
                               e.target.onerror = null;
-                              e.target.src = "https://via.placeholder.com/64";
+                              // Inline SVG avatar fallback (no network request, can't fail).
+                              e.target.src =
+                                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f3f4f6'/%3E%3Ccircle cx='32' cy='25' r='12' fill='%239ca3af'/%3E%3Cpath d='M12 56c0-11 9-18 20-18s20 7 20 18z' fill='%239ca3af'/%3E%3C/svg%3E";
                             }}
                           />
                           {/* Active indicator dot */}
