@@ -1,8 +1,8 @@
 import "@fontsource/ubuntu";
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
-import { bandOf, getInitials } from "../utils/leadership";
+import { BANDS, bandOf, getInitials } from "../utils/leadership";
 
 const TILE_GRADIENTS = [
   "from-[#0e5c43] to-[#1d8a63]",
@@ -11,6 +11,12 @@ const TILE_GRADIENTS = [
   "from-[#205e52] to-[#3f8f74]",
   "from-[#145747] to-[#35836a]",
   "from-[#2c6660] to-[#4f948b]",
+];
+
+const FILTERS = [
+  { key: "all", label: "All" },
+  { key: "executive", label: "Executive" },
+  ...BANDS,
 ];
 
 // Number words for the lede (14 → "Fourteen"); digits past twenty.
@@ -134,6 +140,10 @@ const AboutGallery = () => {
     ...data.rest.map((m) => ({ ...m, band: bandOf(m.designation) })),
   ];
 
+  const [filter, setFilter] = useState("all");
+
+  const shown = filter === "all" ? allMembers : allMembers.filter((m) => m.band === filter);
+
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#fdfdfb] px-4">
@@ -153,6 +163,52 @@ const AboutGallery = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#fdfdfb] pb-12">
       <GalleryHero members={allMembers} loading={loading} reduce={reduce} />
+      <section className="px-4 pt-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter leadership by group">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setFilter(f.key)}
+                aria-pressed={filter === f.key}
+                className={`rounded-full border px-4 py-2 font-ubuntu text-[13px] font-semibold transition-colors ${
+                  filter === f.key
+                    ? "border-[#006642] bg-[#006642] text-white"
+                    : "border-[#d7e0d9] bg-white text-[#4c5a54] hover:border-[#00984a]/50"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          <motion.div
+            layout={!reduce}
+            className="mt-6 grid grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {(loading ? [] : shown).map((m, i) => (
+                <Tile
+                  key={m._id || m.name}
+                  member={m}
+                  index={i}
+                  big={m.band === "executive"}
+                  reduce={reduce}
+                />
+              ))}
+            </AnimatePresence>
+            {loading &&
+              Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className={`gal-skeleton rounded-2xl ${i < 3 ? "col-span-2 row-span-2" : ""}`} />
+              ))}
+          </motion.div>
+
+          {!loading && shown.length === 0 && (
+            <p className="mt-10 text-center text-sm text-[#5f6a66]">No members in this group.</p>
+          )}
+        </div>
+      </section>
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
