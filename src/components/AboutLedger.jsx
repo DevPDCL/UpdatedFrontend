@@ -90,6 +90,49 @@ const Masthead = ({ total, loading, reduce }) => (
   </header>
 );
 
+const ChapterHead = ({ title, chapter, count }) => (
+  <div className="mt-14 flex items-baseline justify-between gap-4 border-b-2 border-[#17251e] pb-2.5">
+    <h2 className="ldg-serif text-lg font-medium text-[#17251e] sm:text-xl">{title}</h2>
+    <span className="whitespace-nowrap font-ubuntu text-[9px] uppercase tracking-[0.2em] text-[#78877d] sm:text-[10px]">
+      Chapter {String(chapter).padStart(2, "0")} · {String(count).padStart(2, "0")} members
+    </span>
+  </div>
+);
+
+const ExecPlate = ({ member, index, reduce }) => (
+  <motion.div
+    initial={reduce ? false : { opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.2 }}
+    transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
+    className="grid grid-cols-[44px_120px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7"
+  >
+    <span className="ldg-serif text-xl italic text-[#9fb3a5] sm:text-2xl">
+      {ROMANS[index] || `${index + 1}.`}
+    </span>
+    <LedgerPortrait {...member} />
+    <div>
+      <h3 className="ldg-serif text-2xl font-medium leading-tight text-[#17251e] sm:text-3xl">
+        {member.name}
+      </h3>
+      <p className="mt-2 font-ubuntu text-[10px] uppercase tracking-[0.24em] text-[#006642] sm:text-[11px]">
+        {member.designation}
+      </p>
+    </div>
+  </motion.div>
+);
+
+const ExecPlateSkeleton = () => (
+  <div className="grid grid-cols-[44px_120px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7">
+    <span />
+    <div className="ldg-skeleton aspect-[4/5] w-full rounded-sm" />
+    <div>
+      <div className="ldg-skeleton h-6 w-2/3 rounded-full" />
+      <div className="ldg-skeleton mt-3 h-3 w-1/3 rounded-full" />
+    </div>
+  </div>
+);
+
 const AboutLedger = () => {
   const { data, loading, error } = useManagementTeam();
   const reduce = useReducedMotion();
@@ -113,6 +156,14 @@ const AboutLedger = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#f5f8f5] pb-12">
       <Masthead total={data.exec.length + data.rest.length} loading={loading} reduce={reduce} />
+      <section className="px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <ChapterHead title="Executive Leadership" chapter={1} count={loading ? 3 : data.exec.length} />
+          {loading
+            ? [0, 1, 2].map((i) => <ExecPlateSkeleton key={i} />)
+            : data.exec.map((m, i) => <ExecPlate key={m._id || i} member={m} index={i} reduce={reduce} />)}
+        </div>
+      </section>
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
