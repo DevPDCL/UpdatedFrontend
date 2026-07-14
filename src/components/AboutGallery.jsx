@@ -28,7 +28,7 @@ const allWord = (n) => {
   return words[n] || String(n);
 };
 
-const Tile = forwardRef(({ member, index, big = false, onOpen, reduce }, ref) => {
+const Tile = forwardRef(({ member, index, big = false, wide = false, onOpen, reduce }, ref) => {
   const [imgError, setImgError] = useState(false);
   return (
     <motion.button
@@ -43,7 +43,7 @@ const Tile = forwardRef(({ member, index, big = false, onOpen, reduce }, ref) =>
       transition={{ type: "spring", stiffness: 320, damping: 30 }}
       className={`relative flex items-end overflow-hidden rounded-2xl bg-gradient-to-br p-2.5 text-left ${
         TILE_GRADIENTS[index % TILE_GRADIENTS.length]
-      } ${big ? "col-span-2 row-span-2" : ""} ${
+      } ${big ? (wide ? "col-span-3 row-span-2 sm:col-span-2" : "col-span-2 row-span-2") : ""} ${
         onOpen ? "cursor-pointer" : "cursor-default"
       } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00984a] focus-visible:ring-offset-2`}
       aria-label={`${member.name}, ${member.designation}`}
@@ -284,6 +284,8 @@ const AboutGallery = () => {
     return [...out, ...smalls.slice(si)];
   })();
 
+  const execsOnly = wallOrder.length > 0 && wallOrder.every((m) => m.band === "executive");
+
   const [selected, setSelected] = useState(null);
   const lastFocusRef = useRef(null);
 
@@ -358,6 +360,7 @@ const AboutGallery = () => {
                   member={m}
                   index={i}
                   big={m.band === "executive"}
+                  wide={execsOnly}
                   onOpen={openSpotlight}
                   reduce={reduce}
                 />
