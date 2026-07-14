@@ -1207,3 +1207,50 @@ button,
 @media (min-width: 640px) {
   .lg-ribbon-strip { display: none; }
 }
+
+/* ============================================================
+   About variant 1 — The Ledger (ldg-*)
+   Heritage annual-report treatment: green-cast paper, deep
+   green ink, serif display, hairline rules, duotone portraits.
+   ============================================================ */
+.ldg-serif {
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+
+.ldg-dropcap::first-letter {
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.85;
+  padding: 0.05em 0.12em 0 0;
+  color: #006642;
+}
+
+/* Duotone portrait plate: grayscale photo takes the hue of the
+   deep-green backdrop via luminosity blending. */
+.ldg-duo {
+  position: relative;
+  overflow: hidden;
+  background: #1d5c42;
+}
+.ldg-duo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: grayscale(1) contrast(1.05);
+  mix-blend-mode: luminosity;
+}
+
+.ldg-skeleton {
+  background: linear-gradient(90deg, #e6eee8 25%, #f0f5f1 50%, #e6eee8 75%);
+  background-size: 200% 100%;
+  animation: ldg-shimmer 1.6s linear infinite;
+}
+@keyframes ldg-shimmer {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ldg-skeleton { animation: none; }
+}

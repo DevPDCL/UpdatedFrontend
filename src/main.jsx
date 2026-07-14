@@ -62,6 +62,7 @@ const Videos = lazyLoad("Videos");
 const Contact = lazyLoad("Contact");
 const Health = lazyLoad("Health");
 const About = lazyLoad("About");
+const AboutLedger = lazyLoad("AboutLedger");
 const Terms = lazyLoad("Terms");
 const Privacy = lazyLoad("Privacy");
 const Gallery = lazyLoad("Gallery");
@@ -122,6 +123,7 @@ const routes = [
           { path: "/contact-us", element: <Contact /> },
           { path: "/health", element: <Health /> },
           { path: "/about", element: <About /> },
+          { path: "/about1", element: <AboutLedger /> },
           { path: "/terms&conditions", element: <Terms /> },
           { path: "/privacy&policy", element: <Privacy /> },
           { path: "/gallery", element: <Gallery /> },
