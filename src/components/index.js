@@ -4,6 +4,7 @@ import Technology from "./Technology";
 import Navbar from "./Navbar";
 import About from "./About";
 import AboutLedger from "./AboutLedger";
+import AboutInstrument from "./AboutInstrument";
 import Footer from "./Footer";
 import Search from "./Search";
 import SearchBoxBranch from "./SearchBoxBranch";
@@ -98,6 +99,7 @@ export {
   Navbar,
   About,
   AboutLedger,
+  AboutInstrument,
   Footer,
   Search,
   HomeContent,

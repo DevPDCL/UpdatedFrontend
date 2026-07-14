@@ -1254,3 +1254,111 @@ button,
 @media (prefers-reduced-motion: reduce) {
   .ldg-skeleton { animation: none; }
 }
+
+/* ============================================================
+   About variant 2 — The Instrument (dgx-*)
+   Clinical-precision treatment on the brand's light theme:
+   green-tinted white ground, faint green graph grid, white
+   specimen-plate cards, PDCL-green monospace data labels.
+   ============================================================ */
+.dgx-page {
+  background-color: #f8fbf9;
+  background-image:
+    linear-gradient(rgba(0, 152, 74, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 152, 74, 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.dgx-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Specimen plate with crosshair corner ticks */
+.dgx-card {
+  position: relative;
+  border: 1px solid rgba(0, 152, 74, 0.28);
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 102, 66, 0.06);
+}
+.dgx-card::before,
+.dgx-card::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #00984a;
+  pointer-events: none;
+}
+.dgx-card::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 10px 0 0 0;
+}
+.dgx-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 10px 0;
+}
+
+.dgx-scan {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 152, 74, 0.25);
+  background: linear-gradient(to bottom right, #e7f7ee, #cfead9);
+}
+.dgx-scan img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.dgx-scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 152, 74, 0.1), transparent 45%);
+  pointer-events: none;
+}
+
+.dgx-dot {
+  box-shadow: 0 0 8px rgba(0, 152, 74, 0.6);
+}
+
+/* ECG tracer: a short bright dash cycling along the faint line */
+.dgx-ecg-path {
+  stroke-dasharray: 60 900;
+  animation: dgx-trace 5s linear infinite;
+}
+@keyframes dgx-trace {
+  to { stroke-dashoffset: -960; }
+}
+
+.dgx-panel-card {
+  border: 1px solid #e0eae3;
+  background: #ffffff;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.dgx-panel-card:hover {
+  border-color: rgba(0, 152, 74, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 152, 74, 0.14);
+}
+
+.dgx-skeleton {
+  background: linear-gradient(90deg, #e6eee8 25%, #f0f5f1 50%, #e6eee8 75%);
+  background-size: 200% 100%;
+  animation: dgx-shimmer 1.6s linear infinite;
+}
+@keyframes dgx-shimmer {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dgx-ecg-path { animation: none; stroke-dasharray: none; }
+  .dgx-panel-card { transition: none; }
+  .dgx-skeleton { animation: none; }
+}
