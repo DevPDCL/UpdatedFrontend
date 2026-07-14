@@ -2,7 +2,7 @@ import "@fontsource/ubuntu";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
-import { getInitials } from "../utils/leadership";
+import { BANDS, bandOf, getInitials } from "../utils/leadership";
 
 const ROMANS = ["I.", "II.", "III."];
 
@@ -133,9 +133,53 @@ const ExecPlateSkeleton = () => (
   </div>
 );
 
+const RegisterRow = ({ member, no, reduce }) => (
+  <motion.div
+    initial={reduce ? false : { opacity: 0, y: 14 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.2 }}
+    transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
+    className="grid grid-cols-[48px_1fr_auto] items-center gap-4 border-b border-[#d8e2da] py-3.5 sm:grid-cols-[56px_1fr_auto] sm:gap-5"
+  >
+    <LedgerPortrait {...member} textClass="text-base" />
+    <div>
+      <h3 className="ldg-serif text-base font-medium text-[#17251e] sm:text-lg">{member.name}</h3>
+      <p className="mt-0.5 font-ubuntu text-[9px] uppercase tracking-[0.16em] text-[#78877d] sm:text-[10px]">
+        {member.designation}
+      </p>
+    </div>
+    <span className="font-ubuntu text-[10px] tabular-nums text-[#9fb3a5] sm:text-[11px]">
+      No. {String(no).padStart(2, "0")}
+    </span>
+  </motion.div>
+);
+
+const RegisterRowSkeleton = () => (
+  <div className="grid grid-cols-[48px_1fr_auto] items-center gap-4 border-b border-[#d8e2da] py-3.5 sm:grid-cols-[56px_1fr_auto] sm:gap-5">
+    <div className="ldg-skeleton aspect-[4/5] w-full rounded-sm" />
+    <div>
+      <div className="ldg-skeleton h-4 w-1/2 rounded-full" />
+      <div className="ldg-skeleton mt-2 h-2.5 w-1/3 rounded-full" />
+    </div>
+    <span />
+  </div>
+);
+
 const AboutLedger = () => {
   const { data, loading, error } = useManagementTeam();
   const reduce = useReducedMotion();
+
+  const bands = BANDS.map((b) => ({
+    ...b,
+    members: data.rest.filter((m) => bandOf(m.designation) === b.key),
+  })).filter((b) => b.members.length > 0);
+
+  let ledgerNo = data.exec.length;
+  const chapters = bands.map((b, i) => {
+    const start = ledgerNo + 1;
+    ledgerNo += b.members.length;
+    return { ...b, chapter: i + 2, start };
+  });
 
   if (error) {
     return (
@@ -162,6 +206,27 @@ const AboutLedger = () => {
           {loading
             ? [0, 1, 2].map((i) => <ExecPlateSkeleton key={i} />)
             : data.exec.map((m, i) => <ExecPlate key={m._id || i} member={m} index={i} reduce={reduce} />)}
+        </div>
+      </section>
+      <section className="px-4 pb-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          {loading
+            ? [4, 6].map((rows, i) => (
+                <div key={i}>
+                  <div className="ldg-skeleton mt-14 h-8 w-full rounded-sm" />
+                  {Array.from({ length: rows }).map((_, r) => (
+                    <RegisterRowSkeleton key={r} />
+                  ))}
+                </div>
+              ))
+            : chapters.map((c) => (
+                <div key={c.key}>
+                  <ChapterHead title={c.label} chapter={c.chapter} count={c.members.length} />
+                  {c.members.map((m, i) => (
+                    <RegisterRow key={m._id || i} member={m} no={c.start + i} reduce={reduce} />
+                  ))}
+                </div>
+              ))}
         </div>
       </section>
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
