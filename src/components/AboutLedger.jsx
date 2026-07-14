@@ -81,7 +81,7 @@ const Masthead = ({ total, loading, reduce }) => (
             }
           >
             <b className="ldg-serif block text-xl font-medium text-[#17251e] sm:text-2xl">{value}</b>
-            <span className="font-ubuntu text-[9px] uppercase tracking-[0.18em] text-[#78877d] sm:text-[10px]">
+            <span className="font-ubuntu text-[9px] uppercase tracking-[0.18em] text-[#5f6a66] sm:text-[10px]">
               {label}
             </span>
           </div>
@@ -94,7 +94,7 @@ const Masthead = ({ total, loading, reduce }) => (
 const ChapterHead = ({ title, chapter, count }) => (
   <div className="mt-14 flex items-baseline justify-between gap-4 border-b-2 border-[#17251e] pb-2.5">
     <h2 className="ldg-serif text-lg font-medium text-[#17251e] sm:text-xl">{title}</h2>
-    <span className="whitespace-nowrap font-ubuntu text-[9px] uppercase tracking-[0.2em] text-[#78877d] sm:text-[10px]">
+    <span className="whitespace-nowrap font-ubuntu text-[9px] uppercase tracking-[0.2em] text-[#5f6a66] sm:text-[10px]">
       Chapter {String(chapter).padStart(2, "0")} · {String(count).padStart(2, "0")} members
     </span>
   </div>
@@ -108,7 +108,7 @@ const ExecPlate = ({ member, index, reduce }) => (
     transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
     className="grid grid-cols-[32px_104px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7"
   >
-    <span className="ldg-serif text-xl italic text-[#9fb3a5] sm:text-2xl">
+    <span className="ldg-serif text-xl italic text-[#9fb3a5] sm:text-2xl" aria-hidden="true">
       {ROMANS[index] || `${index + 1}.`}
     </span>
     <LedgerPortrait {...member} />
@@ -145,11 +145,11 @@ const RegisterRow = ({ member, no, reduce }) => (
     <LedgerPortrait {...member} textClass="text-base" />
     <div className="min-w-0">
       <h3 className="ldg-serif break-words text-base font-medium text-[#17251e] sm:text-lg">{member.name}</h3>
-      <p className="mt-0.5 break-words font-ubuntu text-[9px] uppercase tracking-[0.16em] text-[#78877d] sm:text-[10px]">
+      <p className="mt-0.5 break-words font-ubuntu text-[9px] uppercase tracking-[0.16em] text-[#5f6a66] sm:text-[10px]">
         {member.designation}
       </p>
     </div>
-    <span className="font-ubuntu text-[10px] tabular-nums text-[#9fb3a5] sm:text-[11px]">
+    <span className="font-ubuntu text-[10px] tabular-nums text-[#5f6a66] sm:text-[11px]">
       No. {String(no).padStart(2, "0")}
     </span>
   </motion.div>

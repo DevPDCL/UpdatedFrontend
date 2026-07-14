@@ -1641,3 +1641,4 @@ Not part of this plan — plan it when the decision lands:
 2. Remove the two losing components, their barrel entries, `lazyLoad` consts, `/about1|2|3` routes, and their CSS namespace blocks from `src/index.css`.
 3. Delete the now-unused `lg-*` ("Liquid Glass") block from `src/index.css` once nothing references it (`grep -rn "lg-" src/components/About*.jsx`).
 4. `npm run lint` + full visual pass on `/about`.
+5. Run a WCAG AA contrast pass on the winning variant's full palette (the per-track audits only included a contrast step in Track B).

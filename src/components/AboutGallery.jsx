@@ -168,7 +168,7 @@ const Spotlight = ({ member, list, onClose, onStep, reduce }) => {
             {member.name}
           </h2>
           <p className="mt-1 text-sm text-[#5f6a66]">{member.designation}</p>
-          <div className="mt-4 flex items-center gap-3 font-ubuntu text-xs text-[#8a948f]">
+          <div className="mt-4 flex items-center gap-3 font-ubuntu text-xs text-[#5f6a66]">
             <button
               type="button"
               onClick={() => onStep(-1)}
@@ -368,7 +368,10 @@ const AboutGallery = () => {
             </AnimatePresence>
             {loading &&
               Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className={`gal-skeleton rounded-2xl ${i < 3 ? "col-span-2 row-span-2" : ""}`} />
+                <div
+                  key={i}
+                  className={`gal-skeleton rounded-2xl ${i % 3 === 0 && i < 9 ? "col-span-2 row-span-2" : ""}`}
+                />
               ))}
           </motion.div>
 
