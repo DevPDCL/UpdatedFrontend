@@ -2,7 +2,7 @@ import "@fontsource/ubuntu";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
-import { getInitials } from "../utils/leadership";
+import { BANDS, bandOf, getInitials } from "../utils/leadership";
 
 const ECG_POINTS = "0,20 240,20 260,20 272,6 284,34 296,12 308,20 560,20 572,26 584,20 800,20";
 
@@ -112,9 +112,67 @@ const ExecNodeSkeleton = () => (
   </div>
 );
 
+const PanelBand = ({ band, index, reduce }) => {
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
+  const item = reduce
+    ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 18 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.2, 0.7, 0.2, 1] } },
+      };
+  return (
+    <section className="px-4 py-7 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="dgx-mono flex items-baseline justify-between border-b border-[#00984a]/30 pb-2.5 text-[9px] tracking-[0.18em] text-[#006642] sm:text-[11px]">
+          <span>
+            PANEL {String(index + 2).padStart(2, "0")} · {band.label.toUpperCase()}
+          </span>
+          <span>n = {String(band.members.length).padStart(2, "0")}</span>
+        </div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.12 }}
+          className="mt-5 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4"
+        >
+          {band.members.map((m, i) => (
+            <motion.div key={m._id || i} variants={item} className="dgx-panel-card p-3">
+              <DgxPortrait {...m} small />
+              <h3 className="mt-2.5 font-ubuntu text-[13px] font-semibold text-gray-900">{m.name}</h3>
+              <p className="mt-1 text-[10.5px] leading-relaxed text-gray-500">{m.designation}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const PanelBandSkeleton = ({ fill }) => (
+  <section className="px-4 py-7 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-6xl">
+      <div className="dgx-skeleton h-4 w-full rounded-full" />
+      <div className="mt-5 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
+        {Array.from({ length: fill }).map((_, i) => (
+          <div key={i} className="dgx-panel-card p-3">
+            <div className="dgx-skeleton aspect-[4/5] w-full rounded-md" />
+            <div className="dgx-skeleton mt-3 h-3.5 w-2/3 rounded-full" />
+            <div className="dgx-skeleton mt-2 h-2.5 w-1/2 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const AboutInstrument = () => {
   const { data, loading, error } = useManagementTeam();
   const reduce = useReducedMotion();
+  const bands = BANDS.map((b) => ({
+    ...b,
+    members: data.rest.filter((m) => bandOf(m.designation) === b.key),
+  })).filter((b) => b.members.length > 0);
 
   if (error) {
     return (
@@ -146,6 +204,9 @@ const AboutInstrument = () => {
           ))}
         </div>
       </section>
+      {loading
+        ? [3, 4].map((fill, i) => <PanelBandSkeleton key={i} fill={fill} />)
+        : bands.map((b, i) => <PanelBand key={b.key} band={b} index={i} reduce={reduce} />)}
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
