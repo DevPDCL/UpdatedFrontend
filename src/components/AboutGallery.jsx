@@ -267,6 +267,23 @@ const AboutGallery = () => {
 
   const shown = filter === "all" ? allMembers : allMembers.filter((m) => m.band === filter);
 
+  // Interleave big executive tiles with two small tiles each so a 2x2 exec
+  // tile plus two stacked 1x1 tiles tile a full 3-col block with no gap,
+  // while keeping DOM order monotonic with visual order (sparse grid
+  // placement, no grid-flow-dense) for correct keyboard Tab order.
+  const wallOrder = (() => {
+    const bigs = shown.filter((m) => m.band === "executive");
+    const smalls = shown.filter((m) => m.band !== "executive");
+    const out = [];
+    let si = 0;
+    for (const b of bigs) {
+      out.push(b);
+      out.push(...smalls.slice(si, si + 2));
+      si += 2;
+    }
+    return [...out, ...smalls.slice(si)];
+  })();
+
   const [selected, setSelected] = useState(null);
   const lastFocusRef = useRef(null);
 
@@ -284,11 +301,11 @@ const AboutGallery = () => {
     (dir) => {
       setSelected((cur) => {
         if (!cur) return cur;
-        const i = shown.findIndex((m) => (m._id || m.name) === (cur._id || cur.name));
-        return shown[(i + dir + shown.length) % shown.length];
+        const i = wallOrder.findIndex((m) => (m._id || m.name) === (cur._id || cur.name));
+        return wallOrder[(i + dir + wallOrder.length) % wallOrder.length];
       });
     },
-    [shown]
+    [wallOrder]
   );
 
   if (error) {
@@ -332,10 +349,10 @@ const AboutGallery = () => {
 
           <motion.div
             layout={!reduce}
-            className="mt-6 grid grid-flow-dense grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
+            className="mt-6 grid grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
           >
             <AnimatePresence mode="popLayout">
-              {(loading ? [] : shown).map((m, i) => (
+              {(loading ? [] : wallOrder).map((m, i) => (
                 <Tile
                   key={m._id || m.name}
                   member={m}
@@ -361,7 +378,7 @@ const AboutGallery = () => {
         {selected && (
           <Spotlight
             member={selected}
-            list={shown}
+            list={wallOrder}
             onClose={closeSpotlight}
             onStep={stepSpotlight}
             reduce={reduce}
