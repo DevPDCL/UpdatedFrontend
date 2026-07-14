@@ -1,5 +1,5 @@
 import "@fontsource/ubuntu";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
 import { BANDS, bandOf, getInitials } from "../utils/leadership";
@@ -18,6 +18,8 @@ const FILTERS = [
   { key: "executive", label: "Executive" },
   ...BANDS,
 ];
+
+const BAND_LABELS = Object.fromEntries(FILTERS.map((f) => [f.key, f.label]));
 
 // Number words for the lede (14 → "Fourteen"); digits past twenty.
 const allWord = (n) => {
@@ -76,6 +78,102 @@ const Tile = ({ member, index, big = false, onOpen, reduce }) => {
         </>
       )}
     </motion.button>
+  );
+};
+
+const Spotlight = ({ member, list, onClose, onStep, reduce }) => {
+  const idx = list.findIndex((m) => (m._id || m.name) === (member._id || member.name));
+  const closeRef = useRef(null);
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [member]);
+
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") onStep(1);
+      if (e.key === "ArrowLeft") onStep(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose, onStep]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm"
+    >
+      <motion.div
+        layoutId={reduce ? undefined : `tile-${member._id || member.name}`}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${member.name}, ${member.designation}`}
+        className="grid w-full max-w-lg grid-cols-[120px_1fr] items-center gap-5 rounded-3xl border border-[#dbe5dd] bg-[#f6faf7] p-5 shadow-2xl sm:max-w-xl sm:grid-cols-[150px_1fr] sm:gap-6 sm:p-6"
+      >
+        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-[#0e5c43] to-[#2a8d6a]">
+          {!imgError && member.image ? (
+            <img
+              src={member.image}
+              alt={`${member.name}, ${member.designation}`}
+              onError={() => setImgError(true)}
+              className="h-full w-full object-cover object-top"
+            />
+          ) : (
+            <span className="flex h-full w-full items-center justify-center font-ubuntu text-3xl font-extrabold text-white">
+              {getInitials(member.name)}
+            </span>
+          )}
+        </div>
+        <div>
+          <span className="inline-block rounded-full bg-[#e3f1e9] px-3 py-1 font-ubuntu text-[10px] font-bold uppercase tracking-[0.16em] text-[#00794e]">
+            {BAND_LABELS[member.band] || member.band}
+          </span>
+          <h2 className="mt-2.5 font-ubuntu text-xl font-extrabold text-[#22292a] sm:text-2xl">
+            {member.name}
+          </h2>
+          <p className="mt-1 text-sm text-[#5f6a66]">{member.designation}</p>
+          <div className="mt-4 flex items-center gap-3 font-ubuntu text-xs text-[#8a948f]">
+            <button
+              type="button"
+              onClick={() => onStep(-1)}
+              className="rounded-full border border-[#d7e0d9] px-3.5 py-1.5 font-semibold text-[#4c5a54] transition-colors hover:border-[#00984a]/60"
+            >
+              ← Prev
+            </button>
+            <span className="tabular-nums">
+              {String(idx + 1).padStart(2, "0")} of {String(list.length).padStart(2, "0")}
+            </span>
+            <button
+              type="button"
+              onClick={() => onStep(1)}
+              className="rounded-full border border-[#d7e0d9] px-3.5 py-1.5 font-semibold text-[#4c5a54] transition-colors hover:border-[#00984a]/60"
+            >
+              Next →
+            </button>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="ml-auto rounded-full bg-[#006642] px-3.5 py-1.5 font-semibold text-white transition-all hover:brightness-110"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -144,6 +242,27 @@ const AboutGallery = () => {
 
   const shown = filter === "all" ? allMembers : allMembers.filter((m) => m.band === filter);
 
+  const [selected, setSelected] = useState(null);
+  const lastFocusRef = useRef(null);
+
+  const openSpotlight = (member, el) => {
+    lastFocusRef.current = el;
+    setSelected(member);
+  };
+
+  const closeSpotlight = () => {
+    setSelected(null);
+    lastFocusRef.current?.focus();
+  };
+
+  const stepSpotlight = (dir) => {
+    setSelected((cur) => {
+      if (!cur) return cur;
+      const i = shown.findIndex((m) => (m._id || m.name) === (cur._id || cur.name));
+      return shown[(i + dir + shown.length) % shown.length];
+    });
+  };
+
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#fdfdfb] px-4">
@@ -194,6 +313,7 @@ const AboutGallery = () => {
                   member={m}
                   index={i}
                   big={m.band === "executive"}
+                  onOpen={openSpotlight}
                   reduce={reduce}
                 />
               ))}
@@ -209,6 +329,17 @@ const AboutGallery = () => {
           )}
         </div>
       </section>
+      <AnimatePresence>
+        {selected && (
+          <Spotlight
+            member={selected}
+            list={shown}
+            onClose={closeSpotlight}
+            onStep={stepSpotlight}
+            reduce={reduce}
+          />
+        )}
+      </AnimatePresence>
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
