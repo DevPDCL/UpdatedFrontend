@@ -66,8 +66,54 @@ const InstrumentHero = ({ reduce }) => (
   </header>
 );
 
+const NodeConnector = ({ reduce }) => (
+  <div className="relative flex justify-center">
+    <motion.span
+      initial={reduce ? false : { scaleY: 0 }}
+      whileInView={{ scaleY: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="block h-9 w-0.5 origin-top bg-gradient-to-b from-[#00984a]/70 to-[#00984a]/20"
+      aria-hidden="true"
+    />
+    <span className="dgx-dot absolute -bottom-1 h-2 w-2 rounded-full bg-[#00984a]" aria-hidden="true" />
+  </div>
+);
+
+const ExecNode = ({ member, index, reduce }) => (
+  <motion.div
+    initial={reduce ? false : { opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.3 }}
+    transition={{ duration: 0.55, ease: [0.2, 0.7, 0.2, 1] }}
+    className="dgx-card mx-auto grid w-full max-w-[430px] grid-cols-[80px_1fr] items-center gap-4 p-4 sm:grid-cols-[92px_1fr] sm:gap-5"
+  >
+    <DgxPortrait {...member} />
+    <div>
+      <p className="dgx-mono text-[9px] tracking-[0.18em] text-[#006642] sm:text-[10px]">
+        EXEC-{String(index + 1).padStart(2, "0")} / {(member.designation || "").toUpperCase()}
+      </p>
+      <h3 className="mt-1.5 font-ubuntu text-base font-bold text-gray-900 sm:text-lg">{member.name}</h3>
+      <p className="dgx-mono mt-2.5 flex items-center gap-2 text-[9px] tracking-[0.14em] text-[#006642] sm:text-[10px]">
+        <i className="dgx-dot h-1.5 w-1.5 rounded-full bg-[#00984a]" aria-hidden="true" />
+        ACTIVE
+      </p>
+    </div>
+  </motion.div>
+);
+
+const ExecNodeSkeleton = () => (
+  <div className="dgx-card mx-auto grid w-full max-w-[430px] grid-cols-[80px_1fr] items-center gap-4 p-4 sm:grid-cols-[92px_1fr] sm:gap-5">
+    <div className="dgx-skeleton aspect-[4/5] w-full rounded-md" />
+    <div>
+      <div className="dgx-skeleton h-3 w-1/2 rounded-full" />
+      <div className="dgx-skeleton mt-3 h-5 w-2/3 rounded-full" />
+    </div>
+  </div>
+);
+
 const AboutInstrument = () => {
-  const { error } = useManagementTeam();
+  const { data, loading, error } = useManagementTeam();
   const reduce = useReducedMotion();
 
   if (error) {
@@ -90,6 +136,16 @@ const AboutInstrument = () => {
   return (
     <div className="dgx-page relative min-h-screen overflow-x-hidden pb-12">
       <InstrumentHero reduce={reduce} />
+      <section className="px-4 pt-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          {(loading ? [null, null, null] : data.exec).map((m, i) => (
+            <div key={m?._id || i}>
+              {i > 0 && <NodeConnector reduce={reduce} />}
+              {loading || !m ? <ExecNodeSkeleton /> : <ExecNode member={m} index={i} reduce={reduce} />}
+            </div>
+          ))}
+        </div>
+      </section>
       <div style={{ paddingBottom: "max(2rem, env(safe-area-inset-bottom))" }} />
     </div>
   );
