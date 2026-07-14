@@ -1,5 +1,5 @@
 import "@fontsource/ubuntu";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, forwardRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
 import { BANDS, bandOf, getInitials } from "../utils/leadership";
@@ -28,12 +28,13 @@ const allWord = (n) => {
   return words[n] || String(n);
 };
 
-const Tile = ({ member, index, big = false, onOpen, reduce }) => {
+const Tile = forwardRef(({ member, index, big = false, onOpen, reduce }, ref) => {
   const [imgError, setImgError] = useState(false);
   return (
     <motion.button
+      ref={ref}
       layout={!reduce}
-      layoutId={reduce ? undefined : `tile-${member._id || member.name}`}
+      layoutId={reduce || !onOpen ? undefined : `tile-${member._id || member.name}`}
       type="button"
       onClick={onOpen ? (e) => onOpen(member, e.currentTarget) : undefined}
       initial={reduce ? false : { opacity: 0, scale: 0.92 }}
@@ -79,23 +80,46 @@ const Tile = ({ member, index, big = false, onOpen, reduce }) => {
       )}
     </motion.button>
   );
-};
+});
+Tile.displayName = "Tile";
 
 const Spotlight = ({ member, list, onClose, onStep, reduce }) => {
   const idx = list.findIndex((m) => (m._id || m.name) === (member._id || member.name));
   const closeRef = useRef(null);
+  const dialogRef = useRef(null);
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     setImgError(false);
   }, [member]);
 
+  // Mount-only: focus Close once. Must NOT re-run on step navigation, or
+  // Prev/Next keyboard use yanks focus back to Close on every press.
   useEffect(() => {
     closeRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
       if (e.key === "ArrowRight") onStep(1);
       if (e.key === "ArrowLeft") onStep(-1);
+      if (e.key === "Tab") {
+        const focusables = Array.from(dialogRef.current?.querySelectorAll("button") || []);
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -107,13 +131,14 @@ const Spotlight = ({ member, list, onClose, onStep, reduce }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={reduce ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={reduce ? undefined : { opacity: 0 }}
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm"
     >
       <motion.div
+        ref={dialogRef}
         layoutId={reduce ? undefined : `tile-${member._id || member.name}`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -245,23 +270,26 @@ const AboutGallery = () => {
   const [selected, setSelected] = useState(null);
   const lastFocusRef = useRef(null);
 
-  const openSpotlight = (member, el) => {
+  const openSpotlight = useCallback((member, el) => {
     lastFocusRef.current = el;
     setSelected(member);
-  };
+  }, []);
 
-  const closeSpotlight = () => {
+  const closeSpotlight = useCallback(() => {
     setSelected(null);
     lastFocusRef.current?.focus();
-  };
+  }, []);
 
-  const stepSpotlight = (dir) => {
-    setSelected((cur) => {
-      if (!cur) return cur;
-      const i = shown.findIndex((m) => (m._id || m.name) === (cur._id || cur.name));
-      return shown[(i + dir + shown.length) % shown.length];
-    });
-  };
+  const stepSpotlight = useCallback(
+    (dir) => {
+      setSelected((cur) => {
+        if (!cur) return cur;
+        const i = shown.findIndex((m) => (m._id || m.name) === (cur._id || cur.name));
+        return shown[(i + dir + shown.length) % shown.length];
+      });
+    },
+    [shown]
+  );
 
   if (error) {
     return (
@@ -304,7 +332,7 @@ const AboutGallery = () => {
 
           <motion.div
             layout={!reduce}
-            className="mt-6 grid grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
+            className="mt-6 grid grid-flow-dense grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
           >
             <AnimatePresence mode="popLayout">
               {(loading ? [] : shown).map((m, i) => (
