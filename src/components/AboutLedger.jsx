@@ -76,7 +76,8 @@ const Masthead = ({ total, loading, reduce }) => (
             className={
               "border-[#c2d1c5] px-4 py-3.5 sm:px-5" +
               (i % 2 === 0 ? " border-r" : "") +
-              (i < 3 ? " sm:border-r" : "")
+              (i < 3 ? " sm:border-r" : "") +
+              (i < 2 ? " border-b sm:border-b-0" : "")
             }
           >
             <b className="ldg-serif block text-xl font-medium text-[#17251e] sm:text-2xl">{value}</b>
@@ -105,17 +106,17 @@ const ExecPlate = ({ member, index, reduce }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.2 }}
     transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
-    className="grid grid-cols-[44px_120px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7"
+    className="grid grid-cols-[32px_104px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7"
   >
     <span className="ldg-serif text-xl italic text-[#9fb3a5] sm:text-2xl">
       {ROMANS[index] || `${index + 1}.`}
     </span>
     <LedgerPortrait {...member} />
-    <div>
-      <h3 className="ldg-serif text-2xl font-medium leading-tight text-[#17251e] sm:text-3xl">
+    <div className="min-w-0">
+      <h3 className="ldg-serif break-words text-2xl font-medium leading-tight text-[#17251e] sm:text-3xl">
         {member.name}
       </h3>
-      <p className="mt-2 font-ubuntu text-[10px] uppercase tracking-[0.24em] text-[#006642] sm:text-[11px]">
+      <p className="mt-2 break-words font-ubuntu text-[10px] uppercase tracking-[0.24em] text-[#006642] sm:text-[11px]">
         {member.designation}
       </p>
     </div>
@@ -123,7 +124,7 @@ const ExecPlate = ({ member, index, reduce }) => (
 );
 
 const ExecPlateSkeleton = () => (
-  <div className="grid grid-cols-[44px_120px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7">
+  <div className="grid grid-cols-[32px_104px_1fr] items-center gap-5 border-b border-[#c2d1c5] py-8 sm:grid-cols-[64px_200px_1fr] sm:gap-7">
     <span />
     <div className="ldg-skeleton aspect-[4/5] w-full rounded-sm" />
     <div>
@@ -142,9 +143,9 @@ const RegisterRow = ({ member, no, reduce }) => (
     className="grid grid-cols-[48px_1fr_auto] items-center gap-4 border-b border-[#d8e2da] py-3.5 sm:grid-cols-[56px_1fr_auto] sm:gap-5"
   >
     <LedgerPortrait {...member} textClass="text-base" />
-    <div>
-      <h3 className="ldg-serif text-base font-medium text-[#17251e] sm:text-lg">{member.name}</h3>
-      <p className="mt-0.5 font-ubuntu text-[9px] uppercase tracking-[0.16em] text-[#78877d] sm:text-[10px]">
+    <div className="min-w-0">
+      <h3 className="ldg-serif break-words text-base font-medium text-[#17251e] sm:text-lg">{member.name}</h3>
+      <p className="mt-0.5 break-words font-ubuntu text-[9px] uppercase tracking-[0.16em] text-[#78877d] sm:text-[10px]">
         {member.designation}
       </p>
     </div>
