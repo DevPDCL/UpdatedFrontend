@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import About from "./About";
 import AboutLedger from "./AboutLedger";
 import AboutInstrument from "./AboutInstrument";
+import AboutGallery from "./AboutGallery";
 import Footer from "./Footer";
 import Search from "./Search";
 import SearchBoxBranch from "./SearchBoxBranch";
@@ -100,6 +101,7 @@ export {
   About,
   AboutLedger,
   AboutInstrument,
+  AboutGallery,
   Footer,
   Search,
   HomeContent,

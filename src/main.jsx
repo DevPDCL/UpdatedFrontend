@@ -64,6 +64,7 @@ const Health = lazyLoad("Health");
 const About = lazyLoad("About");
 const AboutLedger = lazyLoad("AboutLedger");
 const AboutInstrument = lazyLoad("AboutInstrument");
+const AboutGallery = lazyLoad("AboutGallery");
 const Terms = lazyLoad("Terms");
 const Privacy = lazyLoad("Privacy");
 const Gallery = lazyLoad("Gallery");
@@ -126,6 +127,7 @@ const routes = [
           { path: "/about", element: <About /> },
           { path: "/about1", element: <AboutLedger /> },
           { path: "/about2", element: <AboutInstrument /> },
+          { path: "/about3", element: <AboutGallery /> },
           { path: "/terms&conditions", element: <Terms /> },
           { path: "/privacy&policy", element: <Privacy /> },
           { path: "/gallery", element: <Gallery /> },

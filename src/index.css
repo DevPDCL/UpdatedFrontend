@@ -1362,3 +1362,18 @@ button,
   .dgx-panel-card { transition: none; }
   .dgx-skeleton { animation: none; }
 }
+
+/* ============================================================
+   About variant 3 — The Gallery (gal-*)
+   ============================================================ */
+.gal-skeleton {
+  background: linear-gradient(90deg, #eef1ec 25%, #f6f8f3 50%, #eef1ec 75%);
+  background-size: 200% 100%;
+  animation: gal-shimmer 1.6s linear infinite;
+}
+@keyframes gal-shimmer {
+  to { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gal-skeleton { animation: none; }
+}
