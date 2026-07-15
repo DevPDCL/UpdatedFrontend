@@ -23,7 +23,7 @@ const LedgerPortrait = ({ image, name, designation, textClass = "text-3xl" }) =>
     <div className="ldg-duo aspect-[4/5] w-full rounded-sm">
       {imgError || !image ? (
         <div className="flex h-full w-full items-center justify-center">
-          <span className={`ldg-serif ${textClass} tracking-wide text-[#e9f2ec]`}>{getInitials(name)}</span>
+          <span className={`ldg-serif ${textClass} tracking-wide text-[#006642]/70`}>{getInitials(name)}</span>
         </div>
       ) : (
         <img
@@ -38,14 +38,7 @@ const LedgerPortrait = ({ image, name, designation, textClass = "text-3xl" }) =>
   );
 };
 
-const LEDGER_FACTS = (total, loading) => [
-  ["1983", "Established"],
-  ["24+", "Branches"],
-  [loading ? "—" : String(total).padStart(2, "0"), "Leaders listed"],
-  ["4", "Decades of service"],
-];
-
-const Masthead = ({ total, loading, reduce }) => (
+const Masthead = ({ reduce }) => (
   <header
     className="relative px-4 sm:px-6 lg:px-8"
     style={{ paddingTop: "max(4.5rem, env(safe-area-inset-top))" }}
@@ -69,24 +62,6 @@ const Masthead = ({ total, loading, reduce }) => (
         grown into a nationwide diagnostic network. This register records the people entrusted with
         that responsibility.
       </p>
-      <div className="mt-9 grid grid-cols-2 border-y border-[#c2d1c5] sm:grid-cols-4">
-        {LEDGER_FACTS(total, loading).map(([value, label], i) => (
-          <div
-            key={label}
-            className={
-              "border-[#c2d1c5] px-4 py-3.5 sm:px-5" +
-              (i % 2 === 0 ? " border-r" : "") +
-              (i < 3 ? " sm:border-r" : "") +
-              (i < 2 ? " border-b sm:border-b-0" : "")
-            }
-          >
-            <b className="ldg-serif block text-xl font-medium text-[#17251e] sm:text-2xl">{value}</b>
-            <span className="font-ubuntu text-[9px] uppercase tracking-[0.18em] text-[#5f6a66] sm:text-[10px]">
-              {label}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   </header>
 );
@@ -200,7 +175,7 @@ const AboutLedger = () => {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#f5f8f5] pb-12">
-      <Masthead total={data.exec.length + data.rest.length} loading={loading} reduce={reduce} />
+      <Masthead reduce={reduce} />
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <ChapterHead title="Executive Leadership" chapter={1} count={loading ? 3 : data.exec.length} />

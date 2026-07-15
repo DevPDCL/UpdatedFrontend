@@ -42,9 +42,8 @@ const InstrumentHero = ({ reduce }) => (
     style={{ paddingTop: "max(4.5rem, env(safe-area-inset-top))" }}
   >
     <div className="mx-auto max-w-5xl">
-      <div className="dgx-mono flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 text-[10px] tracking-[0.2em] text-[#006642] sm:text-[11px]">
+      <div className="dgx-mono flex flex-wrap items-baseline gap-x-6 gap-y-1 text-[10px] tracking-[0.2em] text-[#006642] sm:text-[11px]">
         <span>PDCL // LEADERSHIP INDEX</span>
-        <span>EST. 1983 · 24+ BRANCHES</span>
       </div>
       <motion.h1
         initial={reduce ? false : { opacity: 0, y: 18 }}

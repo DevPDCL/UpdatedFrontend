@@ -4,14 +4,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useManagementTeam } from "../hooks/useManagementTeam";
 import { BANDS, bandOf, getInitials } from "../utils/leadership";
 
-const TILE_GRADIENTS = [
-  "from-[#0e5c43] to-[#1d8a63]",
-  "from-[#14606e] to-[#2a8d8f]",
-  "from-[#3c6b3f] to-[#6d9b58]",
-  "from-[#205e52] to-[#3f8f74]",
-  "from-[#145747] to-[#35836a]",
-  "from-[#2c6660] to-[#4f948b]",
-];
+const TILE_BG = "from-[#eaf5ee] to-[#d8ebe0]";
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -28,7 +21,7 @@ const allWord = (n) => {
   return words[n] || String(n);
 };
 
-const Tile = forwardRef(({ member, index, big = false, wide = false, onOpen, reduce }, ref) => {
+const Tile = forwardRef(({ member, big = false, wide = false, onOpen, reduce }, ref) => {
   const [imgError, setImgError] = useState(false);
   return (
     <motion.button
@@ -41,9 +34,9 @@ const Tile = forwardRef(({ member, index, big = false, wide = false, onOpen, red
       animate={{ opacity: 1, scale: 1 }}
       exit={reduce ? undefined : { opacity: 0, scale: 0.92 }}
       transition={{ type: "spring", stiffness: 320, damping: 30 }}
-      className={`relative flex items-end overflow-hidden rounded-2xl bg-gradient-to-br p-2.5 text-left ${
-        TILE_GRADIENTS[index % TILE_GRADIENTS.length]
-      } ${big ? (wide ? "col-span-3 row-span-2 sm:col-span-2" : "col-span-2 row-span-2") : ""} ${
+      className={`relative flex items-end overflow-hidden rounded-2xl bg-gradient-to-br ${TILE_BG} p-2.5 text-left ${
+        big ? (wide ? "col-span-3 row-span-2 sm:col-span-2" : "col-span-2 row-span-2") : ""
+      } ${
         onOpen ? "cursor-pointer" : "cursor-default"
       } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00984a] focus-visible:ring-offset-2`}
       aria-label={`${member.name}, ${member.designation}`}
@@ -56,11 +49,11 @@ const Tile = forwardRef(({ member, index, big = false, wide = false, onOpen, red
           onError={() => setImgError(true)}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="absolute inset-0 h-full w-full object-contain"
         />
       ) : (
         <span
-          className={`absolute inset-0 flex items-center justify-center font-ubuntu font-extrabold text-white/85 ${
+          className={`absolute inset-0 flex items-center justify-center font-ubuntu font-extrabold text-[#006642]/70 ${
             big ? "text-3xl" : "text-xl"
           }`}
         >
@@ -146,16 +139,16 @@ const Spotlight = ({ member, list, onClose, onStep, reduce }) => {
         aria-label={`${member.name}, ${member.designation}`}
         className="grid w-full max-w-lg grid-cols-[120px_1fr] items-center gap-5 rounded-3xl border border-[#dbe5dd] bg-[#f6faf7] p-5 shadow-2xl sm:max-w-xl sm:grid-cols-[150px_1fr] sm:gap-6 sm:p-6"
       >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-[#0e5c43] to-[#2a8d6a]">
+        <div className={`relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br ${TILE_BG}`}>
           {!imgError && member.image ? (
             <img
               src={member.image}
               alt={`${member.name}, ${member.designation}`}
               onError={() => setImgError(true)}
-              className="h-full w-full object-cover object-top"
+              className="h-full w-full object-contain"
             />
           ) : (
-            <span className="flex h-full w-full items-center justify-center font-ubuntu text-3xl font-extrabold text-white">
+            <span className="flex h-full w-full items-center justify-center font-ubuntu text-3xl font-extrabold text-[#006642]/70">
               {getInitials(member.name)}
             </span>
           )}
@@ -227,20 +220,10 @@ const GalleryHero = ({ members, loading, reduce }) => (
           {loading ? "Our" : `${allWord(members.length)}`} leaders, one promise: accurate, accessible
           diagnostics for every patient who walks through our doors — at every one of our centres.
         </p>
-        <div className="mt-6 flex flex-wrap gap-2.5">
-          {["Since 1983", "24+ branches", "Nationwide network"].map((s) => (
-            <span
-              key={s}
-              className="rounded-full border border-[#dbe5dd] bg-[#f3f7f3] px-4 py-1.5 font-ubuntu text-xs font-semibold text-[#17313f]"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
       </div>
       <div className="grid grid-cols-4 gap-2.5 [grid-auto-rows:64px] sm:[grid-auto-rows:74px]">
         {(loading ? [] : members.slice(0, 9)).map((m, i) => (
-          <Tile key={m._id || i} member={m} index={i} big={i === 0} reduce={reduce} />
+          <Tile key={m._id || i} member={m} big={i === 0} reduce={reduce} />
         ))}
         {loading &&
           Array.from({ length: 9 }).map((_, i) => (
@@ -354,11 +337,10 @@ const AboutGallery = () => {
             className="mt-6 grid grid-cols-3 gap-2.5 [grid-auto-rows:88px] sm:grid-cols-4 sm:gap-3 sm:[grid-auto-rows:104px] lg:grid-cols-6"
           >
             <AnimatePresence mode="popLayout">
-              {(loading ? [] : wallOrder).map((m, i) => (
+              {(loading ? [] : wallOrder).map((m) => (
                 <Tile
                   key={m._id || m.name}
                   member={m}
-                  index={i}
                   big={m.band === "executive"}
                   wide={execsOnly}
                   onOpen={openSpotlight}

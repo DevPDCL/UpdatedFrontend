@@ -1211,7 +1211,7 @@ button,
 /* ============================================================
    About variant 1 — The Ledger (ldg-*)
    Heritage annual-report treatment: green-cast paper, deep
-   green ink, serif display, hairline rules, duotone portraits.
+   green ink, serif display, hairline rules, colour portraits.
    ============================================================ */
 .ldg-serif {
   font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
@@ -1226,20 +1226,17 @@ button,
   color: #006642;
 }
 
-/* Duotone portrait plate: grayscale photo takes the hue of the
-   deep-green backdrop via luminosity blending. */
+/* Portrait plate. */
 .ldg-duo {
   position: relative;
   overflow: hidden;
-  background: #1d5c42;
+  background: linear-gradient(to bottom right, #eaf5ee, #d8ebe0);
 }
 .ldg-duo img {
   height: 100%;
   width: 100%;
   object-fit: cover;
   object-position: top;
-  filter: grayscale(1) contrast(1.05);
-  mix-blend-mode: luminosity;
 }
 
 .ldg-skeleton {
@@ -1308,7 +1305,7 @@ button,
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(0, 152, 74, 0.25);
-  background: linear-gradient(to bottom right, #e7f7ee, #cfead9);
+  background: linear-gradient(to bottom right, #eaf5ee, #d8ebe0);
 }
 .dgx-scan img {
   height: 100%;
