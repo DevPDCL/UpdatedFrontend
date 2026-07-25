@@ -53,10 +53,25 @@ const DoctorSearch = () => {
         );
         setBranches(branchesRes.data.data.data);
 
-        const specializationsRes = await axios.get(
-          `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`
+        // /api/doctor-speciality is paginated (81 specialties, 50 per page).
+        // Fetching only page 1 left 31 specialties out of the dropdown and made
+        // ~1/3 of /doctors/{specialty} URLs resolve to no ID and land unfiltered.
+        const firstSpecPage = await axios.get(
+          `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=1`
         );
-        setSpecializations(specializationsRes.data.data.data);
+        const specialityRows = [...firstSpecPage.data.data.data];
+        const specialityLastPage = firstSpecPage.data.data.last_page;
+
+        if (Number.isInteger(specialityLastPage)) {
+          for (let page = 2; page <= specialityLastPage; page += 1) {
+            const nextSpecPage = await axios.get(
+              `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=${page}`
+            );
+            specialityRows.push(...nextSpecPage.data.data.data);
+          }
+        }
+
+        setSpecializations(specialityRows);
 
         const daysRes = await axios.get(
           `${BASE_URL}/api/practice-days?token=${API_TOKEN}`
