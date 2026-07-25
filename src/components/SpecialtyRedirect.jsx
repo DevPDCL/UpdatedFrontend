@@ -1,6 +1,13 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
-// Fully implemented in Task 9.
-const SpecialtyRedirect = () => <Navigate to="/our-doctors" replace />;
+// /doctors            -> /our-doctors
+// /doctors/cardiology -> /our-doctors?specialty=cardiology
+const SpecialtyRedirect = () => {
+  const { specialty } = useParams();
+  const to = specialty
+    ? `/our-doctors?specialty=${encodeURIComponent(specialty)}`
+    : "/our-doctors";
+  return <Navigate to={to} replace />;
+};
 
 export default SpecialtyRedirect;

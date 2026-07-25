@@ -5,7 +5,9 @@ import axios from "axios";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSearchParams } from "react-router-dom";
 import { BASE_URL, API_TOKEN } from "../secrets";
+import { slugify } from "../utils/doctorUrl";
 import DoctorCard from "./DoctorCard";
 
 const spring = {
@@ -36,6 +38,9 @@ const DoctorSearch = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isInitialMount = useRef(true);
+  const [searchParams] = useSearchParams();
+  const specialtyParam = searchParams.get("specialty");
+  const hasAppliedSpecialtyParam = useRef(false);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -181,6 +186,19 @@ const DoctorSearch = () => {
       specializations.map((spec) => ({ value: spec.id, label: spec.name })),
     [specializations]
   );
+
+  // A visitor arriving from /doctors/cardiology should land on filtered
+  // results. Runs once, after the specialization list resolves.
+  useEffect(() => {
+    if (hasAppliedSpecialtyParam.current) return;
+    if (!specialtyParam || specializationOptions.length === 0) return;
+
+    const match = specializationOptions.find(
+      (option) => slugify(option.label) === specialtyParam
+    );
+    hasAppliedSpecialtyParam.current = true;
+    if (match) setSelectedSpecializations([match]);
+  }, [specialtyParam, specializationOptions]);
 
   const dayOptions = useMemo(
     () => days.map((day) => ({ value: day, label: day })),
