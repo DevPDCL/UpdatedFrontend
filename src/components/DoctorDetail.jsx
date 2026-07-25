@@ -275,7 +275,7 @@ const DoctorDetail = () => {
         {doctor.image && <meta name="twitter:image" content={doctor.image} />}
 
         <script type="application/ld+json">
-          {jsonLdScript(doctorGraph(doctor, SITE_URL, canonicalPath))}
+          {jsonLdScript(doctorGraph(doctor, SITE_URL, canonicalPath, faqs))}
         </script>
       </Helmet>
       <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">

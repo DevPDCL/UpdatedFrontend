@@ -480,3 +480,16 @@ test("doctorJobTitle leaves a non-physician specialty unsuffixed", () => {
 test("doctorJobTitle falls back to Specialist with no specialty", () => {
   assert.equal(doctorJobTitle({ specialists: [] }), "Specialist");
 });
+
+test("doctorGraph honours a precomputed faqs array instead of recomputing its own", () => {
+  const graph = doctorGraph(
+    fullDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094",
+    [{ question: "Q", answer: "A" }]
+  );
+  const faqPage = graph["@graph"].find((node) => node["@type"] === "FAQPage");
+  assert.ok(faqPage, "FAQPage node should be present");
+  assert.equal(faqPage.mainEntity.length, 1);
+  assert.equal(faqPage.mainEntity[0].name, "Q");
+});

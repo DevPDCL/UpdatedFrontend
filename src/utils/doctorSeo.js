@@ -288,7 +288,7 @@ const stripContext = (node) => {
 // the page's breadcrumb trail, and — only when there is real visible content
 // to back it — an FAQPage. Cross-references use { "@id": ... } rather than
 // repeating whole entities inline.
-export const doctorGraph = (doctor, origin, path) => {
+export const doctorGraph = (doctor, origin, path, faqs = doctorFaq(doctor)) => {
   const url = `${origin}${path}`;
   const orgId = `${origin}/#organization`;
 
@@ -323,7 +323,6 @@ export const doctorGraph = (doctor, origin, path) => {
     "@id": `${url}#breadcrumb`,
   };
 
-  const faqs = doctorFaq(doctor);
   const faqPage = faqs.length
     ? {
         "@type": "FAQPage",
