@@ -1655,11 +1655,25 @@ const main = async () => {
 
   const first = await fetchPage(1);
   const lastPage = first.data.last_page;
+  const expectedTotal = first.data.total;
   const doctors = [...first.data.data];
+
+  // Same guard as scripts/verify-seo.mjs, and it matters more here: an
+  // unreadable last_page makes `2 <= undefined` false, the loop never runs, and
+  // this script would overwrite the committed 3,400-URL sitemap with a ~50-URL
+  // one — silently de-indexing the site. Throwing is safe: the try/catch below
+  // converts it to a warning, and the existing sitemap is left untouched.
+  if (!Number.isInteger(lastPage) || lastPage < 1) {
+    throw new Error(`unusable last_page from API: ${JSON.stringify(lastPage)}`);
+  }
 
   for (let page = 2; page <= lastPage; page += 1) {
     const body = await fetchPage(page);
     doctors.push(...body.data.data);
+  }
+
+  if (Number.isInteger(expectedTotal) && doctors.length !== expectedTotal) {
+    throw new Error(`collected ${doctors.length} doctors, API reports ${expectedTotal}`);
   }
 
   const entries = [
@@ -1697,6 +1711,12 @@ Change the `build` script and add `sitemap`:
 "sitemap": "node --env-file=.env scripts/generate-sitemap.mjs",
 "build": "node --env-file-if-exists=.env scripts/generate-sitemap.mjs && vite build"
 ```
+
+**`engines.node` must be raised from `"20.x"` to `">=20.12.0"` as part of this step.**
+`--env-file-if-exists` landed in Node 20.12; on 20.0–20.11 Node rejects the unknown
+flag and exits before the script's own error handling can run, so `&&` blocks
+`vite build` — the precise failure this flag was chosen to avoid. The existing
+`"20.x"` range permits those versions.
 
 The `build` variant uses `--env-file-if-exists` because `.env` is gitignored and will
 be absent in a fresh CI checkout — plain `--env-file` would abort Node before the
