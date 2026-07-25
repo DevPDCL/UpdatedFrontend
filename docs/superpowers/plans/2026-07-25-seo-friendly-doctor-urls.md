@@ -863,12 +863,18 @@ Run: `npm run verify:seo`
 Expected output ends with:
 
 ```
-Fetched 3386 doctors across 68 pages.
-Unique paths: 3386 / 3386
+Fetched 3385 doctors across 68 pages.
+Unique paths: 3385 / 3385
 Description lengths: 127-160 (limit 160)
 
 All SEO assertions passed.
 ```
+
+**The doctor count is live data and drifts.** It read 3386 when this plan was written
+and 3385 a few hours later — one record was removed from the client's database. Do not
+treat the exact number as an expected value. What must hold is that **unique paths
+equals the doctor count**, and that the collected count matches the API's own `total`
+field (the script asserts this itself).
 
 These numbers were confirmed against live data while this plan was written. Two checks:
 
@@ -1009,7 +1015,7 @@ Expected: no new lint problems beyond the 218-problem baseline; build succeeds
 - [ ] **Step 7: Commit**
 
 ```bash
-git add src/main.jsx src/secrets.js src/components/SpecialtyRedirect.jsx src/components/index.js .env.production package.json package-lock.json
+git add src/main.jsx src/secrets.js src/components/SpecialtyRedirect.jsx src/components/index.js .env .env.production package.json package-lock.json
 git commit -m "feat: add doctor routes, HelmetProvider, and VITE_SITE_URL"
 ```
 
