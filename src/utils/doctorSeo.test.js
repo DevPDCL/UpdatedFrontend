@@ -106,3 +106,98 @@ test("doctorTitle with no specialty and no branch falls back to name only", () =
     "Dr. Z | Popular Diagnostic Centre"
   );
 });
+
+import {
+  to24Hour,
+  openingHours,
+  doctorJsonLd,
+  breadcrumbJsonLd,
+} from "./doctorSeo.js";
+
+const scheduled = {
+  name: "Prof. Dr. M. Nazrul Islam",
+  image: "https://old.populardiagnostic.com/x.jpeg",
+  mobile: "01711563450",
+  specialists: [{ specialist_name: "Cardiology" }],
+  branches: [{ name: "DHANMONDI", phone: "09666 787801" }],
+  schedule: [{ day: "Sunday", start_time: "2:00 pm", end_time: "5:00 pm" }],
+};
+
+test("to24Hour converts afternoon times", () => {
+  assert.equal(to24Hour("2:00 pm"), "14:00");
+  assert.equal(to24Hour("5:30 pm"), "17:30");
+});
+
+test("to24Hour converts morning times", () => {
+  assert.equal(to24Hour("9:00 am"), "09:00");
+  assert.equal(to24Hour("11:45 am"), "11:45");
+});
+
+test("to24Hour handles the noon and midnight edge cases", () => {
+  assert.equal(to24Hour("12:00 pm"), "12:00");
+  assert.equal(to24Hour("12:30 am"), "00:30");
+});
+
+test("to24Hour returns null for unparseable input", () => {
+  assert.equal(to24Hour("closed"), null);
+  assert.equal(to24Hour(""), null);
+  assert.equal(to24Hour(null), null);
+});
+
+test("openingHours maps a schedule to schema.org shape", () => {
+  assert.deepEqual(openingHours(scheduled.schedule), [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "https://schema.org/Sunday",
+      opens: "14:00",
+      closes: "17:00",
+    },
+  ]);
+});
+
+test("openingHours drops entries with unparseable times", () => {
+  assert.deepEqual(
+    openingHours([{ day: "Monday", start_time: "n/a", end_time: "5:00 pm" }]),
+    []
+  );
+});
+
+test("doctorJsonLd uses the branch phone, never the personal mobile", () => {
+  const ld = doctorJsonLd(scheduled, "https://www.populardiagnostic.com/x");
+  assert.equal(ld.telephone, "09666 787801");
+  assert.notEqual(ld.telephone, scheduled.mobile);
+  assert.ok(!JSON.stringify(ld).includes("01711563450"));
+});
+
+test("doctorJsonLd emits a Physician node with specialty and address", () => {
+  const ld = doctorJsonLd(scheduled, "https://www.populardiagnostic.com/x");
+  assert.equal(ld["@type"], "Physician");
+  assert.equal(ld.medicalSpecialty, "Cardiology");
+  assert.equal(ld.address.addressLocality, "Dhanmondi");
+  assert.equal(ld.address.addressCountry, "BD");
+  assert.equal(ld.worksFor.name, "Popular Diagnostic Centre Limited");
+});
+
+test("doctorJsonLd omits telephone when no branch phone exists", () => {
+  const ld = doctorJsonLd(
+    { name: "Dr. Z", mobile: "0170000000", branches: [{ name: "SAVAR" }] },
+    "https://www.populardiagnostic.com/y"
+  );
+  assert.equal("telephone" in ld, false);
+});
+
+test("breadcrumbJsonLd builds a four-level trail", () => {
+  const ld = breadcrumbJsonLd(
+    scheduled,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
+  );
+  assert.equal(ld["@type"], "BreadcrumbList");
+  assert.equal(ld.itemListElement.length, 4);
+  assert.equal(ld.itemListElement[2].name, "Cardiology");
+  assert.equal(
+    ld.itemListElement[2].item,
+    "https://www.populardiagnostic.com/doctors/cardiology"
+  );
+  assert.equal(ld.itemListElement[3].position, 4);
+});

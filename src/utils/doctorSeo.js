@@ -2,7 +2,7 @@
 // MUST NOT import secrets.js or use import.meta.env — the site origin is
 // always passed in as a parameter so plain Node can import this module.
 
-import { primaryBranch, primarySpecialty, titleCase } from "./doctorUrl.js";
+import { primaryBranch, primarySpecialty, slugify, titleCase } from "./doctorUrl.js";
 
 const ORG = "Popular Diagnostic Centre";
 export const DESC_MAX = 160;
@@ -60,4 +60,82 @@ export const doctorDescription = (doctor) => {
   const degrees = fitDegrees(doctor?.degree, DESC_MAX - base.length - 2);
   const full = degrees ? `${name}, ${degrees} - ${tail}` : base;
   return clampText(full, DESC_MAX);
+};
+
+const ORG_FULL = "Popular Diagnostic Centre Limited";
+const SPECIALTY_FALLBACK = "general-practice";
+
+// Schedules store "2:00 pm"; schema.org requires "14:00".
+export const to24Hour = (value) => {
+  const match = /^\s*(\d{1,2}):(\d{2})\s*([ap])\.?m\.?\s*$/i.exec(String(value || ""));
+  if (!match) return null;
+  const hour = (Number(match[1]) % 12) + (match[3].toLowerCase() === "p" ? 12 : 0);
+  return `${String(hour).padStart(2, "0")}:${match[2]}`;
+};
+
+export const openingHours = (schedule) =>
+  (schedule || [])
+    .map((slot) => {
+      const opens = to24Hour(slot?.start_time);
+      const closes = to24Hour(slot?.end_time);
+      if (!opens || !closes || !slot?.day) return null;
+      return {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: `https://schema.org/${slot.day}`,
+        opens,
+        closes,
+      };
+    })
+    .filter(Boolean);
+
+export const doctorJsonLd = (doctor, url) => {
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
+  // Never doctor.mobile — that is a personal cell number.
+  const telephone = doctor?.branches?.[0]?.phone || "";
+  const hours = openingHours(doctor?.schedule);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    name,
+    url,
+    ...(doctor?.image ? { image: doctor.image } : {}),
+    ...(specialty ? { medicalSpecialty: specialty } : {}),
+    worksFor: { "@type": "MedicalOrganization", name: ORG_FULL },
+    ...(branch
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: branch,
+            addressCountry: "BD",
+          },
+        }
+      : {}),
+    ...(telephone ? { telephone } : {}),
+    ...(hours.length ? { openingHoursSpecification: hours } : {}),
+  };
+};
+
+export const breadcrumbJsonLd = (doctor, origin, path) => {
+  const { name, specialty } = resolveDoctorMeta(doctor);
+  const specialtySlug = slugify(specialty) || SPECIALTY_FALLBACK;
+  const trail = [
+    { name: "Home", item: `${origin}/` },
+    { name: "Doctors", item: `${origin}/our-doctors` },
+    ...(specialty
+      ? [{ name: specialty, item: `${origin}/doctors/${specialtySlug}` }]
+      : []),
+    { name, item: `${origin}${path}` },
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.name,
+      item: entry.item,
+    })),
+  };
 };
