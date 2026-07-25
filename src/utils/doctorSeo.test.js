@@ -112,6 +112,7 @@ import {
   openingHours,
   doctorJsonLd,
   breadcrumbJsonLd,
+  jsonLdScript,
 } from "./doctorSeo.js";
 
 const scheduled = {
@@ -184,6 +185,13 @@ test("doctorJsonLd omits telephone when no branch phone exists", () => {
     "https://www.populardiagnostic.com/y"
   );
   assert.equal("telephone" in ld, false);
+});
+
+test("jsonLdScript escapes </script> breakout while staying valid, round-tripping JSON", () => {
+  const value = { name: "</script><img src=x>" };
+  const out = jsonLdScript(value);
+  assert.ok(!out.includes("<"), out);
+  assert.deepEqual(JSON.parse(out), value);
 });
 
 test("breadcrumbJsonLd builds a four-level trail", () => {

@@ -116,6 +116,12 @@ export const doctorJsonLd = (doctor, url) => {
   };
 };
 
+// react-helmet-async assigns <script> children via innerHTML, not textContent
+// (lib/index.esm.js:473-520), and JSON.stringify escapes neither "<" nor "/".
+// A doctor field containing "</script" would close the tag and break the head.
+export const jsonLdScript = (value) =>
+  JSON.stringify(value).replace(/</g, "\\u003c");
+
 export const breadcrumbJsonLd = (doctor, origin, path) => {
   const { name, specialty } = resolveDoctorMeta(doctor);
   const specialtySlug = slugify(specialty) || SPECIALTY_FALLBACK;

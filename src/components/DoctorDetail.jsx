@@ -27,6 +27,7 @@ import {
   doctorDescription,
   doctorJsonLd,
   breadcrumbJsonLd,
+  jsonLdScript,
 } from "../utils/doctorSeo";
 import { SITE_URL } from "../secrets";
 import { motion } from "framer-motion";
@@ -224,10 +225,10 @@ const DoctorDetail = () => {
         {doctor.image && <meta name="twitter:image" content={doctor.image} />}
 
         <script type="application/ld+json">
-          {JSON.stringify(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
+          {jsonLdScript(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
         </script>
         <script type="application/ld+json">
-          {JSON.stringify(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
+          {jsonLdScript(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
         </script>
       </Helmet>
       <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">
