@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { Nav, Navbar, Footer, Sidemenu, Error, ScrollToTop } from "./components";
 import { initializeErrorSuppression } from "./utils/consoleErrorSuppression";
 import "./index.css";
@@ -48,6 +49,7 @@ const ReportDownload = lazyLoad("ReportDownload");
 const SampleCollectionMain = lazyLoad("SampleCollectionMain");
 const DoctorDetail = lazyLoad("DoctorDetail");
 const DoctorSearch = lazyLoad("DoctorSearch");
+const SpecialtyRedirect = lazyLoad("SpecialtyRedirect");
 const Technology = lazyLoad("Technology");
 const Goals = lazyLoad("Goals");
 const Branch = lazyLoad("Branch");
@@ -109,7 +111,10 @@ const routes = [
           { path: "/", element: <Layout /> },
           { path: "/patient_portal", element: <ReportDownload /> },
           { path: "/sample-collection", element: <SampleCollectionMain /> },
+          { path: "/doctors/:specialty/:name/:id", element: <DoctorDetail /> },
           { path: "/doctordetail/:doctorId", element: <DoctorDetail /> },
+          { path: "/doctors/:specialty", element: <SpecialtyRedirect /> },
+          { path: "/doctors", element: <SpecialtyRedirect /> },
           { path: "/our-doctors", element: <DoctorSearch /> },
           { path: "/tech", element: <Technology /> },
           { path: "/goals", element: <Goals /> },
@@ -168,6 +173,8 @@ const router = createBrowserRouter(routes);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HelmetProvider>
+      <RouterProvider router={router} />
+    </HelmetProvider>
   </React.StrictMode>
 );

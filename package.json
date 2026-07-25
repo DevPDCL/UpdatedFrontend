@@ -4,15 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": ">=22.9.0"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node --env-file-if-exists=.env scripts/generate-sitemap.mjs && vite build",
     "build:optimized": "node deploy.js",
     "deploy:s3": "./deploy-s3.sh",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test \"src/utils/*.test.js\"",
+    "verify:seo": "node --env-file=.env scripts/verify-seo.mjs",
+    "sitemap": "node --env-file=.env scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@fontsource/ubuntu": "^5.0.13",
@@ -25,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-fast-marquee": "^1.6.4",
+    "react-helmet-async": "^3.0.0",
     "react-icons": "^5.5.0",
     "react-player": "^2.16.0",
     "react-router-dom": "^6.22.0",

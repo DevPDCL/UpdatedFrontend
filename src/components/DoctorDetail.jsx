@@ -1,7 +1,7 @@
 import "@fontsource/ubuntu";
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   drBackground,
   Adecard,
@@ -18,9 +18,21 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
-import { API_TOKEN, BASE_URL } from "../secrets";
+import { legacyApi } from "../services/api/legacyApi";
+import { buildDoctorPath } from "../utils/doctorUrl";
+import {
+  doctorTitle,
+  doctorDescription,
+  doctorGraph,
+  jsonLdScript,
+  displayName,
+  doctorHeadline,
+  doctorFaq,
+} from "../utils/doctorSeo";
+import { SITE_URL } from "../secrets";
 import { motion } from "framer-motion";
 
 // Pharmaceutical ads data for horizontal banner
@@ -70,28 +82,47 @@ const pharmaceuticalAds = [
 ];
 
 const DoctorDetail = () => {
-  const { doctorId } = useParams();
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  // Canonical route supplies `id`; the legacy /doctordetail/:doctorId route
+  // supplies `doctorId`. The detail API response has no id field of its own.
+  const doctorId = params.id || params.doctorId;
   const [doctor, setDoctor] = useState(null);
   const [similarDoctors, setSimilarDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingSimilar, setLoadingSimilar] = useState(true);
   const [error, setError] = useState(null);
+  // Confirmed absence only — distinct from `error`, which covers transient
+  // failures (network, timeout, 5xx) that must NOT be told to Google via
+  // noindex. See notFoundHead below.
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setLoadingSimilar(true);
       setError(null);
+      setNotFound(false);
       setDoctor(null);
       setSimilarDoctors([]);
 
+      // No id could be parsed from the route at all — nothing to fetch and
+      // no canonical URL to redirect to.
+      if (!doctorId) {
+        setNotFound(true);
+        setLoading(false);
+        setLoadingSimilar(false);
+        return;
+      }
+
       try {
-        const doctorResponse = await axios.get(
-          `${BASE_URL}/api/doctor/${doctorId}?token=${API_TOKEN}`
-        );
+        const doctorResponse = await legacyApi.get(`/api/doctor/${doctorId}`);
 
         if (!doctorResponse.data.success) {
-          throw new Error("Doctor not found");
+          // The API affirmatively says this doctor does not exist.
+          setNotFound(true);
+          return;
         }
 
         const doctorData = doctorResponse.data.data;
@@ -104,9 +135,9 @@ const DoctorDetail = () => {
 
         if (branchIds && specialistIds) {
           try {
-            const similarResponse = await axios.get(
-              `${BASE_URL}/api/doctor-suggestions?token=${API_TOKEN}&branches=${branchIds}&specialities=${specialistIds}`
-            );
+            const similarResponse = await legacyApi.get("/api/doctor-suggestions", {
+              params: { branches: branchIds, specialities: specialistIds },
+            });
             if (similarResponse.data.success) {
               const filteredDoctors = similarResponse.data.data.data.filter(
                 (doc) => doc.id.toString() !== doctorId
@@ -118,8 +149,15 @@ const DoctorDetail = () => {
           }
         }
       } catch (err) {
-        setError(err.message || "Failed to fetch doctor data");
         console.error("Error fetching doctor:", err);
+        // A confirmed 404 means the doctor genuinely doesn't exist — safe to
+        // noindex. Anything else (network error, timeout, 5xx) is
+        // transient: Google should retry, not be told to drop the page.
+        if (err.response?.status === 404) {
+          setNotFound(true);
+        } else {
+          setError(err.message || "Failed to fetch doctor data");
+        }
       } finally {
         setLoading(false);
         setLoadingSimilar(false);
@@ -129,6 +167,20 @@ const DoctorDetail = () => {
     fetchData();
   }, [doctorId]);
 
+  const canonicalPath = doctor ? buildDoctorPath(doctor, doctorId) : null;
+
+  // Rewrite legacy URLs and stale slugs to the canonical path. Without this,
+  // /doctors/any/thing/2094 would serve identical content at unlimited URLs.
+  // The guard compares pathname only, so carrying the query string/hash
+  // through never causes a redirect loop.
+  useEffect(() => {
+    if (!canonicalPath) return;
+    if (location.pathname === canonicalPath) return;
+    navigate(
+      { pathname: canonicalPath, search: location.search, hash: location.hash },
+      { replace: true }
+    );
+  }, [canonicalPath, location.pathname, location.search, location.hash, navigate]);
 
   const isDoctorOnLeave = useCallback(() => {
     return doctor?.on_leave === 1;
@@ -138,13 +190,51 @@ const DoctorDetail = () => {
     return <div className="text-center py-10">Loading...</div>;
   }
 
+  // Static hosting cannot return a real 404, so every bad URL returns 200 OK.
+  // Without noindex, Google indexes unlimited identical error pages. Only
+  // emit this for a *confirmed* absence — a transient API failure below
+  // renders with no robots directive so Google keeps retrying instead of
+  // dropping the page.
+  const notFoundHead = (
+    <Helmet>
+      <title>Doctor Not Found | Popular Diagnostic Centre</title>
+      <meta name="robots" content="noindex, follow" />
+    </Helmet>
+  );
+
+  if (notFound) {
+    return (
+      <>
+        {notFoundHead}
+        <div className="text-center py-10">Doctor not found</div>
+      </>
+    );
+  }
+
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return (
+      <>
+        <Helmet>
+          <title>Doctor profile unavailable | Popular Diagnostic Centre</title>
+        </Helmet>
+        <div className="text-center py-10 text-red-500">{error}</div>
+      </>
+    );
   }
 
   if (!doctor) {
-    return <div className="text-center py-10">Doctor not found</div>;
+    return (
+      <>
+        {notFoundHead}
+        <div className="text-center py-10">Doctor not found</div>
+      </>
+    );
   }
+
+  // Computed once so the visible FAQ section below and the FAQPage
+  // structured data in <Helmet> render the exact same questions — Google
+  // requires FAQ markup to correspond to Q&A actually visible on the page.
+  const faqs = doctorFaq(doctor);
 
   const formattedChamber = {
     branch: doctor.practicing_branches,
@@ -167,6 +257,27 @@ const DoctorDetail = () => {
 
   return (
     <div className="doctor-detail bg-gray-100 min-h-screen">
+      <Helmet>
+        <title>{doctorTitle(doctor)}</title>
+        <meta name="description" content={doctorDescription(doctor)} />
+        <link rel="canonical" href={`${SITE_URL}${canonicalPath}`} />
+
+        <meta property="og:type" content="profile" />
+        <meta property="og:site_name" content="Popular Diagnostic Centre" />
+        <meta property="og:title" content={doctorTitle(doctor)} />
+        <meta property="og:description" content={doctorDescription(doctor)} />
+        <meta property="og:url" content={`${SITE_URL}${canonicalPath}`} />
+        {doctor.image && <meta property="og:image" content={doctor.image} />}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={doctorTitle(doctor)} />
+        <meta name="twitter:description" content={doctorDescription(doctor)} />
+        {doctor.image && <meta name="twitter:image" content={doctor.image} />}
+
+        <script type="application/ld+json">
+          {jsonLdScript(doctorGraph(doctor, SITE_URL, canonicalPath, faqs))}
+        </script>
+      </Helmet>
       <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">
         <div className="flex flex-wrap -mx-2">
           <div className="w-full md:w-3/12 lg:w-4/12 px-2 mb-3 md:mb-4">
@@ -193,12 +304,12 @@ const DoctorDetail = () => {
                 )}
               </div>
               <h1 className="pt-3 text-gray-800 font-bold text-xl leading-tight my-1 font-ubuntu">
-                {doctor.name}
+                {displayName(doctor)}
               </h1>
-              <h3 className="text-gray-600 font-lg font-medium leading-6">
+              <h2 className="text-gray-600 font-lg font-medium leading-6">
                 <MdMedicalServices className="inline mr-1" />
-                {doctor.specialists[0]?.specialist_name || "Not specified"}
-              </h3>
+                {doctorHeadline(doctor)}
+              </h2>
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 hover:shadow-depth-1 py-2 px-3 mt-3 rounded-xl shadow-sm transition-all duration-200">
                 <div className="flex items-center justify-between py-2">
                   <span className="text-sm font-medium">Status</span>
@@ -239,7 +350,18 @@ const DoctorDetail = () => {
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       className="text-center p-2 rounded-xl hover:bg-gradient-to-br from-[#00984a]/5 to-[#00984a]/5 hover:shadow-depth-1 transition-all duration-200">
-                      <Link to={`/doctordetail/${doc.id}`} className="block">
+                      {/* /api/doctor-suggestions returns only {id, name, image,
+                          gender} — no specialists or branches — so
+                          buildDoctorPath(doc) alone would fall back to
+                          "general-practice" on every suggestion. Suggestions
+                          are matched against this doctor's specialist ids, so
+                          borrowing the current doctor's specialty is a close
+                          approximation; the canonical redirect on the target
+                          page remains the backstop for a suggestion matched
+                          on a secondary specialty. */}
+                      <Link
+                        to={buildDoctorPath({ ...doc, specialists: doctor.specialists }, doc.id)}
+                        className="block">
                         <div className="relative inline-block mb-2">
                           <img
                             className="h-16 w-16 rounded-full mx-auto object-cover ring-2 ring-gray-100 hover:ring-[#00984a]/30 transition-all shadow-depth-1"
@@ -292,9 +414,9 @@ const DoctorDetail = () => {
           <div className="w-full md:w-9/12 lg:w-8/12 px-2">
             <div className="bg-white p-3 md:p-4 shadow-depth-3 rounded-2xl hover:shadow-depth-4 transition-all duration-300">
               <div>
-                <h1 className="p-3 md:p-5 text-center font-ubuntu font-bold text-xl md:text-2xl lg:text-3xl bg-gradient-to-r from-[#006642] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
+                <p className="p-3 md:p-5 text-center font-ubuntu font-bold text-xl md:text-2xl lg:text-3xl bg-gradient-to-r from-[#006642] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
                   {doctor.experience_summery || "Experienced Specialist"}
-                </h1>
+                </p>
               </div>
               <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100">
                 <span className="text-[#00984a]">
@@ -340,6 +462,30 @@ const DoctorDetail = () => {
               </motion.button>
             </div>
             <div className="my-3 md:my-4"></div>
+
+            {faqs.length > 0 && (
+              <>
+                <div className="bg-white rounded-2xl shadow-depth-3 p-3 md:p-4 hover:shadow-depth-4 transition-all duration-300">
+                  <h2 className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100 text-lg font-ubuntu">
+                    <span className="text-[#00984a]">
+                      <FaQuestionCircle className="text-lg" />
+                    </span>
+                    <span className="tracking-wide">Frequently Asked Questions</span>
+                  </h2>
+                  <div className="space-y-4">
+                    {faqs.map((faq) => (
+                      <div key={faq.question}>
+                        <h3 className="font-semibold text-gray-900 font-ubuntu mb-1">
+                          {faq.question}
+                        </h3>
+                        <p className="text-gray-700 text-sm leading-relaxed">{faq.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="my-3 md:my-4"></div>
+              </>
+            )}
 
             {/* Horizontal Ad Banner - Sticky */}
             <div className="my-4 md:my-6 md:sticky md:top-20 z-10">

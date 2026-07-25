@@ -57,6 +57,7 @@ import Terms from "./Terms";
 import Refund from "./Refund";
 import ScrollToTop from "./ScrollToTop";
 import { SampleCollectionMain } from "./SampleCollection";
+import SpecialtyRedirect from "./SpecialtyRedirect";
 
 
 export {
@@ -118,5 +119,6 @@ export {
   Rangpur,
   SearchBoxBranch,
   ScrollToTop,
-  SampleCollectionMain
+  SampleCollectionMain,
+  SpecialtyRedirect
 };

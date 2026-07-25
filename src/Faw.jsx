@@ -22,6 +22,7 @@ import LoadingSkeleton, {
   DoctorListSkeleton,
   ServiceListSkeleton,
 } from "./ui/LoadingSkeleton";
+import { buildDoctorPath } from "./utils/doctorUrl";
 
 const TABS = [
   { id: "doctors", label: "Doctors" },
@@ -108,7 +109,7 @@ const DoctorRow = React.memo(({ doctor, style, index }) => {
     "Not specified";
 
   return (
-    <Link to={`/doctordetail/${doctor.id}`} className="block">
+    <Link to={buildDoctorPath(doctor)} className="block">
       <li
         style={style}
         className={`block md:flex md:items-center px-4 md:px-6 py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm ${

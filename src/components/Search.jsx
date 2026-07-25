@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "@fontsource/ubuntu";
 import { reportDownload } from "../constants/branches";
+import { buildDoctorPath } from "../utils/doctorUrl";
 
 // Custom hooks
 import { useDoctorSearch } from "../hooks/useDoctorSearch";
@@ -80,7 +81,7 @@ const DoctorRow = React.memo(({ doctor, style, index }) => {
     "Not specified";
 
   return (
-    <Link to={`/doctordetail/${doctor.id}`} className="block">
+    <Link to={buildDoctorPath(doctor)} className="block">
       <li
         style={style}
         className={`flex items-center px-3 sm:px-4 md:px-6 py-2 md:py-4 hover:bg-gradient-to-r hover:from-[#00984a]/8 hover:to-transparent border-b border-gray-200/60 last:border-b-0 transition-all duration-200 cursor-pointer group hover:shadow-sm ${

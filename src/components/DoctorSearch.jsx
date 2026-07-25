@@ -5,7 +5,9 @@ import axios from "axios";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSearchParams } from "react-router-dom";
 import { BASE_URL, API_TOKEN } from "../secrets";
+import { slugify } from "../utils/doctorUrl";
 import DoctorCard from "./DoctorCard";
 
 const spring = {
@@ -36,6 +38,9 @@ const DoctorSearch = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isInitialMount = useRef(true);
+  const [searchParams] = useSearchParams();
+  const specialtyParam = searchParams.get("specialty");
+  const hasAppliedSpecialtyParam = useRef(false);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -48,10 +53,25 @@ const DoctorSearch = () => {
         );
         setBranches(branchesRes.data.data.data);
 
-        const specializationsRes = await axios.get(
-          `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`
+        // /api/doctor-speciality is paginated (81 specialties, 50 per page).
+        // Fetching only page 1 left 31 specialties out of the dropdown and made
+        // ~1/3 of /doctors/{specialty} URLs resolve to no ID and land unfiltered.
+        const firstSpecPage = await axios.get(
+          `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=1`
         );
-        setSpecializations(specializationsRes.data.data.data);
+        const specialityRows = [...firstSpecPage.data.data.data];
+        const specialityLastPage = firstSpecPage.data.data.last_page;
+
+        if (Number.isInteger(specialityLastPage)) {
+          for (let page = 2; page <= specialityLastPage; page += 1) {
+            const nextSpecPage = await axios.get(
+              `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=${page}`
+            );
+            specialityRows.push(...nextSpecPage.data.data.data);
+          }
+        }
+
+        setSpecializations(specialityRows);
 
         const daysRes = await axios.get(
           `${BASE_URL}/api/practice-days?token=${API_TOKEN}`
@@ -181,6 +201,19 @@ const DoctorSearch = () => {
       specializations.map((spec) => ({ value: spec.id, label: spec.name })),
     [specializations]
   );
+
+  // A visitor arriving from /doctors/cardiology should land on filtered
+  // results. Runs once, after the specialization list resolves.
+  useEffect(() => {
+    if (hasAppliedSpecialtyParam.current) return;
+    if (!specialtyParam || specializationOptions.length === 0) return;
+
+    const match = specializationOptions.find(
+      (option) => slugify(option.label) === specialtyParam
+    );
+    hasAppliedSpecialtyParam.current = true;
+    if (match) setSelectedSpecializations([match]);
+  }, [specialtyParam, specializationOptions]);
 
   const dayOptions = useMemo(
     () => days.map((day) => ({ value: day, label: day })),
