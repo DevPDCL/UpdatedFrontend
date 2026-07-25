@@ -160,6 +160,17 @@ export const displayName = (doctor) => {
   return `Dr. ${name}`;
 };
 
+// schema.org jobTitle expects a role, not a heading — no location clause.
+// Non-physician specialties already read as roles ("Nutritionist"), so they are
+// used verbatim; medical specialties become "<Specialty> Specialist".
+export const doctorJobTitle = (doctor) => {
+  const specialty = primarySpecialty(doctor);
+  if (!specialty) return "Specialist";
+  const key = specialty.toLowerCase().replace(/[^a-z]+/g, "");
+  if (NON_PHYSICIAN_SPECIALTIES.has(key)) return specialty;
+  return `${specialty} Specialist`;
+};
+
 // The list endpoint nests specialty names under `specialist.name`; the detail
 // endpoint flattens them to `specialist_name`. Handle both, same as
 // primarySpecialty in doctorUrl.js but returning every specialty, not just
@@ -302,7 +313,7 @@ export const doctorGraph = (doctor, origin, path) => {
     name: displayName(doctor),
     url,
     ...(doctor?.image ? { image: doctor.image } : {}),
-    jobTitle: doctorHeadline(doctor),
+    jobTitle: doctorJobTitle(doctor),
     worksFor: { "@id": orgId },
     ...(specialties.length ? { knowsAbout: specialties } : {}),
   };

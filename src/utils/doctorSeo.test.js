@@ -344,7 +344,7 @@ test("doctorHeadline falls back to Specialist with no data", () => {
   assert.equal(doctorHeadline({}), "Specialist");
 });
 
-import { doctorFaq, doctorGraph } from "./doctorSeo.js";
+import { doctorFaq, doctorGraph, doctorJobTitle } from "./doctorSeo.js";
 
 const fullDoctor = {
   name: "Prof. Dr. M. Nazrul Islam",
@@ -453,12 +453,30 @@ test("doctorGraph never leaks doctor.mobile into the serialized output", () => {
   assert.ok(!JSON.stringify(graph).includes(fullDoctor.mobile));
 });
 
-test("doctorGraph's Person.jobTitle equals doctorHeadline(doctor)", () => {
+test("doctorGraph's Person.jobTitle equals doctorJobTitle(doctor)", () => {
   const graph = doctorGraph(
     fullDoctor,
     "https://www.populardiagnostic.com",
     "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
   );
   const person = graph["@graph"].find((node) => node["@type"] === "Person");
-  assert.equal(person.jobTitle, doctorHeadline(fullDoctor));
+  assert.equal(person.jobTitle, doctorJobTitle(fullDoctor));
+});
+
+test("doctorJobTitle appends Specialist to a medical specialty", () => {
+  assert.equal(
+    doctorJobTitle({ specialists: [{ specialist_name: "Cardiology" }] }),
+    "Cardiology Specialist"
+  );
+});
+
+test("doctorJobTitle leaves a non-physician specialty unsuffixed", () => {
+  assert.equal(
+    doctorJobTitle({ specialists: [{ specialist_name: "Nutritionist" }] }),
+    "Nutritionist"
+  );
+});
+
+test("doctorJobTitle falls back to Specialist with no specialty", () => {
+  assert.equal(doctorJobTitle({ specialists: [] }), "Specialist");
 });
