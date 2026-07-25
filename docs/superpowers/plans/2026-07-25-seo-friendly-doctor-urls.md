@@ -1864,3 +1864,89 @@ Not part of this plan. Recorded so they are not lost:
 2. **Prerendering or SSR.** The HTML shell is still empty, so social crawlers see none of the metadata added here and Google is doing all the work through JS rendering. This is the largest remaining SEO constraint.
 3. **Specialty landing pages** for all 73 specialties. `/doctors/cardiology` currently redirects; a real page targeting "cardiologist in Dhaka" would likely outrank any individual doctor page.
 4. **Resubmit the sitemap** in Google Search Console after deploy, and monitor Coverage for soft-404 reports on the new URL pattern.
+
+---
+
+# Addendum — Heading Structure, Expanded Schema, and FAQ
+
+Added 2026-07-25 after the original 11 tasks merged, at the user's request:
+H1 `Dr. [Name]`, H2 `[Specialty] & [Subspecialty] in [City]`, and schema
+`Physician + Person + MedicalOrganization + Breadcrumb + FAQ`.
+
+## Data findings that shape these tasks
+
+| Finding | Measured |
+|---|---|
+| Doctors with a second specialty | **213 of 3,386 (6%)** — the `&` clause is the exception |
+| Names with no `Dr` token | **58** — of which **27 are genuinely non-physician** (Nutritionist 19, Dietician 4, Food & Nutrition 3, Physiotherapy 1) |
+| API branch names | **27**, of which `branches.js` resolves only **21** → 507 doctors (15%) get no city |
+| Existing `<h1>` count on a doctor page | **2** — `doctor.name` (line 301) and `experience_summery` (line 412) |
+
+Unmapped branch names and their causes: `Barisal` (spelled `Barishal`), `Cumilla`
+(spelled `Comilla`), `Uttara Jashim Uddin (Sector-04)`, `Uttara Garib E Newaz (Sector-13)`
+(**contains a non-breaking space, U+00A0**), `Uttara (U-2)`, and `Kurigram` (absent from
+`branches.js` entirely).
+
+## Binding constraint for these tasks
+
+**`src/constants/branches.js` MUST NOT be imported by `doctorUrl.js` or `doctorSeo.js`.**
+It imports from `src/assets`, a directory import that plain Node cannot resolve — importing
+it would break `npm test` and `scripts/generate-sitemap.mjs`, both of which import the utils
+outside Vite. The branch→city map must be a standalone literal in the utils.
+
+---
+
+## Task 12: Heading structure
+
+**Files:** Create `src/utils/branchCity.js`; modify `src/utils/doctorSeo.js`,
+`src/utils/doctorSeo.test.js`, `src/components/DoctorDetail.jsx`.
+
+**Produces:** `cityForBranch(branchName) => string`, `displayName(doctor) => string`,
+`doctorHeadline(doctor) => string`
+
+1. **`src/utils/branchCity.js`** — a standalone map covering **all 27** API branch names,
+   normalizing on lowercase-alphanumeric so the non-breaking space and `(Sector-13)` style
+   suffixes fold away. No imports.
+2. **`displayName(doctor)`** — returns the name with `Dr. ` prepended **only when** the name
+   contains no professional title token (`dr`, `prof`, `professor`, `assoc`, `asso`, `assis`,
+   `asst`, `asstt`, `assistant`, `consultant`, `nutritionist`, `dietician`) **and** the primary
+   specialty is not in `NON_PHYSICIAN_SPECIALTIES` = `Nutritionist`, `Dietician`,
+   `Food & Nutrition`, `Physiotherapy Department`. Otherwise returns the name unchanged.
+3. **`doctorHeadline(doctor)`** — `{specialty} & {subspecialty} in {city}`, degrading to
+   `{specialty} in {city}` (94% of records), then `{specialty}`, then `Specialist`.
+4. **`DoctorDetail.jsx`** — `<h1>{displayName(doctor)}</h1>`; the `<h3>` at line 304 becomes
+   `<h2>{doctorHeadline(doctor)}</h2>` keeping its existing classes; the second `<h1>` at
+   line 412 (`experience_summery`) becomes a `<p>` — prose is not a heading, and two H1s
+   dilute the page's primary signal.
+
+## Task 13: Expanded structured data
+
+**Files:** modify `src/utils/doctorSeo.js`, `src/utils/doctorSeo.test.js`,
+`src/components/DoctorDetail.jsx`.
+
+Replace the two separate JSON-LD blocks with **one `@graph`** containing four `@id`-linked
+nodes, so the entities reference each other rather than duplicating:
+
+- `MedicalOrganization` — `@id: {origin}/#organization`, the PDCL entity itself
+- `Physician` — `@id: {url}#physician`, `worksFor: {"@id": ".../#organization"}`
+- `Person` — `@id: {url}#person`, `jobTitle` from the specialty, `worksFor` the organization
+- `BreadcrumbList` — unchanged content, folded into the graph
+
+`telephone` still comes from `branches[0].phone`, never `doctor.mobile`. All output still
+passes through `jsonLdScript()`.
+
+## Task 14: FAQ section and FAQPage markup
+
+**Files:** modify `src/utils/doctorSeo.js`, `src/utils/doctorSeo.test.js`,
+`src/components/DoctorDetail.jsx`.
+
+`FAQPage` markup requires the Q&A to be **visibly rendered on the page** — marking up
+questions that do not appear is a structured-data policy violation. So this task ships a
+visible FAQ section first, and marks up exactly what it renders.
+
+`doctorFaq(doctor)` returns `[{question, answer}]` built only from data already present:
+chamber schedule, branch and address, specialty, and the appointment hotline. Entries whose
+source data is missing are omitted rather than rendered with placeholder text — so the
+markup and the DOM always agree.
+
+The component renders the list visibly, and `faqJsonLd` marks up **the same array**.
