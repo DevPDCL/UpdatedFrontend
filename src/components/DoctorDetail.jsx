@@ -1,6 +1,7 @@
 import "@fontsource/ubuntu";
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   drBackground,
   Adecard,
@@ -21,6 +22,13 @@ import {
 import { MdPeople, MdMedicalServices } from "react-icons/md";
 import { legacyApi } from "../services/api/legacyApi";
 import { buildDoctorPath } from "../utils/doctorUrl";
+import {
+  doctorTitle,
+  doctorDescription,
+  doctorJsonLd,
+  breadcrumbJsonLd,
+} from "../utils/doctorSeo";
+import { SITE_URL } from "../secrets";
 import { motion } from "framer-motion";
 
 // Pharmaceutical ads data for horizontal banner
@@ -150,12 +158,31 @@ const DoctorDetail = () => {
     return <div className="text-center py-10">Loading...</div>;
   }
 
+  // Static hosting cannot return a real 404, so every bad URL returns 200 OK.
+  // Without noindex, Google indexes unlimited identical error pages.
+  const notFoundHead = (
+    <Helmet>
+      <title>Doctor Not Found | Popular Diagnostic Centre</title>
+      <meta name="robots" content="noindex, follow" />
+    </Helmet>
+  );
+
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return (
+      <>
+        {notFoundHead}
+        <div className="text-center py-10 text-red-500">{error}</div>
+      </>
+    );
   }
 
   if (!doctor) {
-    return <div className="text-center py-10">Doctor not found</div>;
+    return (
+      <>
+        {notFoundHead}
+        <div className="text-center py-10">Doctor not found</div>
+      </>
+    );
   }
 
   const formattedChamber = {
@@ -179,6 +206,30 @@ const DoctorDetail = () => {
 
   return (
     <div className="doctor-detail bg-gray-100 min-h-screen">
+      <Helmet>
+        <title>{doctorTitle(doctor)}</title>
+        <meta name="description" content={doctorDescription(doctor)} />
+        <link rel="canonical" href={`${SITE_URL}${canonicalPath}`} />
+
+        <meta property="og:type" content="profile" />
+        <meta property="og:site_name" content="Popular Diagnostic Centre" />
+        <meta property="og:title" content={doctorTitle(doctor)} />
+        <meta property="og:description" content={doctorDescription(doctor)} />
+        <meta property="og:url" content={`${SITE_URL}${canonicalPath}`} />
+        {doctor.image && <meta property="og:image" content={doctor.image} />}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={doctorTitle(doctor)} />
+        <meta name="twitter:description" content={doctorDescription(doctor)} />
+        {doctor.image && <meta name="twitter:image" content={doctor.image} />}
+
+        <script type="application/ld+json">
+          {JSON.stringify(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
+        </script>
+      </Helmet>
       <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">
         <div className="flex flex-wrap -mx-2">
           <div className="w-full md:w-3/12 lg:w-4/12 px-2 mb-3 md:mb-4">
