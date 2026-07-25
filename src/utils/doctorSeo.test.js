@@ -86,3 +86,23 @@ test("doctorDescription works with no degree field", () => {
   assert.ok(out.length <= DESC_MAX);
   assert.ok(out.includes("Neurology specialist"), out);
 });
+
+test("doctorDescription with long name exhausts budget, leaving no room for degrees", () => {
+  const longName = "Dr. Very Long Name That Takes Up Most Of The Description Character Budget So No Degrees Fit";
+  const out = doctorDescription({
+    name: longName,
+    degree: "MBBS, FCPS, MD, PhD",
+    specialists: [{ specialist_name: "Cardiology" }],
+    branches: [{ name: "DHAKA" }],
+  });
+  assert.ok(out.length <= DESC_MAX, `too long: ${out.length}`);
+  assert.ok(out.length >= DESC_MIN, `too short: ${out.length}`);
+  assert.ok(!out.includes("MBBS"), "no degrees should be included when budget exhausted");
+});
+
+test("doctorTitle with no specialty and no branch falls back to name only", () => {
+  assert.equal(
+    doctorTitle({ name: "Dr. Z", specialists: [], branches: [] }),
+    "Dr. Z | Popular Diagnostic Centre"
+  );
+});

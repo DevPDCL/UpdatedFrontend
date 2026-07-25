@@ -8,6 +8,12 @@ const ORG = "Popular Diagnostic Centre";
 export const DESC_MAX = 160;
 export const DESC_MIN = 70;
 
+export const resolveDoctorMeta = (doctor) => ({
+  name: doctor?.name?.trim() || "Doctor",
+  specialty: primarySpecialty(doctor),
+  branch: titleCase(primaryBranch(doctor)),
+});
+
 export const clampText = (text, max) => {
   const value = String(text || "");
   if (value.length <= max) return value;
@@ -18,9 +24,7 @@ export const clampText = (text, max) => {
 };
 
 export const doctorTitle = (doctor) => {
-  const name = doctor?.name?.trim() || "Doctor";
-  const specialty = primarySpecialty(doctor);
-  const branch = titleCase(primaryBranch(doctor));
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
   const middle = [specialty ? `${specialty} Specialist` : null, branch || null]
     .filter(Boolean)
     .join(", ");
@@ -47,9 +51,7 @@ const fitDegrees = (degree, budget) => {
 };
 
 export const doctorDescription = (doctor) => {
-  const name = doctor?.name?.trim() || "Doctor";
-  const specialty = primarySpecialty(doctor);
-  const branch = titleCase(primaryBranch(doctor));
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
   const role = specialty ? `${specialty} specialist` : "Consultant";
   const where = branch ? `${ORG}, ${branch}` : ORG;
   const tail = `${role} at ${where}. View chamber schedule and book an appointment online.`;
