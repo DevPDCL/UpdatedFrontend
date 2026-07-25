@@ -1,7 +1,6 @@
 import "@fontsource/ubuntu";
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   drBackground,
   Adecard,
@@ -20,7 +19,8 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
-import { API_TOKEN, BASE_URL } from "../secrets";
+import { legacyApi } from "../services/api/legacyApi";
+import { buildDoctorPath } from "../utils/doctorUrl";
 import { motion } from "framer-motion";
 
 // Pharmaceutical ads data for horizontal banner
@@ -70,7 +70,12 @@ const pharmaceuticalAds = [
 ];
 
 const DoctorDetail = () => {
-  const { doctorId } = useParams();
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  // Canonical route supplies `id`; the legacy /doctordetail/:doctorId route
+  // supplies `doctorId`. The detail API response has no id field of its own.
+  const doctorId = params.id || params.doctorId;
   const [doctor, setDoctor] = useState(null);
   const [similarDoctors, setSimilarDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,9 +91,7 @@ const DoctorDetail = () => {
       setSimilarDoctors([]);
 
       try {
-        const doctorResponse = await axios.get(
-          `${BASE_URL}/api/doctor/${doctorId}?token=${API_TOKEN}`
-        );
+        const doctorResponse = await legacyApi.get(`/api/doctor/${doctorId}`);
 
         if (!doctorResponse.data.success) {
           throw new Error("Doctor not found");
@@ -104,9 +107,9 @@ const DoctorDetail = () => {
 
         if (branchIds && specialistIds) {
           try {
-            const similarResponse = await axios.get(
-              `${BASE_URL}/api/doctor-suggestions?token=${API_TOKEN}&branches=${branchIds}&specialities=${specialistIds}`
-            );
+            const similarResponse = await legacyApi.get("/api/doctor-suggestions", {
+              params: { branches: branchIds, specialities: specialistIds },
+            });
             if (similarResponse.data.success) {
               const filteredDoctors = similarResponse.data.data.data.filter(
                 (doc) => doc.id.toString() !== doctorId
@@ -129,6 +132,15 @@ const DoctorDetail = () => {
     fetchData();
   }, [doctorId]);
 
+  const canonicalPath = doctor ? buildDoctorPath(doctor, doctorId) : null;
+
+  // Rewrite legacy URLs and stale slugs to the canonical path. Without this,
+  // /doctors/any/thing/2094 would serve identical content at unlimited URLs.
+  useEffect(() => {
+    if (!canonicalPath) return;
+    if (location.pathname === canonicalPath) return;
+    navigate(canonicalPath, { replace: true });
+  }, [canonicalPath, location.pathname, navigate]);
 
   const isDoctorOnLeave = useCallback(() => {
     return doctor?.on_leave === 1;
