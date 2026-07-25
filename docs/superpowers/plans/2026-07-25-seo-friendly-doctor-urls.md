@@ -675,6 +675,12 @@ export const doctorJsonLd = (doctor, url) => {
   };
 };
 
+// react-helmet-async assigns <script> children via innerHTML, not textContent
+// (lib/index.esm.js:473-520), and JSON.stringify escapes neither "<" nor "/".
+// A doctor field containing "</script" would close the tag and break the head.
+export const jsonLdScript = (value) =>
+  JSON.stringify(value).replace(/</g, "\\u003c");
+
 export const breadcrumbJsonLd = (doctor, origin, path) => {
   const { name, specialty } = resolveDoctorMeta(doctor);
   const specialtySlug = slugify(specialty) || SPECIALTY_FALLBACK;
@@ -1175,6 +1181,7 @@ import {
   doctorDescription,
   doctorJsonLd,
   breadcrumbJsonLd,
+  jsonLdScript,
 } from "../utils/doctorSeo";
 import { SITE_URL } from "../secrets";
 ```
@@ -1263,10 +1270,10 @@ Immediately after the opening `<div className="doctor-detail bg-gray-100 min-h-s
         {doctor.image && <meta name="twitter:image" content={doctor.image} />}
 
         <script type="application/ld+json">
-          {JSON.stringify(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
+          {jsonLdScript(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
         </script>
         <script type="application/ld+json">
-          {JSON.stringify(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
+          {jsonLdScript(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
         </script>
       </Helmet>
 ```
@@ -1733,13 +1740,27 @@ git commit -m "feat: generate sitemap.xml and add robots.txt"
 
 `index.html` has no `<meta name="description">` at all. These static tags are the fallback for every route and the only tags social crawlers can currently see.
 
+> **No static `<link rel="canonical">` here — deliberately.** `react-helmet-async`
+> removes only tags it created: `updateTags` queries
+> `headElement.querySelectorAll(`${type}[data-rh]`)`
+> (`node_modules/react-helmet-async/lib/index.esm.js:473`), so tags already present in
+> `index.html` are never replaced, only supplemented. A static canonical would therefore
+> coexist with `DoctorDetail`'s per-doctor canonical, giving every doctor page two
+> conflicting `rel=canonical` links — and Google discards canonicalization hints
+> entirely when it sees more than one. That would defeat the purpose of this project.
+> `<title>` is the one exception: `updateTitle` assigns `document.title` directly, so
+> Helmet does override the static title.
+>
+> The duplicate `<meta name="description">` on doctor pages is accepted: multiple
+> descriptions are untidy but carry no penalty, and the static one is the only
+> description social crawlers (which never execute JS) can see.
+
 - [ ] **Step 1: Add baseline tags to `index.html`**
 
 Immediately before the existing `<title>` line, insert:
 
 ```html
     <meta name="description" content="Popular Diagnostic Centre Limited — Bangladesh's trusted diagnostic and healthcare network. Find specialist doctors, chamber schedules, diagnostic services, and book appointments across 22 branches." />
-    <link rel="canonical" href="https://www.populardiagnostic.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Popular Diagnostic Centre" />
