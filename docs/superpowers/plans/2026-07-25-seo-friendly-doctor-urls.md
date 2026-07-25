@@ -1492,6 +1492,15 @@ git commit -m "feat: point all doctor links at canonical SEO URLs"
 
 `DoctorSearch` holds `selectedSpecializations` in local state and filters by specialty **ID** (`specialities=167`), not by name. It already fetches `/api/doctor-speciality`, which returns `{ id, name }` — slugifying those names yields the slug-to-ID map.
 
+**`/api/doctor-speciality` is paginated and must be fully paged through.** It reports
+81 specialties, `per_page: 50`, `last_page: 2`, and `DoctorSearch` fetches only page 1.
+Measured against live data: 73 distinct specialty slugs appear in doctor URLs, and
+**24 of them are absent from page 1** — so a third of the `/doctors/{specialty}` URLs
+this task exists to fix would resolve to no ID and land unfiltered (83 doctors, ~2%;
+worst case `/doctors/infertility-gynae`, 17 doctors). All 24 are on page 2. Paging also
+repairs a pre-existing bug: the specialty dropdown has been missing 31 of 81 options
+for every user, not only for crawlers.
+
 - [ ] **Step 1: Implement the redirect**
 
 Replace the entire contents of `src/components/SpecialtyRedirect.jsx`:
