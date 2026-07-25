@@ -18,6 +18,13 @@
   merge-base `221723b`. `CLAUDE.md` claims "max warnings: 0" — that is aspirational,
   not the current state. Do not attempt to fix the pre-existing 218; just ensure
   none of the files you add or modify appear in the lint output.
+  **One documented exception:** each route component added to `src/main.jsx` adds one
+  `react-refresh/only-export-components` warning, because every `const X =
+  lazyLoad("X")` line trips that rule — 50 already do. This plan adds one such line
+  (`SpecialtyRedirect`), taking the total to **219**. That is expected and accepted:
+  the alternative is either an `eslint-disable` its 50 sibling lines do not carry, or
+  abandoning the project's own "lazy load all route-level components" rule. Treat 219
+  as the working baseline from Task 5 onward.
 - **All route-level components lazy-loaded** via `React.lazy()` in `src/main.jsx`.
 - **No `console.log`** in committed source.
 - `package.json` already has `"type": "module"`, so `node --test` can import `src/utils/*.js` directly.
@@ -471,7 +478,7 @@ Expected: PASS — all Task 1 and Task 2 tests green
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: no new problems beyond the 218-problem baseline
+Expected: no new problems beyond the baseline (218 before Task 5, 219 after)
 
 - [ ] **Step 6: Commit**
 
@@ -701,7 +708,7 @@ Expected: PASS — all tests across both util files green
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: no new problems beyond the 218-problem baseline
+Expected: no new problems beyond the baseline (218 before Task 5, 219 after)
 
 - [ ] **Step 6: Commit**
 
@@ -1010,7 +1017,7 @@ and `SpecialtyRedirect,` inside the export block.
 - [ ] **Step 6: Verify the build**
 
 Run: `npm run lint && npm run build`
-Expected: no new lint problems beyond the 218-problem baseline; build succeeds
+Expected: no new lint problems beyond the baseline (219 from Task 5 onward); build succeeds
 
 - [ ] **Step 7: Commit**
 
@@ -1139,7 +1146,7 @@ Check each of these:
 - [ ] **Step 6: Run lint**
 
 Run: `npm run lint`
-Expected: no new problems beyond the 218-problem baseline
+Expected: no new problems beyond the baseline (218 before Task 5, 219 after)
 
 - [ ] **Step 7: Commit**
 
@@ -1288,7 +1295,7 @@ Visit `/doctors/x/y/999999999` and confirm `<meta name="robots" content="noindex
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: no new problems beyond the 218-problem baseline
+Expected: no new problems beyond the baseline (218 before Task 5, 219 after)
 
 - [ ] **Step 6: Commit**
 
@@ -1453,7 +1460,7 @@ Run: `npm run dev`
 - [ ] **Step 9: Run lint and build**
 
 Run: `npm run lint && npm run build`
-Expected: no new lint problems beyond the 218-problem baseline; build succeeds
+Expected: no new lint problems beyond the baseline (219 from Task 5 onward); build succeeds
 
 - [ ] **Step 10: Commit**
 
@@ -1546,7 +1553,7 @@ Run: `npm run dev`
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: no new problems beyond the 218-problem baseline
+Expected: no new problems beyond the baseline (218 before Task 5, 219 after)
 
 - [ ] **Step 6: Commit**
 
@@ -1755,7 +1762,7 @@ Expected: `Unique paths: 3386 / 3386` and `All SEO assertions passed.`
 - [ ] **Step 4: Run lint and build**
 
 Run: `npm run lint && npm run build`
-Expected: no new lint problems beyond the 218-problem baseline; build succeeds
+Expected: no new lint problems beyond the baseline (219 from Task 5 onward); build succeeds
 
 - [ ] **Step 5: Final manual pass**
 
