@@ -266,7 +266,7 @@ test("cityForBranch resolves known branch spellings to their city", () => {
 });
 
 test("cityForBranch folds the non-breaking space in the real Uttara Garib E Newaz branch name", () => {
-  assert.equal(cityForBranch("Uttara Garib E Newaz (Sector-13)"), "Dhaka");
+  assert.equal(cityForBranch("Uttara Garib E Newaz (Sector-13)"), "Dhaka");
 });
 
 test("cityForBranch returns an empty string for unknown or empty input", () => {
@@ -342,4 +342,123 @@ test("doctorHeadline drops the city clause when the branch doesn't resolve", () 
 
 test("doctorHeadline falls back to Specialist with no data", () => {
   assert.equal(doctorHeadline({}), "Specialist");
+});
+
+import { doctorFaq, doctorGraph } from "./doctorSeo.js";
+
+const fullDoctor = {
+  name: "Prof. Dr. M. Nazrul Islam",
+  image: "https://old.populardiagnostic.com/x.jpeg",
+  mobile: "01711563450",
+  specialists: [{ specialist_name: "Cardiology" }],
+  branches: [{ name: "DHANMONDI", phone: "09666 787801" }],
+  schedule: [
+    { day: "Saturday", start_time: "2:00 pm", end_time: "5:00 pm" },
+    { day: "Sunday", start_time: "2:00 pm", end_time: "5:00 pm" },
+  ],
+};
+
+const bareDoctor = { name: "Dr. Z", specialists: [], branches: [], schedule: [] };
+
+test("doctorFaq builds the chamber hours entry from a populated schedule", () => {
+  const faqs = doctorFaq(fullDoctor);
+  const hoursEntry = faqs.find((faq) => faq.question.includes("chamber hours"));
+  assert.ok(hoursEntry, "hours entry should be present");
+  assert.equal(
+    hoursEntry.answer,
+    "Saturday: 2:00 pm - 5:00 pm. Sunday: 2:00 pm - 5:00 pm."
+  );
+});
+
+test("doctorFaq omits the hours entry when schedule is empty", () => {
+  const faqs = doctorFaq({ ...fullDoctor, schedule: [] });
+  assert.equal(
+    faqs.some((faq) => faq.question.includes("chamber hours")),
+    false
+  );
+});
+
+test("doctorFaq omits the appointment entry when the branch has no phone", () => {
+  const faqs = doctorFaq({ ...fullDoctor, branches: [{ name: "DHANMONDI" }] });
+  assert.equal(
+    faqs.some((faq) => faq.question.includes("book an appointment")),
+    false
+  );
+});
+
+test("doctorFaq includes the appointment entry using the branch phone, never mobile", () => {
+  const faqs = doctorFaq(fullDoctor);
+  const apptEntry = faqs.find((faq) => faq.question.includes("book an appointment"));
+  assert.ok(apptEntry, "appointment entry should be present");
+  assert.ok(apptEntry.answer.includes("09666 787801"));
+  assert.ok(!apptEntry.answer.includes(fullDoctor.mobile));
+});
+
+test("doctorFaq returns no entries at all for a doctor with no schedule, branch, or specialty", () => {
+  assert.deepEqual(doctorFaq(bareDoctor), []);
+});
+
+test("doctorGraph returns exactly the expected @types with resolving @id cross-links", () => {
+  const graph = doctorGraph(
+    fullDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
+  );
+  assert.equal(graph["@context"], "https://schema.org");
+
+  const types = graph["@graph"].map((node) => node["@type"]);
+  assert.deepEqual(types, [
+    "MedicalOrganization",
+    "Physician",
+    "Person",
+    "BreadcrumbList",
+    "FAQPage",
+  ]);
+
+  const org = graph["@graph"].find((node) => node["@type"] === "MedicalOrganization");
+  const physician = graph["@graph"].find((node) => node["@type"] === "Physician");
+  const person = graph["@graph"].find((node) => node["@type"] === "Person");
+
+  assert.equal(physician.worksFor["@id"], org["@id"]);
+  assert.equal(person.worksFor["@id"], org["@id"]);
+});
+
+test("doctorGraph omits the FAQPage node when the doctor has no schedule, branch, or specialty", () => {
+  const graph = doctorGraph(
+    bareDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/general-practice/dr-z/1"
+  );
+  const types = graph["@graph"].map((node) => node["@type"]);
+  assert.ok(!types.includes("FAQPage"), types.join(", "));
+});
+
+test("doctorGraph's FAQPage mainEntity length matches doctorFaq's length for a fully-populated doctor", () => {
+  const graph = doctorGraph(
+    fullDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
+  );
+  const faqPage = graph["@graph"].find((node) => node["@type"] === "FAQPage");
+  assert.ok(faqPage, "FAQPage node should be present");
+  assert.equal(faqPage.mainEntity.length, doctorFaq(fullDoctor).length);
+});
+
+test("doctorGraph never leaks doctor.mobile into the serialized output", () => {
+  const graph = doctorGraph(
+    fullDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
+  );
+  assert.ok(!JSON.stringify(graph).includes(fullDoctor.mobile));
+});
+
+test("doctorGraph's Person.jobTitle equals doctorHeadline(doctor)", () => {
+  const graph = doctorGraph(
+    fullDoctor,
+    "https://www.populardiagnostic.com",
+    "/doctors/cardiology/prof-dr-m-nazrul-islam/2094"
+  );
+  const person = graph["@graph"].find((node) => node["@type"] === "Person");
+  assert.equal(person.jobTitle, doctorHeadline(fullDoctor));
 });

@@ -160,12 +160,19 @@ export const displayName = (doctor) => {
   return `Dr. ${name}`;
 };
 
+// The list endpoint nests specialty names under `specialist.name`; the detail
+// endpoint flattens them to `specialist_name`. Handle both, same as
+// primarySpecialty in doctorUrl.js but returning every specialty, not just
+// the first.
+const specialtyNames = (doctor) =>
+  (doctor?.specialists || [])
+    .map((entry) => entry?.specialist?.name || entry?.specialist_name || "")
+    .filter(Boolean);
+
 // "[Specialty] & [Subspecialty] in [City]", degrading as data allows.
 // Only ~6% of doctors have a second specialty.
 export const doctorHeadline = (doctor) => {
-  const specialties = (doctor?.specialists || [])
-    .map((entry) => entry?.specialist?.name || entry?.specialist_name || "")
-    .filter(Boolean);
+  const specialties = specialtyNames(doctor);
   const city = cityForBranch(primaryBranch(doctor));
   const subject = specialties.slice(0, 2).join(" & ");
   if (subject && city) return `${subject} in ${city}`;
@@ -194,5 +201,132 @@ export const breadcrumbJsonLd = (doctor, origin, path) => {
       name: entry.name,
       item: entry.item,
     })),
+  };
+};
+
+// "A", "A and B", "A, B, and C" — joins a list of specialty names the way a
+// person would say them, for use inside an FAQ answer sentence.
+const naturalJoin = (items) => {
+  if (items.length <= 1) return items[0] || "";
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+};
+
+// Google requires FAQ markup to correspond to Q&A actually visible on the
+// page, so this returns plain data: the component renders it verbatim AND
+// feeds the same array into doctorGraph's FAQPage node, guaranteeing the DOM
+// and the structured data can never drift apart. Every entry is built only
+// from data already present on the doctor record — no placeholder text — and
+// omitted entirely when its source data is missing.
+export const doctorFaq = (doctor) => {
+  const name = displayName(doctor);
+  const faqs = [];
+
+  const hours = (doctor?.schedule || []).filter(
+    (slot) => slot?.day && slot?.start_time && slot?.end_time
+  );
+  if (hours.length) {
+    faqs.push({
+      question: `What are ${name}'s chamber hours?`,
+      answer: hours
+        .map((slot) => `${slot.day}: ${slot.start_time} - ${slot.end_time}.`)
+        .join(" "),
+    });
+  }
+
+  const branch = primaryBranch(doctor);
+  if (branch) {
+    const city = cityForBranch(branch);
+    faqs.push({
+      question: `Where does ${name} practise?`,
+      answer: `${ORG}, ${titleCase(branch)}${city ? `, ${city}` : ""}.`,
+    });
+  }
+
+  const specialties = specialtyNames(doctor);
+  if (specialties.length) {
+    faqs.push({
+      question: `What does ${name} specialise in?`,
+      answer: naturalJoin(specialties),
+    });
+  }
+
+  // Never doctor.mobile — that is a personal cell number.
+  const phone = doctor?.branches?.[0]?.phone;
+  if (phone) {
+    faqs.push({
+      question: `How do I book an appointment with ${name}?`,
+      answer: `Call ${phone} or book online through the Popular Diagnostic Centre appointment system.`,
+    });
+  }
+
+  return faqs;
+};
+
+// Drop @context from a node destined for @graph — only the top-level graph
+// object carries it.
+const stripContext = (node) => {
+  const copy = { ...node };
+  delete copy["@context"];
+  return copy;
+};
+
+// One @graph tying together everything schema.org needs to understand a
+// doctor profile page: the organization the doctor works for, the doctor as
+// both a Physician (medical facts) and a Person (identity/authorship facts),
+// the page's breadcrumb trail, and — only when there is real visible content
+// to back it — an FAQPage. Cross-references use { "@id": ... } rather than
+// repeating whole entities inline.
+export const doctorGraph = (doctor, origin, path) => {
+  const url = `${origin}${path}`;
+  const orgId = `${origin}/#organization`;
+
+  const organization = {
+    "@type": "MedicalOrganization",
+    "@id": orgId,
+    name: ORG_FULL,
+    url: `${origin}/`,
+  };
+
+  const physician = {
+    ...stripContext(doctorJsonLd(doctor, url)),
+    "@id": `${url}#physician`,
+    name: displayName(doctor),
+    worksFor: { "@id": orgId },
+  };
+
+  const specialties = specialtyNames(doctor);
+  const person = {
+    "@type": "Person",
+    "@id": `${url}#person`,
+    name: displayName(doctor),
+    url,
+    ...(doctor?.image ? { image: doctor.image } : {}),
+    jobTitle: doctorHeadline(doctor),
+    worksFor: { "@id": orgId },
+    ...(specialties.length ? { knowsAbout: specialties } : {}),
+  };
+
+  const breadcrumb = {
+    ...stripContext(breadcrumbJsonLd(doctor, origin, path)),
+    "@id": `${url}#breadcrumb`,
+  };
+
+  const faqs = doctorFaq(doctor);
+  const faqPage = faqs.length
+    ? {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        mainEntity: faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      }
+    : null;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [organization, physician, person, breadcrumb, faqPage].filter(Boolean),
   };
 };

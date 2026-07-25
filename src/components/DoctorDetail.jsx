@@ -18,6 +18,7 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import { MdPeople, MdMedicalServices } from "react-icons/md";
 import { legacyApi } from "../services/api/legacyApi";
@@ -25,11 +26,11 @@ import { buildDoctorPath } from "../utils/doctorUrl";
 import {
   doctorTitle,
   doctorDescription,
-  doctorJsonLd,
-  breadcrumbJsonLd,
+  doctorGraph,
   jsonLdScript,
   displayName,
   doctorHeadline,
+  doctorFaq,
 } from "../utils/doctorSeo";
 import { SITE_URL } from "../secrets";
 import { motion } from "framer-motion";
@@ -230,6 +231,11 @@ const DoctorDetail = () => {
     );
   }
 
+  // Computed once so the visible FAQ section below and the FAQPage
+  // structured data in <Helmet> render the exact same questions — Google
+  // requires FAQ markup to correspond to Q&A actually visible on the page.
+  const faqs = doctorFaq(doctor);
+
   const formattedChamber = {
     branch: doctor.practicing_branches,
     building: doctor.branches[0]?.map || "Not specified",
@@ -269,10 +275,7 @@ const DoctorDetail = () => {
         {doctor.image && <meta name="twitter:image" content={doctor.image} />}
 
         <script type="application/ld+json">
-          {jsonLdScript(doctorJsonLd(doctor, `${SITE_URL}${canonicalPath}`))}
-        </script>
-        <script type="application/ld+json">
-          {jsonLdScript(breadcrumbJsonLd(doctor, SITE_URL, canonicalPath))}
+          {jsonLdScript(doctorGraph(doctor, SITE_URL, canonicalPath))}
         </script>
       </Helmet>
       <div className="sm:container mx-auto py-4 md:py-8 px-3 md:px-5">
@@ -459,6 +462,30 @@ const DoctorDetail = () => {
               </motion.button>
             </div>
             <div className="my-3 md:my-4"></div>
+
+            {faqs.length > 0 && (
+              <>
+                <div className="bg-white rounded-2xl shadow-depth-3 p-3 md:p-4 hover:shadow-depth-4 transition-all duration-300">
+                  <h2 className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100 text-lg font-ubuntu">
+                    <span className="text-[#00984a]">
+                      <FaQuestionCircle className="text-lg" />
+                    </span>
+                    <span className="tracking-wide">Frequently Asked Questions</span>
+                  </h2>
+                  <div className="space-y-4">
+                    {faqs.map((faq) => (
+                      <div key={faq.question}>
+                        <h3 className="font-semibold text-gray-900 font-ubuntu mb-1">
+                          {faq.question}
+                        </h3>
+                        <p className="text-gray-700 text-sm leading-relaxed">{faq.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="my-3 md:my-4"></div>
+              </>
+            )}
 
             {/* Horizontal Ad Banner - Sticky */}
             <div className="my-4 md:my-6 md:sticky md:top-20 z-10">
