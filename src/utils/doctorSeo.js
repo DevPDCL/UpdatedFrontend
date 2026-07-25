@@ -3,6 +3,7 @@
 // always passed in as a parameter so plain Node can import this module.
 
 import { primaryBranch, primarySpecialty, slugify, titleCase } from "./doctorUrl.js";
+import { cityForBranch } from "./branchCity.js";
 
 const ORG = "Popular Diagnostic Centre";
 export const DESC_MAX = 160;
@@ -135,6 +136,42 @@ export const doctorJsonLd = (doctor, url) => {
 // A doctor field containing "</script" would close the tag and break the head.
 export const jsonLdScript = (value) =>
   JSON.stringify(value).replace(/</g, "\\u003c");
+
+// Specialties whose practitioners are not physicians. Prefixing "Dr." for these
+// would misrepresent them on a healthcare site.
+const NON_PHYSICIAN_SPECIALTIES = new Set([
+  "nutritionist",
+  "dietician",
+  "foodnutrition",
+  "physiotherapydepartment",
+]);
+
+const TITLE_TOKENS =
+  /\b(dr|prof|professor|assoc|asso|assis|asst|asstt|assistant|assistan|consultant|nutritionist|dietician)\b/i;
+
+// 58 of ~3,386 names carry no professional title. 27 of those are genuinely
+// non-physician (nutritionists, dieticians, physiotherapists); the rest are doctors
+// whose record simply omits the title. Only the latter get "Dr." added.
+export const displayName = (doctor) => {
+  const name = doctor?.name?.trim() || "Doctor";
+  if (TITLE_TOKENS.test(name)) return name;
+  const key = primarySpecialty(doctor).toLowerCase().replace(/[^a-z]+/g, "");
+  if (NON_PHYSICIAN_SPECIALTIES.has(key)) return name;
+  return `Dr. ${name}`;
+};
+
+// "[Specialty] & [Subspecialty] in [City]", degrading as data allows.
+// Only ~6% of doctors have a second specialty.
+export const doctorHeadline = (doctor) => {
+  const specialties = (doctor?.specialists || [])
+    .map((entry) => entry?.specialist?.name || entry?.specialist_name || "")
+    .filter(Boolean);
+  const city = cityForBranch(primaryBranch(doctor));
+  const subject = specialties.slice(0, 2).join(" & ");
+  if (subject && city) return `${subject} in ${city}`;
+  if (subject) return subject;
+  return "Specialist";
+};
 
 export const breadcrumbJsonLd = (doctor, origin, path) => {
   const { name, specialty } = resolveDoctorMeta(doctor);

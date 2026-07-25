@@ -252,3 +252,94 @@ test("breadcrumbJsonLd builds a four-level trail", () => {
   );
   assert.equal(ld.itemListElement[3].position, 4);
 });
+
+import { displayName, doctorHeadline } from "./doctorSeo.js";
+import { cityForBranch } from "./branchCity.js";
+
+test("cityForBranch resolves known branch spellings to their city", () => {
+  assert.equal(cityForBranch("Dhanmondi"), "Dhaka");
+  assert.equal(cityForBranch("Barisal"), "Barishal");
+  assert.equal(cityForBranch("Cumilla"), "Comilla");
+  assert.equal(cityForBranch("Uttara (U-2)"), "Dhaka");
+  assert.equal(cityForBranch("Rangpur (U-2)"), "Rangpur");
+  assert.equal(cityForBranch("Kurigram"), "Kurigram");
+});
+
+test("cityForBranch folds the non-breaking space in the real Uttara Garib E Newaz branch name", () => {
+  assert.equal(cityForBranch("Uttara Garib E Newaz (Sector-13)"), "Dhaka");
+});
+
+test("cityForBranch returns an empty string for unknown or empty input", () => {
+  assert.equal(cityForBranch("Nonexistent Branch"), "");
+  assert.equal(cityForBranch(""), "");
+  assert.equal(cityForBranch(null), "");
+  assert.equal(cityForBranch(undefined), "");
+});
+
+test("displayName leaves a name that already carries a professional title unchanged", () => {
+  assert.equal(displayName({ name: "Prof. Dr. M. Nazrul Islam" }), "Prof. Dr. M. Nazrul Islam");
+});
+
+test("displayName leaves a name unchanged when the title token is embedded, not just 'Dr'", () => {
+  assert.equal(
+    displayName({ name: "Nutritionist. Md. Sazzadur Rahman" }),
+    "Nutritionist. Md. Sazzadur Rahman"
+  );
+});
+
+test("displayName leaves a bare non-physician name unchanged", () => {
+  assert.equal(
+    displayName({
+      name: "Sazzadur Rahman",
+      specialists: [{ specialist_name: "Food & Nutrition" }],
+    }),
+    "Sazzadur Rahman"
+  );
+});
+
+test("displayName prepends Dr. to a bare physician name", () => {
+  assert.equal(
+    displayName({
+      name: "Sonia Sabrin",
+      specialists: [{ specialist_name: "Cardiology" }],
+    }),
+    "Dr. Sonia Sabrin"
+  );
+});
+
+test("doctorHeadline combines one specialty and the branch city", () => {
+  assert.equal(
+    doctorHeadline({
+      specialists: [{ specialist_name: "Cardiology" }],
+      branches: [{ name: "DHANMONDI" }],
+    }),
+    "Cardiology in Dhaka"
+  );
+});
+
+test("doctorHeadline joins two specialties with &", () => {
+  assert.equal(
+    doctorHeadline({
+      specialists: [
+        { specialist_name: "Colorectal Surgery" },
+        { specialist_name: "Breast Cancer Specialist" },
+      ],
+      branches: [{ name: "DHANMONDI" }],
+    }),
+    "Colorectal Surgery & Breast Cancer Specialist in Dhaka"
+  );
+});
+
+test("doctorHeadline drops the city clause when the branch doesn't resolve", () => {
+  assert.equal(
+    doctorHeadline({
+      specialists: [{ specialist_name: "Neurology" }],
+      branches: [{ name: "Some Unmapped Branch" }],
+    }),
+    "Neurology"
+  );
+});
+
+test("doctorHeadline falls back to Specialist with no data", () => {
+  assert.equal(doctorHeadline({}), "Specialist");
+});

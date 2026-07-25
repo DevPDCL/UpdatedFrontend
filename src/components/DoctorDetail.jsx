@@ -28,6 +28,8 @@ import {
   doctorJsonLd,
   breadcrumbJsonLd,
   jsonLdScript,
+  displayName,
+  doctorHeadline,
 } from "../utils/doctorSeo";
 import { SITE_URL } from "../secrets";
 import { motion } from "framer-motion";
@@ -299,12 +301,12 @@ const DoctorDetail = () => {
                 )}
               </div>
               <h1 className="pt-3 text-gray-800 font-bold text-xl leading-tight my-1 font-ubuntu">
-                {doctor.name}
+                {displayName(doctor)}
               </h1>
-              <h3 className="text-gray-600 font-lg font-medium leading-6">
+              <h2 className="text-gray-600 font-lg font-medium leading-6">
                 <MdMedicalServices className="inline mr-1" />
-                {doctor.specialists[0]?.specialist_name || "Not specified"}
-              </h3>
+                {doctorHeadline(doctor)}
+              </h2>
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 hover:shadow-depth-1 py-2 px-3 mt-3 rounded-xl shadow-sm transition-all duration-200">
                 <div className="flex items-center justify-between py-2">
                   <span className="text-sm font-medium">Status</span>
@@ -409,9 +411,9 @@ const DoctorDetail = () => {
           <div className="w-full md:w-9/12 lg:w-8/12 px-2">
             <div className="bg-white p-3 md:p-4 shadow-depth-3 rounded-2xl hover:shadow-depth-4 transition-all duration-300">
               <div>
-                <h1 className="p-3 md:p-5 text-center font-ubuntu font-bold text-xl md:text-2xl lg:text-3xl bg-gradient-to-r from-[#006642] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
+                <p className="p-3 md:p-5 text-center font-ubuntu font-bold text-xl md:text-2xl lg:text-3xl bg-gradient-to-r from-[#006642] via-[#00984a] to-[#006642] bg-clip-text text-transparent">
                   {doctor.experience_summery || "Experienced Specialist"}
-                </h1>
+                </p>
               </div>
               <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100">
                 <span className="text-[#00984a]">
