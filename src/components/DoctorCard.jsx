@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaUserSlash, FaCalendarAlt } from "react-icons/fa";
+import { buildDoctorPath } from "../utils/doctorUrl";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -35,7 +36,7 @@ const DoctorCard = ({ doctor }) => {
 
   return (
     <Link
-      to={`/doctordetail/${doctor.id}`}
+      to={buildDoctorPath(doctor)}
       className="doctor-card-link group relative">
       <div
         className={`relative flex w-72 flex-col rounded-xl ${cardBackgroundColor} bg-clip-border text-gray-700 shadow-md h-full transition-transform duration-300 transform hover:-translate-y-2 hover:shadow-lg ${

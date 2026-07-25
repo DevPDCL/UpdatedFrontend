@@ -303,7 +303,7 @@ const DoctorDetail = () => {
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       className="text-center p-2 rounded-xl hover:bg-gradient-to-br from-[#00984a]/5 to-[#00984a]/5 hover:shadow-depth-1 transition-all duration-200">
-                      <Link to={`/doctordetail/${doc.id}`} className="block">
+                      <Link to={buildDoctorPath(doc)} className="block">
                         <div className="relative inline-block mb-2">
                           <img
                             className="h-16 w-16 rounded-full mx-auto object-cover ring-2 ring-gray-100 hover:ring-[#00984a]/30 transition-all shadow-depth-1"

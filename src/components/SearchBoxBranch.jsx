@@ -19,6 +19,7 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import { API_TOKEN, BASE_URL } from "../secrets";
+import { buildDoctorPath } from "../utils/doctorUrl";
 
 
 const TABS = [
@@ -72,7 +73,7 @@ const DoctorRow = React.memo(({ doctor, style }) => {
     "Not specified";
 
   return (
-    <Link to={`/doctordetail/${doctor.id}`} className="w-full">
+    <Link to={buildDoctorPath(doctor)} className="w-full">
       <motion.li
         style={{ ...style, backgroundColor: "#ffffff" }}
         className="flex justify-between hover:bg-gray-50 px-4 py-3 transition-colors duration-150 border-b border-gray-100"

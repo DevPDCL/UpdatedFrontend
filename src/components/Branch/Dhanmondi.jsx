@@ -14,6 +14,7 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import { API_TOKEN, BASE_URL } from "../../secrets";
+import { buildDoctorPath } from "../../utils/doctorUrl";
 
 const DoctorSlider = ({ doctors, loading }) => {
   const sliderRef = useRef(null);
@@ -97,21 +98,10 @@ const DoctorSlider = ({ doctors, loading }) => {
               />
             ))
           : doctors.map((doctor) => {
-              const branchIds =
-                doctor.branches
-                  ?.map((b) => b.branch_id)
-                  ?.filter(Boolean)
-                  ?.join(",") || "";
-              const specialistIds =
-                doctor.specialists
-                  ?.map((s) => s.specialist_id)
-                  ?.filter(Boolean)
-                  ?.join(",") || "";
-
               return (
                 <Link
                   key={doctor.id}
-                  to={`/doctordetail/${doctor.id}?branches=${branchIds}&specialists=${specialistIds}`}
+                  to={buildDoctorPath(doctor)}
                   className="doctor-card-link group relative flex-shrink-0 w-64 hover:no-underline">
                   <motion.div
                     whileHover={{ y: -5 }}
