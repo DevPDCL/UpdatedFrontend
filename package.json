@@ -8,13 +8,14 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node --env-file-if-exists=.env scripts/generate-sitemap.mjs && vite build",
     "build:optimized": "node deploy.js",
     "deploy:s3": "./deploy-s3.sh",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "node --test \"src/utils/*.test.js\"",
-    "verify:seo": "node --env-file=.env scripts/verify-seo.mjs"
+    "verify:seo": "node --env-file=.env scripts/verify-seo.mjs",
+    "sitemap": "node --env-file=.env scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@fontsource/ubuntu": "^5.0.13",

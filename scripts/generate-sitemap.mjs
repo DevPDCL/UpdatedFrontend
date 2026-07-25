@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+// Emits public/sitemap.xml from the live doctor list.
+// Failure is non-fatal: a flaky API must never block a deploy.
+
+import { writeFile, mkdir } from "node:fs/promises";
+import { buildDoctorPath } from "../src/utils/doctorUrl.js";
+
+const SITE_URL = process.env.VITE_SITE_URL || "https://www.populardiagnostic.com";
+const BASE_URL = process.env.VITE_BASE_URL || "https://api.populardiagnostic.com";
+const TOKEN = process.env.VITE_API_TOKEN;
+
+const STATIC_PATHS = [
+  "/", "/our-doctors", "/our-branches", "/sample-collection", "/about",
+  "/tech", "/goals", "/director", "/chairman", "/dmd", "/hotlines",
+  "/notice", "/video", "/contact-us", "/health", "/gallery",
+  "/terms&conditions", "/privacy&policy", "/refund",
+  "/shantinagar", "/shyamoli", "/mirpur", "/uttarasector4", "/bogura",
+  "/rangpur", "/badda", "/barishal", "/chattogram", "/dhanmondi",
+  "/dinajpur", "/englishRoad", "/gazipur", "/jatrabari", "/khulna",
+  "/kushtia", "/mymensingh", "/narayangonj", "/noakhali", "/rajshahi",
+  "/savar", "/uttarasector13",
+];
+
+const escapeXml = (value) =>
+  String(value).replace(/[<>&'"]/g, (char) =>
+    ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;" }[char])
+  );
+
+const urlEntry = (path, changefreq, priority) =>
+  `  <url>\n` +
+  `    <loc>${escapeXml(SITE_URL + path)}</loc>\n` +
+  `    <changefreq>${changefreq}</changefreq>\n` +
+  `    <priority>${priority}</priority>\n` +
+  `  </url>`;
+
+const main = async () => {
+  if (!TOKEN) throw new Error("VITE_API_TOKEN is not set");
+
+  const fetchPage = async (page) => {
+    const res = await fetch(`${BASE_URL}/api/doctors?token=${TOKEN}&page=${page}`);
+    if (!res.ok) throw new Error(`page ${page}: HTTP ${res.status}`);
+    return res.json();
+  };
+
+  const first = await fetchPage(1);
+  const lastPage = first.data.last_page;
+  const doctors = [...first.data.data];
+
+  for (let page = 2; page <= lastPage; page += 1) {
+    const body = await fetchPage(page);
+    doctors.push(...body.data.data);
+  }
+
+  const entries = [
+    ...STATIC_PATHS.map((path) =>
+      urlEntry(path, "weekly", path === "/" ? "1.0" : "0.8")
+    ),
+    ...doctors.map((doctor) => urlEntry(buildDoctorPath(doctor), "weekly", "0.7")),
+  ];
+
+  const xml =
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `${entries.join("\n")}\n</urlset>\n`;
+
+  await mkdir("public", { recursive: true });
+  await writeFile("public/sitemap.xml", xml, "utf8");
+  console.log(`Wrote public/sitemap.xml with ${entries.length} URLs.`);
+};
+
+try {
+  await main();
+} catch (error) {
+  console.warn(`Sitemap generation skipped: ${error.message}`);
+  console.warn("Keeping the existing public/sitemap.xml.");
+}
