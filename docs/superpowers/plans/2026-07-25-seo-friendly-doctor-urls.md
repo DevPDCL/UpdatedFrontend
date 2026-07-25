@@ -415,10 +415,16 @@ export const clampText = (text, max) => {
   return `${base.replace(/[\s,.-]+$/, "")}…`;
 };
 
+// Every generator in this file needs the same three derived values, and
+// Task 3 adds two more callers. Resolve them in one place.
+export const resolveDoctorMeta = (doctor) => ({
+  name: doctor?.name?.trim() || "Doctor",
+  specialty: primarySpecialty(doctor),
+  branch: titleCase(primaryBranch(doctor)),
+});
+
 export const doctorTitle = (doctor) => {
-  const name = doctor?.name?.trim() || "Doctor";
-  const specialty = primarySpecialty(doctor);
-  const branch = titleCase(primaryBranch(doctor));
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
   const middle = [specialty ? `${specialty} Specialist` : null, branch || null]
     .filter(Boolean)
     .join(", ");
@@ -445,9 +451,7 @@ const fitDegrees = (degree, budget) => {
 };
 
 export const doctorDescription = (doctor) => {
-  const name = doctor?.name?.trim() || "Doctor";
-  const specialty = primarySpecialty(doctor);
-  const branch = titleCase(primaryBranch(doctor));
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
   const role = specialty ? `${specialty} specialist` : "Consultant";
   const where = branch ? `${ORG}, ${branch}` : ORG;
   const tail = `${role} at ${where}. View chamber schedule and book an appointment online.`;
@@ -485,7 +489,8 @@ git commit -m "feat: add doctor title and meta description generators"
 - Test: `src/utils/doctorSeo.test.js`
 
 **Interfaces:**
-- Consumes: `primarySpecialty`, `primaryBranch`, `titleCase`, `slugify` from `./doctorUrl.js`
+- Consumes: `slugify` from `./doctorUrl.js`; `resolveDoctorMeta` from this same
+  module (added in Task 2 — reuse it, do not recompute name/specialty/branch)
 - Produces:
   - `to24Hour(value: string) => string|null`
   - `openingHours(schedule: Array) => Array`
@@ -636,8 +641,7 @@ export const openingHours = (schedule) =>
     .filter(Boolean);
 
 export const doctorJsonLd = (doctor, url) => {
-  const specialty = primarySpecialty(doctor);
-  const branch = titleCase(primaryBranch(doctor));
+  const { name, specialty, branch } = resolveDoctorMeta(doctor);
   // Never doctor.mobile — that is a personal cell number.
   const telephone = doctor?.branches?.[0]?.phone || "";
   const hours = openingHours(doctor?.schedule);
@@ -645,7 +649,7 @@ export const doctorJsonLd = (doctor, url) => {
   return {
     "@context": "https://schema.org",
     "@type": "Physician",
-    name: doctor?.name || "",
+    name,
     url,
     ...(doctor?.image ? { image: doctor.image } : {}),
     ...(specialty ? { medicalSpecialty: specialty } : {}),
@@ -665,7 +669,7 @@ export const doctorJsonLd = (doctor, url) => {
 };
 
 export const breadcrumbJsonLd = (doctor, origin, path) => {
-  const specialty = primarySpecialty(doctor);
+  const { name, specialty } = resolveDoctorMeta(doctor);
   const specialtySlug = slugify(specialty) || SPECIALTY_FALLBACK;
   const trail = [
     { name: "Home", item: `${origin}/` },
@@ -673,7 +677,7 @@ export const breadcrumbJsonLd = (doctor, origin, path) => {
     ...(specialty
       ? [{ name: specialty, item: `${origin}/doctors/${specialtySlug}` }]
       : []),
-    { name: doctor?.name || "Doctor", item: `${origin}${path}` },
+    { name, item: `${origin}${path}` },
   ];
 
   return {
