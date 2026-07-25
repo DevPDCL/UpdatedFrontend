@@ -13,7 +13,11 @@
 - **JavaScript only** — no TypeScript files. Source files are `.js` / `.jsx`.
 - **No new dependencies** beyond `react-helmet-async`, which is explicitly approved for this work.
 - **All API calls go through `src/services/api/legacyApi.js`** — never raw `axios` in components.
-- **ESLint must pass at 0 warnings** — `npm run lint`.
+- **ESLint must introduce no new problems.** `npm run lint` has a **pre-existing
+  baseline of 218 problems (26 errors, 192 warnings)** on this repo, measured at
+  merge-base `221723b`. `CLAUDE.md` claims "max warnings: 0" — that is aspirational,
+  not the current state. Do not attempt to fix the pre-existing 218; just ensure
+  none of the files you add or modify appear in the lint output.
 - **All route-level components lazy-loaded** via `React.lazy()` in `src/main.jsx`.
 - **No `console.log`** in committed source.
 - `package.json` already has `"type": "module"`, so `node --test` can import `src/utils/*.js` directly.
@@ -257,12 +261,12 @@ export const buildDoctorPath = (doctor, id = doctor?.id) => {
 - [ ] **Step 5: Run the test to verify it passes**
 
 Run: `npm test`
-Expected: PASS — 15 tests passing
+Expected: PASS — 16 tests passing
 
 - [ ] **Step 6: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings, 0 errors
+Expected: no new problems — the total must stay at the 218-problem baseline (26 errors, 192 warnings), all pre-existing
 
 - [ ] **Step 7: Commit**
 
@@ -463,7 +467,7 @@ Expected: PASS — all Task 1 and Task 2 tests green
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings
+Expected: no new problems beyond the 218-problem baseline
 
 - [ ] **Step 6: Commit**
 
@@ -693,7 +697,7 @@ Expected: PASS — all tests across both util files green
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings
+Expected: no new problems beyond the 218-problem baseline
 
 - [ ] **Step 6: Commit**
 
@@ -966,7 +970,7 @@ and `SpecialtyRedirect,` inside the export block.
 - [ ] **Step 6: Verify the build**
 
 Run: `npm run lint && npm run build`
-Expected: 0 warnings, build succeeds
+Expected: no new lint problems beyond the 218-problem baseline; build succeeds
 
 - [ ] **Step 7: Commit**
 
@@ -1095,7 +1099,7 @@ Check each of these:
 - [ ] **Step 6: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings
+Expected: no new problems beyond the 218-problem baseline
 
 - [ ] **Step 7: Commit**
 
@@ -1244,7 +1248,7 @@ Visit `/doctors/x/y/999999999` and confirm `<meta name="robots" content="noindex
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings
+Expected: no new problems beyond the 218-problem baseline
 
 - [ ] **Step 6: Commit**
 
@@ -1409,7 +1413,7 @@ Run: `npm run dev`
 - [ ] **Step 9: Run lint and build**
 
 Run: `npm run lint && npm run build`
-Expected: 0 warnings, build succeeds
+Expected: no new lint problems beyond the 218-problem baseline; build succeeds
 
 - [ ] **Step 10: Commit**
 
@@ -1502,7 +1506,7 @@ Run: `npm run dev`
 - [ ] **Step 5: Run lint**
 
 Run: `npm run lint`
-Expected: 0 warnings
+Expected: no new problems beyond the 218-problem baseline
 
 - [ ] **Step 6: Commit**
 
@@ -1711,7 +1715,7 @@ Expected: `Unique paths: 3386 / 3386` and `All SEO assertions passed.`
 - [ ] **Step 4: Run lint and build**
 
 Run: `npm run lint && npm run build`
-Expected: 0 warnings, build succeeds
+Expected: no new lint problems beyond the 218-problem baseline; build succeeds
 
 - [ ] **Step 5: Final manual pass**
 
