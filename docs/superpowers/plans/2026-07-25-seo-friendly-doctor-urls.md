@@ -763,11 +763,24 @@ let maxDescription = 0;
 
 const first = await fetchPage(1);
 const lastPage = first.data.last_page;
+const expectedTotal = first.data.total;
 const doctors = [...first.data.data];
+
+// Without this, a renamed/missing last_page makes `2 <= undefined` false, the
+// loop never runs, and the script "passes" having checked only page 1.
+if (!Number.isInteger(lastPage) || lastPage < 1) {
+  throw new Error(`unusable last_page from API: ${JSON.stringify(lastPage)}`);
+}
 
 for (let page = 2; page <= lastPage; page += 1) {
   const body = await fetchPage(page);
   doctors.push(...body.data.data);
+}
+
+// The API reports its own total — assert we collected all of it rather than
+// trusting a hardcoded floor. Catches silent under-collection exactly.
+if (Number.isInteger(expectedTotal) && doctors.length !== expectedTotal) {
+  throw new Error(`collected ${doctors.length} doctors, API reports ${expectedTotal}`);
 }
 
 console.log(`Fetched ${doctors.length} doctors across ${lastPage} pages.`);
@@ -776,6 +789,13 @@ const seenPaths = new Map();
 const SEGMENT = /^[a-z0-9-]+$/;
 
 for (const doctor of doctors) {
+  // Check the id independently. The round-trip test below cannot catch a
+  // missing id: buildDoctorPath renders `undefined` into the path, and
+  // String(undefined) === "undefined" makes the comparison pass.
+  if (doctor.id == null || !/^[0-9]+$/.test(String(doctor.id))) {
+    fail(doctor.id, `missing or non-numeric id: ${JSON.stringify(doctor.id)}`);
+  }
+
   const path = buildDoctorPath(doctor);
   const segments = path.split("/").slice(1);
 
@@ -891,7 +911,17 @@ Append to `.env` **and** `.env.production`:
 VITE_SITE_URL=https://www.populardiagnostic.com
 ```
 
-`.env` is gitignored and is not committed. `.env.production` is tracked and is committed.
+**Both files are already tracked by git.** `.gitignore` lists `.env`, but the file was
+committed before that rule existed, so it remains tracked and `.gitignore` has no
+effect on it. Commit both — `VITE_SITE_URL` is a public URL, not a secret, and adding
+it changes nothing about the repository's existing exposure.
+
+> **Pre-existing security issue, out of scope for this plan:** `.env` and
+> `.env.production` are both tracked and contain `VITE_API_TOKEN`,
+> `VITE_AKHIL_API_USERNAME`, and `VITE_AKHIL_API_PASSWORD` in git history. This
+> predates this branch and contradicts `CLAUDE.md`'s "Never commit `.env` files" rule.
+> Remediation — rotating the credentials and purging history — is a separate decision
+> for the repository owner. Do not attempt it as part of this task.
 
 - [ ] **Step 3: Export it from `src/secrets.js`**
 
