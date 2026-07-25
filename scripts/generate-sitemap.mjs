@@ -44,11 +44,25 @@ const main = async () => {
 
   const first = await fetchPage(1);
   const lastPage = first.data.last_page;
+  const expectedTotal = first.data.total;
   const doctors = [...first.data.data];
+
+  // Same guard as scripts/verify-seo.mjs, and it matters more here: an
+  // unreadable last_page makes `2 <= undefined` false, the loop never runs, and
+  // this script would overwrite the committed 3,400-URL sitemap with a ~50-URL
+  // one — silently de-indexing the site. Throwing is safe: the try/catch below
+  // converts it to a warning, and the existing sitemap is left untouched.
+  if (!Number.isInteger(lastPage) || lastPage < 1) {
+    throw new Error(`unusable last_page from API: ${JSON.stringify(lastPage)}`);
+  }
 
   for (let page = 2; page <= lastPage; page += 1) {
     const body = await fetchPage(page);
     doctors.push(...body.data.data);
+  }
+
+  if (Number.isInteger(expectedTotal) && doctors.length !== expectedTotal) {
+    throw new Error(`collected ${doctors.length} doctors, API reports ${expectedTotal}`);
   }
 
   const entries = [

@@ -7186,11 +7186,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.populardiagnostic.com/doctors/gastroenterology/prof-dr-mir-jakib-hossain/4574</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.populardiagnostic.com/doctors/gynaecology/dr-moumita-tripura-mumu/4575</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -17127,6 +17122,11 @@
   </url>
   <url>
     <loc>https://www.populardiagnostic.com/doctors/medicine/asso-prof-dr-md-murad-hossain/8440</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.populardiagnostic.com/doctors/ent-head-neck-surgery/prof-dr-debesh-chandra-talukder/8441</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
