@@ -6,6 +6,7 @@ import {
   doctorDescription,
   DESC_MAX,
   DESC_MIN,
+  TITLE_MAX,
 } from "./doctorSeo.js";
 
 const doctor = {
@@ -35,11 +36,28 @@ test("clampText never exceeds the maximum", () => {
   assert.ok(out.length <= 40, `got ${out.length}`);
 });
 
-test("doctorTitle front-loads name and specialty before the brand", () => {
-  assert.equal(
-    doctorTitle(doctor),
-    "Prof. Dr. M. Nazrul Islam - Cardiology Specialist, Dhanmondi | Popular Diagnostic Centre"
-  );
+test("doctorTitle front-loads name and specialty before the brand when it fits TITLE_MAX", () => {
+  // Short enough that the full "name - specialty, branch | brand" variant
+  // fits without any degradation.
+  const shortDoctor = {
+    name: "Dr. A. Rahman",
+    specialists: [{ specialist_name: "ENT" }],
+    branches: [{ name: "SAVAR" }],
+  };
+  const out = doctorTitle(shortDoctor);
+  assert.equal(out, "Dr. A. Rahman - ENT Specialist, Savar | Popular Diagnostic Centre");
+  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
+});
+
+test("doctorTitle degrades past specialty and branch when the full title doesn't fit, keeping the full name intact", () => {
+  // "Prof. Dr. M. Nazrul Islam - Cardiology Specialist, Dhanmondi | Popular
+  // Diagnostic Centre" is 89 chars (over TITLE_MAX); dropping the branch
+  // still leaves 78; dropping the specialty too lands at 53, which fits —
+  // and the name itself was never touched.
+  const out = doctorTitle(doctor);
+  assert.equal(out, "Prof. Dr. M. Nazrul Islam | Popular Diagnostic Centre");
+  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
+  assert.ok(out.startsWith(doctor.name), "name must survive intact, untruncated");
 });
 
 test("doctorTitle drops the specialty clause when absent", () => {
@@ -47,6 +65,31 @@ test("doctorTitle drops the specialty clause when absent", () => {
     doctorTitle({ name: "Dr. X", specialists: [], branches: [{ name: "MIRPUR" }] }),
     "Dr. X - Mirpur | Popular Diagnostic Centre"
   );
+});
+
+test("doctorTitle stays within TITLE_MAX for a very long name, specialty, and branch combination", () => {
+  // Modeled on a real 143-char title that shipped unbudgeted before this fix.
+  const longDoctor = {
+    name: "Associate Prof. Dr. Iftekhar Ahmed Swapan ( Mornig)",
+    specialists: [{ specialist_name: "Skin/Dermatology" }],
+    branches: [{ name: "UTTARA GARIB E NEWAZ (SECTOR-13)" }],
+  };
+  const out = doctorTitle(longDoctor);
+  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
+});
+
+test("doctorTitle only truncates the name once every droppable clause is already gone", () => {
+  // Even "name | Popular Diagnostic Centre" (no specialty, no branch) is
+  // over TITLE_MAX here, so this is the one case where the name itself must
+  // be clamped — the last resort, not the first.
+  const veryLongName = {
+    name: "Prof. Dr. Mohammad Abdul Karim Chowdhury Bin Rashid Al-Amin Hasan Uddin",
+    specialists: [{ specialist_name: "Cardiology" }],
+    branches: [{ name: "DHANMONDI" }],
+  };
+  const out = doctorTitle(veryLongName);
+  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
+  assert.ok(out.length < veryLongName.name.length, "name should have been clamped");
 });
 
 test("doctorDescription includes name, degrees, specialty and branch", () => {

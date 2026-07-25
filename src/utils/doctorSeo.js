@@ -7,6 +7,7 @@ import { primaryBranch, primarySpecialty, slugify, titleCase } from "./doctorUrl
 const ORG = "Popular Diagnostic Centre";
 export const DESC_MAX = 160;
 export const DESC_MIN = 70;
+export const TITLE_MAX = 70;
 
 export const resolveDoctorMeta = (doctor) => ({
   name: doctor?.name?.trim() || "Doctor",
@@ -23,12 +24,26 @@ export const clampText = (text, max) => {
   return `${base.replace(/[\s,.-]+$/, "")}…`;
 };
 
+// Degrades progressively, dropping the least valuable clause first, until
+// the title fits TITLE_MAX. The doctor's name is the highest-value part and
+// is only ever truncated as a last resort, once every droppable clause is
+// already gone.
 export const doctorTitle = (doctor) => {
   const { name, specialty, branch } = resolveDoctorMeta(doctor);
-  const middle = [specialty ? `${specialty} Specialist` : null, branch || null]
-    .filter(Boolean)
-    .join(", ");
-  return middle ? `${name} - ${middle} | ${ORG}` : `${name} | ${ORG}`;
+  const specialtyClause = specialty ? `${specialty} Specialist` : null;
+  const withMiddle = (middle) => (middle ? `${name} - ${middle} | ${ORG}` : `${name} | ${ORG}`);
+
+  const variants = [
+    withMiddle([specialtyClause, branch || null].filter(Boolean).join(", ")), // 1: name - specialty, branch
+    withMiddle(specialtyClause), // 2: drop branch
+    withMiddle(null), // 3: drop specialty too -> name | ORG
+    clampText(name, TITLE_MAX), // 4: last resort, clamp the name itself
+  ];
+
+  return (
+    variants.find((variant) => variant.length <= TITLE_MAX) ||
+    variants[variants.length - 1]
+  );
 };
 
 // Fit as many comma-separated credentials as the remaining budget allows,
@@ -63,7 +78,6 @@ export const doctorDescription = (doctor) => {
 };
 
 const ORG_FULL = "Popular Diagnostic Centre Limited";
-const SPECIALTY_FALLBACK = "general-practice";
 
 // Schedules store "2:00 pm"; schema.org requires "14:00".
 export const to24Hour = (value) => {
@@ -124,7 +138,7 @@ export const jsonLdScript = (value) =>
 
 export const breadcrumbJsonLd = (doctor, origin, path) => {
   const { name, specialty } = resolveDoctorMeta(doctor);
-  const specialtySlug = slugify(specialty) || SPECIALTY_FALLBACK;
+  const specialtySlug = slugify(specialty);
   const trail = [
     { name: "Home", item: `${origin}/` },
     { name: "Doctors", item: `${origin}/our-doctors` },

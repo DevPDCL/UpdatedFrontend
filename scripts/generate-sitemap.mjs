@@ -65,11 +65,26 @@ const main = async () => {
     throw new Error(`collected ${doctors.length} doctors, API reports ${expectedTotal}`);
   }
 
+  // Same guard as scripts/verify-seo.mjs: a null/missing id would otherwise
+  // silently ship "/doctors/x/y/undefined" into the sitemap.
+  let skippedCount = 0;
+  const doctorEntries = [];
+  for (const doctor of doctors) {
+    if (doctor.id == null || !/^[1-9][0-9]*$/.test(String(doctor.id))) {
+      skippedCount += 1;
+      continue;
+    }
+    doctorEntries.push(urlEntry(buildDoctorPath(doctor), "weekly", "0.7"));
+  }
+  if (skippedCount > 0) {
+    console.warn(`Skipped ${skippedCount} doctor record(s) with a missing/invalid id.`);
+  }
+
   const entries = [
     ...STATIC_PATHS.map((path) =>
       urlEntry(path, "weekly", path === "/" ? "1.0" : "0.8")
     ),
-    ...doctors.map((doctor) => urlEntry(buildDoctorPath(doctor), "weekly", "0.7")),
+    ...doctorEntries,
   ];
 
   const xml =

@@ -9,6 +9,7 @@ import {
   to24Hour,
   DESC_MAX,
   DESC_MIN,
+  TITLE_MAX,
 } from "../src/utils/doctorSeo.js";
 
 const BASE_URL = process.env.VITE_BASE_URL || "https://api.populardiagnostic.com";
@@ -29,6 +30,8 @@ const failures = [];
 const fail = (id, message) => failures.push(`  [${id}] ${message}`);
 let minDescription = Number.POSITIVE_INFINITY;
 let maxDescription = 0;
+let minTitle = Number.POSITIVE_INFINITY;
+let maxTitle = 0;
 
 const first = await fetchPage(1);
 const lastPage = first.data.last_page;
@@ -83,7 +86,12 @@ for (const doctor of doctors) {
   seenPaths.set(path, doctor.id);
 
   const title = doctorTitle(doctor);
+  minTitle = Math.min(minTitle, title.length);
+  maxTitle = Math.max(maxTitle, title.length);
   if (!title.trim()) fail(doctor.id, "empty title");
+  if (title.length > TITLE_MAX) {
+    fail(doctor.id, `title ${title.length} chars (max ${TITLE_MAX})`);
+  }
 
   const description = doctorDescription(doctor);
   minDescription = Math.min(minDescription, description.length);
@@ -106,6 +114,7 @@ for (const doctor of doctors) {
 }
 
 console.log(`Unique paths: ${seenPaths.size} / ${doctors.length}`);
+console.log(`Title lengths: ${minTitle}-${maxTitle} (limit ${TITLE_MAX})`);
 console.log(`Description lengths: ${minDescription}-${maxDescription} (limit ${DESC_MAX})`);
 
 if (failures.length) {

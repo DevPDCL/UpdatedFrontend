@@ -224,14 +224,26 @@ const SearchBoxBranch = ({ branchId, branchForDoctor }) => {
 
   const fetchInitialDoctorData = useCallback(async () => {
     try {
-      const [specializationsRes, daysRes] = await Promise.all([
-        apiRequest("doctor-speciality"),
+      const [firstSpecPage, daysRes] = await Promise.all([
+        apiRequest("doctor-speciality", { page: 1 }),
         apiRequest("practice-days"),
       ]);
 
+      // /api/doctor-speciality is paginated (81 specialties, 50 per page).
+      // Fetching only page 1 left 31 specialties out of this dropdown.
+      const specialityRows = [...firstSpecPage.data.data];
+      const specialityLastPage = firstSpecPage.data.last_page;
+
+      if (Number.isInteger(specialityLastPage) && specialityLastPage >= 1) {
+        for (let page = 2; page <= specialityLastPage; page += 1) {
+          const nextSpecPage = await apiRequest("doctor-speciality", { page });
+          specialityRows.push(...nextSpecPage.data.data);
+        }
+      }
+
       setDoctorSearchData((prev) => ({
         ...prev,
-        specializations: specializationsRes.data.data,
+        specializations: specialityRows,
         days: daysRes.data,
         initialDataLoaded: true,
       }));

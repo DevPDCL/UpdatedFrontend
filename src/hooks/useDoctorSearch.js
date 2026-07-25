@@ -36,16 +36,30 @@ export const useDoctorSearch = () => {
   // Initialize doctor search data (branches, specializations, days)
   const fetchInitialData = useCallback(async () => {
     try {
-      const [branchesRes, specializationsRes, daysRes] = await Promise.all([
+      const [branchesRes, firstSpecPage, daysRes] = await Promise.all([
         axios.get(`${BASE_URL}/api/branch-for-doctor?token=${API_TOKEN}`),
-        axios.get(`${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}`),
+        axios.get(`${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=1`),
         axios.get(`${BASE_URL}/api/practice-days?token=${API_TOKEN}`),
       ]);
+
+      // /api/doctor-speciality is paginated (81 specialties, 50 per page).
+      // Fetching only page 1 left 31 specialties out of this dropdown.
+      const specialityRows = [...firstSpecPage.data.data.data];
+      const specialityLastPage = firstSpecPage.data.data.last_page;
+
+      if (Number.isInteger(specialityLastPage) && specialityLastPage >= 1) {
+        for (let page = 2; page <= specialityLastPage; page += 1) {
+          const nextSpecPage = await axios.get(
+            `${BASE_URL}/api/doctor-speciality?token=${API_TOKEN}&page=${page}`
+          );
+          specialityRows.push(...nextSpecPage.data.data.data);
+        }
+      }
 
       setSearchData((prev) => ({
         ...prev,
         branches: branchesRes.data.data.data,
-        specializations: specializationsRes.data.data.data,
+        specializations: specialityRows,
         days: daysRes.data.data,
         initialDataLoaded: true,
       }));

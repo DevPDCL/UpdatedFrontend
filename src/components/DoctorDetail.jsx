@@ -90,20 +90,36 @@ const DoctorDetail = () => {
   const [loading, setLoading] = useState(true);
   const [loadingSimilar, setLoadingSimilar] = useState(true);
   const [error, setError] = useState(null);
+  // Confirmed absence only — distinct from `error`, which covers transient
+  // failures (network, timeout, 5xx) that must NOT be told to Google via
+  // noindex. See notFoundHead below.
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setLoadingSimilar(true);
       setError(null);
+      setNotFound(false);
       setDoctor(null);
       setSimilarDoctors([]);
+
+      // No id could be parsed from the route at all — nothing to fetch and
+      // no canonical URL to redirect to.
+      if (!doctorId) {
+        setNotFound(true);
+        setLoading(false);
+        setLoadingSimilar(false);
+        return;
+      }
 
       try {
         const doctorResponse = await legacyApi.get(`/api/doctor/${doctorId}`);
 
         if (!doctorResponse.data.success) {
-          throw new Error("Doctor not found");
+          // The API affirmatively says this doctor does not exist.
+          setNotFound(true);
+          return;
         }
 
         const doctorData = doctorResponse.data.data;
@@ -130,8 +146,15 @@ const DoctorDetail = () => {
           }
         }
       } catch (err) {
-        setError(err.message || "Failed to fetch doctor data");
         console.error("Error fetching doctor:", err);
+        // A confirmed 404 means the doctor genuinely doesn't exist — safe to
+        // noindex. Anything else (network error, timeout, 5xx) is
+        // transient: Google should retry, not be told to drop the page.
+        if (err.response?.status === 404) {
+          setNotFound(true);
+        } else {
+          setError(err.message || "Failed to fetch doctor data");
+        }
       } finally {
         setLoading(false);
         setLoadingSimilar(false);
@@ -145,11 +168,16 @@ const DoctorDetail = () => {
 
   // Rewrite legacy URLs and stale slugs to the canonical path. Without this,
   // /doctors/any/thing/2094 would serve identical content at unlimited URLs.
+  // The guard compares pathname only, so carrying the query string/hash
+  // through never causes a redirect loop.
   useEffect(() => {
     if (!canonicalPath) return;
     if (location.pathname === canonicalPath) return;
-    navigate(canonicalPath, { replace: true });
-  }, [canonicalPath, location.pathname, navigate]);
+    navigate(
+      { pathname: canonicalPath, search: location.search, hash: location.hash },
+      { replace: true }
+    );
+  }, [canonicalPath, location.pathname, location.search, location.hash, navigate]);
 
   const isDoctorOnLeave = useCallback(() => {
     return doctor?.on_leave === 1;
@@ -160,7 +188,10 @@ const DoctorDetail = () => {
   }
 
   // Static hosting cannot return a real 404, so every bad URL returns 200 OK.
-  // Without noindex, Google indexes unlimited identical error pages.
+  // Without noindex, Google indexes unlimited identical error pages. Only
+  // emit this for a *confirmed* absence — a transient API failure below
+  // renders with no robots directive so Google keeps retrying instead of
+  // dropping the page.
   const notFoundHead = (
     <Helmet>
       <title>Doctor Not Found | Popular Diagnostic Centre</title>
@@ -168,10 +199,21 @@ const DoctorDetail = () => {
     </Helmet>
   );
 
-  if (error) {
+  if (notFound) {
     return (
       <>
         {notFoundHead}
+        <div className="text-center py-10">Doctor not found</div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Helmet>
+          <title>Doctor profile unavailable | Popular Diagnostic Centre</title>
+        </Helmet>
         <div className="text-center py-10 text-red-500">{error}</div>
       </>
     );
@@ -303,7 +345,18 @@ const DoctorDetail = () => {
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       className="text-center p-2 rounded-xl hover:bg-gradient-to-br from-[#00984a]/5 to-[#00984a]/5 hover:shadow-depth-1 transition-all duration-200">
-                      <Link to={buildDoctorPath(doc)} className="block">
+                      {/* /api/doctor-suggestions returns only {id, name, image,
+                          gender} — no specialists or branches — so
+                          buildDoctorPath(doc) alone would fall back to
+                          "general-practice" on every suggestion. Suggestions
+                          are matched against this doctor's specialist ids, so
+                          borrowing the current doctor's specialty is a close
+                          approximation; the canonical redirect on the target
+                          page remains the backstop for a suggestion matched
+                          on a secondary specialty. */}
+                      <Link
+                        to={buildDoctorPath({ ...doc, specialists: doctor.specialists }, doc.id)}
+                        className="block">
                         <div className="relative inline-block mb-2">
                           <img
                             className="h-16 w-16 rounded-full mx-auto object-cover ring-2 ring-gray-100 hover:ring-[#00984a]/30 transition-all shadow-depth-1"
