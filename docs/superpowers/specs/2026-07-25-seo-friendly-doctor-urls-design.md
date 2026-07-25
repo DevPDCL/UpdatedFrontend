@@ -22,7 +22,8 @@ crawl surface are one problem and are addressed together.
 - The backend and database are not modifiable. All metadata is derived at runtime
   from existing API responses.
 - JavaScript only. ESLint must pass at 0 warnings.
-- No test framework is configured (no Jest, Vitest, or testing library).
+- No third-party test framework is installed. Node's built-in `node:test` runner is
+  used instead — see Verification.
 
 ## API Facts
 
@@ -68,7 +69,7 @@ name embeds a scheduling note: `"Assistant Prof. Dr. Md.  Minhaj Uddin Bhuiyan
 /doctors/cardiology/prof-dr-m-nazrul-islam/2094
 ```
 
-Longest generated path is 106 characters. All 3,386 paths are unique.
+Longest generated path is 107 characters. All 3,386 paths are unique.
 
 ### Slug rules
 
@@ -306,9 +307,19 @@ guessing.
 
 ## Verification
 
-No test framework exists, and adding one is a new dependency. The risky logic in
-this change is entirely pure functions, and 3,386 real records are available behind
-an open API.
+No third-party test framework is installed, and adding one is a new dependency.
+However, `package.json` already sets `"type": "module"` and the toolchain runs
+Node 25, so **Node's built-in test runner (`node:test`) is available at zero
+dependency cost** and is used for unit tests. Both util modules are therefore
+constrained to stay importable by plain Node: neither may import `src/secrets.js`
+or touch `import.meta.env`, so the site origin is always passed in as a parameter.
+
+Unit tests live beside their sources as `src/utils/doctorUrl.test.js` and
+`src/utils/doctorSeo.test.js`, run via `npm test`. Vite does not bundle them because
+nothing in the app's import graph references them.
+
+Unit tests cover the edge cases; the script below covers the real dataset, where
+3,386 records are available behind an open API.
 
 ### `scripts/verify-seo.mjs` (new)
 
@@ -350,7 +361,9 @@ fixed.
 **New**
 
 - `src/utils/doctorUrl.js` — `buildDoctorPath`, slugify helpers
+- `src/utils/doctorUrl.test.js` — unit tests (`node:test`)
 - `src/utils/doctorSeo.js` — title, description, JSON-LD generators
+- `src/utils/doctorSeo.test.js` — unit tests (`node:test`)
 - `src/components/SpecialtyRedirect.jsx` — folder-path redirects
 - `scripts/generate-sitemap.mjs`
 - `scripts/verify-seo.mjs`
