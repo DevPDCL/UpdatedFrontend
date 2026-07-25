@@ -1783,6 +1783,20 @@ git commit -m "feat: generate sitemap.xml and add robots.txt"
 > The duplicate `<meta name="description">` on doctor pages is accepted: multiple
 > descriptions are untidy but carry no penalty, and the static one is the only
 > description social crawlers (which never execute JS) can see.
+>
+> **No static `og:url` either, for a sharper reason.** The same non-replacement
+> behavior means a static `og:url` would be the *only* one a social crawler ever sees
+> on a doctor page — and Facebook uses `og:url` as the link object's canonical
+> identity, so every shared doctor card would resolve back to the site root. Omitting
+> it makes crawlers fall back to the URL they actually fetched, which is the doctor's
+> own page. Omission is strictly better than a wrong value here.
+>
+> **Known limitation, recorded honestly:** `og:title`, `og:description`, `og:type`,
+> `og:site_name`, and `twitter:card` are still duplicated between `index.html` and
+> `DoctorDetail`'s Helmet block. Social crawlers see only the static, generic set, so
+> doctor-page link previews stay generic until the HTML is prerendered. That is the
+> pre-existing SSR limitation in Post-Merge Follow-Up #2, not something `index.html`
+> can solve — but it should not be described as "no duplication".
 
 - [ ] **Step 1: Add baseline tags to `index.html`**
 
@@ -1795,7 +1809,6 @@ Immediately before the existing `<title>` line, insert:
     <meta property="og:site_name" content="Popular Diagnostic Centre" />
     <meta property="og:title" content="Popular Diagnostic Centre Ltd." />
     <meta property="og:description" content="Find specialist doctors, chamber schedules, and diagnostic services across 22 branches in Bangladesh." />
-    <meta property="og:url" content="https://www.populardiagnostic.com/" />
     <meta name="twitter:card" content="summary_large_image" />
 ```
 
