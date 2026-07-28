@@ -391,6 +391,60 @@ const DoctorDetail = () => {
               )}
             </div>
 
+            <div className="my-3 md:my-4"></div>
+
+            {/* Featured Medications - sticky so it stays visible while the
+                longer right-hand column scrolls past. */}
+            <div className="md:sticky md:top-20 z-10">
+              <div className="glass-medical rounded-2xl p-3 md:p-4 shadow-depth-2 border border-[#00984a]/20 hover:border-[#00984a]/30 transition-all duration-300">
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-[#00984a] font-ubuntu">
+                      Featured Medications
+                    </span>
+                    <span className="hidden sm:inline-block px-2 py-0.5 bg-[#00984a]/10 rounded-full text-xs text-[#00984a] font-medium">
+                      Popular Pharma
+                    </span>
+                  </div>
+                  <span className="text-xs text-gray-500 italic">Sponsored</span>
+                </div>
+
+                {/* Clips the track to the card viewport; the track itself is
+                    twice the ad list, animated exactly one copy's width so
+                    the loop point is seamless (see .ad-marquee-track). */}
+                <div className="overflow-hidden pb-3 pt-1 px-1 -mx-1">
+                  <div className="flex gap-3 md:gap-4 ad-marquee-track">
+                    {[...pharmaceuticalAds, ...pharmaceuticalAds].map((ad, index) => (
+                      <a
+                        key={`${ad.id}-${index}`}
+                        href={ad.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={index < pharmaceuticalAds.length ? 0 : -1}
+                        aria-hidden={index >= pharmaceuticalAds.length}
+                        className="flex-shrink-0 w-28 md:w-32">
+                        <motion.div
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="bg-white rounded-xl p-2 md:p-3 shadow-depth-1 hover:shadow-depth-3 border border-gray-200 hover:border-[#00984a]/30 transition-all duration-200 h-full flex flex-col">
+                          <div className="flex-1 flex items-center justify-center mb-1 md:mb-2">
+                            <img
+                              src={ad.image}
+                              alt={ad.name}
+                              className="w-full h-16 md:h-20 object-contain"
+                            />
+                          </div>
+                          <h3 className={`text-xs font-semibold text-center leading-tight ${ad.brandColors.primary}`}>
+                            {ad.name}
+                          </h3>
+                        </motion.div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Scroll Indicator - Shows on mobile to indicate more content below */}
             <div className="md:hidden mt-4 flex justify-center">
               <div className="flex flex-col items-center gap-2 text-[#00984a] animate-bounce">
@@ -462,75 +516,6 @@ const DoctorDetail = () => {
               </motion.button>
             </div>
             <div className="my-3 md:my-4"></div>
-
-            {faqs.length > 0 && (
-              <>
-                <div className="bg-white rounded-2xl shadow-depth-3 p-3 md:p-4 hover:shadow-depth-4 transition-all duration-300">
-                  <h2 className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100 text-lg font-ubuntu">
-                    <span className="text-[#00984a]">
-                      <FaQuestionCircle className="text-lg" />
-                    </span>
-                    <span className="tracking-wide">Frequently Asked Questions</span>
-                  </h2>
-                  <div className="space-y-4">
-                    {faqs.map((faq) => (
-                      <div key={faq.question}>
-                        <h3 className="font-semibold text-gray-900 font-ubuntu mb-1">
-                          {faq.question}
-                        </h3>
-                        <p className="text-gray-700 text-sm leading-relaxed">{faq.answer}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="my-3 md:my-4"></div>
-              </>
-            )}
-
-            {/* Horizontal Ad Banner - Sticky */}
-            <div className="my-4 md:my-6 md:sticky md:top-20 z-10">
-              <div className="glass-medical rounded-2xl p-3 md:p-4 shadow-depth-2 border border-[#00984a]/20 hover:border-[#00984a]/30 transition-all duration-300">
-                <div className="flex items-center justify-between mb-2 md:mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-[#00984a] font-ubuntu">
-                      Featured Medications
-                    </span>
-                    <span className="hidden sm:inline-block px-2 py-0.5 bg-[#00984a]/10 rounded-full text-xs text-[#00984a] font-medium">
-                      Popular Pharma
-                    </span>
-                  </div>
-                  <span className="text-xs text-gray-500 italic">Sponsored</span>
-                </div>
-
-                {/* Horizontal scrolling ad container with padding to prevent shadow clipping */}
-                <div className="flex gap-3 md:gap-4 overflow-x-auto ad-scroll pb-3 pt-1 px-1 -mx-1">
-                  {pharmaceuticalAds.map((ad) => (
-                    <a
-                      key={ad.id}
-                      href={ad.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-shrink-0 w-28 md:w-32 ad-card">
-                      <motion.div
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="bg-white rounded-xl p-2 md:p-3 shadow-depth-1 hover:shadow-depth-3 border border-gray-200 hover:border-[#00984a]/30 transition-all duration-200 h-full flex flex-col">
-                        <div className="flex-1 flex items-center justify-center mb-1 md:mb-2">
-                          <img
-                            src={ad.image}
-                            alt={ad.name}
-                            className="w-full h-16 md:h-20 object-contain"
-                          />
-                        </div>
-                        <h3 className={`text-xs font-semibold text-center leading-tight ${ad.brandColors.primary}`}>
-                          {ad.name}
-                        </h3>
-                      </motion.div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
 
             <div className="bg-white p-3 md:p-4 shadow-depth-3 rounded-2xl hover:shadow-depth-4 transition-all duration-300">
               <div>
@@ -611,6 +596,30 @@ const DoctorDetail = () => {
                 </div>
               </div>
             </div>
+
+            {faqs.length > 0 && (
+              <>
+                <div className="my-3 md:my-4"></div>
+                <div className="bg-white rounded-2xl shadow-depth-3 p-3 md:p-4 hover:shadow-depth-4 transition-all duration-300">
+                  <h2 className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 pb-2 border-b border-gray-100 text-lg font-ubuntu">
+                    <span className="text-[#00984a]">
+                      <FaQuestionCircle className="text-lg" />
+                    </span>
+                    <span className="tracking-wide">Frequently Asked Questions</span>
+                  </h2>
+                  <div className="space-y-4">
+                    {faqs.map((faq) => (
+                      <div key={faq.question}>
+                        <h3 className="font-semibold text-gray-900 font-ubuntu mb-1">
+                          {faq.question}
+                        </h3>
+                        <p className="text-gray-700 text-sm leading-relaxed">{faq.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

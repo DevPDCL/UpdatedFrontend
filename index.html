@@ -22,15 +22,22 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap" as="style" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
     
-    <meta name="description" content="Popular Diagnostic Centre Limited — Bangladesh's trusted diagnostic and healthcare network. Find specialist doctors, chamber schedules, diagnostic services, and book appointments across 22 branches." />
+    <!-- Homepage metadata for crawlers that never run JS (Facebook, LinkedIn,
+         WhatsApp): #root is empty until React boots. data-rh="true" hands these
+         to react-helmet-async so it replaces them rather than leaving
+         duplicates. Canonical and og:url are deliberately absent — this file is
+         served on every route. Full rationale + sync rules: Layout.jsx. -->
+    <title>Best Medical &amp; Healthcare Services, Specialist Doctors in Bangladesh| Popular Diagnostic Centre Ltd.</title>
+    <meta data-rh="true" name="description" content="Book accurate diagnostic &amp; blood tests, health checkups, imaging, pathology, and specialist consultations from us. Trusted healthcare services across Bangladesh." />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Popular Diagnostic Centre" />
-    <meta property="og:title" content="Popular Diagnostic Centre Ltd." />
-    <meta property="og:description" content="Find specialist doctors, chamber schedules, and diagnostic services across 22 branches in Bangladesh." />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:site_name" content="Popular Diagnostic Centre" />
+    <meta data-rh="true" property="og:title" content="Best Medical &amp; Healthcare Services, Specialist Doctors in Bangladesh| Popular Diagnostic Centre Ltd." />
+    <meta data-rh="true" property="og:description" content="Book accurate diagnostic &amp; blood tests, health checkups, imaging, pathology, and specialist consultations from us. Trusted healthcare services across Bangladesh." />
 
-    <title>Popular Diagnostic Centre Ltd.</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="Best Medical &amp; Healthcare Services, Specialist Doctors in Bangladesh| Popular Diagnostic Centre Ltd." />
+    <meta data-rh="true" name="twitter:description" content="Book accurate diagnostic &amp; blood tests, health checkups, imaging, pathology, and specialist consultations from us. Trusted healthcare services across Bangladesh." />
   </head>
   <body>
     <div id="root"></div>

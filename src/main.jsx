@@ -1,9 +1,15 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Nav, Navbar, Footer, Sidemenu, Error, ScrollToTop } from "./components";
 import { initializeErrorSuppression } from "./utils/consoleErrorSuppression";
+import { SITE_URL } from "./secrets";
 import "./index.css";
 
 // Initialize error suppression for better PageSpeed console error scores
@@ -23,9 +29,44 @@ const PageLoader = () => (
   </div>
 );
 
+// Site-wide fallback SEO tags. Pages that render their own <Helmet> (e.g.
+// DoctorDetail) override these by name/property — react-helmet-async keeps
+// only the deepest declaration per tag, so this never leaves a duplicate
+// behind the way a static tag baked into index.html would.
+// Self-referencing canonical for every route. Query strings and hashes are
+// dropped so /our-doctors?specialty=cardiology consolidates onto /our-doctors,
+// and trailing slashes are stripped everywhere except the root so the value
+// matches public/sitemap.xml byte for byte. Deliberately NOT in index.html:
+// that one file is served on all 40+ paths, so a static "/" canonical would
+// tell every non-JS crawler the whole site duplicates the homepage.
+const canonicalHref = (pathname) =>
+  `${SITE_URL}${pathname.replace(/\/+$/, "") || "/"}`;
+
 const App = () => {
+  const { pathname } = useLocation();
+
   return (
     <div>
+      <Helmet>
+        <title>Popular Diagnostic Centre Ltd.</title>
+        <meta
+          name="description"
+          content="Popular Diagnostic Centre Limited — Bangladesh's trusted diagnostic and healthcare network. Find specialist doctors, chamber schedules, diagnostic services, and book appointments across 22 branches."
+        />
+        {/* Pages needing a different canonical (DoctorDetail rewrites legacy
+            /doctordetail/:id URLs) declare their own. react-helmet-async keys
+            <link rel="canonical"> by `rel`, not `href`, so the deepest
+            declaration wins and exactly one is ever emitted. */}
+        <link rel="canonical" href={canonicalHref(pathname)} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Popular Diagnostic Centre" />
+        <meta property="og:title" content="Popular Diagnostic Centre Ltd." />
+        <meta
+          property="og:description"
+          content="Find specialist doctors, chamber schedules, and diagnostic services across 22 branches in Bangladesh."
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <ScrollToTop />
       <Nav />
       <Navbar />

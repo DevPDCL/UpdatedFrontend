@@ -59,7 +59,7 @@ const ServiceRow = React.memo(({ service, style, index }) => (
       <div className="flex items-center gap-1 flex-shrink-0">
         <span className="text-[10px] text-gray-400 font-ubuntu hidden sm:inline">BDT</span>
         <p className="font-bold text-[#00984a] font-ubuntu text-sm md:text-base whitespace-nowrap">
-          ৳{service.price.toLocaleString("en-BD")}
+          Tk. {service.price.toLocaleString("en-BD")}
         </p>
       </div>
     </div>

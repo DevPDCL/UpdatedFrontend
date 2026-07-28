@@ -6,9 +6,15 @@ import { primaryBranch, primarySpecialty, slugify, titleCase } from "./doctorUrl
 import { cityForBranch } from "./branchCity.js";
 
 const ORG = "Popular Diagnostic Centre";
+const ORG_TITLE = "Popular Diagnostic Centre Ltd.";
 export const DESC_MAX = 160;
 export const DESC_MIN = 70;
-export const TITLE_MAX = 70;
+
+// Absolute safety net against a corrupted/absurdly long name field. Specialty,
+// city, and the org suffix are never dropped for length — search engines
+// accept full <title> tags past their own visual SERP truncation — only the
+// name is clamped, and only once it alone would blow up the tag.
+const NAME_SAFETY_MAX = 100;
 
 export const resolveDoctorMeta = (doctor) => ({
   name: doctor?.name?.trim() || "Doctor",
@@ -25,26 +31,13 @@ export const clampText = (text, max) => {
   return `${base.replace(/[\s,.-]+$/, "")}…`;
 };
 
-// Degrades progressively, dropping the least valuable clause first, until
-// the title fits TITLE_MAX. The doctor's name is the highest-value part and
-// is only ever truncated as a last resort, once every droppable clause is
-// already gone.
+// "[Name] | [Specialty] in [City] | Popular Diagnostic Centre Ltd." — reuses
+// doctorHeadline for the middle clause so the title always matches the
+// on-page heading rendered under the doctor's name.
 export const doctorTitle = (doctor) => {
-  const { name, specialty, branch } = resolveDoctorMeta(doctor);
-  const specialtyClause = specialty ? `${specialty} Specialist` : null;
-  const withMiddle = (middle) => (middle ? `${name} - ${middle} | ${ORG}` : `${name} | ${ORG}`);
-
-  const variants = [
-    withMiddle([specialtyClause, branch || null].filter(Boolean).join(", ")), // 1: name - specialty, branch
-    withMiddle(specialtyClause), // 2: drop branch
-    withMiddle(null), // 3: drop specialty too -> name | ORG
-    clampText(name, TITLE_MAX), // 4: last resort, clamp the name itself
-  ];
-
-  return (
-    variants.find((variant) => variant.length <= TITLE_MAX) ||
-    variants[variants.length - 1]
-  );
+  const { name } = resolveDoctorMeta(doctor);
+  const headline = doctorHeadline(doctor);
+  return `${clampText(name, NAME_SAFETY_MAX)} | ${headline} | ${ORG_TITLE}`;
 };
 
 // Fit as many comma-separated credentials as the remaining budget allows,
@@ -72,9 +65,9 @@ export const doctorDescription = (doctor) => {
   const where = branch ? `${ORG}, ${branch}` : ORG;
   const tail = `${role} at ${where}. View chamber schedule and book an appointment online.`;
 
-  const base = `${name} - ${tail}`;
+  const base = `${name}, ${tail}`;
   const degrees = fitDegrees(doctor?.degree, DESC_MAX - base.length - 2);
-  const full = degrees ? `${name}, ${degrees} - ${tail}` : base;
+  const full = degrees ? `${name}, ${degrees}, ${tail}` : base;
   return clampText(full, DESC_MAX);
 };
 

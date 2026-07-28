@@ -6,7 +6,6 @@ import {
   doctorDescription,
   DESC_MAX,
   DESC_MIN,
-  TITLE_MAX,
 } from "./doctorSeo.js";
 
 const doctor = {
@@ -36,60 +35,44 @@ test("clampText never exceeds the maximum", () => {
   assert.ok(out.length <= 40, `got ${out.length}`);
 });
 
-test("doctorTitle front-loads name and specialty before the brand when it fits TITLE_MAX", () => {
-  // Short enough that the full "name - specialty, branch | brand" variant
-  // fits without any degradation.
-  const shortDoctor = {
-    name: "Dr. A. Rahman",
-    specialists: [{ specialist_name: "ENT" }],
-    branches: [{ name: "SAVAR" }],
-  };
-  const out = doctorTitle(shortDoctor);
-  assert.equal(out, "Dr. A. Rahman - ENT Specialist, Savar | Popular Diagnostic Centre");
-  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
-});
-
-test("doctorTitle degrades past specialty and branch when the full title doesn't fit, keeping the full name intact", () => {
-  // "Prof. Dr. M. Nazrul Islam - Cardiology Specialist, Dhanmondi | Popular
-  // Diagnostic Centre" is 89 chars (over TITLE_MAX); dropping the branch
-  // still leaves 78; dropping the specialty too lands at 53, which fits —
-  // and the name itself was never touched.
+test("doctorTitle builds Name | Specialty in City | Org, matching the on-page headline", () => {
   const out = doctorTitle(doctor);
-  assert.equal(out, "Prof. Dr. M. Nazrul Islam | Popular Diagnostic Centre");
-  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
-  assert.ok(out.startsWith(doctor.name), "name must survive intact, untruncated");
-});
-
-test("doctorTitle drops the specialty clause when absent", () => {
   assert.equal(
-    doctorTitle({ name: "Dr. X", specialists: [], branches: [{ name: "MIRPUR" }] }),
-    "Dr. X - Mirpur | Popular Diagnostic Centre"
+    out,
+    "Prof. Dr. M. Nazrul Islam | Cardiology in Dhaka | Popular Diagnostic Centre Ltd."
   );
 });
 
-test("doctorTitle stays within TITLE_MAX for a very long name, specialty, and branch combination", () => {
-  // Modeled on a real 143-char title that shipped unbudgeted before this fix.
+test("doctorTitle never drops the specialty/city clause for length, even past the old 70-char cap", () => {
   const longDoctor = {
     name: "Associate Prof. Dr. Iftekhar Ahmed Swapan ( Mornig)",
     specialists: [{ specialist_name: "Skin/Dermatology" }],
     branches: [{ name: "UTTARA GARIB E NEWAZ (SECTOR-13)" }],
   };
   const out = doctorTitle(longDoctor);
-  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
+  assert.equal(
+    out,
+    "Associate Prof. Dr. Iftekhar Ahmed Swapan ( Mornig) | Skin/Dermatology in Dhaka | Popular Diagnostic Centre Ltd."
+  );
+  assert.ok(out.length > 70, `expected this to exceed the old cap, got ${out.length}`);
 });
 
-test("doctorTitle only truncates the name once every droppable clause is already gone", () => {
-  // Even "name | Popular Diagnostic Centre" (no specialty, no branch) is
-  // over TITLE_MAX here, so this is the one case where the name itself must
-  // be clamped — the last resort, not the first.
+test("doctorTitle falls back to Specialist when there is no specialty or city", () => {
+  assert.equal(
+    doctorTitle({ name: "Dr. X", specialists: [], branches: [{ name: "MIRPUR" }] }),
+    "Dr. X | Specialist | Popular Diagnostic Centre Ltd."
+  );
+});
+
+test("doctorTitle only clamps the name once it alone is extremely long, never the specialty/city/org", () => {
   const veryLongName = {
-    name: "Prof. Dr. Mohammad Abdul Karim Chowdhury Bin Rashid Al-Amin Hasan Uddin",
+    name: "Prof. Dr. Mohammad Abdul Karim Chowdhury Bin Rashid Al-Amin Hasan Uddin Al-Jabbar Ibn Khalid Rahman Siddiqui",
     specialists: [{ specialist_name: "Cardiology" }],
     branches: [{ name: "DHANMONDI" }],
   };
   const out = doctorTitle(veryLongName);
-  assert.ok(out.length <= TITLE_MAX, `too long: ${out.length}`);
-  assert.ok(out.length < veryLongName.name.length, "name should have been clamped");
+  assert.ok(out.includes("Cardiology in Dhaka | Popular Diagnostic Centre Ltd."));
+  assert.ok(!out.startsWith(veryLongName.name), "name should have been clamped");
 });
 
 test("doctorDescription includes name, degrees, specialty and branch", () => {
@@ -113,7 +96,13 @@ test("doctorDescription truncates a 190-character degree field", () => {
 
 test("doctorDescription keeps only whole credentials", () => {
   const out = doctorDescription(longDegreeDoctor);
-  const degreePart = out.slice(longDegreeDoctor.name.length + 2, out.indexOf(" - "));
+  const tailSuffix =
+    ", Cardiology specialist at Popular Diagnostic Centre, Dhanmondi. View chamber schedule and book an appointment online.";
+  assert.ok(out.endsWith(tailSuffix), out);
+  const degreePart = out.slice(
+    longDegreeDoctor.name.length + 2,
+    out.length - tailSuffix.length
+  );
   const originals = longDegreeDoctor.degree.split(",").map((part) => part.trim());
   for (const kept of degreePart.split(",").map((part) => part.trim())) {
     assert.ok(originals.includes(kept), `"${kept}" is not a whole credential`);
@@ -130,6 +119,18 @@ test("doctorDescription works with no degree field", () => {
   assert.ok(out.includes("Neurology specialist"), out);
 });
 
+test("doctorDescription matches the exact '{name}, {specialty} specialist at {org}, {branch}. ...' template with no degree", () => {
+  const out = doctorDescription({
+    name: "Dr. Y",
+    specialists: [{ specialist_name: "Neurology" }],
+    branches: [{ name: "UTTARA" }],
+  });
+  assert.equal(
+    out,
+    "Dr. Y, Neurology specialist at Popular Diagnostic Centre, Uttara. View chamber schedule and book an appointment online."
+  );
+});
+
 test("doctorDescription with long name exhausts budget, leaving no room for degrees", () => {
   const longName = "Dr. Very Long Name That Takes Up Most Of The Description Character Budget So No Degrees Fit";
   const out = doctorDescription({
@@ -143,10 +144,10 @@ test("doctorDescription with long name exhausts budget, leaving no room for degr
   assert.ok(!out.includes("MBBS"), "no degrees should be included when budget exhausted");
 });
 
-test("doctorTitle with no specialty and no branch falls back to name only", () => {
+test("doctorTitle with no specialty and no branch falls back to Specialist", () => {
   assert.equal(
     doctorTitle({ name: "Dr. Z", specialists: [], branches: [] }),
-    "Dr. Z | Popular Diagnostic Centre"
+    "Dr. Z | Specialist | Popular Diagnostic Centre Ltd."
   );
 });
 

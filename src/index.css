@@ -919,6 +919,35 @@ button,
   scroll-snap-align: start;
 }
 
+/* Featured Medications auto-slide: the track renders the ad list twice
+   back-to-back and scrolls exactly one copy's width, so the loop point is
+   invisible and it "replays" forever. Paused on hover/focus so a visitor can
+   actually stop it to read or click a card. */
+@keyframes ad-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ad-marquee-track {
+  animation: ad-marquee 22s linear infinite;
+  width: max-content;
+}
+
+.ad-marquee-track:hover,
+.ad-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-marquee-track {
+    animation: none;
+  }
+}
+
 /* ============================================================
    Leadership / About — Liquid Glass system (lg-*)
    Light, app-consistent base (green-50 → white) carrying rich,
