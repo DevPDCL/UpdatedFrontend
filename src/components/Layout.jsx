@@ -30,9 +30,9 @@ import { SITE_URL } from "../secrets";
 // one correct tag of each. Verified with tag-count assertions across /, a
 // branch page, a doctor page and the error route.
 const HOME_TITLE =
-  "Best Medical & Healthcare Services, Specialist Doctors in Bangladesh| Popular Diagnostic Centre Ltd.";
+  "Advanced Health Diagnosis & Specialist Doctors | Popular Diagnostic Centre Ltd.";
 const HOME_DESCRIPTION =
-  "Book accurate diagnostic & blood tests, health checkups, imaging, pathology, and specialist consultations from us. Trusted healthcare services across Bangladesh.";
+  "Book accurate diagnostic & blood tests, health checkups, imaging, pathology, and doctors consultations from reliable medical care across Bangladesh.";
 
 function Layout() {
   return (

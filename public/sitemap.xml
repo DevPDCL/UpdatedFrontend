@@ -3781,6 +3781,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.populardiagnostic.com/doctors/medicine/dr-md-azmirul-haq-sarker/3235</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.populardiagnostic.com/doctors/medicine/asstt-prof-dr-md-faruk-hossain/3236</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -7731,7 +7736,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.populardiagnostic.com/doctors/nephrology-kidney-medicine/assoc-prof-dr-md-rezwanul-haque/4799</loc>
+    <loc>https://www.populardiagnostic.com/doctors/nephrology-kidney-medicine/asstt-prof-dr-md-rezwanul-haque/4799</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -10011,7 +10016,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.populardiagnostic.com/doctors/nephrology-kidney-medicine/asso-prof-dr-md-shariful-haque/5603</loc>
+    <loc>https://www.populardiagnostic.com/doctors/nephrology-kidney-medicine/professor-dr-md-shariful-haque/5603</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -11067,11 +11072,6 @@
   </url>
   <url>
     <loc>https://www.populardiagnostic.com/doctors/vascular-surgery/asso-prof-dr-md-mokhlesur-rahman-sazal/6091</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.populardiagnostic.com/doctors/gastroenterology/prof-dr-mohammad-jakir-hossain/6103</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -12571,6 +12571,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.populardiagnostic.com/doctors/orthopaedic-surgery/dr-s-i-chowdhury/6804</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.populardiagnostic.com/doctors/endocrinology/dr-anoya-saha-bonna/6814</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -13072,6 +13077,11 @@
   </url>
   <url>
     <loc>https://www.populardiagnostic.com/doctors/psychiatry/asst-prof-dr-fatima-johura/7052</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.populardiagnostic.com/doctors/neurology/prof-dr-md-abdul-alim/7054</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -16716,6 +16726,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.populardiagnostic.com/doctors/medicine/prof-dr-brig-gen-nazimuddin/8282</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.populardiagnostic.com/doctors/nephrology-kidney-medicine/dr-ripon-chandra-mazumder/8283</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -16951,11 +16966,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.populardiagnostic.com/doctors/gastroenterology/dr-naser-abul-hasan/8381</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.populardiagnostic.com/doctors/neurology/dr-mehedi-hasan/8382</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -17027,6 +17037,11 @@
   </url>
   <url>
     <loc>https://www.populardiagnostic.com/doctors/neurology/dr-md-anisul-hasan/8406</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.populardiagnostic.com/doctors/vascular-surgery/dr-jebitesh-kumar-paul/8408</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -17127,6 +17142,16 @@
   </url>
   <url>
     <loc>https://www.populardiagnostic.com/doctors/ent-head-neck-surgery/prof-dr-debesh-chandra-talukder/8441</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.populardiagnostic.com/doctors/child-paediatrics/asst-prof-dr-esrat-jahan-sheuly/8442</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.populardiagnostic.com/doctors/orthopaedic-surgery/associate-professor-dr-ashiqur-rahman-khan/8443</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

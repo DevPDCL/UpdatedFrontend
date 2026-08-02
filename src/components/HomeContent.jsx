@@ -51,7 +51,18 @@ const VideoElement = ({ videoSources, className, autoPlay = true, loop = true, m
 
 
 
-const Counter = ({ n, suffix = "", suffixExt = "" }) => {
+// 3000 -> "3,000". Locale is pinned so the separator can't vary by visitor.
+const formatStatValue = (n) => Math.round(n).toLocaleString("en-US");
+
+// The count-up is decorative, so honour the OS setting and show the final value
+// immediately. index.css already covers the CSS keyframe animations, but this
+// one is driven by react-spring in JS and that media query can't reach it.
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const Counter = ({ n, suffix = "" }) => {
   const countRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -71,38 +82,58 @@ const Counter = ({ n, suffix = "", suffixExt = "" }) => {
     from: { number: 0 },
     number: isVisible ? n : 0,
     delay: 500,
-    config: { mass: 1, tension: 10, friction: 10 },
+    // A fixed duration, not a spring. The previous {tension: 10, friction: 10}
+    // was too slack to converge: it read "2,878" for 3000 and "40" for 42, and
+    // each card settled at a different time because a spring's duration depends
+    // on its target. A tween always lands exactly on the target, together.
+    config: { duration: 2000 },
+    immediate: prefersReducedMotion,
   });
 
   return (
-    <div ref={countRef} className="flex items-center justify-start">
-      <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>
-      {suffix && <span>{suffix}</span>}
-      {suffixExt && (
-        <span className="text-[20px] text-gray-400 ml-1">{suffixExt}</span>
+    // <span>, not <div>: this renders inside a <p> in StatCard, and a
+    // block-level child would make the browser auto-close that <p>.
+    <span ref={countRef} className="inline-flex items-baseline justify-start">
+      <animated.span>{number.to(formatStatValue)}</animated.span>
+      {/* whitespace-pre preserves the leading space in word suffixes like
+          " Million+" — as separate flex items they would otherwise render as
+          "10Million+". Sized a step down so those words still fit the card at
+          375px, and baseline-aligned so it reads as one figure. */}
+      {suffix && (
+        <span className="whitespace-pre text-sm font-semibold text-PDCL-green-light sm:text-base lg:text-lg">
+          {suffix}
+        </span>
       )}
-    </div>
+    </span>
   );
 };
 
-const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
-  const ariaLabel = `${value}${suffix}${suffixExt} ${label}`;
+const StatCard = ({ icon, value, label, suffix = "" }) => {
+  const ariaLabel = `${formatStatValue(value)}${suffix} ${label}`;
   
   return (
+    // Depth is one system, not four overlays. The surface is lit from above —
+    // white at the top fading to a green pool at the base — and the card sits on
+    // shadow-depth-2. On hover it rises: depth-2 -> depth-4, lifts 4px, scales
+    // 1.03, and the green pool deepens. hover:z-10 keeps the scaled card above
+    // its neighbours instead of being clipped by the next one in DOM order.
+    // (This replaced a stack of shimmer + gradient-border + glow overlays that
+    // each animated separately; the elevation read is stronger from one.)
+    //
+    // Stacked until lg, horizontal above it. The old card was always a row, so
+    // at 375px the icon ate ~40% of a 163px card and left the figure ~80px —
+    // which is why "10 Million+" overflowed. Stacked, the text owns the card's
+    // full width, so the numeral could get *larger* and still fit. The switch
+    // waits for lg because a 640-1023px card is still too narrow to give the
+    // icon a column and leave room for "3,000+" beside it.
     <div
-      className="relative p-3 sm:p-4 lg:p-6 items-center flex flex-row justify-start gap-3 sm:gap-4 hover:scale-105 transition-all duration-500 group min-h-[100px] sm:min-h-[120px] bg-gradient-to-t from-PDCL-green/10 via-white/60 to-transparent backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl focus-within:outline-none focus-within:ring-2 focus-within:ring-[#00984a] focus-within:ring-offset-2 overflow-hidden"
+      className="group relative flex h-full flex-col justify-center gap-3 rounded-xl border border-PDCL-green/10 bg-gradient-to-b from-white via-white/95 to-PDCL-green/10 p-4 shadow-depth-2 backdrop-blur-sm transition-all duration-300 hover:z-10 hover:-translate-y-1 hover:scale-[1.03] hover:border-PDCL-green/30 hover:to-PDCL-green/25 hover:shadow-depth-4 motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 focus-within:outline-none focus-within:ring-2 focus-within:ring-[#00984a] focus-within:ring-offset-2 min-h-[124px] sm:p-5 lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:p-6"
       role="region"
       aria-label={ariaLabel}
       tabIndex="0">
-      {/* Animated background shimmer */}
-      <div className="absolute inset-0 stat-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
-
-      {/* Animated border gradient */}
-      <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-PDCL-green/20 via-PDCL-green-light/20 to-PDCL-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-      <div className="relative z-10 rounded-full p-2 sm:p-3 lg:p-4 border-2 border-dashed border-gray-400 group-hover:border-gray-600 hover:scale-105 group-hover:bg-gray-600 transition-all duration-500 flex-shrink-0">
+      <div className="w-fit flex-shrink-0 rounded-xl bg-PDCL-green/10 p-2.5 transition-colors duration-300 group-hover:bg-PDCL-green/20 sm:p-3">
         <svg
-          className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 fill-gray-600 group-hover:fill-gray-200 group-hover:-rotate-12 transition-all duration-500 icon-color-shift"
+          className="h-6 w-6 fill-PDCL-green transition-transform duration-300 group-hover:-rotate-6 sm:h-7 sm:w-7 lg:h-9 lg:w-9"
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true">
@@ -110,17 +141,26 @@ const StatCard = ({ icon, value, label, suffix = "", suffixExt = "" }) => {
         </svg>
       </div>
 
-      <div className="relative z-10 text-left flex-1 min-w-0">
-        <h2 className="text-gray-700 group-hover:text-PDCL-green font-bold font-ubuntu text-lg sm:text-2xl lg:text-3xl xl:text-4xl leading-tight transition-colors duration-300 stat-pulse">
-          <Counter n={value} suffix={suffix} suffixExt={suffixExt} />
-        </h2>
-        <p className="text-gray-600 group-hover:text-gray-800 font-semibold font-ubuntu text-xs sm:text-sm lg:text-base mt-0.5 sm:mt-1 leading-snug transition-colors duration-300">
+      {/* flex-initial at lg so the block sizes to its content and the card's
+          justify-center can actually centre the icon+text group; flex-1 would
+          make it fill the card and leave the group pinned left. */}
+      <div className="min-w-0 flex-1 text-left lg:flex-initial">
+        {/* Deliberately a <p>, not a heading: a bare figure like "3,000+" is a
+            value, not a section title, and five of them polluted the page's
+            heading outline. The card's role="region" + aria-label already
+            announces the full "3,000+ Medical & Diagnostic Services" string.
+            tabular-nums keeps the digits from jittering as the count-up runs. */}
+        <p className="font-ubuntu text-2xl font-bold leading-none tracking-tight text-PDCL-green tabular-nums sm:text-3xl lg:text-4xl">
+          <Counter n={value} suffix={suffix} />
+        </p>
+        {/* The underline of a lab-report field: separates measured value from
+            field name, and gives five very differently-sized figures one shared
+            anchor. */}
+        <div className="my-2 h-px w-8 bg-PDCL-green-light/50 transition-all duration-300 group-hover:w-12 group-hover:bg-PDCL-green-light" />
+        <p className="font-ubuntu text-xs font-medium leading-snug text-gray-600 transition-colors duration-300 group-hover:text-gray-800 sm:text-sm lg:text-base">
           {label}
         </p>
       </div>
-
-      {/* Subtle glow effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-PDCL-green/5 via-PDCL-green-light/5 to-PDCL-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     </div>
   );
 };
@@ -129,6 +169,13 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const cardRef = useRef(null);
+  // Card titles carry the full SEO phrase ("Health Diagnosis – Diagnostic Tests
+  // & Laboratory Services") in one <h3> for crawlers, but rendering it as a
+  // single same-weight line reads as a wall of text — split on the en dash so
+  // the short service name can lead visually and the descriptor trails it.
+  const [titleLabel, titleDescriptor] = name.includes(" – ")
+    ? name.split(" – ")
+    : [name, null];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -186,14 +233,21 @@ const ProjectCard = ({ name, description, video, source_code_link, link }) => {
           </div>
         </div>
 
-        <div className="flex flex-col p-5 flex-grow">
-          <h3 className="text-gray-900 font-semibold font-ubuntu text-xl mb-2 leading-tight">
-            {name}
+        <div className="flex flex-col p-6 flex-grow">
+          <h3 className="font-ubuntu leading-snug mb-3">
+            <span className="block text-PDCL-green font-bold text-lg sm:text-xl">
+              {titleLabel}
+            </span>
+            {titleDescriptor && (
+              <span className="block text-gray-500 font-medium text-sm sm:text-base mt-0.5">
+                – {titleDescriptor}
+              </span>
+            )}
           </h3>
-          <p className="text-gray-600 font-medium font-ubuntu text-base mb-4 flex-grow leading-relaxed">
+          <p className="text-gray-600 font-ubuntu text-sm sm:text-base leading-relaxed mb-5 line-clamp-3">
             {description}
           </p>
-          <div>
+          <div className="mt-auto">
             <button
               onClick={() => window.open(link, "_blank")}
               className="inline-flex items-center text-gray-600 font-ubuntu font-medium transition-all duration-200 hover:text-[#00984a] focus:outline-none focus:ring-2 focus:ring-[#00984a] focus:ring-offset-2 rounded px-3 py-2 min-h-[44px] min-w-[44px] justify-center sm:justify-start">
@@ -291,74 +345,72 @@ const HomeContent = () => {
     {
       icon: "M192 48c0-26.5 21.5-48 48-48H400c26.5 0 48 21.5 48 48V512H368V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H192V48zM48 96H160V512H48c-26.5 0-48-21.5-48-48V320H80c8.8 0 16-7.2 16-16s-7.2-16-16-16H0V224H80c8.8 0 16-7.2 16-16s-7.2-16-16-16H0V144c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v48H560c-8.8 0-16 7.2-16 16s7.2 16 16 16h80v64H560c-8.8 0-16 7.2-16 16s7.2 16 16 16h80V464c0 26.5-21.5 48-48 48H480V96H592zM312 64c-8.8 0-16 7.2-16 16v24H272c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h24v24c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16V152h24c8.8 0 16-7.2 16-16V120c0-8.8-7.2-16-16-16H344V80c0-8.8-7.2-16-16-16H312z",
       value: branchData.loading ? 0 : branchData.totalBranches,
-      label: "BRANCHES",
+      label: "Branches Nationwide",
     },
     {
       icon: "M48 0C21.5 0 0 21.5 0 48V464c0 26.5 21.5 48 48 48h96V432c0-26.5 21.5-48 48-48s48 21.5 48 48v80h96c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H48zM64 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V240zm112-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V240c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V240zM80 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V112zM272 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16z",
       value: branchData.loading ? 0 : branchData.totalUnits,
-      label: "UNITS",
+      label: "Diagnostic Units",
     },
         {
       icon: "M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96v32V480H384V128 96 56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM96 96h24C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H96V96zM416 480h32c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H416V480zM224 208c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H288v48c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V320H176c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h48V208z",
-      value: 3,
-      label: "SERVICES",
-      suffix: "K+",
+      value: 3000,
+      label: "Medical & Diagnostic Services",
+      suffix: "+",
     },
     {
       icon: "M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z",
       value: 42,
-      label: "YEARS EXPERIENCE",
+      label: "Years of Excellence",
       suffix: "+",
     },
     {
       icon: "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM164.1 325.5C182 346.2 212.6 368 256 368s74-21.8 91.9-42.5c5.8-6.7 15.9-7.4 22.6-1.6s7.4 15.9 1.6 22.6C349.8 372.1 311.1 400 256 400s-93.8-27.9-116.1-53.5c-5.8-6.7-5.1-16.8 1.6-22.6s16.8-5.1 22.6 1.6zm53.5-96.7l0 0 0 0-.2-.2c-.2-.2-.4-.5-.7-.9c-.6-.8-1.6-2-2.8-3.4c-2.5-2.8-6-6.6-10.2-10.3c-8.8-7.8-18.8-14-27.7-14s-18.9 6.2-27.7 14c-4.2 3.7-7.7 7.5-10.2 10.3c-1.2 1.4-2.2 2.6-2.8 3.4c-.3 .4-.6 .7-.7 .9l-.2 .2 0 0 0 0 0 0c-2.1 2.8-5.7 3.9-8.9 2.8s-5.5-4.1-5.5-7.6c0-17.9 6.7-35.6 16.6-48.8c9.8-13 23.9-23.2 39.4-23.2s29.6 10.2 39.4 23.2c9.9 13.2 16.6 30.9 16.6 48.8c0 3.4-2.2 6.5-5.5 7.6s-6.9 0-8.9-2.8l0 0 0 0zm160 0l0 0-.2-.2c-.2-.2-.4-.5-.7-.9c-.6-.8-1.6-2-2.8-3.4c-2.5-2.8-6-6.6-10.2-10.3c-8.8-7.8-18.8-14-27.7-14s-18.9 6.2-27.7 14c-4.2 3.7-7.7 7.5-10.2 10.3c-1.2 1.4-2.2 2.6-2.8 3.4c-.3 .4-.6 .7-.7 .9l-.2 .2 0 0 0 0 0 0c-2.1 2.8-5.7 3.9-8.9 2.8s-5.5-4.1-5.5-7.6c0-17.9 6.7-35.6 16.6-48.8c9.8-13 23.9-23.2 39.4-23.2s29.6 10.2 39.4 23.2c9.9 13.2 16.6 30.9 16.6 48.8c0 3.4-2.2 6.5-5.5 7.6s-6.9 0-8.9-2.8l0 0 0 0 0 0z",
       value: 10,
-      label: "HAPPY PATIENTS",
-      suffix: "M+",
-      suffixExt: "/YR",
+      label: "Happy Patients Every Year",
+      suffix: " Million+",
     },
   ];
 
   return (
     <main className="relative pt-20 fontFamily-ubuntu" role="main">
       <section className="overflow-hidden mt-[-140px] py-24 sm:py-32" aria-label="Hospital statistics">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Mobile: 2 columns, Tablet+: Original layout */}
-          <div className="block sm:hidden">
-            {/* Mobile layout: 2 columns, 3 rows */}
-            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre">
-              {stats.map((stat, index) => (
-                <StatCard key={index} {...stat} />
-              ))}
-            </div>
-          </div>
-          
-          {/* Tablet and desktop layout: Centered design */}
-          <div className="hidden sm:flex flex-col justify-center items-center py-6 gap-6">
-            {/* First row - 3 cards centered */}
-            <div className="flex flex-wrap justify-center gap-6 sm:gap-8 w-full max-w-6xl mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre - First row">
-              {stats.slice(0, 3).map((stat, index) => (
-                <div key={index} className="flex-shrink-0">
-                  <StatCard {...stat} />
-                </div>
-              ))}
-            </div>
-            
-            {/* Second row - 2 cards centered */}
-            <div className="flex justify-center gap-6 sm:gap-8 w-full max-w-4xl mx-auto" role="region" aria-label="Key statistics about Popular Diagnostic Centre - Second row">
-              {stats.slice(3, 5).map((stat, index) => (
-                <div key={index + 3} className="flex-shrink-0">
-                  <StatCard {...stat} />
-                </div>
-              ))}
-            </div>
+        {/* One grid for every breakpoint. This previously rendered all five
+            cards twice — a `block sm:hidden` copy and a `hidden sm:flex` copy —
+            which doubled the DOM and meant two sets of aria regions to keep in
+            step. Six columns with each card spanning two keeps all five cards
+            exactly equal in width (content-sized flex cards were visibly ragged:
+            283px next to 345px), and starting the fourth card at column 2
+            centres the trailing pair under the first three. */}
+        {/* Padding matches Search.jsx so the grid lines up with the search bar
+            directly above it — at 1440px the two were previously 1216px and
+            1152px wide, close enough to read as a mistake rather than a change. */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 xl:px-16">
+          <div
+            className="grid grid-cols-2 gap-4 sm:grid-cols-6 sm:gap-6 lg:gap-8"
+            role="region"
+            aria-label="Key statistics about Popular Diagnostic Centre">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className={`sm:col-span-2 ${index === 3 ? "sm:col-start-2" : ""}`}>
+                <StatCard {...stat} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="flex flex-col mx-auto max-w-7xl mb-12" aria-label="Health packages">
-        <h2 className="sr-only">Health Packages and Services</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 sm:px-8 lg:px-12 -mt-16" role="region" aria-label="Available health packages">
+      <section className="flex flex-col mx-auto max-w-7xl mt-8 mb-16 sm:mt-12 sm:mb-20" aria-label="Health packages">
+        <div className="text-center max-w-2xl mx-auto px-6 mb-10 sm:mb-14">
+          <span className="block text-PDCL-green-light font-ubuntu font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3">
+            Our Services
+          </span>
+          <h2 className="text-PDCL-green-light font-bold font-ubuntu text-2xl sm:text-3xl leading-snug">
+            Comprehensive Diagnostic & Healthcare Services in Bangladesh
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 sm:px-8 lg:px-12" role="region" aria-label="Available health packages">
           {healthPakage.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}

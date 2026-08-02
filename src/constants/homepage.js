@@ -67,7 +67,7 @@ export const servicePartners = [
 export const healthPakage = [
   {
     id: 1,
-    name: "HEALTH DIAGNOSIS",
+    name: "Health Diagnosis – Diagnostic Tests & Laboratory Services",
     description:
       "At Popular Diagnostic Centre Ltd., we offer precise and prompt diagnostic services using state-of-the-art technology and expert medical insight. Our commitment is to provide accurate health evaluations that form the foundation of effective treatment.",
     tags: [
@@ -86,7 +86,7 @@ export const healthPakage = [
   },
   {
     id: 2,
-    name: "HEALTH CONSULTATION",
+    name: "Health Consultation – Specialist Doctor Consultations",
     description:
       "Popular Diagnostic Centre Ltd. offers expert health consultations tailored to your individual needs. Our experienced physicians provide clear, compassionate guidance, helping you make informed decisions about your health.",
     tags: [
@@ -105,7 +105,7 @@ export const healthPakage = [
   },
   {
     id: 3,
-    name: "HEALTH PACKAGES",
+    name: "Health Packages – Preventive Health Checkup Packages",
     description:
       "Discover a proactive approach to wellness with our specially designed health packages at Popular Diagnostic Centre Ltd. Each package is curated to offer comprehensive screenings for early detection and peace of mind.",
     tags: [

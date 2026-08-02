@@ -17,21 +17,78 @@ import Image12 from "../assets/HeroImages/12.webp";
 import Image13 from "../assets/HeroImages/13.webp";
 import Image14 from "../assets/HeroImages/14.webp";
 
+// Alt text supplied verbatim by the SEO team (Home page image alt text.pdf) —
+// do not paraphrase. Mapped file-by-file per their explicit 1.webp-14.webp
+// list, not by the PDF's own item numbering (the two don't match). 1.webp's
+// text ("State-of-the-art pathology laboratory equipment...") has no active
+// slide to attach to — it stays commented out above with Image1.
 const images = [
   // { id: 1, src: Image1 },
-  { id: 2, src: Image2 },
-  { id: 3, src: Image3 },
-  { id: 4, src: Image4 },
-  { id: 5, src: Image5 },
-  { id: 6, src: Image6 },
-  { id: 7, src: Image7 },
-  { id: 8, src: Image8 },
-  { id: 9, src: Image9 },
-  { id: 10, src: Image10 },
-  { id: 11, src: Image11 },
-  { id: 12, src: Image12 },
-  { id: 13, src: Image13 },
-  { id: 14, src: Image14 },
+  {
+    id: 2,
+    src: Image2,
+    alt: "Blood collection tube ready for clinical laboratory testing at Popular Diagnostic Centre.",
+  },
+  {
+    id: 3,
+    src: Image3,
+    alt: "Blood sample prepared for laboratory analysis and accurate pathology diagnosis at Popular Diagnostic Centre.",
+  },
+  {
+    id: 4,
+    src: Image4,
+    alt: "Experienced pathology laboratory team at Popular Diagnostic Centre ensuring accurate diagnostic services.",
+  },
+  {
+    id: 5,
+    src: Image5,
+    alt: "Medical laboratory professionals processing patient samples with advanced diagnostic technology.",
+  },
+  {
+    id: 6,
+    src: Image6,
+    alt: "Abbott automated diagnostic analyzer used for advanced pathology testing at Popular Diagnostic Centre.",
+  },
+  {
+    id: 7,
+    src: Image7,
+    alt: "Automated laboratory testing equipment delivering fast and accurate diagnostic results at Popular Diagnostic Centre.",
+  },
+  {
+    id: 8,
+    src: Image8,
+    alt: "Patient undergoing MRI scan with Siemens Healthineers technology at Popular Diagnostic Centre.",
+  },
+  {
+    id: 9,
+    src: Image9,
+    alt: "Advanced automated pathology testing using Vitros XT 7600 at Popular Diagnostic Centre laboratory.",
+  },
+  {
+    id: 10,
+    src: Image10,
+    alt: "Vitros XT 7600 analyzer performing high-accuracy laboratory diagnostics at Popular Diagnostic Centre.",
+  },
+  {
+    id: 11,
+    src: Image11,
+    alt: "Laboratory expert preparing blood samples for precise pathology testing at Popular Diagnostic Centre.",
+  },
+  {
+    id: 12,
+    src: Image12,
+    alt: "Medical technologist operating the Alegria 2 analyzer at Popular Diagnostic Centre's advanced laboratory.",
+  },
+  {
+    id: 13,
+    src: Image13,
+    alt: "Professional blood collection service at Popular Diagnostic Centre for accurate diagnostic and pathology testing.",
+  },
+  {
+    id: 14,
+    src: Image14,
+    alt: "Patient giving a blood sample for laboratory testing at Popular Diagnostic Centre's modern and advanced pathology laboratory.",
+  },
 ];
 
 const Hero = () => {
@@ -63,7 +120,7 @@ const Hero = () => {
             }}>
             <img
               src={image.src}
-              alt={`Healthcare service ${image.id}`}
+              alt={image.alt}
               className="w-full h-full object-cover object-center"
               loading={index < 2 ? "eager" : "lazy"}
             />

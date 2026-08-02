@@ -17,9 +17,12 @@ import VirtualizedList from "./ui/VirtualizedList";
 import SearchSuggestions from "./ui/SearchSuggestions";
 import LoadingSkeleton, { DoctorListSkeleton, ServiceListSkeleton } from "./ui/LoadingSkeleton";
 
+// Labels are display text only — all tab logic keys off `id`. Wording supplied
+// by the SEO team to match search intent ("find a doctor", "book appointment");
+// "Test Prices" stays plural as the stronger keyword match.
 const TABS = [
-  { id: "doctors", label: "Doctors" },
-  { id: "appointment", label: "Appointment" },
+  { id: "doctors", label: "Find a Doctor" },
+  { id: "appointment", label: "Book Appointment" },
   { id: "test-prices", label: "Test Prices" },
 ];
 
